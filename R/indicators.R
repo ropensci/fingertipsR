@@ -26,22 +26,26 @@ indicators <- function(profileId = NULL, profileName = NULL, DomainID = NULL, Do
                 DomainID <- tempdf$DomainID
         }
 
+        df <- data.frame()
         for (dom in DomainID) {
                 dfRaw <- fromJSON(paste0(path,
                                          "indicator_metadata/by_group_id?group_ids=",
                                          dom),
                                   flatten = TRUE)
-                dfRaw <- unlist(dfRaw, recursive = FALSE)
-                dfIDs <- dfRaw[grepl("IID",names(dfRaw))]
+                if (length(dfRaw) != 0){
+                        dfRaw <- unlist(dfRaw, recursive = FALSE)
+                        dfIDs <- dfRaw[grepl("IID",names(dfRaw))]
 
-                dfDescription <- unlist(dfRaw[grepl("Descriptive",names(dfRaw))],
-                                        recursive = FALSE)
-                dfDescription <- dfDescription[grepl("NameLong",names(dfDescription))]
+                        dfDescription <- unlist(dfRaw[grepl("Descriptive",names(dfRaw))],
+                                                recursive = FALSE)
+                        dfDescription <- dfDescription[grepl("NameLong",names(dfDescription))]
 
-                df <- data.frame(IndicatorID = unlist(dfIDs),
-                                 IndicatorName = unlist(dfDescription),
-                                 DomainID = dom,
-                                 row.names=NULL)
+                        dfFinal <- data.frame(IndicatorID = unlist(dfIDs),
+                                         IndicatorName = unlist(dfDescription),
+                                         DomainID = dom,
+                                         row.names=NULL)
+                        df <- rbind(dfFinal,df)
+                }
 
 
         }

@@ -13,4 +13,5 @@ RoxygenNote: 5.0.1
 Imports:
     jsonlite,
     tidyjson,
-    dplyr
+    dplyr,
+    data.table
