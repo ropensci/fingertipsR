@@ -4,7 +4,6 @@
 #' @return A data frame of indicators within a profile or domain.
 #' @import dplyr
 #' @import jsonlite
-#' @import tidyjson
 #' @export
 
 indicators <- function(profileId = NULL, profileName = NULL, DomainID = NULL, DomainName = NULL) {

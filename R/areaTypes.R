@@ -2,7 +2,8 @@
 #'
 #' Outputs a data frame of area type ids and their descriptions
 #' @return A data frame of area type ids and their descriptions
-#' @import jsonlite
+#' @import dplyr
+#' @import tidyjson
 #' @export
 
 areaTypes <- function(){
