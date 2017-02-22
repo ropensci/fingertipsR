@@ -12,56 +12,38 @@ fingertipsData <- function(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL
         fingertipsData <- data.frame()
         if (!is.null(ProfileID)) {
                 if (!is.null(DomainID)) {
-                        #Do I need to loop through all parent codes and then take a unique set of data at the end?
-                        if (is.null(ParentCode)) {
-                                pcodes <- areaTypes() %>%
-                                        filter(AreaID %in% AreaTypeID)
-                                pcodes <- unique(pcodes$ParentAreaID)
-                                ParentCodes <- data.frame()
-                                for (pcode in pcodes) {
-                                        tempParentCodes <- fromJSON(paste0(path,"areas/by_area_type?area_type_id=",pcode))
-                                        if (length(setdiff(names(ParentCodes),  names(tempParentCodes))) > 0) {
-                                                newcols <- setdiff(names(ParentCodes),  names(tempParentCodes))
-                                                if (!(newcols %in% names(ParentCodes))) {
-                                                        ParentCodes[newcols] <- NA
-                                                } else if (!(newcols %in% names(tempParentCodes))) {
-                                                        tempParentCodes[newcols] <- NA
-                                                }
-                                        }
-                                        ParentCodes <- rbind(tempParentCodes,
-                                                             ParentCodes)
-                                }
-                                ParentCodes <- as.character(unique(ParentCodes$Code))
-                                ParentCodes <- fromJSON(paste0(path,
-                                                               "areas/by_area_code?area_codes=",
-                                                               paste(ParentCodes,collapse = "%2C")))
-                                smallestGroup <- filter(ParentCodes,!is.na(AreaTypeId)) %>%
-                                        group_by(AreaTypeId) %>%
-                                        summarise(count = n()) %>%
-                                        filter(count == min(count)) %>%
-                                        slice(1)
-                                ParentCodes <- filter(ParentCodes,AreaTypeId %in% smallestGroup$AreaTypeId)
-                                ParentCodes <- as.character(ParentCodes$Code)
-
-                                for (ParentCode in ParentCodes) {
-                                        dataurl <- paste0(path,"trend_data/all_indicators_in_profile_group_for_child_areas",
-                                                          "?profile_id=",ProfileID,
-                                                          "&group_id=",DomainID,
-                                                          "&area_type_id=",AreaTypeID,
-                                                          "&parent_area_code=",ParentCode)
+                        test <- liveProfiles(profileId = ProfileID) %>%
+                                filter(DomainID == DomainID)
+                        if (nrow(test) == 0 ){
+                                stop("DomainID does not exist in profile. Use the function liveProfiles() to see which domains are within each profile.")
+                        }
+                        if (!is.null(ParentCode)) {
+                                ParentCodes <- ParentCode
+                                fingertipsData <- rbind(fingertipsData,retrieveData(ParentCodes,ProfileID, DomainID, AreaTypeID))
+                        } else {
+                                ParentCodes <- getParentCodes(AreaTypeID)
+                                fingertipsData <- rbind(fingertipsData,retrieveData(ParentCodes,ProfileID, DomainID, AreaTypeID))
+                        }
+                } else {
+                        DomainIDs <- liveProfiles(profileId = ProfileID)
+                        DomainIDs <- as.character(DomainIDs$DomainID)
+                        if (!is.null(ParentCode)) {
+                                ParentCodes <- ParentCode
+                                for (DomainID in DomainIDs) {
                                         fingertipsData <- rbind(fingertipsData,retrieveData(dataurl))
                                 }
+                         } else {
+                                ###this is returning duplicates for :
+                                 # ProfileID <- 8
+                                 # DomainID <- NULL
+                                 # AreaTypeID <- 102
+                                 # ParentCode <- NULL
+                                ParentCodes <- getParentCodes(AreaTypeID)
 
-
-                        } else {
-                                dataurl <- paste0(path,"trend_data/all_indicators_in_profile_group_for_child_areas",
-                                                  "?profile_id=",ProfileID,
-                                                  "&group_id=",DomainID,
-                                                  "&area_type_id=",AreaTypeID,
-                                                  "&parent_area_code=",ParentCode)
-                                fingertipsData <- retrieveData(dataurl)
+                                for (DomainID in DomainIDs) {
+                                        fingertipsData <- rbind(fingertipsData,retrieveData(dataurl))
+                                }
                         }
-
                 }
         }
 
