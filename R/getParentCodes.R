@@ -2,6 +2,7 @@
 #' @import dplyr
 
 getParentCodes <- function(AreaTypeID) {
+        path <- "http://fingertips.phe.org.uk/api/"
         pcodes <- areaTypes() %>%
                 filter(AreaID %in% AreaTypeID)
         pcodes <- unique(pcodes$ParentAreaID)
