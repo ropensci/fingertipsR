@@ -33,7 +33,7 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
                         }
                 } else {
                         DomainID <- as.numeric(IndicatorIDs$DomainID)
-                        filterDomain <- as.numeric(IndicatorIDs$DomainID)
+                        #filterDomain <- as.numeric(IndicatorIDs$DomainID)
                 }
 
                 if (!is.null(ProfileID)){
@@ -46,7 +46,7 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
                         }
                 } else {
                         ProfileID <- as.numeric(IndicatorIDs$ProfileID)
-                        filterProfile <- as.numeric(IndicatorIDs$ProfileID)
+                        #filterProfile <- as.numeric(IndicatorIDs$ProfileID)
                 }
         }
 
@@ -105,23 +105,22 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
                 fingertipsData <- fingertipsData
                 if (!is.null(filterDomain)){
                         if (!is.null(filterProfile)) {
-                                fingertipsData <- filter(fingertipsData,
-                                                             (ProfileID %in% filterProfile &
-                                                                     DomainID %in% filterDomain &
-                                                                     IndicatorID %in% IndicatorID)|
-                                                                     !(DomainID %in% filterDomain))
+                                fingertipsData <- fingertipsData[(fingertipsData$ProfileID %in% filterProfile &
+                                                                          fingertipsData$DomainID %in% filterDomain &
+                                                                          fingertipsData$IndicatorID %in% IndicatorID)|
+                                                                         !(fingertipsData$DomainID %in% filterDomain),]
                         } else {
-                                fingertipsData <- filter(fingertipsData,
-                                                             (DomainID %in% filterDomain &
-                                                                      IndicatorID %in% IndicatorID)|
-                                                                     !(DomainID %in% filterDomain))
+                                fingertipsData <- fingertipsData[(fingertipsData$DomainID %in% filterDomain &
+                                                                          fingertipsData$IndicatorID %in% IndicatorID)|
+                                                                         !(fingertipsData$DomainID %in% filterDomain),]
                         }
                 } else {
                         if (!is.null(filterProfile)) {
-                                fingertipsData <- filter(fingertipsData,
-                                                             (ProfileID %in% filterProfile &
-                                                                      IndicatorID %in% IndicatorID)|
-                                                                     !(DomainID %in% filterDomain))
+                                fingertipsData <- fingertipsData[(fingertipsData$ProfileID %in% filterProfile &
+                                                                          fingertipsData$IndicatorID %in% IndicatorID)|
+                                                                         !(fingertipsData$DomainID %in% filterDomain),]
+                        } else {
+                                fingertipsData <- fingertipsData[(fingertipsData$IndicatorID %in% IndicatorID),]
                         }
                 }
         }
