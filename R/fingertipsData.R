@@ -15,6 +15,25 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
         }
         AreaTypeIDs <- AreaTypeID
 
+        if (!is.null(AreaCode)){
+                # check and set AreaTypeID to the correct levels
+                ## call some function to retrieve area type ids for each area code
+                ## return it to variable AreaCodeTypeIDs
+                AreaTypeID <- unique(as.character(AreaCodeTypeIDs$AreaTypeID))
+                AreaCodeParentCodes <- getParentCodes(AreaTypeIDs)
+                if (!is.null(ParentCode)) {
+                        if (!(ParentCode %in% AreaCodeParentCodes)) {
+                                stop(paste0("The AreaCode requested are not covered by the entered ParentCode. ",
+                                            "If data is only required for the AreaCode, leave the ParentCode input variable empty. ",
+                                            "Use the function areaLookups() to find out available areas."))
+                        } else {
+                                ParentCode <- AreacodeParentCodes
+                        }
+                } else {
+                        ParentCode <- AreacodeParentCodes
+                }
+
+        }
 
         # check on indicator details before calling data
         filterDomain <- NULL
@@ -101,8 +120,11 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
 
         fingertipsData <- retrieveData(ParentCodes,ProfileIDs, DomainIDs, AreaTypeIDs)
 
+        if (!is.null(AreaCode)){
+                fingertipsData <- fingertipsData[fingertipsData$AreaCode %in% AreaCode,]
+        }
+
         if (!is.null(IndicatorID)){
-                fingertipsData <- fingertipsData
                 if (!is.null(filterDomain)){
                         if (!is.null(filterProfile)) {
                                 fingertipsData <- fingertipsData[(fingertipsData$ProfileID %in% filterProfile &
@@ -124,6 +146,9 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
                         }
                 }
         }
+
+
+
 
         fingertipsData <- rename(fingertipsData,
                                  IndicatorID = .id,
