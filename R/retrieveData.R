@@ -1,4 +1,4 @@
-#' @import jsonlite
+#' @import jsonlite fromJSON
 #' @importFrom data.table rbindlist setattr
 #' @import dplyr
 #' @import tidyjson

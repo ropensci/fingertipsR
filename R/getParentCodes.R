@@ -1,4 +1,4 @@
-#' @import jsonlite
+#' @import jsonlite fromJSON
 #' @import dplyr
 
 getParentCodes <- function(AreaTypeID) {

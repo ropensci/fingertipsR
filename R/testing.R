@@ -1,15 +1,10 @@
-#' @import dplyr
-#' @import jsonlite
-#' @import data.table
-#' @import tidyjson
-
 #works
 ProfileID <- 8;DomainID <- 1938132733;AreaTypeID <- 102;ParentCode <- "E12000001"
-t <- fingertipsData(ProfileID = ProfileID,DomainID = DomainID,AreaTypeID = AreaTypeID,ParentCode = ParentCode)
+t2 <- fingertipsData(ProfileID = ProfileID,DomainID = DomainID,AreaTypeID = AreaTypeID,ParentCode = ParentCode)
 
 #works
 ProfileID <- 8;DomainID <- 1938132733;AreaTypeID <- 102;ParentCode <- NULL
-t <- fingertipsData(ProfileID = ProfileID,DomainID = DomainID,AreaTypeID = AreaTypeID,ParentCode = ParentCode)
+t2 <- fingertipsData(ProfileID = ProfileID,DomainID = DomainID,AreaTypeID = AreaTypeID,ParentCode = ParentCode)
 
 # works
 ProfileID <- NULL;DomainID <- 1938132733;AreaTypeID <- 102;ParentCode <- "E12000001"

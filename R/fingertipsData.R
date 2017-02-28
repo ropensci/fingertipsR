@@ -2,37 +2,55 @@
 #'
 #' Outputs a data frame of data from [Fingertips]<http://fingertips.phe.org.uk/>
 #' @return A data frame of data extracted from the Fingertips API
-#' @import jsonlite
+#' @import jsonlite fromJSON
 #' @import dplyr
 #' @import tidyjson
 #' @export
 
-fingertipsData <- function(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL, AreaTypeID = 102, ParentCode = NULL) {
-        path <- "http://fingertips.phe.org.uk/api/"
-        #fingertipsData <- data.frame()
+fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL, ProfileID = NULL, AreaTypeID = 102, ParentCode = NULL) {
+
+        # check on area details before calling data
         if (is.null(AreaTypeID)){
                 stop("AreaTypeID must have a value. Use function areaTypes() to see what codes can be used.")
         }
         AreaTypeIDs <- AreaTypeID
 
-        ## Need to work out if IndicatorID is not null and either DomainID or ProfileID is not null,
-        ## how to return either just indicator values or full domain/profile values
 
+        # check on indicator details before calling data
+        filterDomain <- NULL
+        filterProfile <- NULL
         if (!is.null(IndicatorID)){
                 indicatorIDs <- indicators() %>%
                         filter(IndicatorID %in% indicatorID)
+                # check domain ID covers the indicators' domains
                 if (!is.null(DomainID)){
-                        DomainID <- unique(c(DomainID,as.numeric(IndicatorIDs$DomainID)))
+                        if (!(DomainID %in% as.numeric(IndicatorIDs$DomainID))){
+                                stop("DomainID does not include the DomainID of the IndicatorID. Use function indicators() to see the domains for each indicator.")
+                        } else {
+                                # set filter for later to filter for single indicator within the domain
+                                # allowing for full domains that don't include the indicator
+                                filterDomain <- as.numeric(IndicatorIDs$DomainID)
+                        }
                 } else {
                         DomainID <- as.numeric(IndicatorIDs$DomainID)
+                        filterDomain <- as.numeric(IndicatorIDs$DomainID)
                 }
 
                 if (!is.null(ProfileID)){
-                        ProfileID <- unique(c(ProfileID,as.numeric(IndicatorIDs$ProfileID)))
+                        if (!(ProfileID %in% as.numeric(IndicatorIDs$ProfileID))){
+                                stop("ProfileID does not include the ProfileID of the IndicatorID. Use function indicators() to see the profiles for each indicator.")
+                        } else {
+                                # set filter for later to filter for single indicator within the profile
+                                # allowing for full profiles that don't include the indicator
+                                filterProfile <- as.numeric(IndicatorIDs$ProfileID)
+                        }
                 } else {
                         ProfileID <- as.numeric(IndicatorIDs$ProfileID)
+                        filterProfile <- as.numeric(IndicatorIDs$ProfileID)
                 }
         }
+
+        path <- "http://fingertips.phe.org.uk/api/"
 
         if (!is.null(ProfileID)) {
                 ProfileIDs <- ProfileID
@@ -45,35 +63,20 @@ fingertipsData <- function(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL
                         }
                         if (!is.null(ParentCode)) {
                                 ParentCodes <- ParentCode
-                                #fingertipsData <- rbind(fingertipsData,retrieveData(ParentCodes,ProfileID, DomainID, AreaTypeID))
-
                         } else {
                                 ###Need to check that getParentCodes can take multiple values
                                 ParentCodes <- getParentCodes(AreaTypeIDs)
-                                #fingertipsData <- rbind(fingertipsData,retrieveData(ParentCodes,ProfileID, DomainID, AreaTypeID))
                         }
                 } else {
                         DomainIDs <- liveProfiles(profileId = ProfileID)
                         DomainIDs <- as.character(DomainIDs$DomainID)
                         if (!is.null(ParentCode)) {
                                 ParentCodes <- ParentCode
-                                #for (DomainID in DomainIDs) {
-                                #        fingertipsData <- rbind(fingertipsData,retrieveData(dataurl))
-                                #}
                          } else {
-                                ###this is returning duplicates for :
-                                 # ProfileID <- 8
-                                 # DomainID <- NULL
-                                 # AreaTypeID <- 102
-                                 # ParentCode <- NULL
                                 ParentCodes <- getParentCodes(AreaTypeIDs)
-                                #for (DomainID in DomainIDs) {
-                                #        fingertipsData <- rbind(fingertipsData,retrieveData(dataurl))
-                                #}
                         }
                 }
         } else {
-                ###All below was written in London and not tested
                 if (!is.null(DomainID)) {
                        ProfileIDs <- liveProfiles()
                        ProfileIDs <- ProfileIDs[ProfileIDs$DomainID %in% DomainID,]
@@ -81,11 +84,8 @@ fingertipsData <- function(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL
                        DomainIDs <- DomainID
                        if (!is.null(ParentCode)) {
                                ParentCodes <- ParentCode
-
-                               #fingertipsData <- rbind(fingertipsData,retrieveData(ParentCodes,ProfileID, DomainID, AreaTypeID))
                        } else {
                                ParentCodes <- getParentCodes(AreaTypeIDs)
-                               #fingertipsData <- rbind(fingertipsData,retrieveData(ParentCodes,ProfileID, DomainID, AreaTypeID))
                        }
                 } else {
                         DomainIDs <- liveProfiles()
@@ -93,27 +93,44 @@ fingertipsData <- function(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL
                         DomainIDs <- as.character(DomainIDs$DomainID)
                         if (!is.null(ParentCode)) {
                                 ParentCodes <- ParentCode
-                                # for (ProfileID in ProfileIDs) {
-                                #         for (DomainID in DomainIDs) {
-                                #                 fingertipsData <- rbind(fingertipsData,retrieveData(dataurl))
-                                #         }
-                                # }
                         } else {
                                 ParentCodes <- getParentCodes(AreaTypeIDs)
-
-                                # for (DomainID in DomainIDs) {
-                                #         fingertipsData <- rbind(fingertipsData,retrieveData(dataurl))
-                                # }
                         }
                 }
         }
-        #fingertipsData <- rbind(fingertipsData,retrieveData(ParentCodes,ProfileIDs, DomainIDs, AreaTypeIDs))
+
         fingertipsData <- retrieveData(ParentCodes,ProfileIDs, DomainIDs, AreaTypeIDs)
 
-        fingertipsData <- rename(fingertipsData,IndicatorID = .id,
-                          Value = V,
-                          LowerCI = L,
-                          UpperCI = U)
+        if (!is.null(IndicatorID)){
+                fingertipsData <- fingertipsData
+                if (!is.null(filterDomain)){
+                        if (!is.null(filterProfile)) {
+                                fingertipsData <- filter(fingertipsData,
+                                                             (ProfileID %in% filterProfile &
+                                                                     DomainID %in% filterDomain &
+                                                                     IndicatorID %in% IndicatorID)|
+                                                                     !(DomainID %in% filterDomain))
+                        } else {
+                                fingertipsData <- filter(fingertipsData,
+                                                             (DomainID %in% filterDomain &
+                                                                      IndicatorID %in% IndicatorID)|
+                                                                     !(DomainID %in% filterDomain))
+                        }
+                } else {
+                        if (!is.null(filterProfile)) {
+                                fingertipsData <- filter(fingertipsData,
+                                                             (ProfileID %in% filterProfile &
+                                                                      IndicatorID %in% IndicatorID)|
+                                                                     !(DomainID %in% filterDomain))
+                        }
+                }
+        }
+
+        fingertipsData <- rename(fingertipsData,
+                                 IndicatorID = .id,
+                                 Value = V,
+                                 LowerCI = L,
+                                 UpperCI = U)
         fingertipsData[fingertipsData=="-"] <- NA
 
         cols = c("IndicatorID","Value","LowerCI","UpperCI")

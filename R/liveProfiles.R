@@ -3,7 +3,7 @@
 #' Outputs a data frame of live profiles that data are available for in [Fingertips]<http://fingertips.phe.org.uk/>
 #' @return A data frame of live profile ids and names along with their domain names and ids.
 #' @import dplyr
-#' @import jsonlite
+#' @import jsonlite fromJSON
 #' @import tidyjson
 #' @export
 
