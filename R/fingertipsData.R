@@ -47,12 +47,12 @@ fingertipsData <- function(IndicatorID = NULL,
                 indicatorIDs <- indicatorIDs[indicatorIDs$IndicatorID %in% IndicatorID,]
                 # check domain ID covers the indicators' domains
                 if (!is.null(DomainID)){
-                        if (!(DomainID %in% as.numeric(IndicatorIDs$DomainID))){
+                        if (!(DomainID %in% as.numeric(indicatorIDs$DomainID))){
                                 stop("DomainID does not include the DomainID of the IndicatorID. Use function indicators() to see the domains for each indicator.")
                         } else {
                                 # set filter for later to filter for single indicator within the domain
                                 # allowing for full domains that don't include the indicator
-                                filterDomain <- as.numeric(IndicatorIDs$DomainID)
+                                filterDomain <- as.numeric(indicatorIDs$DomainID)
                         }
                 } else {
                         DomainID <- as.numeric(indicatorIDs$DomainID)
@@ -60,12 +60,12 @@ fingertipsData <- function(IndicatorID = NULL,
                 }
 
                 if (!is.null(ProfileID)){
-                        if (!(ProfileID %in% as.numeric(IndicatorIDs$ProfileID))){
+                        if (!(ProfileID %in% as.numeric(indicatorIDs$ProfileID))){
                                 stop("ProfileID does not include the ProfileID of the IndicatorID. Use function indicators() to see the profiles for each indicator.")
                         } else {
                                 # set filter for later to filter for single indicator within the profile
                                 # allowing for full profiles that don't include the indicator
-                                filterProfile <- as.numeric(IndicatorIDs$ProfileID)
+                                filterProfile <- as.numeric(indicatorIDs$ProfileID)
                         }
                 } else {
                         ProfileID <- unique(as.numeric(indicatorIDs$ProfileID))

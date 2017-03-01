@@ -1,3 +1,5 @@
+library(data.table);library(dplyr);library(jsonlite);library(tidyjson)
+
 #works (1500)
 ProfileID <- 8;DomainID <- 1938132733;AreaTypeID <- 102;ParentCode <- "E12000001"
 t <- fingertipsData(ProfileID = ProfileID,DomainID = DomainID,AreaTypeID = AreaTypeID,ParentCode = ParentCode)
@@ -25,5 +27,3 @@ t <- fingertipsData(ProfileID = ProfileID,DomainID = DomainID,AreaTypeID = AreaT
 # works (1836)
 IndicatorID <- 1107;AreaTypeID <- 102;ParentCode <- "E12000001"
 t <- fingertipsData(IndicatorID=IndicatorID,AreaTypeID = AreaTypeID,ParentCode = ParentCode)
-
-test <- fromJSON("http://fingertips.phe.org.uk/api/area_addresses/by_parent_area_code?parent_area_code=E45000016&area_type_id=102")
