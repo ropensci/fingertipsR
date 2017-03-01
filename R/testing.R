@@ -22,7 +22,7 @@ t <- fingertipsData(ProfileID = ProfileID,DomainID = DomainID,AreaTypeID = AreaT
 ProfileID <- 8;DomainID <- NULL;AreaTypeID <- 102;ParentCode <- NULL
 t <- fingertipsData(ProfileID = ProfileID,DomainID = DomainID,AreaTypeID = AreaTypeID,ParentCode = ParentCode)
 
-
+# works (1836)
 IndicatorID <- 1107;AreaTypeID <- 102;ParentCode <- "E12000001"
 t <- fingertipsData(IndicatorID=IndicatorID,AreaTypeID = AreaTypeID,ParentCode = ParentCode)
 

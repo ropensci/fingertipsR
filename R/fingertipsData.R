@@ -7,15 +7,20 @@
 #' @import tidyjson
 #' @export
 
-fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL, ProfileID = NULL, AreaTypeID = 102, ParentCode = NULL) {
+fingertipsData <- function(IndicatorID = NULL,
+                           AreaCode = NULL,
+                           DomainID = NULL,
+                           ProfileID = NULL,
+                           AreaTypeID = 102,
+                           ParentCode = NULL) {
 
         # check on area details before calling data
-        if (is.null(AreaTypeID)){
+        if (is.null(AreaTypeID)) {
                 stop("AreaTypeID must have a value. Use function areaTypes() to see what codes can be used.")
         }
         AreaTypeIDs <- AreaTypeID
 
-        if (!is.null(AreaCode)){
+        if (!is.null(AreaCode)) {
                 # check and set AreaTypeID to the correct levels
                 AreaCodeTypeIDs <- areaLookups(AreaCode)
                 AreaTypeID <- unique(as.character(AreaCodeTypeIDs$AreaTypeID))
@@ -125,26 +130,35 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
         }
 
         if (!is.null(IndicatorID)){
+                fingertipsData <- left_join(fingertipsData,indicatorIDs, by = c(".id" = "IndicatorID"))
                 if (!is.null(filterDomain)){
                         if (!is.null(filterProfile)) {
                                 fingertipsData <- fingertipsData[(fingertipsData$ProfileID %in% filterProfile &
                                                                           fingertipsData$DomainID %in% filterDomain &
-                                                                          fingertipsData$IndicatorID %in% IndicatorID)|
+                                                                          fingertipsData$.id %in% IndicatorID)|
                                                                          !(fingertipsData$DomainID %in% filterDomain),]
                         } else {
                                 fingertipsData <- fingertipsData[(fingertipsData$DomainID %in% filterDomain &
-                                                                          fingertipsData$IndicatorID %in% IndicatorID)|
+                                                                          fingertipsData$.id %in% IndicatorID)|
                                                                          !(fingertipsData$DomainID %in% filterDomain),]
                         }
                 } else {
                         if (!is.null(filterProfile)) {
                                 fingertipsData <- fingertipsData[(fingertipsData$ProfileID %in% filterProfile &
-                                                                          fingertipsData$IndicatorID %in% IndicatorID)|
+                                                                          fingertipsData$.id %in% IndicatorID)|
                                                                          !(fingertipsData$DomainID %in% filterDomain),]
                         } else {
-                                fingertipsData <- fingertipsData[(fingertipsData$IndicatorID %in% IndicatorID),]
+                                fingertipsData <- fingertipsData[(fingertipsData$.id %in% IndicatorID),]
                         }
                 }
+                fingertipsData <- select(fingertipsData,
+                                         TimePeriod,
+                                         .id,
+                                         V,
+                                         L,
+                                         U,
+                                         AreaCode,
+                                         SexID)
         }
 
 
