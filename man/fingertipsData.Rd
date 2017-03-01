@@ -4,8 +4,8 @@
 \alias{fingertipsData}
 \title{Fingertips data}
 \usage{
-fingertipsData(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL,
-  AreaTypeID = 102, ParentCode = NULL)
+fingertipsData(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
+  ProfileID = NULL, AreaTypeID = 102, ParentCode = NULL)
 }
 \value{
 A data frame of data extracted from the Fingertips API

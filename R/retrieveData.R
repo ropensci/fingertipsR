@@ -1,11 +1,11 @@
-#' @import jsonlite fromJSON
+#' @importFrom jsonlite fromJSON
 #' @importFrom data.table rbindlist setattr
 #' @import dplyr
 #' @import tidyjson
 
-#retrieveData <- function(dataurl){
 retrieveData <- function(ParentCodes,ProfileIDs,DomainIDs,AreaTypeIDs){
         path <- "http://fingertips.phe.org.uk/api/"
+        fingertipsData <- data.frame()
         for (ProfileID in ProfileIDs) {
                 for (DomainID in DomainIDs) {
                         for (ParentCode in ParentCodes) {
@@ -17,7 +17,6 @@ retrieveData <- function(ParentCodes,ProfileIDs,DomainIDs,AreaTypeIDs){
                                                           "&parent_area_code=",ParentCode)
 
                                         df <- fromJSON(dataurl)
-                                        fingertipsData <- data.frame()
                                         for (i in 1:length(df$Data)) {
                                                 areaCode <- names(df$Data[i])
                                                 timeperiod <- df$Periods
@@ -48,5 +47,6 @@ retrieveData <- function(ParentCodes,ProfileIDs,DomainIDs,AreaTypeIDs){
                         }
                 }
         }
+        fingertipsData <- unique(fingertipsData)
         return(fingertipsData)
 }

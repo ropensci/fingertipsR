@@ -2,7 +2,7 @@
 #'
 #' Outputs a data frame of data from [Fingertips]<http://fingertips.phe.org.uk/>
 #' @return A data frame of data extracted from the Fingertips API
-#' @import jsonlite fromJSON
+#' @importFrom jsonlite fromJSON
 #' @import dplyr
 #' @import tidyjson
 #' @export
@@ -17,8 +17,7 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
 
         if (!is.null(AreaCode)){
                 # check and set AreaTypeID to the correct levels
-                ## call some function to retrieve area type ids for each area code
-                ## return it to variable AreaCodeTypeIDs
+                AreaCodeTypeIDs <- areaLookups(AreaCode)
                 AreaTypeID <- unique(as.character(AreaCodeTypeIDs$AreaTypeID))
                 AreaCodeParentCodes <- getParentCodes(AreaTypeIDs)
                 if (!is.null(ParentCode)) {
@@ -27,10 +26,10 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
                                             "If data is only required for the AreaCode, leave the ParentCode input variable empty. ",
                                             "Use the function areaLookups() to find out available areas."))
                         } else {
-                                ParentCode <- AreacodeParentCodes
+                                ParentCode <- AreaCodeParentCodes
                         }
                 } else {
-                        ParentCode <- AreacodeParentCodes
+                        ParentCode <- AreaCodeParentCodes
                 }
 
         }
@@ -39,8 +38,8 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
         filterDomain <- NULL
         filterProfile <- NULL
         if (!is.null(IndicatorID)){
-                indicatorIDs <- indicators() %>%
-                        filter(IndicatorID %in% indicatorID)
+                indicatorIDs <- indicators()
+                indicatorIDs <- indicatorIDs[indicatorIDs$IndicatorID %in% IndicatorID,]
                 # check domain ID covers the indicators' domains
                 if (!is.null(DomainID)){
                         if (!(DomainID %in% as.numeric(IndicatorIDs$DomainID))){
@@ -51,7 +50,7 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
                                 filterDomain <- as.numeric(IndicatorIDs$DomainID)
                         }
                 } else {
-                        DomainID <- as.numeric(IndicatorIDs$DomainID)
+                        DomainID <- as.numeric(indicatorIDs$DomainID)
                         #filterDomain <- as.numeric(IndicatorIDs$DomainID)
                 }
 
@@ -64,7 +63,7 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
                                 filterProfile <- as.numeric(IndicatorIDs$ProfileID)
                         }
                 } else {
-                        ProfileID <- as.numeric(IndicatorIDs$ProfileID)
+                        ProfileID <- unique(as.numeric(indicatorIDs$ProfileID))
                         #filterProfile <- as.numeric(IndicatorIDs$ProfileID)
                 }
         }
@@ -75,8 +74,8 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
                 ProfileIDs <- ProfileID
                 if (!is.null(DomainID)) {
                         DomainIDs <- DomainID
-                        test <- liveProfiles(profileId = ProfileIDs) %>%
-                                filter(DomainID == DomainIDs)
+                        test <- liveProfiles(profileId = ProfileIDs)
+                        test <- test[test$DomainID %in% DomainIDs,]
                         if (nrow(test) == 0 ){
                                 stop("DomainID(s) do(es) not exist in profile. Use the function liveProfiles() to see which domains are within each profile.")
                         }
@@ -88,10 +87,11 @@ fingertipsData <- function(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
                         }
                 } else {
                         DomainIDs <- liveProfiles(profileId = ProfileID)
+                        ProfileIDs <- unique(as.character(DomainIDs$ProfileID))
                         DomainIDs <- as.character(DomainIDs$DomainID)
                         if (!is.null(ParentCode)) {
                                 ParentCodes <- ParentCode
-                         } else {
+                        } else {
                                 ParentCodes <- getParentCodes(AreaTypeIDs)
                         }
                 }
