@@ -9,19 +9,19 @@
 indicators <- function(profileId = NULL, profileName = NULL, DomainID = NULL, DomainName = NULL) {
         path <- "http://fingertips.phe.org.uk/api/"
         if (!is.null(profileId)){
-                tempdf <- liveProfiles(profileId = profileId)
+                tempdf <- profiles(profileId = profileId)
                 DomainID <- tempdf$DomainID
         } else if (!is.null(profileName)){
-                tempdf <- liveProfiles(profileName = profileName)
+                tempdf <- profiles(profileName = profileName)
                 DomainID <- tempdf$DomainID
         } else if (!is.null(DomainID)) {
-                tempdf <- liveProfiles()
+                tempdf <- profiles()
                 DomainID <- DomainID
         } else if (!is.null(DomainName)) {
-                tempdf <- liveProfiles()
+                tempdf <- profiles()
                 DomainID <- tempdf$DomainID[tempdf$DomainName %in% DomainName]
         } else {
-                tempdf <- liveProfiles()
+                tempdf <- profiles()
                 DomainID <- tempdf$DomainID
         }
 
@@ -33,23 +33,23 @@ indicators <- function(profileId = NULL, profileName = NULL, DomainID = NULL, Do
                                   flatten = TRUE)
                 if (length(dfRaw) != 0){
                         dfRaw <- unlist(dfRaw, recursive = FALSE)
-                        dfIDs <- dfRaw[grepl("IID",names(dfRaw))]
+                        dfIDs <- dfRaw[grepl("IID", names(dfRaw))]
 
-                        dfDescription <- unlist(dfRaw[grepl("Descriptive",names(dfRaw))],
+                        dfDescription <- unlist(dfRaw[grepl("Descriptive", names(dfRaw))],
                                                 recursive = FALSE)
-                        dfDescription <- dfDescription[grepl("NameLong",names(dfDescription))]
+                        dfDescription <- dfDescription[grepl("NameLong", names(dfDescription))]
 
                         dfFinal <- data.frame(IndicatorID = unlist(dfIDs),
                                          IndicatorName = unlist(dfDescription),
                                          DomainID = dom,
                                          row.names=NULL)
-                        df <- rbind(dfFinal,df)
+                        df <- rbind(dfFinal, df)
                 }
 
 
         }
 
-        df <- left_join(df,tempdf, by = c("DomainID" = "DomainID")) %>%
+        df <- left_join(df, tempdf, by = c("DomainID" = "DomainID")) %>%
                 select(IndicatorID, IndicatorName, DomainID, DomainName, ProfileID, ProfileName)
         return(df)
 

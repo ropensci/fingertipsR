@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+
+temp/
+fingertips_test.R
+retrieve_test.R
+fingertips_test.Rd
+retrieve_test.Rd

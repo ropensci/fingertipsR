@@ -5,7 +5,7 @@
 #' @import dplyr
 #' @export
 
-deprivationDecile <- function(AreaTypeID = 102, Year = 2015) {
+deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
         if (!(Year %in% c(2010,2015))) {
                 stop("Year must be either 2010 or 2015")
         } else if (Year == 2010) {
@@ -14,7 +14,7 @@ deprivationDecile <- function(AreaTypeID = 102, Year = 2015) {
                 IndicatorID <- 91872
         }
 
-        if (!(AreaTypeID %in% c(101,102))) {
+        if (!(AreaTypeID %in% c(101, 102))) {
                 stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities) or 102 (Counties and Unitary Authorities).")
         }
 
@@ -22,14 +22,14 @@ deprivationDecile <- function(AreaTypeID = 102, Year = 2015) {
         ProfileID <- 19
 
         ParentCodes <- getParentCodes(AreaTypeID)
-        deprivationDecile <- retrieveData(ParentCodes = ParentCodes,
+        deprivation_decile <- retrieve_data(ParentCodes = ParentCodes,
                                             DomainIDs = DomainID,
                                             ProfileIDs = ProfileID,
                                             AreaTypeIDs = AreaTypeID) %>%
                 filter(.id == IndicatorID) %>%
-                mutate(decile = ntile(V,10)) %>%
+                mutate(decile = 11 - ntile(V,10)) %>%
                 select(AreaCode,decile)
 
-        return(deprivationDecile)
+        return(deprivation_decile)
 
 }

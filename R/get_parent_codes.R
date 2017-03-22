@@ -1,9 +1,9 @@
 #' @importFrom jsonlite fromJSON
 #' @import dplyr
 
-getParentCodes <- function(AreaTypeID) {
+get_parent_codes <- function(AreaTypeID) {
         path <- "http://fingertips.phe.org.uk/api/"
-        pcodes <- areaTypes() %>%
+        pcodes <- area_types() %>%
                 filter(AreaID %in% AreaTypeID)
         pcodes <- unique(pcodes$ParentAreaID)
         ParentCodes <- data.frame()
@@ -24,11 +24,11 @@ getParentCodes <- function(AreaTypeID) {
         ParentCodes <- fromJSON(paste0(path,
                                        "areas/by_area_code?area_codes=",
                                        paste(ParentCodes,collapse = "%2C")))
-        smallestGroup <- filter(ParentCodes,!is.na(AreaTypeId)) %>%
+        smallestGroup <- filter(ParentCodes, !is.na(AreaTypeId)) %>%
                 group_by(AreaTypeId) %>%
                 summarise(count = n()) %>%
                 filter(count == min(count)) %>%
                 slice(1)
-        ParentCodes <- filter(ParentCodes,AreaTypeId %in% smallestGroup$AreaTypeId)
+        ParentCodes <- filter(ParentCodes, AreaTypeId %in% smallestGroup$AreaTypeId)
         ParentCodes <- as.character(ParentCodes$Code)
 }

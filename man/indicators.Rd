@@ -13,4 +13,3 @@ A data frame of indicators within a profile or domain.
 \description{
 Outputs a data frame of indicators within a profile or domain
 }
-

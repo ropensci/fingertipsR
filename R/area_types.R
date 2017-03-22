@@ -6,20 +6,20 @@
 #' @import tidyjson
 #' @export
 
-areaTypes <- function(){
+area_types <- function(){
         path <- "http://fingertips.phe.org.uk/api/"
-        areaTypes <- fromJSON(paste0(path,
+        area_types <- fromJSON(paste0(path,
                                      "area_types"))
-        areaTypes <- areaTypes[areaTypes$IsSearchable==TRUE,c("Id","Name")]
-        names(areaTypes) <- c("AreaID","AreaName")
+        area_types <- area_types[area_types$IsSearchable==TRUE,c("Id","Name")]
+        names(area_types) <- c("AreaID","AreaName")
 
         parentAreas <- paste0(path,"area_types/parent_area_types")  %>%
-                gather_array %>%                                     # stack the users
+                gather_array %>%
                 spread_values(Id = jstring("Id"),
                               Name = jstring("Name"),
-                              Short = jstring("Short"))  %>%          # extract the user name
+                              Short = jstring("Short"))  %>%
                 enter_object("ParentAreaTypes") %>%
-                gather_array  %>%       # stack the purchases
+                gather_array  %>%
                 spread_values(ParentAreaID = jstring("Id"),
                               ParentAreaName = jstring("Name")) %>%
                 select(Id,ParentAreaID,ParentAreaName) %>%
@@ -28,6 +28,6 @@ areaTypes <- function(){
                        ParentAreaID = as.numeric(ParentAreaID)) %>%
                 data.frame()
 
-        areaTypes <- left_join(areaTypes, parentAreas, by = c("AreaID" = "AreaID"))
-        return(areaTypes)
+        area_types <- left_join(area_types, parentAreas, by = c("AreaID" = "AreaID"))
+        return(area_types)
 }
