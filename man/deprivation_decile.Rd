@@ -2,13 +2,34 @@
 % Please edit documentation in R/deprivation_decile.R
 \name{deprivation_decile}
 \alias{deprivation_decile}
-\title{Get deprivation deciles}
+\title{Deprivation deciles}
 \usage{
 deprivation_decile(AreaTypeID = 102, Year = 2015)
+}
+\arguments{
+\item{AreaTypeID}{Numeric value, limited to either 102 (counties and unitary
+authorities) or 101 (local authority districts and unitary authorities); default is 102}
+
+\item{Year}{Numeric value, representing the year of IMD relsease to be applied, limited to either 2010 or 2015; default is 2015}
 }
 \value{
 A lookup table providing deprivation decile and area code
 }
 \description{
-Outputs a data frame allocating deprivation decile to  area code
+Outputs a data frame allocating deprivation decile to  area code base on the Indices of Multiple Deprivation (IMD) produced by CIPFA
+}
+\examples{
+# Return 2015 deciles for counties and unitary authorities
+deprivation_decile()
+
+# Return 2010 deciles for local authority districts and unitary authorities
+deprivation_decile(101, 2010)
+}
+\seealso{
+\code{\link{indicators}} for indicator lookups,
+  \code{\link{profiles}} for profile lookups and
+  \code{\link{area_types}} for area types and their parent mappings
+
+Other lookup functions: \code{\link{area_types}},
+  \code{\link{indicators}}, \code{\link{profiles}}
 }

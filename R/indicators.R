@@ -1,18 +1,34 @@
-#' Live profiles
+#' Profiles
 #'
 #' Outputs a data frame of indicators within a profile or domain
 #' @return A data frame of indicators within a profile or domain.
+#' @param ProfileID Numeric vector, id of profiles of interest
+#' @param ProfileName Character vector, names of profiles of interest
+#' @param DomainID Numeric vector, id of domains of interest
+#' @param DomainName Character vector, names of domains of interest
+#' @examples # Returns a complete data frame of indicators and their domains and profiles
+#' @examples indicators()
+#'
+#' @examples # Returns a data frame of all of the indicators in the Public Health Outcomes Framework
+#' @examples indicators(ProfileName = "Public Health Outcomes Framework")
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
+#' @family lookup functions
+#' @seealso \code{\link{area_types}} for area type  and their parent mappings,
+#'   \code{\link{profiles}} for profile lookups and
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups
 #' @export
 
-indicators <- function(profileId = NULL, profileName = NULL, DomainID = NULL, DomainName = NULL) {
+indicators <- function(ProfileID = NULL,
+                       ProfileName = NULL,
+                       DomainID = NULL,
+                       DomainName = NULL) {
         path <- "http://fingertips.phe.org.uk/api/"
-        if (!is.null(profileId)){
-                tempdf <- profiles(profileId = profileId)
+        if (!is.null(ProfileID)){
+                tempdf <- profiles(ProfileID = ProfileID)
                 DomainID <- tempdf$DomainID
-        } else if (!is.null(profileName)){
-                tempdf <- profiles(profileName = profileName)
+        } else if (!is.null(ProfileName)){
+                tempdf <- profiles(ProfileName = ProfileName)
                 DomainID <- tempdf$DomainID
         } else if (!is.null(DomainID)) {
                 tempdf <- profiles()

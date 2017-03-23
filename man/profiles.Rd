@@ -4,11 +4,34 @@
 \alias{profiles}
 \title{Live profiles}
 \usage{
-profiles(profileId = NULL, profileName = NULL)
+profiles(ProfileID = NULL, ProfileName = NULL)
+}
+\arguments{
+\item{ProfileID}{Numeric vector, id of profiles of interest}
+
+\item{ProfileName}{Character vector, names of profiles of interest}
 }
 \value{
-A data frame of live profile ids and names along with their domain names and ids.
+A data frame of live profile ids and names along with their domain
+  names and ids.
 }
 \description{
-Outputs a data frame of live profiles that data are available for in [Fingertips]<http://fingertips.phe.org.uk/>
+Outputs a data frame of live profiles that data are available for in
+Fingertips \url{http://fingertips.phe.org.uk/}
+}
+\examples{
+# Returns a complete data frame of domains and their profiles
+profiles()
+
+# Returns a data frame of all of the indicators in the Public Health Outcomes Framework
+profiles(ProfileName = "Public Health Outcomes Framework")
+}
+\seealso{
+\code{\link{area_types}} for area type  and their parent mappings,
+  \code{\link{indicators}} for indicator lookups and
+  \code{\link{deprivation_decile}} for deprivation decile lookups
+
+Other lookup functions: \code{\link{area_types}},
+  \code{\link{deprivation_decile}},
+  \code{\link{indicators}}
 }

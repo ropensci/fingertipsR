@@ -4,11 +4,38 @@
 \alias{area_types}
 \title{Area types}
 \usage{
-area_types()
+area_types(AreaTypeName = NULL, AreaTypeID = NULL)
+}
+\arguments{
+\item{AreaTypeName}{Character vector, description of the area type; default
+is NULL}
+
+\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
+default is NULL}
 }
 \value{
 A data frame of area type ids and their descriptions
 }
 \description{
-Outputs a data frame of area type ids and their descriptions
+Outputs a data frame of area type ids, their descriptions, and how they map
+to parent area types
+}
+\examples{
+# Returns a data frame with all levels of area and how they map to one another
+area_types()
+
+# Returns a data frame of county and unitary authority mappings
+area_types("counties")
+
+# Returns a table of both counties, district and unitary authorities and their respective mappings
+areas <- c("counties","district")
+area_types(areas)
+}
+\seealso{
+\code{\link{indicators}} for indicator lookups,
+  \code{\link{profiles}} for profile lookups and
+  \code{\link{deprivation_decile}} for deprivation decile lookups
+
+Other lookup functions: \code{\link{deprivation_decile}},
+  \code{\link{indicators}}, \code{\link{profiles}}
 }

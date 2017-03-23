@@ -2,14 +2,38 @@
 % Please edit documentation in R/indicators.R
 \name{indicators}
 \alias{indicators}
-\title{Live profiles}
+\title{Profiles}
 \usage{
-indicators(profileId = NULL, profileName = NULL, DomainID = NULL,
+indicators(ProfileID = NULL, ProfileName = NULL, DomainID = NULL,
   DomainName = NULL)
+}
+\arguments{
+\item{ProfileID}{Numeric vector, id of profiles of interest}
+
+\item{ProfileName}{Character vector, names of profiles of interest}
+
+\item{DomainID}{Numeric vector, id of domains of interest}
+
+\item{DomainName}{Character vector, names of domains of interest}
 }
 \value{
 A data frame of indicators within a profile or domain.
 }
 \description{
 Outputs a data frame of indicators within a profile or domain
+}
+\examples{
+# Returns a complete data frame of indicators and their domains and profiles
+indicators()
+
+# Returns a data frame of all of the indicators in the Public Health Outcomes Framework
+indicators(ProfileName = "Public Health Outcomes Framework")
+}
+\seealso{
+\code{\link{area_types}} for area type  and their parent mappings,
+  \code{\link{profiles}} for profile lookups and
+  \code{\link{deprivation_decile}} for deprivation decile lookups
+
+Other lookup functions: \code{\link{area_types}},
+  \code{\link{deprivation_decile}}, \code{\link{profiles}}
 }
