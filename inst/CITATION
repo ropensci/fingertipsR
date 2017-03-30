@@ -1,0 +1,7 @@
+citHeader("To cite fingertips in publications use:")
+
+citEntry(entry = "Misc",
+         title        = "Public Health data made available with {fingertips}",
+         institution  = "Public Health England",
+         url          = "https://fingertips.phe.org.uk/"
+)

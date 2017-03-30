@@ -65,29 +65,29 @@ The two indicators we are interested in from this table are:
 
 ## AreaTypeID
 
-We can work out what the AreaTypeID codes we are interested in using the function `area_types()`. We've decided that we want to produce the graph at County and Unitary Authority level. From the section [Where to start] we need codes for AreaTypeID and ParentAreaTypeID.
+We can work out what the *AreaTypeID* codes we are interested in using the function `area_types()`. We've decided that we want to produce the graph at County and Unitary Authority level. From the section [Where to start] we need codes for *AreaTypeID* and *ParentAreaTypeID.*
 
 ```{r area type}
 areaTypes <- area_types()
-knitr::kable(areaTypes)
+DT::datatable(areaTypes, filter = "top", rownames = FALSE)
 
 ```
 
-The table shows that the AreaID for County and Unitary Authority level is 102. The third column, *ParentAreaID*, shows the IDs of the area types that these map to. In the case of County and Unitary Authorities, these are:
+The table shows that the *AreaID* for County and Unitary Authority level is 102. The third column, *ParentAreaID*, shows the IDs of the area types that these map to. In the case of County and Unitary Authorities, these are:
 
 ```{r dist, echo=FALSE}
 knitr::kable(areaTypes[areaTypes$AreaID == 102, c("ParentAreaID","ParentAreaName")], row.names = FALSE)
 ```
 
-ParentAreaID is 6 by default for the `fingertips_data()` function, so we can stick with that.
+*ParentAreaID* is 6 by default for the `fingertips_data()` function, so we can stick with that.
 
 ## Deprivation
 
-We want to plot life expectancy against deprivation information. The package has a `deprivation_deciles()` function that allows us to return this information. This is populated from the CIPFA Indices of Multiple Deprivation (IMD). Note, there is only information for upper and lower tier local authorities (AreaTypeID = 102 and 101 respectively). IMD has only been produced for the years 2010 and 2015.
+We want to plot life expectancy against deprivation information. The package has a `deprivation_deciles()` function that allows us to return this information. This is populated from the CIPFA Indices of Multiple Deprivation (IMD). Note, there is only information for upper and lower tier local authorities (*AreaTypeID* = 102 and 101 respectively). IMD has only been produced for the years 2010 and 2015.
 
 ```{r deprivation}
 dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
-knitr::kable(head((dep), 10))
+DT::datatable(dep, filter = "top", rownames = FALSE)
 ```
 
 ## Extracting the data
@@ -98,7 +98,7 @@ Finally, we can use the `fingertips_data()` function with the inputs we have det
 indicators <- c(90362, 90366)
 data <- fingertips_test(IndicatorID = indicators,
                         AreaTypeID = 102)
-str(data)
+head(data)
 ```
 
 The `fingertips_data()` function contains 21 variables. For this exercise, we are only interested in a few of them:
@@ -118,7 +118,7 @@ data <- merge(data, dep, by.x = "AreaCode", by.y = "AreaCode", all.x = TRUE)
 
 # remove NA values
 data <- data[complete.cases(data),]
-knitr::kable(head(data,10))
+DT::datatable(data, filter = "top", rownames = FALSE)
 ```
 
 ## Plotting outputs
@@ -185,7 +185,7 @@ plot(datafemale$IMDscore,
      ylim = range(data$Value))
 lines(predict(lofemalehealthy), col="black", lwd=2)
 lines(predict(lofemalelife), col="black", lwd=2)
-mtext("Life expectancy and healthy life expectancy at birth \nfor upper tier local authorities (2012 - 2014)",
+mtext("Life expectancy and healthy life expectancy at birth \nfor Upper Tier Local Authorities (2012 - 2014)",
       outer = TRUE, 
       cex = 1.4,
       font = 2)

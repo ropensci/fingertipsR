@@ -3,7 +3,7 @@ library(fingertips)
 
 ## ----area type-----------------------------------------------------------
 areaTypes <- area_types()
-knitr::kable(areaTypes)
+DT::datatable(areaTypes, filter = "top", rownames = FALSE)
 
 
 ## ----dist, echo=FALSE----------------------------------------------------
@@ -11,7 +11,7 @@ knitr::kable(areaTypes[areaTypes$AreaID == 102, c("ParentAreaID","ParentAreaName
 
 ## ----deprivation---------------------------------------------------------
 dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
-knitr::kable(head((dep), 10))
+DT::datatable(dep, filter = "top", rownames = FALSE)
 
 ## ----extract-------------------------------------------------------------
 indicators <- c(90362, 90366)
@@ -28,7 +28,7 @@ data <- merge(data, dep, by.x = "AreaCode", by.y = "AreaCode", all.x = TRUE)
 
 # remove NA values
 data <- data[complete.cases(data),]
-knitr::kable(head(data,10))
+DT::datatable(data, filter = "top", rownames = FALSE)
 
 ## ----plot, fig.width=8, fig.height=5-------------------------------------
 data$Colour <- ifelse(data$IndicatorID == 90366, "#88c857", "#128c4a")
@@ -90,7 +90,7 @@ plot(datafemale$IMDscore,
      ylim = range(data$Value))
 lines(predict(lofemalehealthy), col="black", lwd=2)
 lines(predict(lofemalelife), col="black", lwd=2)
-mtext("Life expectancy and healthy life expectancy at birth \nfor upper tier local authorities (2012 - 2014)",
+mtext("Life expectancy and healthy life expectancy at birth \nfor Upper Tier Local Authorities (2012 - 2014)",
       outer = TRUE, 
       cex = 1.4,
       font = 2)
