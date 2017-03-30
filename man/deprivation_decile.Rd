@@ -27,9 +27,11 @@ deprivation_decile(101, 2010)
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
-  \code{\link{profiles}} for profile lookups and
+  \code{\link{profiles}} for profile lookups
+  \code{\link{indicator_metadata}} for the metadata for each indicator and
   \code{\link{area_types}} for area types and their parent mappings
 
 Other lookup functions: \code{\link{area_types}},
+  \code{\link{indicator_metadata}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

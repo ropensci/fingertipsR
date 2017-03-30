@@ -14,7 +14,8 @@
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
-#'   \code{\link{profiles}} for profile lookups and
+#'   \code{\link{profiles}} for profile lookups
+#'   \code{\link{indicator_metadata}} for the metadata for each indicator and
 #'   \code{\link{area_types}} for area types and their parent mappings
 
 deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
@@ -25,23 +26,17 @@ deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
         } else if (Year == 2015) {
                 IndicatorID <- 91872
         }
-
-        if (!(AreaTypeID %in% c(101, 102))) {
+        if (AreaTypeID == 101) {
+                AreaFilter <- "District & UA"
+        } else if (AreaTypeID == 102) {
+                AreaFilter <- "County & UA"
+        } else {
                 stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities) or 102 (Counties and Unitary Authorities).")
         }
-
-        DomainID <- 1938132983
-        ProfileID <- 19
-
-        ParentCodes <- get_parent_codes(AreaTypeID)
-        deprivation_decile <- retrieve_data(ParentCodes = ParentCodes,
-                                            DomainIDs = DomainID,
-                                            ProfileIDs = ProfileID,
-                                            AreaTypeIDs = AreaTypeID) %>%
-                filter(.id == IndicatorID) %>%
-                mutate(decile = 11 - ntile(V,10)) %>%
-                select(AreaCode,decile)
-
+        deprivation_decile <- fingertips_test(IndicatorID = IndicatorID, AreaTypeID = AreaTypeID) %>%
+                filter(AreaType == AreaFilter) %>%
+                select(AreaCode, Value) %>%
+                rename(IMDscore = Value) %>%
+                mutate(decile = 11 - ntile(IMDscore, 10))
         return(deprivation_decile)
-
 }

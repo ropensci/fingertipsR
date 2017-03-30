@@ -27,12 +27,14 @@
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups
 
 area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
+        if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
+                warning("AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
+        }
         path <- "http://fingertips.phe.org.uk/api/"
         area_types <- fromJSON(paste0(path,
                                      "area_types"))
         area_types <- area_types[area_types$IsSearchable==TRUE,c("Id","Name")]
         names(area_types) <- c("AreaID","AreaName")
-
         parentAreas <- paste0(path,"area_types/parent_area_types")  %>%
                 gather_array %>%
                 spread_values(Id = jstring("Id"),
@@ -47,7 +49,6 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
                 mutate(AreaID = as.numeric(AreaID),
                        ParentAreaID = as.numeric(ParentAreaID)) %>%
                 data.frame()
-
         area_types <- left_join(area_types, parentAreas, by = c("AreaID" = "AreaID"))
         if (!is.null(AreaTypeName)) {
                 AreaTypeName <- paste(AreaTypeName, collapse = "|")

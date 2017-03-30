@@ -37,5 +37,6 @@ area_types(areas)
   \code{\link{deprivation_decile}} for deprivation decile lookups
 
 Other lookup functions: \code{\link{deprivation_decile}},
+  \code{\link{indicator_metadata}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

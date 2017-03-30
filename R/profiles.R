@@ -15,7 +15,8 @@
 #' @import tidyjson
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
-#'   \code{\link{indicators}} for indicator lookups and
+#'   \code{\link{indicators}} for indicator lookups,
+#'   \code{\link{indicator_metadata}} for indicator metadata and
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups
 #' @export
 
@@ -31,12 +32,12 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
         if (!is.null(ProfileID)) {
                 profiles <- filter(profiles, ID %in% ProfileID)
                 if (nrow(profiles) == 0){
-                        stop("Profile IDs are not in the list of currently live profile IDs. Re-run the function without any inputs to see all possible IDs.")
+                        warning("ProfileID(s) are not in the list of profile IDs. Re-run the function without any inputs to see all possible IDs.")
                 }
         } else if (!is.null(ProfileName)) {
                 profiles <- filter(profiles, Name %in% ProfileName)
                 if (nrow(profiles) == 0){
-                        stop("Profile names are not in the list of currently live profile names. Re-run the function without any inputs to see all possible names.")
+                        warning("Profile names are not in the list of profile names. Re-run the function without any inputs to see all possible names.")
                 }
         }
         groupDescriptions <- data.frame()
@@ -51,6 +52,5 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
         profiles <- rename(profiles,ProfileID = ID,ProfileName = Name, DomainID = groupid) %>%
                 left_join(groupDescriptions, by = c("DomainID" = "Id")) %>%
                 rename(DomainName = Name)
-        closeAllConnections()
         return(profiles)
 }

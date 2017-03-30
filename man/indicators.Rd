@@ -31,9 +31,11 @@ indicators(ProfileName = "Public Health Outcomes Framework")
 }
 \seealso{
 \code{\link{area_types}} for area type  and their parent mappings,
+  \code{\link{indicator_metadata}} for indicator metadata and
   \code{\link{profiles}} for profile lookups and
   \code{\link{deprivation_decile}} for deprivation decile lookups
 
 Other lookup functions: \code{\link{area_types}},
-  \code{\link{deprivation_decile}}, \code{\link{profiles}}
+  \code{\link{deprivation_decile}},
+  \code{\link{indicator_metadata}}, \code{\link{profiles}}
 }

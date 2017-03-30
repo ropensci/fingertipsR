@@ -15,3 +15,7 @@ Imports:
     dplyr,
     jsonlite,
     tidyjson
+Suggests: knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
