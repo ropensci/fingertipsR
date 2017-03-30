@@ -10,10 +10,12 @@ Download this repository from GitHub and either build from source or do:
 	install(source)
 
 ## With devtools
+
 	devtools::install_github("username/fingertips")
 	
 # Use
 Please see the vignette for information on use.
+
 	vignette("lifeExpectancy")
 
 .
