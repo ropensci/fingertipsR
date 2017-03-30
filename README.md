@@ -15,3 +15,5 @@ Download this repository from GitHub and either build from source or do:
 # Use
 Please see the vignette for information on use.
 	vignette("lifeExpectancy")
+
+.
