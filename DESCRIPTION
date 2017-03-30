@@ -1,21 +1,23 @@
 Package: fingertips
 Type: Package
-Title: Fingertips data for public health
 Version: 0.0.0.9000
-Authors@R: person("Sebastian", "Fox", email = "sebastian.fox@phe.gov.uk",
-                  role = c("aut", "cre"))
-Description: Fingertips (fingertips.phe.org.uk) contains data for many indicators of public health.
-    This package enables easier access to the underlying data making use of the API.
-License: file LICENSE
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 6.0.1
+Title: Fingertips data for public health
+Description: Fingertips (fingertips.phe.org.uk) contains data for many indicators of public health
+Authors@R: person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre"))
+URL: https://fingertips.phe.org.uk
+BugReports: https://gitlab.phe.gov.uk/sebastian.fox/fingertips/issues
 Imports:
     data.table,
     dplyr,
     jsonlite,
     tidyjson
-Suggests: knitr,
+Suggests:
+    knitr,
     rmarkdown,
-    testthat
+    testthat,
+    ggplot2
 VignetteBuilder: knitr
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1

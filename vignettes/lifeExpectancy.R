@@ -1,5 +1,6 @@
-## ----packages------------------------------------------------------------
+## ----packages, echo=FALSE------------------------------------------------
 library(fingertips)
+library(ggplot2)
 
 ## ----area type-----------------------------------------------------------
 areaTypes <- area_types()
@@ -17,7 +18,7 @@ DT::datatable(dep, filter = "top", rownames = FALSE)
 indicators <- c(90362, 90366)
 data <- fingertips_test(IndicatorID = indicators,
                         AreaTypeID = 102)
-str(data)
+head(data)
 
 ## ----refine variables----------------------------------------------------
 cols <- c("IndicatorID", "AreaCode", "Sex", "Timeperiod", "Value")
@@ -31,68 +32,19 @@ data <- data[complete.cases(data),]
 DT::datatable(data, filter = "top", rownames = FALSE)
 
 ## ----plot, fig.width=8, fig.height=5-------------------------------------
-data$Colour <- ifelse(data$IndicatorID == 90366, "#88c857", "#128c4a")
-datamale <- data[data$Sex == "Male",]
-datafemale <- data[data$Sex == "Female",]
-
-lomalehealthy <- smooth.spline(datamale[datamale$IndicatorID == 90362, "IMDscore"], 
-                               datamale[datamale$IndicatorID == 90362, "Value"], 
-                               spar=0.8)
-lomalelife <- smooth.spline(datamale[datamale$IndicatorID == 90366, "IMDscore"], 
-                            datamale[datamale$IndicatorID == 90366, "Value"],
-                            spar=0.8)
-
-lofemalehealthy <- smooth.spline(datafemale[datafemale$IndicatorID == 90362, "IMDscore"], 
-                               datafemale[datafemale$IndicatorID == 90362, "Value"], 
-                               spar=0.8)
-lofemalelife <- smooth.spline(datafemale[datafemale$IndicatorID == 90366, "IMDscore"], 
-                            datafemale[datafemale$IndicatorID == 90366, "Value"],
-                            spar=0.8)
-
-par(mfrow = c(1, 2),
-    oma=c(1, 1, 2.5, 1))
-plot(datamale$IMDscore, 
-     datamale$Value, 
-     col = datamale$Colour, 
-     cex = 0.8,
-     pch = 16, 
-     xlab = "IMD deprivation",
-     ylab = "Age",
-     font.main = 1,
-     cex.main = 0.85,
-     main = "Male",
-     xlim = rev(range(data$IMDscore)),
-     ylim = range(data$Value))
-lines(lomalehealthy,
-      col="black",
-      lwd=2)
-lines(lomalelife,
-      col="black",
-      lwd=2)
-legend(x = 43, 
-       y = 86, 
-       legend = c("Healthy life expectancy","Life expectancy"), 
-       col = c("#128c4a", "#88c857"), 
-       pch = 16,
-       cex = 0.6)
-
-plot(datafemale$IMDscore, 
-     datafemale$Value, 
-     col = datafemale$Colour, 
-     cex = 0.8,
-     pch = 16, 
-     xlab = "IMD deprivation",
-     ylab = "Age",
-     font.main = 1,
-     cex.main = 0.85,
-     main = "Female",
-     xlim = rev(range(data$IMDscore)),
-     ylim = range(data$Value))
-lines(predict(lofemalehealthy), col="black", lwd=2)
-lines(predict(lofemalelife), col="black", lwd=2)
-mtext("Life expectancy and healthy life expectancy at birth \nfor Upper Tier Local Authorities (2012 - 2014)",
-      outer = TRUE, 
-      cex = 1.4,
-      font = 2)
-
+p <- ggplot(data, aes(x = IMDscore, y = Value, col = factor(IndicatorID)))
+p <- p + 
+        geom_point() +
+        geom_smooth(se = FALSE, method = "loess") +
+        facet_wrap(~ Sex) +
+        scale_colour_manual(name = "Indicator",
+                            breaks = c("90366", "90362"),
+                            labels = c("Life expectancy", "Healthy life expectancy"),
+                            values = c("#128c4a", "#88c857")) +
+        scale_x_reverse() + 
+        labs(x = "IMD deprivation",
+             y = "Age",
+             title = "Life expectancy and healthy life expectancy at birth \nfor Upper Tier Local Authorities (2012 - 2014)") +
+        theme_bw()
+print(p)
 
