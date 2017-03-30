@@ -2,7 +2,8 @@ Package: fingertips
 Type: Package
 Version: 0.0.0.9000
 Title: Fingertips data for public health
-Description: Fingertips (fingertips.phe.org.uk) contains data for many indicators of public health
+Description: Fingertips (fingertips.phe.org.uk) contains data for many indicators of public health. 
+    This package enables easier access to the underlying data making use of the API
 Authors@R: person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre"))
 URL: https://fingertips.phe.org.uk
 BugReports: https://gitlab.phe.gov.uk/sebastian.fox/fingertips/issues
