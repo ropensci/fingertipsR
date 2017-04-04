@@ -30,8 +30,10 @@ deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
                 AreaFilter <- "District & UA"
         } else if (AreaTypeID == 102) {
                 AreaFilter <- "County & UA"
+        } else if (AreaTypeID == 7) {
+                AreaFilter <- "GP"
         } else {
-                stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities) or 102 (Counties and Unitary Authorities).")
+                stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities), 102 (Counties and Unitary Authorities) or 7 (General Practice).")
         }
         deprivation_decile <- fingertips_test(IndicatorID = IndicatorID, AreaTypeID = AreaTypeID) %>%
                 filter(AreaType == AreaFilter) %>%

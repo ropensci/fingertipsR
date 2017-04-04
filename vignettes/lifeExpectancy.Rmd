@@ -9,9 +9,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette attempts to document a common workflow a user might follow when using the `fingertips` package.
+This worked example attempts to document a common workflow a user might follow when using the `fingertips` package.
 
-Suppose you want to plot life expectancy and healthy life expectancy by deprivation for a given year of data that fingertips contains - you will begin by wondering *where to start*.
+Suppose you want to plot healthy life expectancy and life expectancy by deprivation for a given year of data that fingertips contains - you will begin by wondering *where to start*.
 
 ## Where to start
 
@@ -22,7 +22,7 @@ There is one function in the `fingertips` package that extracts data from the Fi
 * DomainID
 * ProfileID
 * AreaTypeID (this defaults to 102; County and Unitary Authority)
-* ParentAreaTypeID (this defaults to 6; Government Office Rregion)
+* ParentAreaTypeID (this defaults to 6; Government Office Region)
 
 One of *IndicatorID*, *DomainID* or *ProfileID* must be complete. *AreaCode* needs completion if you are extracting data for a particular area or group of areas only. *AreaTypeID* determines the geography to extract the data for. In this case we want County and Unitary Authority level. *ParentAreaTypeID* requires an area type code that the *AreaTypeID* maps to.
 
@@ -99,10 +99,14 @@ Finally, we can use the `fingertips_data()` function with the inputs we have det
 indicators <- c(90362, 90366)
 data <- fingertips_test(IndicatorID = indicators,
                         AreaTypeID = 102)
-head(data)
+
+pander::pandoc.table(tail(data), 
+                     style="rmarkdown",
+                     split.tables = 90, 
+                     keep.line.breaks = TRUE)
 ```
 
-The `fingertips_data()` function contains 21 variables. For this exercise, we are only interested in a few of them:
+The data frame returned by `fingertips_data()` contains 21 variables.  For this exercise, we are only interested in a few of them:
 
 * IndicatorID
 * AreaCode

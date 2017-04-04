@@ -32,12 +32,12 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
         if (!is.null(ProfileID)) {
                 profiles <- filter(profiles, ID %in% ProfileID)
                 if (nrow(profiles) == 0){
-                        warning("ProfileID(s) are not in the list of profile IDs. Re-run the function without any inputs to see all possible IDs.")
+                        stop("ProfileID(s) are not in the list of profile IDs. Re-run the function without any inputs to see all possible IDs.")
                 }
         } else if (!is.null(ProfileName)) {
                 profiles <- filter(profiles, Name %in% ProfileName)
                 if (nrow(profiles) == 0){
-                        warning("Profile names are not in the list of profile names. Re-run the function without any inputs to see all possible names.")
+                        stop("Profile names are not in the list of profile names. Re-run the function without any inputs to see all possible names.")
                 }
         }
         groupDescriptions <- data.frame()

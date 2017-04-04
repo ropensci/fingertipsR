@@ -33,7 +33,7 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         path <- "http://fingertips.phe.org.uk/api/"
         area_types <- fromJSON(paste0(path,
                                      "area_types"))
-        area_types <- area_types[area_types$IsSearchable==TRUE,c("Id","Name")]
+        area_types <- area_types[,c("Id","Name")]
         names(area_types) <- c("AreaID","AreaName")
         parentAreas <- paste0(path,"area_types/parent_area_types")  %>%
                 gather_array %>%
@@ -59,5 +59,5 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
                         area_types <- area_types[area_types$AreaID %in% AreaTypeID,]
                 }
         }
-        return(area_types)
+        return(area_types[complete.cases(area_types),])
 }
