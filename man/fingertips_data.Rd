@@ -5,11 +5,35 @@
 \title{Fingertips data}
 \usage{
 fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
-  ProfileID = NULL, AreaTypeID = 102, ParentCode = NULL)
+  ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL)
+}
+\arguments{
+\item{IndicatorID}{Numeric vector, id of the indicator of interest}
+
+\item{AreaCode}{Character vector, ONS area code of area of interest}
+
+\item{DomainID}{Numeric vector, id of domains of interest}
+
+\item{ProfileID}{Numeric vector, id of profiles of interest}
+
+\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
+default is NULL}
+
+\item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
+extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function}
 }
 \value{
 A data frame of data extracted from the Fingertips API
 }
 \description{
-Outputs a data frame of data from [Fingertips]<http://fingertips.phe.org.uk/>
+Outputs a data frame of data from
+\href{http://fingertips.phe.org.uk/}{Fingertips}
+}
+\examples{
+# Returns data for the two selected domains at county and unitary authority geography
+doms <- c(1000049,1938132983)
+fingdata <- fingertips_data(DomainID = doms)
+
+# Returns data at local authority district geography for the indicator with the id 22401
+fingdata <- fingertips_data(22401, AreaTypeID = 101)
 }

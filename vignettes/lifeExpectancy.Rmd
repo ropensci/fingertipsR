@@ -97,7 +97,7 @@ Finally, we can use the `fingertips_data()` function with the inputs we have det
 
 ```{r extract}
 indicators <- c(90362, 90366)
-data <- fingertips_test(IndicatorID = indicators,
+data <- fingertips_data(IndicatorID = indicators,
                         AreaTypeID = 102)
 
 pander::pandoc.table(tail(data), 

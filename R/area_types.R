@@ -20,6 +20,7 @@
 #' @examples area_types(areas)
 #' @import dplyr
 #' @import tidyjson
+#' @importFrom stats complete.cases
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,

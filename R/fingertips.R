@@ -11,5 +11,7 @@
 #'   functions allow the user to extract data from the Fingertips API.
 #'
 #' @docType package
-#' @name fingertips
+#' @name fingertipsR
 NULL
+## quiets concerns of R CMD check re: the .'s that appear in pipelines
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))

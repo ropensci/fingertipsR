@@ -1,216 +1,113 @@
 #' Fingertips data
 #'
-#' Outputs a data frame of data from [Fingertips]<http://fingertips.phe.org.uk/>
+#' Outputs a data frame of data from
+#' \href{http://fingertips.phe.org.uk/}{Fingertips}
 #' @return A data frame of data extracted from the Fingertips API
+#' @inheritParams area_types
+#' @inheritParams indicators
+#' @param IndicatorID Numeric vector, id of the indicator of interest
+#' @param AreaCode Character vector, ONS area code of area of interest
+#' @param ParentAreaTypeID Numeric vector, the comparator area type for the data
+#'   extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function
+#' @examples # Returns data for the two selected domains at county and unitary authority geography
+#' @examples doms <- c(1000049,1938132983)
+#' @examples fingdata <- fingertips_data(DomainID = doms)
+#'
+#' @examples # Returns data at local authority district geography for the indicator with the id 22401
+#' @examples fingdata <- fingertips_data(22401, AreaTypeID = 101)
 #' @importFrom jsonlite fromJSON
-#' @import dplyr
-#' @import tidyjson
+#' @family data extract functions
 #' @export
 
 fingertips_data <- function(IndicatorID = NULL,
-                           AreaCode = NULL,
-                           DomainID = NULL,
-                           ProfileID = NULL,
-                           AreaTypeID = 102,
-                           ParentCode = NULL) {
+                            AreaCode = NULL,
+                            DomainID = NULL,
+                            ProfileID = NULL,
+                            AreaTypeID = 102,
+                            ParentAreaTypeID = NULL) {
 
-        # check on area details before calling data
-        if (is.null(AreaTypeID)) {
-                stop("AreaTypeID must have a value. Use function area_types() to see what codes can be used.")
-        }
-        AreaTypeIDs <- AreaTypeID
-
-        if (!is.null(AreaCode)) {
-                # check and set AreaTypeID to the correct levels
-                AreaCodeTypeIDs <- area_lookup(AreaCode)
-                AreaTypeIDs <- unique(as.numeric(AreaCodeTypeIDs$AreaTypeId))
-                AreaCodeParentCodes <- get_parent_codes(AreaTypeIDs)
-                if (!is.null(ParentCode)) {
-                        if (!(ParentCode %in% AreaCodeParentCodes)) {
-                                stop(paste0("The AreaCode requested are not covered by the entered ParentCode. ",
-                                            "If data is only required for the AreaCode, leave the ParentCode input variable empty. ",
-                                            "Use the function area_lookup() to find out available areas."))
-                        } else {
-                                ParentCode <- AreaCodeParentCodes
-                        }
-                } else {
-                        ParentCode <- AreaCodeParentCodes
-                }
-
-        }
-
-        # check on indicator details before calling data
-        filterDomain <- NULL
-        filterProfile <- NULL
-        if (!is.null(IndicatorID)){
-
-                # check domain ID covers the indicators' domains
-                if (!is.null(DomainID)){
-                        indicatorIDs <- indicators(DomainID = DomainID)
-                        indicatorIDs <- indicatorIDs[indicatorIDs$IndicatorID %in% IndicatorID,]
-                        if (!(DomainID %in% as.numeric(indicatorIDs$DomainID))){
-                                stop("DomainID does not include the DomainID of the IndicatorID. Use function indicators() to see the domains for each indicator.")
-                        } else {
-                                # set filter for later to filter for single indicator within the domain
-                                # allowing for full domains that don't include the indicator
-                                filterDomain <- as.numeric(indicatorIDs$DomainID)
-                                if (!is.null(ProfileID)){
-                                        if (!(ProfileID %in% as.numeric(indicatorIDs$ProfileID))){
-                                                stop("ProfileID does not include the ProfileID of the IndicatorID. Use function indicators() to see the profiles for each indicator.")
-                                        } else {
-                                                # set filter for later to filter for single indicator within the profile
-                                                # allowing for full profiles that don't include the indicator
-                                                filterProfile <- as.numeric(indicatorIDs$ProfileID)
-                                        }
-                                } else {
-                                        ProfileID <- unique(as.numeric(indicatorIDs$ProfileID))
-                                }
-                        }
-                } else {
-                        if (!is.null(ProfileID)){
-                                indicatorIDs <- indicators(profileId = ProfileID)
-                                indicatorIDs <- indicatorIDs[indicatorIDs$IndicatorID %in% IndicatorID,]
-                                if (!(ProfileID %in% as.numeric(indicatorIDs$ProfileID))){
-                                        stop("ProfileID does not include the ProfileID of the IndicatorID. Use function indicators() to see the profiles for each indicator.")
-                                } else {
-                                        # set filter for later to filter for single indicator within the profile
-                                        # allowing for full profiles that don't include the indicator
-                                        filterProfile <- as.numeric(indicatorIDs$ProfileID)
-                                        DomainID <- as.numeric(indicatorIDs$DomainID)
-                                }
-                        } else {
-                                indicatorIDs <- indicators()
-                                indicatorIDs <- indicatorIDs[indicatorIDs$IndicatorID %in% IndicatorID,]
-                                ProfileID <- unique(as.numeric(indicatorIDs$ProfileID))
-                                DomainID <- as.numeric(indicatorIDs$DomainID)
-                        }
-                }
-        }
-
-        # this part creates the inputs for the retrieve_data function that extracts the data from the API
         path <- "http://fingertips.phe.org.uk/api/"
 
-        if (!is.null(ProfileID)) {
-                ProfileIDs <- ProfileID
-                if (!is.null(DomainID)) {
-                        DomainIDs <- DomainID
-                        test <- profiles(profileId = ProfileIDs)
-                        test <- test[test$DomainID %in% DomainIDs,]
-                        if (nrow(test) == 0 ){
-                                stop("DomainID(s) do(es) not exist in profile. Use the function profiles() to see which domains are within each profile.")
-                        }
-                        if (!is.null(ParentCode)) {
-                                ParentCodes <- ParentCode
-                        } else {
-                                ###Need to check that get_parent_codes can take multiple values
-                                ParentCodes <- get_parent_codes(AreaTypeIDs)
-                        }
-                } else {
-                        DomainIDs <- profiles(profileId = ProfileID)
-                        DomainIDs <- as.character(DomainIDs$DomainID)
-                        if (!is.null(ParentCode)) {
-                                ParentCodes <- ParentCode
-                        } else {
-                                ParentCodes <- get_parent_codes(AreaTypeIDs)
-                        }
+        # ensure there are the correct inputs
+        if (!is.null(IndicatorID)) {
+                IndicatorIDs <- IndicatorID
+                if (!is.null(DomainID) | !is.null(ProfileID)) {
+                        warning("IndicatorID is complete so DomainID and/or ProfileID inputs are ignored")
                 }
         } else {
                 if (!is.null(DomainID)) {
-                       ProfileIDs <- profiles()
-                       ProfileIDs <- ProfileIDs[ProfileIDs$DomainID %in% DomainID,]
-                       ProfileIDs <- as.character(unique(ProfileIDs$ProfileID))
-                       DomainIDs <- DomainID
-                       if (!is.null(ParentCode)) {
-                               ParentCodes <- ParentCode
-                       } else {
-                               ParentCodes <- get_parent_codes(AreaTypeIDs)
-                       }
+                        DomainIDs <- DomainID
+                        if (!is.null(ProfileID)) {
+                                warning("DomainID is complete so ProfileID is ignored")
+                        }
                 } else {
-                        DomainIDs <- profiles()
-                        ProfileIDs <- as.character(DomainIDs$ProfileID)
-                        DomainIDs <- as.character(DomainIDs$DomainID)
-                        if (!is.null(ParentCode)) {
-                                ParentCodes <- ParentCode
+                        if (!is.null(ProfileID)) {
+                                ProfileIDs <- ProfileID
                         } else {
-                                ParentCodes <- get_parent_codes(AreaTypeIDs)
+                                stop("One of IndicatorID, DomainID or ProfileID must have an input")
                         }
                 }
         }
 
-        # this pulls the data from the API
-        fingertips_data <- retrieve_data(ParentCodes, ProfileIDs, DomainIDs, AreaTypeIDs)
+        # check on area details before calling data
+        if (is.null(AreaTypeID)) {
+                stop("AreaTypeID must have a value. Use function area_types() to see what values can be used.")
+        } else {
+                areaTypes <- area_types()
+                if (sum(!(AreaTypeID %in% areaTypes$AreaID)==TRUE)>0) {
+                        stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
+                } else {
+                        if (!is.null(AreaCode)) {
+                                areacodes <- data.frame()
+                                for (i in AreaTypeID) {
+                                        areacodes <- rbind(fromJSON(paste0(path,
+                                                                           "areas/by_area_type?area_type_id=",
+                                                                           i)),
+                                                           areacodes)
+                                }
 
+                                if (sum(!(AreaCode %in% areacodes$Code)==TRUE)>0) {
+                                        stop("Area code not contained AreaTypeID.")
+                                }
+                        }
+                        ChildAreaTypeIDs <- AreaTypeID
+                }
+                if (is.null(ParentAreaTypeID)) {
+                        areaTypes <- area_types(AreaTypeID = AreaTypeID) %>%
+                                group_by(AreaID) %>%
+                                filter(row_number() == 1)
+                        ParentAreaTypeIDs <- areaTypes$ParentAreaID
+                } else {
+                        areaTypes <- areaTypes[areaTypes$AreaID %in% ChildAreaTypeIDs,]
+                        if (sum(!(ParentAreaTypeID %in% areaTypes$ParentAreaID)==TRUE)>0) {
+                                warning("AreaTypeID not a child of ParentAreaTypeID. There may be duplicate values in data. Use function area_types() to see mappings of area type to parent area type.")
+                        }
+                        ParentAreaTypeIDs <- ParentAreaTypeID
+                }
+        }
+        # this pulls the data from the API
+        if (!is.null(IndicatorID)) {
+                fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
+                                                      ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                                      ParentAreaTypeIDs = ParentAreaTypeIDs)
+        } else {
+                if (!is.null(DomainID)) {
+                        fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                                           ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                           DomainIDs = DomainIDs)
+                } else {
+                        if (!is.null(ProfileID)) {
+                                fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                                                    ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                                    ProfileIDs = ProfileIDs)
+                        } else {
+                                stop("One of IndicatorID, DomainID or ProfileID must have an input")
+                        }
+                }
+        }
         if (!is.null(AreaCode)){
                 fingertips_data <- fingertips_data[fingertips_data$AreaCode %in% AreaCode,]
         }
-
-        if (!is.null(IndicatorID)){
-                test <- sum(fingertips_data$.id %in% IndicatorID)
-                if (test == 0) {
-                        stop("No IndicatorIDs are available using that combination of other inputs.")
-                } else {
-                        fingertips_data <- fingertips_data[fingertips_data$.id %in% IndicatorID,]
-                }
-
-
-                #this command duplicates records for each domain and profile requested
-                # fingertips_data <- left_join(fingertips_data,indicatorIDs, by = c(".id" = "IndicatorID"))
-                # if (!is.null(filterDomain)){
-                #         if (!is.null(filterProfile)) {
-                #                 fingertips_data <- fingertips_data[(fingertips_data$ProfileID %in% filterProfile &
-                #                                                           fingertips_data$DomainID %in% filterDomain &
-                #                                                           fingertips_data$.id %in% IndicatorID)|
-                #                                                          !(fingertips_data$DomainID %in% filterDomain),]
-                #         } else {
-                #                 fingertips_data <- fingertips_data[(fingertips_data$DomainID %in% filterDomain &
-                #                                                           fingertips_data$.id %in% IndicatorID)|
-                #                                                          !(fingertips_data$DomainID %in% filterDomain),]
-                #         }
-                # } else {
-                #         if (!is.null(filterProfile)) {
-                #                 fingertips_data <- fingertips_data[(fingertips_data$ProfileID %in% filterProfile &
-                #                                                           fingertips_data$.id %in% IndicatorID)|
-                #                                                          !(fingertips_data$DomainID %in% filterDomain),]
-                #         } else {
-                #                 fingertips_data <- fingertips_data[(fingertips_data$.id %in% IndicatorID),]
-                #         }
-                # }
-                fingertips_data <- select(fingertips_data,
-                                         TimePeriod,
-                                         .id,
-                                         V,
-                                         L,
-                                         U,
-                                         AreaCode,
-                                         sex,
-                                         age)
-                fingertips_data <- unique(fingertips_data)
-        }
-
-
-
-
-        fingertips_data <- rename(fingertips_data,
-                                 IndicatorID = .id,
-                                 Value = V,
-                                 LowerCI = L,
-                                 UpperCI = U,
-                                 SexID = sex,
-                                 AgeID = age)
-        fingertips_data[fingertips_data == "-"] <- NA
-
-        cols = c("IndicatorID", "Value", "LowerCI", "UpperCI", "SexID", "AgeID")
-        fingertips_data[, cols] <- apply(fingertips_data[, cols], 2, function(x) as.numeric(x))
-        fingertips_data
-
-        fingertips_data <- fingertips_data[,c("TimePeriod", "IndicatorID", "AreaCode"
-                                            ,"Sex", "Age", "Value",
-                                            "LowerCI", "UpperCI")]
+        names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
         return(fingertips_data)
-
 }
-
-
-
-
-

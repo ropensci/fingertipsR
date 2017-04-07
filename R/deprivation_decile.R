@@ -35,7 +35,7 @@ deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
         } else {
                 stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities), 102 (Counties and Unitary Authorities) or 7 (General Practice).")
         }
-        deprivation_decile <- fingertips_test(IndicatorID = IndicatorID, AreaTypeID = AreaTypeID) %>%
+        deprivation_decile <- fingertips_data(IndicatorID = IndicatorID, AreaTypeID = AreaTypeID) %>%
                 filter(AreaType == AreaFilter) %>%
                 select(AreaCode, Value) %>%
                 rename(IMDscore = Value) %>%

@@ -1,64 +1,62 @@
 #' @importFrom jsonlite fromJSON
-#' @importFrom data.table rbindlist setattr
-#' @import dplyr
-#' @import tidyjson
+#' @importFrom utils read.csv
 
-retrieve_data <- function(ParentCodes,ProfileIDs,DomainIDs,AreaTypeIDs){
+retrieve_indicator <- function(IndicatorIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
         path <- "http://fingertips.phe.org.uk/api/"
         fingertips_data <- data.frame()
-        for (ProfileID in ProfileIDs) {
-                for (DomainID in DomainIDs) {
-                        if (DomainID  %in% profiles(ProfileID)$DomainID) {
-                                for (ParentCode in ParentCodes) {
-                                        for (AreaTypeID in AreaTypeIDs){
-                                                dataurl <- paste0(path,"trend_data/all_indicators_in_profile_group_for_child_areas",
-                                                                  "?profile_id=",ProfileID,
-                                                                  "&group_id=",DomainID,
-                                                                  "&area_type_id=",AreaTypeID,
-                                                                  "&parent_area_code=",ParentCode)
-
-                                                df <- fromJSON(dataurl)
-                                                if (length(df) != 0) {
-                                                        for (i in 1:length(df$Data)) {
-                                                                areaCode <- names(df$Data[i])
-                                                                timeperiod <- df$Periods
-                                                                timeperiod <- setattr(timeperiod, 'names', df$IID)
-                                                                timeperiod <- lapply(timeperiod, data.frame)
-                                                                timeperiod <- rbindlist(timeperiod, use.names = TRUE, idcol = TRUE) %>%
-                                                                        rename(IndicatorID = .id,
-                                                                               TimePeriod = `X..i..`)
-                                                                IID.sex.age <- paste(df$IID,
-                                                                                     df$Sex$Id,
-                                                                                     df$Age$Id,
-                                                                                     sep = ".")
-                                                                dftemp <- unlist(df$Data[i], recursive = FALSE)
-                                                                dftemp <- setattr(dftemp, 'names', IID.sex.age)
-                                                                dftemp <- dftemp[sapply(dftemp, length) > 0] #remove lists with no data in
-                                                                dftemp <- lapply(dftemp, function(x) x[(names(x) %in% c("V", "L", "U"))]) #keep only variables of interest
-                                                                dftemp <- rbindlist(dftemp, use.names = TRUE, fill = TRUE, idcol = TRUE) %>%
-                                                                        mutate(AreaCode = areaCode)
-                                                                parsecols <- do.call(rbind, strsplit(dftemp$.id,"[.]"))
-                                                                parsecols <- data.frame(parsecols)
-                                                                parsecols[,1:3] <- apply(parsecols[,1:3], 2, function(x) as.numeric(as.character(x)))
-                                                                parsecols <- data.frame(parsecols)
-                                                                names(parsecols) <- c(".id", "sex", "age")
-                                                                dftemp <- select(dftemp, -.id) %>%
-                                                                        cbind(parsecols)
-                                                                diffFields <- setdiff(unique(timeperiod$IndicatorID), unique(dftemp$.id))
-                                                                if (length(diffFields) > 0) {
-                                                                        timeperiod <- timeperiod[timeperiod$IndicatorID != diffFields, "TimePeriod", with=FALSE]
-                                                                }
-                                                                dftemp <- cbind(TimePeriod = timeperiod$TimePeriod,
-                                                                                dftemp) %>%
-                                                                        mutate(.id = as.numeric(.id))
-                                                                fingertips_data <- rbind(fingertips_data, dftemp)
-                                                        }
-                                                }
-                                        }
-                                }
+        # total <- length(IndicatorIDs) * length(ChildAreaTypeIDs) * length(ParentAreaTypeIDs)
+        # i <- 0
+        for (IndicatorID in IndicatorIDs) {
+                for (ChildAreaTypeID in ChildAreaTypeIDs) {
+                        for (ParentAreaTypeID  in ParentAreaTypeIDs) {
+                                # i <- i + 1
+                                # pb <- txtProgressBar(min = 0,
+                                #                      max = total,
+                                #                      style = 3)
+                                dataurl <- paste0(path,
+                                                  sprintf("/all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
+                                                          IndicatorID,ChildAreaTypeID,ParentAreaTypeID))
+                                fingertips_data <- rbind(read.csv(dataurl),
+                                                         fingertips_data)
+                                # Sys.sleep(0.1)
+                                # setTxtProgressBar(pb, i)
                         }
                 }
         }
-        fingertips_data <- unique(fingertips_data)
+        #close(pb)
+        return(fingertips_data)
+}
+
+retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
+        path <- "http://fingertips.phe.org.uk/api/"
+        fingertips_data <- data.frame()
+        for (DomainID in DomainIDs) {
+                for (ChildAreaTypeID in ChildAreaTypeIDs) {
+                        for (ParentAreaTypeID  in ParentAreaTypeIDs) {
+                                dataurl <- paste0(path,
+                                                  sprintf("/all_data/csv/by_group_id?child_area_type_id=%s&parent_area_type_id=%s&group_id=%s",
+                                                          ChildAreaTypeID,ParentAreaTypeID,DomainID))
+                                fingertips_data <- rbind(read.csv(dataurl),
+                                                         fingertips_data)
+                        }
+                }
+        }
+        return(fingertips_data)
+}
+
+retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
+        path <- "http://fingertips.phe.org.uk/api/"
+        fingertips_data <- data.frame()
+        for (ProfileID in ProfileIDs) {
+                for (ChildAreaTypeID in ChildAreaTypeIDs) {
+                        for (ParentAreaTypeID  in ParentAreaTypeIDs) {
+                                dataurl <- paste0(path,
+                                                  sprintf("/all_data/csv/by_profile_id?child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s",
+                                                          ChildAreaTypeID,ParentAreaTypeID,ProfileID))
+                                fingertips_data <- rbind(read.csv(dataurl),
+                                                         fingertips_data)
+                        }
+                }
+        }
         return(fingertips_data)
 }
