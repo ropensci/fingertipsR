@@ -8,8 +8,6 @@ fingertips_test.R
 retrieve_test.R
 fingertips_test.Rd
 retrieve_test.Rd
-indicator_metadata.R
-indicator_metadata.Rd
 # History files
 .Rapp.history
 # Session Data files
