@@ -11,7 +11,7 @@ Download this repository from GitHub and either build from source or do:
 
 ## With devtools
 
-	devtools::install_github("username/fingertipsR")
+	devtools::install_github("PublicHealthEngland/fingertipsR")
 	
 # Use
 Please see the vignette for information on use.
