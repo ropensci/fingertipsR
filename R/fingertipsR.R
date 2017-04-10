@@ -1,8 +1,8 @@
-#' fingertips: A package for extracting the data behind the Fingertips website
+#' fingertipsR: A package for extracting the data behind the Fingertips website
 #' (\url{fingertips.phe.gov.uk})
 #'
 #'
-#' The fingertips package provides two categories of important functions: lookup
+#' The fingertipsR package provides two categories of important functions: lookup
 #' and data extract.
 #'
 #' @section Lookup functions: The lookup functions are to provide users the

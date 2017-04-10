@@ -1,4 +1,4 @@
 library(testthat)
-library(fingertips)
+library(fingertipsR)
 
-test_check("fingertips")
+test_check("fingertipsR")

@@ -9,13 +9,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This worked example attempts to document a common workflow a user might follow when using the `fingertips` package.
+This worked example attempts to document a common workflow a user might follow when using the `fingertipsR` package.
 
 Suppose you want to plot healthy life expectancy and life expectancy by deprivation for a given year of data that fingertips contains - you will begin by wondering *where to start*.
 
 ## Where to start
 
-There is one function in the `fingertips` package that extracts data from the Fingertips API: `fingertips_data()`. This function has the following inputs:
+There is one function in the `fingertipsR` package that extracts data from the Fingertips API: `fingertips_data()`. This function has the following inputs:
 
 * IndicatorID
 * AreaCode
@@ -32,9 +32,9 @@ Therefore, the inputs to the `fingertips_data` function that we need to find out
 * AreaTypeID
 * ParentAreaTypeID
 
-We need to begin by calling the `fingertips` package: 
+We need to begin by calling the `fingertipsR` package: 
 ```{r packages, echo=FALSE}
-library(fingertips)
+library(fingertipsR)
 library(ggplot2)
 ```
 
