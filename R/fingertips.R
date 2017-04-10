@@ -13,5 +13,16 @@
 #' @docType package
 #' @name fingertipsR
 NULL
-## quiets concerns of R CMD check re: the .'s that appear in pipelines
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+globalVariables(c("Id",
+                  "ParentAreaID",
+                  "ParentAreaName",
+                  "AreaID",
+                  "AreaType",
+                  "AreaCode",
+                  "Value",
+                  "IMDscore",
+                  "IndicatorID",
+                  "IndicatorName",
+                  "ID",
+                  "Name",
+                  "groupid"))
