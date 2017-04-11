@@ -39,3 +39,4 @@ vignettes/lifeExpectancy_*
 *.zip
 *.xls*
 
+inst/doc
