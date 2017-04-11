@@ -2,6 +2,17 @@
 library(fingertipsR)
 library(ggplot2)
 
+## ----indicators, cache=TRUE----------------------------------------------
+inds <- indicators()
+life_expectancy <- inds[grepl("life expectancy", tolower(inds$IndicatorName)),]
+
+# Because the same indicators are used in multiple profiles, there are many repeated indicators in this table (some with varying IndicatorName but same IndicatorID)
+
+# This returns a record for each IndicatorID
+life_expectancy <- unique(life_expectancy[duplicated(life_expectancy$IndicatorID) == FALSE,
+                                          c("IndicatorID", "IndicatorName")]) 
+knitr::kable(life_expectancy, row.names = FALSE)
+
 ## ----area type-----------------------------------------------------------
 areaTypes <- area_types()
 DT::datatable(areaTypes, filter = "top", rownames = FALSE)

@@ -17,7 +17,7 @@ Suggests:
     rmarkdown,
     testthat,
     ggplot2
-VignetteBuilder: rmarkdown
+VignetteBuilder: knitr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
