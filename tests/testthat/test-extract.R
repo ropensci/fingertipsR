@@ -1,11 +1,11 @@
 library(testthat)
-library(fingertips)
+library(fingertipsR)
 
 context("fingertips data extract")
 
 df1 <- fingertips_data(IndicatorID = 1107)
-df2 <- fingertips_data(IndicatorID = 1107, DomainID = 1938133055)
-df3 <- fingertips_data(IndicatorID = 1107, ProfileID = 8)
+df2 <- suppressWarnings(fingertips_data(IndicatorID = 1107, DomainID = 1938133055))
+df3 <- suppressWarnings(fingertips_data(IndicatorID = 1107, ProfileID = 8))
 
 test_that("the data returned are the same despite different inputs", {
         expect_equal(df1, df2)

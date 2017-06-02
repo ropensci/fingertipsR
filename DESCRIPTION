@@ -1,6 +1,6 @@
 Package: fingertipsR
 Type: Package
-Version: 0.0.0.9000
+Version: 0.1.0
 Title: Fingertips data for public health
 Description: Fingertips (fingertips.phe.org.uk) contains data for many indicators of public health. The
     underlying data is now more easily accesible by making use of the API.
@@ -16,7 +16,9 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    ggplot2
+    ggplot2,
+    pander,
+    DT
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8

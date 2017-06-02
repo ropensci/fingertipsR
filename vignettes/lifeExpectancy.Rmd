@@ -47,7 +47,7 @@ There are two indicators we are interested in for this exercise. Without consult
 
 We can use the `indicators()` function to return a list of all the indicators within Fingertips. We can then filter the name field for the term *life expectancy* (note, the IndicatorName field has been converted to lower case in the following code chunk to ensure matches will not be overlooked as a result of upper case letters).
 
-```{r indicators, cache=TRUE}
+```{r indicators}
 inds <- indicators()
 life_expectancy <- inds[grepl("life expectancy", tolower(inds$IndicatorName)),]
 
