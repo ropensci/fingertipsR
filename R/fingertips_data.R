@@ -116,7 +116,7 @@ fingertips_data <- function(IndicatorID = NULL,
                 fingertips_data <- fingertips_data[fingertips_data$Area.Code %in% AreaCode,]
         }
         names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
-        if (inequalities = FALSE) {
+        if (inequalities == FALSE) {
                 fingertips_data <- filter(fingertips_data, CategoryType == "")
         }
         return(fingertips_data)
