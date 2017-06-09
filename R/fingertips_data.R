@@ -9,6 +9,8 @@
 #' @param AreaCode Character vector, ONS area code of area of interest
 #' @param ParentAreaTypeID Numeric vector, the comparator area type for the data
 #'   extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function
+#' @param inequalities TRUE or FALSE, determines whether the final table includes inequalities data where it exists. Default
+#'   to FALSE
 #' @examples # Returns data for the two selected domains at county and unitary authority geography
 #' @examples doms <- c(1000049,1938132983)
 #' @examples fingdata <- fingertips_data(DomainID = doms)
@@ -24,7 +26,8 @@ fingertips_data <- function(IndicatorID = NULL,
                             DomainID = NULL,
                             ProfileID = NULL,
                             AreaTypeID = 102,
-                            ParentAreaTypeID = NULL) {
+                            ParentAreaTypeID = NULL,
+                            inequalities = FALSE) {
 
         path <- "http://fingertips.phe.org.uk/api/"
 
@@ -47,6 +50,10 @@ fingertips_data <- function(IndicatorID = NULL,
                                 stop("One of IndicatorID, DomainID or ProfileID must have an input")
                         }
                 }
+        }
+
+        if (!(inequalities == FALSE|inequalities == TRUE)){
+                stop("inequalities input must be TRUE or FALSE")
         }
 
         # check on area details before calling data
@@ -109,5 +116,8 @@ fingertips_data <- function(IndicatorID = NULL,
                 fingertips_data <- fingertips_data[fingertips_data$Area.Code %in% AreaCode,]
         }
         names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
+        if (inequalities = FALSE) {
+                fingertips_data <- filter(fingertips_data, CategoryType == "")
+        }
         return(fingertips_data)
 }
