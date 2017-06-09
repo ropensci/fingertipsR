@@ -35,7 +35,7 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         area_types <- fromJSON(paste0(path,
                                      "area_types"))
         area_types <- area_types[,c("Id","Name")]
-        names(area_types) <- c("AreaID","AreaName")
+        names(area_types) <- c("AreaTypeID","AreaTypeName")
         parentAreas <- paste0(path,"area_types/parent_area_types")  %>%
                 gather_array %>%
                 spread_values(Id = jstring("Id"),
@@ -46,18 +46,20 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
                 spread_values(ParentAreaID = jstring("Id"),
                               ParentAreaName = jstring("Name")) %>%
                 select(Id,ParentAreaID,ParentAreaName) %>%
-                rename(AreaID = Id) %>%
-                mutate(AreaID = as.numeric(AreaID),
-                       ParentAreaID = as.numeric(ParentAreaID)) %>%
+                rename(AreaTypeID = Id,
+                       ParentAreaTypeID = ParentAreaID,
+                       ParentAreaTypeName = ParentAreaName) %>%
+                mutate(AreaTypeID = as.numeric(AreaTypeID),
+                       ParentAreaTypeID = as.numeric(ParentAreaTypeID)) %>%
                 data.frame()
-        area_types <- left_join(area_types, parentAreas, by = c("AreaID" = "AreaID"))
+        area_types <- left_join(area_types, parentAreas, by = c("AreaTypeID" = "AreaTypeID"))
         if (!is.null(AreaTypeName)) {
                 AreaTypeName <- paste(AreaTypeName, collapse = "|")
                 area_types <- area_types[grep(tolower(AreaTypeName),
-                                              tolower(area_types$AreaName)),]
+                                              tolower(area_types$AreaTypeName)),]
         } else {
                 if (!is.null(AreaTypeID)) {
-                        area_types <- area_types[area_types$AreaID %in% AreaTypeID,]
+                        area_types <- area_types[area_types$AreaTypeID %in% AreaTypeID,]
                 }
         }
         return(area_types[complete.cases(area_types),])
