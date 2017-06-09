@@ -5,7 +5,8 @@
 \title{Fingertips data}
 \usage{
 fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
-  ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL)
+  ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL,
+  inequalities = FALSE)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -21,6 +22,9 @@ default is NULL}
 
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function}
+
+\item{inequalities}{TRUE or FALSE, determines whether the final table includes inequalities data where it exists. Default
+to FALSE}
 }
 \value{
 A data frame of data extracted from the Fingertips API

@@ -5,6 +5,7 @@
 #' @return A data frame of live profile ids and names along with their domain
 #'   names and ids.
 #' @inheritParams indicators
+#' @param ProfileName Character vector, full name of profile(s)
 #' @examples # Returns a complete data frame of domains and their profiles
 #' @examples profiles()
 #'

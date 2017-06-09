@@ -18,7 +18,9 @@ areaTypes <- area_types()
 DT::datatable(areaTypes, filter = "top", rownames = FALSE)
 
 ## ----dist, echo=FALSE----------------------------------------------------
-knitr::kable(areaTypes[areaTypes$AreaID == 102, c("ParentAreaID","ParentAreaName")], row.names = FALSE)
+knitr::kable(areaTypes[areaTypes$AreaTypeID == 102,
+                       c("ParentAreaTypeID","ParentAreaTypeName")], 
+             row.names = FALSE)
 
 ## ----deprivation---------------------------------------------------------
 dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)

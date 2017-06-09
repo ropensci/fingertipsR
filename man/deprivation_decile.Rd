@@ -16,7 +16,7 @@ authorities) or 101 (local authority districts and unitary authorities); default
 A lookup table providing deprivation decile and area code
 }
 \description{
-Outputs a data frame allocating deprivation decile to  area code base on the Indices of Multiple Deprivation (IMD) produced by CIPFA
+Outputs a data frame allocating deprivation decile to  area code base on the Indices of Multiple Deprivation (IMD) produced by Department of Communities and Local Government
 }
 \examples{
 # Return 2015 deciles for counties and unitary authorities

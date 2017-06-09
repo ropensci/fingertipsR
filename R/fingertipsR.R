@@ -16,6 +16,7 @@ NULL
 globalVariables(c("Id",
                   "ParentAreaID",
                   "ParentAreaName",
+                  "ParentAreaTypeID",
                   "AreaID",
                   "AreaType",
                   "AreaCode",
@@ -25,4 +26,7 @@ globalVariables(c("Id",
                   "IndicatorName",
                   "ID",
                   "Name",
-                  "groupid"))
+                  "groupid",
+                  "DomainName",
+                  "ProfileName",
+                  "CategoryType"))
