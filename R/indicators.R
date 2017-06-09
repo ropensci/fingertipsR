@@ -21,22 +21,14 @@
 #' @export
 
 indicators <- function(ProfileID = NULL,
-                       ProfileName = NULL,
-                       DomainID = NULL,
-                       DomainName = NULL) {
+                       DomainID = NULL) {
         path <- "http://fingertips.phe.org.uk/api/"
         if (!is.null(ProfileID)){
                 tempdf <- profiles(ProfileID = ProfileID)
                 DomainID <- tempdf$DomainID
-        } else if (!is.null(ProfileName)){
-                tempdf <- profiles(ProfileName = ProfileName)
-                DomainID <- tempdf$DomainID
         } else if (!is.null(DomainID)) {
                 tempdf <- profiles()
                 DomainID <- DomainID
-        } else if (!is.null(DomainName)) {
-                tempdf <- profiles()
-                DomainID <- tempdf$DomainID[tempdf$DomainName %in% DomainName]
         } else {
                 tempdf <- profiles()
                 DomainID <- tempdf$DomainID
