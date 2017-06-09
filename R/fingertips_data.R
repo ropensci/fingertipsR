@@ -106,7 +106,7 @@ fingertips_data <- function(IndicatorID = NULL,
                 }
         }
         if (!is.null(AreaCode)){
-                fingertips_data <- fingertips_data[fingertips_data$AreaCode %in% AreaCode,]
+                fingertips_data <- fingertips_data[fingertips_data$Area.Code %in% AreaCode,]
         }
         names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
         return(fingertips_data)

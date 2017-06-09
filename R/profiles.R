@@ -8,7 +8,7 @@
 #' @examples # Returns a complete data frame of domains and their profiles
 #' @examples profiles()
 #'
-#' @examples # Returns a data frame of all of the indicators in the Public Health Outcomes Framework
+#' @examples # Returns a data frame of all of the domains in the Public Health Outcomes Framework
 #' @examples profiles(ProfileName = "Public Health Outcomes Framework")
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
