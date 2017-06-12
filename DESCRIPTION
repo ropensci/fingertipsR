@@ -6,7 +6,7 @@ Description: Fingertips (fingertips.phe.org.uk) contains data for many indicator
     underlying data is now more easily accesible by making use of the API.
 Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
 URL: https://fingertips.phe.org.uk
-BugReports: https://gitlab.phe.gov.uk/sebastian.fox/fingertips/issues
+BugReports: https://github.com/PublicHealthEngland/fingertipsR/issues
 Imports:
     data.table,
     dplyr,
