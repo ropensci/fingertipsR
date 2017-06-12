@@ -18,7 +18,8 @@ Suggests:
     testthat,
     ggplot2,
     pander,
-    DT
+    DT,
+    curl
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
