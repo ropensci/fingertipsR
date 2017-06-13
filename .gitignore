@@ -41,3 +41,5 @@ vignettes/lifeExpectancy_*
 
 inst/doc
 README\.Rmd
+
+\.ssh/*
