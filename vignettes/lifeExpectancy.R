@@ -11,20 +11,20 @@ life_expectancy <- inds[grepl("life expectancy", tolower(inds$IndicatorName)),]
 # This returns a record for each IndicatorID
 life_expectancy <- unique(life_expectancy[duplicated(life_expectancy$IndicatorID) == FALSE,
                                           c("IndicatorID", "IndicatorName")]) 
-knitr::kable(life_expectancy, row.names = FALSE)
+knitr::kable(life_expectancy, row.names = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
 ## ----area type-----------------------------------------------------------
 areaTypes <- area_types()
-DT::datatable(areaTypes, filter = "top", rownames = FALSE)
+DT::datatable(areaTypes, filter = "top", rownames = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
 ## ----dist, echo=FALSE----------------------------------------------------
 knitr::kable(areaTypes[areaTypes$AreaTypeID == 102,
                        c("ParentAreaTypeID","ParentAreaTypeName")], 
-             row.names = FALSE)
+             row.names = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
 ## ----deprivation---------------------------------------------------------
 dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
-DT::datatable(dep, filter = "top", rownames = FALSE)
+DT::datatable(dep, filter = "top", rownames = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
 ## ----extract-------------------------------------------------------------
 indicators <- c(90362, 90366)
@@ -34,7 +34,7 @@ data <- fingertips_data(IndicatorID = indicators,
 pander::pandoc.table(tail(data), 
                      style="rmarkdown",
                      split.tables = 90, 
-                     keep.line.breaks = TRUE)
+                     keep.line.breaks = TRUE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
 ## ----refine variables----------------------------------------------------
 cols <- c("IndicatorID", "AreaCode", "Sex", "Timeperiod", "Value")
@@ -45,7 +45,7 @@ data <- merge(data, dep, by.x = "AreaCode", by.y = "AreaCode", all.x = TRUE)
 
 # remove NA values
 data <- data[complete.cases(data),]
-DT::datatable(data, filter = "top", rownames = FALSE)
+DT::datatable(data, filter = "top", rownames = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
 ## ----plot, fig.width=8, fig.height=5-------------------------------------
 p <- ggplot(data, aes(x = IMDscore, y = Value, col = factor(IndicatorID)))
