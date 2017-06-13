@@ -1,3 +1,5 @@
+This is the first submission of this package
+
 ## Test 
 
 * local OS X install, R 3.4.0
@@ -12,7 +14,6 @@ There was 1 warning:
 * WARNING (on OS X)
 'qpdf' is needed for checks on size reduction of PDFs
 
-* NOTE - this is the first submission of this package
 
   
 ## Downstream dependencies
