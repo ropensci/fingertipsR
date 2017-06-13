@@ -8,7 +8,6 @@ Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "
 URL: https://fingertips.phe.org.uk
 BugReports: https://github.com/PublicHealthEngland/fingertipsR/issues
 Imports:
-    data.table,
     dplyr,
     jsonlite,
     tidyjson
