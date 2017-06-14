@@ -2,15 +2,18 @@
 #'
 #' Outputs a data frame containing the metadata for selected indicators
 #' @inheritParams fingertips_data
-#' @examples # Returns metadata for indicator ID 90362 and 1107
-#' @examples indicatorIDs <- c(90362, 1107)
-#' @examples indicator_metadata(indicatorIDs)
+#' @examples
+#' # Returns metadata for indicator ID 90362 and 1107
+#' \dontrun{
+#' indicatorIDs <- c(90362, 1107)
+#' indicator_metadata(indicatorIDs)
+#' }
 #'
-#' @examples # Returns metadata for the indicators within the domain 1000101
-#' @examples indicator_metadata(DomainID = 1000101)
+#' # Returns metadata for the indicators within the domain 1000101
+#' indicator_metadata(DomainID = 1000101)
 #'
-#' @examples # Returns metadata for the indicators within the profile with the ID 129
-#' @examples indicator_metadata(ProfileID = 129)
+#' # Returns metadata for the indicators within the profile with the ID 129
+#' indicator_metadata(ProfileID = 129)
 #' @return The metadata associated with each indicator/domain/profile identified
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils read.csv

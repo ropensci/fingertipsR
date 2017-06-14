@@ -11,12 +11,17 @@
 #'   extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function
 #' @param inequalities TRUE or FALSE, determines whether the final table includes inequalities data where it exists. Default
 #'   to FALSE
-#' @examples # Returns data for the two selected domains at county and unitary authority geography
-#' @examples doms <- c(1000049,1938132983)
-#' @examples fingdata <- fingertips_data(DomainID = doms)
+#' @examples
+#' # Returns data for the two selected domains at county and unitary authority geography
+#' \dontrun{
+#' doms <- c(1000049,1938132983)
+#' fingdata <- fingertips_data(DomainID = doms)
+#' }
 #'
-#' @examples # Returns data at local authority district geography for the indicator with the id 22401
-#' @examples fingdata <- fingertips_data(22401, AreaTypeID = 101)
+#' # Returns data at local authority district geography for the indicator with the id 22401
+#' \dontrun{
+#' fingdata <- fingertips_data(22401, AreaTypeID = 101)
+#' }
 #' @importFrom jsonlite fromJSON
 #' @family data extract functions
 #' @export
