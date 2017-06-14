@@ -3,7 +3,7 @@ Type: Package
 Version: 0.1.0
 Title: Fingertips data for public health
 Description: Fingertips (fingertips.phe.org.uk) contains data for many indicators of public health. The
-    underlying data is now more easily accesible by making use of the API.
+    underlying data is now more easily accessible by making use of the API.
 Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
 URL: https://fingertips.phe.org.uk
 BugReports: https://github.com/PublicHealthEngland/fingertipsR/issues
