@@ -5,10 +5,9 @@
 #' @param ProfileID Numeric vector, id of profiles of interest
 #' @param DomainID Numeric vector, id of domains of interest
 #' @examples
-#' # Returns a complete data frame of indicators and their domains and profiles
 #' \dontrun{
-#' indicators()
-#' }
+#' # Returns a complete data frame of indicators and their domains and profiles
+#' indicators()}
 #'
 #' # Returns a data frame of all of the indicators in the Public Health Outcomes Framework
 #' indicators(ProfileID = 19)

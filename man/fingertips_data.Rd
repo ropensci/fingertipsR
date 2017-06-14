@@ -34,10 +34,11 @@ Outputs a data frame of data from
 \href{http://fingertips.phe.org.uk/}{Fingertips}
 }
 \examples{
+\dontrun{
 # Returns data for the two selected domains at county and unitary authority geography
 doms <- c(1000049,1938132983)
-fingdata <- fingertips_data(DomainID = doms)
+fingdata <- fingertips_data(DomainID = doms)#'
 
 # Returns data at local authority district geography for the indicator with the id 22401
-fingdata <- fingertips_data(22401, AreaTypeID = 101)
+fingdata <- fingertips_data(22401, AreaTypeID = 101)}
 }

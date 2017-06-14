@@ -12,16 +12,13 @@
 #' @param inequalities TRUE or FALSE, determines whether the final table includes inequalities data where it exists. Default
 #'   to FALSE
 #' @examples
-#' # Returns data for the two selected domains at county and unitary authority geography
 #' \dontrun{
+#' # Returns data for the two selected domains at county and unitary authority geography
 #' doms <- c(1000049,1938132983)
-#' fingdata <- fingertips_data(DomainID = doms)
-#' }
+#' fingdata <- fingertips_data(DomainID = doms)#'
 #'
 #' # Returns data at local authority district geography for the indicator with the id 22401
-#' \dontrun{
-#' fingdata <- fingertips_data(22401, AreaTypeID = 101)
-#' }
+#' fingdata <- fingertips_data(22401, AreaTypeID = 101)}
 #' @importFrom jsonlite fromJSON
 #' @family data extract functions
 #' @export
