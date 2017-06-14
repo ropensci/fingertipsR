@@ -10,7 +10,7 @@ deprivation_decile(AreaTypeID = 102, Year = 2015)
 \item{AreaTypeID}{Numeric value, limited to either 102 (counties and unitary
 authorities) or 101 (local authority districts and unitary authorities); default is 102}
 
-\item{Year}{Numeric value, representing the year of IMD relsease to be applied, limited to either 2010 or 2015; default is 2015}
+\item{Year}{Numeric value, representing the year of IMD release to be applied, limited to either 2010 or 2015; default is 2015}
 }
 \value{
 A lookup table providing deprivation decile and area code
