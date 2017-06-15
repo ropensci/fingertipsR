@@ -42,9 +42,14 @@ indicators <- function(ProfileID = NULL,
                 if (length(dfRaw) != 0){
                         dfRaw <- unlist(dfRaw, recursive = FALSE)
                         dfIDs <- dfRaw[grepl("IID", names(dfRaw))]
+                        names(dfIDs) <- gsub(".IID","",names(dfIDs))
                         dfDescription <- unlist(dfRaw[grepl("Descriptive", names(dfRaw))],
                                                 recursive = FALSE)
                         dfDescription <- dfDescription[grepl("NameLong", names(dfDescription))]
+                        names(dfDescription) <- gsub(".Descriptive.NameLong","",names(dfDescription))
+                        commonNames <- intersect(names(dfIDs), names(dfDescription))
+                        dfIDs <- dfIDs[commonNames]
+                        dfDescription <- dfDescription[commonNames]
                         dfFinal <- data.frame(IndicatorID = unlist(dfIDs),
                                          IndicatorName = unlist(dfDescription),
                                          DomainID = dom,
