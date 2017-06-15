@@ -7,9 +7,7 @@ This is the first submission of this package
 
 ## R CMD check results
 
-There were no NOTEs or ERRORs.
-
-* 1 warning - 'qpdf' is needed for checks on size reduction of PDFs
+There were no NOTEs, WARNINGs or ERRORs.
 
 ## Downstream dependencies
 
