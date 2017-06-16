@@ -23,13 +23,13 @@ Outputs a data frame containing the metadata for selected indicators
 \dontrun{
 # Returns metadata for indicator ID 90362 and 1107
 indicatorIDs <- c(90362, 1107)
-indicator_metadata(indicatorIDs)}
+indicator_metadata(indicatorIDs)
 
 # Returns metadata for the indicators within the domain 1000101
 indicator_metadata(DomainID = 1000101)
 
 # Returns metadata for the indicators within the profile with the ID 129
-indicator_metadata(ProfileID = 129)
+indicator_metadata(ProfileID = 129)}
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
