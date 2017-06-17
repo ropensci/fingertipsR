@@ -7,10 +7,10 @@
 #' @examples
 #' \dontrun{
 #' # Returns a complete data frame of indicators and their domains and profiles
-#' indicators()}
+#' indicators()
 #'
 #' # Returns a data frame of all of the indicators in the Public Health Outcomes Framework
-#' indicators(ProfileID = 19)
+#' indicators(ProfileID = 19)}
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
 #' @family lookup functions
