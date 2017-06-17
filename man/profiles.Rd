@@ -20,8 +20,9 @@ Outputs a data frame of live profiles that data are available for in
 Fingertips \url{http://fingertips.phe.org.uk/}
 }
 \examples{
+\dontrun{
 # Returns a complete data frame of domains and their profiles
-profiles()
+profiles()}
 
 # Returns a data frame of all of the domains in the Public Health Outcomes Framework
 profiles(ProfileName = "Public Health Outcomes Framework")
