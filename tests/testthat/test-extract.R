@@ -10,7 +10,7 @@ df3 <- suppressWarnings(fingertips_data(IndicatorID = 92309, ProfileID = 8))
 test_that("the data returned are the same despite different inputs", {
         expect_equal(df1, df2)
         expect_equal(df1, df3)
-        expect_equal(ncol(df1), 21)
+        expect_equal(ncol(df1), 22)
 })
 
 test_that("warning messages work", {
