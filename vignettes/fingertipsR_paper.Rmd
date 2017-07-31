@@ -19,6 +19,7 @@ library(cowplot)
 library(Cairo) # for high quality graphics
 library(ggplot2)
 library(captioner) # for cross-referencing in article
+library(stringr)
 source("fingertips_paper_captions.R", echo = FALSE)
 ```
 
@@ -107,7 +108,9 @@ The researcher could examine what indicators constitute a domain
 
 ```{r}
 ftips_indicators <- indicators(ProfileID = 8, DomainID = 1000101)
-head(ftips_indicators)
+ftips_indicators %>% 
+        mutate(IndicatorName = str_trunc(as.character(IndicatorName), width = 20, "right")) %>% 
+        head()
 ```
 
 The researcher may then wish to pull down the data for one or more indicators from one or more domains or profiles.
@@ -124,6 +127,8 @@ ftips_data <- fingertips_data(IndicatorID = 90362, AreaTypeID = 102)
 ftips_data %>% 
         select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, 
                Sex, Age, Timeperiod, Value, LowerCIlimit, UpperCIlimit) %>%
+        mutate(IndicatorName = str_trunc(as.character(IndicatorName), width = 20, "right"),
+               AreaName = str_trunc(as.character(AreaName), width = 20, "right")) %>% 
         head()
 ```
 
@@ -152,8 +157,22 @@ ftips_data <- ftips_data %>%
 
 The researcher can then plot the relationship between life expectancy at birth and deprivation
 
+<!-- eval=FALSE to print code into paper -->
+```{r, eval=FALSE}
+p <- ggplot(ftips_data, aes(x = IMDscore, y = Value)) + 
+        geom_point() + 
+        geom_smooth(se = FALSE, method = "loess") + 
+        facet_wrap(~ Sex) + 
+        scale_x_reverse("IMD score") + 
+        scale_y_continuous("Life expectancy")
+p
+```
+
+
+<!-- Then render figure below caption -->
 **`r fig_caps("life_exp_birth")`**
-```{r}
+
+```{r, warning=FALSE, echo=FALSE}
 p <- ggplot(ftips_data, aes(x = IMDscore, y = Value)) + 
         geom_point() + 
         geom_smooth(se = FALSE, method = "loess") + 
