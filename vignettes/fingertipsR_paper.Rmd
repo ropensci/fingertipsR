@@ -1,0 +1,205 @@
+---
+title: 'DRAFT - fingertipsR: an R package for accessing population health information in England'
+author: "Sebastian Fox, Julian Flowers, Simon Thelwall, Daniel Flint, Doris Hain"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document: default
+  word_document: default
+bibliography: references.bib
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(dev="png", 
+               dev.args=list(type="cairo"),
+               dpi=300)
+knitr::opts_chunk$set(echo = TRUE, cache = FALSE)
+library(fingertipsR)
+library(cowplot)
+library(Cairo) # for high quality graphics
+library(ggplot2)
+library(captioner) # for cross-referencing in article
+library(stringr)
+source("fingertips_paper_captions.R", echo = FALSE)
+```
+
+# Abstract
+
+This paper describes the `fingertipsR` package which provides tools accessing a wide range of public health data for England from the [Fingertips website](https://fingertips.phe.org.uk) using its API.
+
+[Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England. 
+The indicators are arranged in thematic or topical profiles covering a wide range of health issues including:
+
+* broad Health Profiles
+* specific topics such as liver disease and end of life
+* risk factors including alcohol, smoking, physical activity
+* population healthcare health services data for general practices, cancer, mental health
+* health protection data on general health protection, TB, antimicrobial resistance
+* lifecourse profiles for younger and older people
+* mortality and morbidity.
+
+Fingertips makes data available for more than 1500 indicators spread across more than 60 profiles. The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts for comparing multiple indicators for a single area, scatter plots and so on.
+Data can be obtained as downloads or figures which can be exported or cut and paste into reports and slides.
+
+A recent addition to the Fingertips platform was an [Automated Programming Interface (API)](https://fingertips.phe.org.uk/api) to enable developers to re-use the data. 
+To facilitate access we have designed an *R* package - `fingertipsR` - to facilitate rapid and easy access to the data by analysts and data scientists. 
+The package is available from [CRAN](https://cran.r-project.org/).
+
+
+# Introduction
+<!--
+ * What fingertips provides
+ * What R provides (free open source)
+ * Packages as a concept in R
+ --> 
+ 
+[Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England (PHE). 
+Data are organised thematically, grouping related indicators together. 
+The web interface provides a interactive data visualisations allowing users to examine trends over time, geographical distribution and make comparisons between health providers. 
+The web interface also provides a means to download the data behind the visualisations for re-use.
+However, accessing the data in this manner limits the user to a single group of indicators for a specified geography per download. 
+To enable programmatic access to the data PHE developed an application programming interface (API). 
+However, use of an API is highly technical and not always suited to the public health researcher. 
+
+R is free, open source software for statistical analysis. [@rsoftware]
+It doubles as both a programming language and analytical environment for performing statistical analyses.
+The programming language facilitates expansion of the software through additional user-written 'packages' which are then stored on an online repository. 
+Such packages bundle together analytic commands which share a common purpose.
+The ease with which R can be expanded has lead to exponential growth in the software, creating a very broad ecosystem of statistical techniques.[citation needed]
+
+The `fingertipsR` package extends R by providing an easy to use access to the Fingertips API allowing direct import of data to R.[@fingertipsrpkg]
+
+# The `fingertipsR` package
+<!--
+ * Structure of data in fingertips – dates, area types, metadata, value notes, profiles > domains > indicators
+ * Accessing the API
+ * Description of functions in package
+ -->
+
+## The structure of data in fingertips
+
+Public health data gathered and synthesised by PHE are stored on Fingertips in nested thematic groups. 
+Profiles group together broad themes of data such as antimicrobial resistance or diabetes. [@johnson2016improving]
+These profiles may consist of multiple domains - such as prevalence or targets.
+Individual indicators then provide actual values for different measures within the domains for example prevalence among those $\geq$ 65 years of age. 
+
+In addition, indicators can vary by different area types within two broad main geography themes, administrative and health: commissioners of of health care services for local areas (known as Clinical Commissioning Groups or CCGs), hospital groups (acute trusts), upper- and lower-tier local authorities, administrative regions or general practitioner practices among others.
+These geographies themselves fall within nested geographies based on whether they are in the administrative or health geography hierarchy. 
+
+All indicators have a fundamentally identical structure; a code that uniquely identifies a geography, three time variables specify the year, quarter and month, variables for count and denominator, where appropriate, provide the count and  denominator, a value column gives the actual value - such as a prevalence or rate - plotted in the various representations on the website. 
+
+## Accessing the fingertips API
+
+Seb/Julian?
+
+## Functions provided by the fingertipsR package
+
+The functions of the fingertipsR package facilitate exploration of the fingertips data in a way that reflects the structure of the data. 
+A public health researcher may start by examining which profiles and domains are available
+```{r}
+library(fingertipsR)
+# for common data manipulation functions
+library(dplyr, warn.conflicts = FALSE, quietly = TRUE)
+ftips_profiles <- profiles(ProfileID = NULL, ProfileName = NULL)
+head(ftips_profiles)
+```
+
+The researcher could examine what indicators constitute a domain
+
+```{r}
+ftips_indicators <- indicators(ProfileID = 8, DomainID = 1000101)
+ftips_indicators %>% 
+        mutate(IndicatorName = str_trunc(as.character(IndicatorName), width = 20, "right")) %>% 
+        head()
+```
+
+The researcher may then wish to pull down the data for one or more indicators from one or more domains or profiles.
+However, before they can do so, they need to check what geographies are represented by the indicators data are not always available at all geographies.
+
+```{r}
+# can't do this at the moment, see issue #21: https://github.com/PublicHealthEngland/fingertipsR/issues/21
+```
+
+The researcher is now in a position to read the data into the working environment in R. 
+
+```{r}
+ftips_data <- fingertips_data(IndicatorID = 90362, AreaTypeID = 102)
+ftips_data %>% 
+        select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, 
+               Sex, Age, Timeperiod, Value, LowerCIlimit, UpperCIlimit) %>%
+        mutate(IndicatorName = str_trunc(as.character(IndicatorName), width = 20, "right"),
+               AreaName = str_trunc(as.character(AreaName), width = 20, "right")) %>% 
+        head()
+```
+
+## Using the package to investigate deprivation and life expectancy at birth
+ * Perhaps a more involved example of the deprivation/life expectancy analysis used in the vignette
+
+To expand on the functions described above, suppose a researcher wishes to examine the relationship between socio-economic deprivation and life-expectancy at birth.
+The fingertipsR package provides a convenient method to extract the data from the fingertips website directly into the working environment of R. 
+
+First, the research loads in the deprivation data at the level of the upper-tier local authorities (also described as County and Unitary Authorities). [@IMD]
+
+```{r}
+dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
+head(dep)
+```
+
+The researcher can then limit the previously loaded data set giving life expectancy at birth to the level of upper-tier local authority and apply the deprivation data to it.
+
+```{r}
+ftips_data <- ftips_data %>%
+        # restrict to relevant geography and time
+        filter(AreaType == "County & UA" & Timeperiod == "2012 - 14") %>% 
+        # merge in deprivation data
+        left_join(., dep)
+```
+
+The researcher can then plot the relationship between life expectancy at birth and deprivation
+
+<!-- eval=FALSE to print code into paper -->
+```{r, eval=FALSE}
+p <- ggplot(ftips_data, aes(x = IMDscore, y = Value)) + 
+        geom_point() + 
+        geom_smooth(se = FALSE, method = "loess") + 
+        facet_wrap(~ Sex) + 
+        scale_x_reverse("IMD score") + 
+        scale_y_continuous("Life expectancy")
+p
+```
+
+
+<!-- Then render figure below caption -->
+**`r fig_caps("life_exp_birth")`**
+
+```{r, warning=FALSE, echo=FALSE}
+p <- ggplot(ftips_data, aes(x = IMDscore, y = Value)) + 
+        geom_point() + 
+        geom_smooth(se = FALSE, method = "loess") + 
+        facet_wrap(~ Sex) + 
+        scale_x_reverse("IMD score") + 
+        scale_y_continuous("Life expectancy")
+p
+```
+
+## Extending the package
+
+The Fingertips website, along with its API, are in continuous development. The website has new data added to it once a month, and any changes in the API will be seen then. As a result there is a lot of scope for extension to data available from the R package. 
+
+The package was developed on [GitHub](https://github.com/PublicHealthEngland/fingertipsR), where there is an issues page with public access. This is where bugs and enhancements can be reported. Some extensions to the package that are suggested here are to 
+
+* add a `find_indicator` graphical user interface, to support users that have lesser coding skills
+* add a function to identify areas that are significantly worse than England and are significantly trending an the adverse direction
+* predict future indicator values based on other indicators within a profile
+
+Users are encouraged to add to the issues list if they feel extensions might be beneficial for the users of this package.
+
+# Discussion/conclusions
+* R packages for public health
+* Writing R packages as a researcher
+* Open source software- github
+
+# References
+
+
+
