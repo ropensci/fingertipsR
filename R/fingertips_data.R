@@ -11,6 +11,7 @@
 #'   extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function
 #' @param inequalities TRUE or FALSE, determines whether the final table includes inequalities data where it exists. Default
 #'   to FALSE
+#' @param stringsAsFactors logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but this can be changed by setting options(stringsAsFactors = FALSE).
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
@@ -29,7 +30,8 @@ fingertips_data <- function(IndicatorID = NULL,
                             ProfileID = NULL,
                             AreaTypeID = 102,
                             ParentAreaTypeID = NULL,
-                            inequalities = FALSE) {
+                            inequalities = FALSE,
+                            stringsAsFactors = default.stringsAsFactors()) {
 
         path <- "http://fingertips.phe.org.uk/api/"
 
@@ -124,6 +126,12 @@ fingertips_data <- function(IndicatorID = NULL,
                 if (inequalities == FALSE) {
                         fingertips_data <- filter(fingertips_data, is.na(CategoryType))
                 }
+        }
+        
+        if (stringsAsFactors == FALSE){
+                fingertips_data[sapply(fingertips_data, is.factor)] <- 
+                        lapply(fingertips_data[sapply(fingertips_data, is.factor)], 
+                               as.character)
         }
         return(fingertips_data)
 }
