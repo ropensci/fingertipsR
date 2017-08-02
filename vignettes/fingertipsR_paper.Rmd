@@ -57,7 +57,7 @@ The package is available from [CRAN](https://cran.r-project.org/).
  
 [Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England (PHE). 
 Data are organised thematically, grouping related indicators together. 
-The web interface provides a interactive data visualisations allowing users to examine trends over time, geographical distribution and make comparisons between health providers. 
+The web interface provides an interactive data visualisations allowing users to examine trends over time, geographical distribution and make comparisons between health providers. 
 The web interface also provides a means to download the data behind the visualisations for re-use.
 However, accessing the data in this manner limits the user to a single group of indicators for a specified geography per download. 
 To enable programmatic access to the data PHE developed an application programming interface (API). 
@@ -65,7 +65,7 @@ However, use of an API is highly technical and not always suited to the public h
 
 R is free, open source software for statistical analysis. [@rsoftware]
 It doubles as both a programming language and analytical environment for performing statistical analyses.
-The programming language facilitates expansion of the software through additional user-written 'packages' which are then stored on an online repository. 
+The programming language facilitates expansion of the software through additional user-written 'packages' which are then stored in an online repository. 
 Such packages bundle together analytic commands which share a common purpose.
 The ease with which R can be expanded has lead to exponential growth in the software, creating a very broad ecosystem of statistical techniques.[citation needed]
 
@@ -88,11 +88,11 @@ Individual indicators then provide actual values for different measures within t
 In addition, indicators can vary by different area types within two broad main geography themes, administrative and health: commissioners of of health care services for local areas (known as Clinical Commissioning Groups or CCGs), hospital groups (acute trusts), upper- and lower-tier local authorities, administrative regions or general practitioner practices among others.
 These geographies themselves fall within nested geographies based on whether they are in the administrative or health geography hierarchy. 
 
-All indicators have a fundamentally identical structure; a code that uniquely identifies a geography, three time variables specify the year, quarter and month, variables for count and denominator, where appropriate, provide the count and  denominator, a value column gives the actual value - such as a prevalence or rate - plotted in the various representations on the website. 
+All indicators have a fundamentally identical structure; a code that uniquely identifies a geography, three time variables specify the year, quarter and month, variables for count and denominator are provided where appropriate, a value column gives the actual value - such as a prevalence or rate - plotted in the various representations on the website. 
 
 ## Accessing the fingertips API
 
-Seb/Julian?
+The API aims to provide the same data through a collection of RESTful web services as can be visualised on the Fingertips web site. The API was created following open data principles so that the data on the Fingertips site could be available for anyone to access, use or share. The web-based API enables the data to be accessed from any location over the internet using the researcher's programming language of choice without any knowledge required of the system that provides that data. The data is transferred in JSON, a lightweight data format that is easy for both humans to read and machines to generate and parse.
 
 ## Functions provided by the fingertipsR package
 
