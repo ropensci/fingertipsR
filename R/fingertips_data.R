@@ -3,13 +3,13 @@
 #' Outputs a data frame of data from
 #' \href{http://fingertips.phe.org.uk/}{Fingertips}
 #' @return A data frame of data extracted from the Fingertips API
-#' @inheritParams area_types
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
 #' @param AreaCode Character vector, ONS area code of area of interest
+#' @param AreaTypeID Numeric vector, the Fingertips ID for the area type; default is 102
 #' @param ParentAreaTypeID Numeric vector, the comparator area type for the data
 #'   extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function
-#' @param inequalities TRUE or FALSE, determines whether the final table includes inequalities data where it exists. Default
+#' @param categorytype TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
 #'   to FALSE
 #' @param stringsAsFactors logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but this can be changed by setting options(stringsAsFactors = FALSE).
 #' @examples
@@ -30,7 +30,7 @@ fingertips_data <- function(IndicatorID = NULL,
                             ProfileID = NULL,
                             AreaTypeID = 102,
                             ParentAreaTypeID = NULL,
-                            inequalities = FALSE,
+                            categorytype = FALSE,
                             stringsAsFactors = default.stringsAsFactors()) {
 
         path <- "http://fingertips.phe.org.uk/api/"
@@ -56,8 +56,8 @@ fingertips_data <- function(IndicatorID = NULL,
                 }
         }
 
-        if (!(inequalities == FALSE|inequalities == TRUE)){
-                stop("inequalities input must be TRUE or FALSE")
+        if (!(categorytype == FALSE|categorytype == TRUE)){
+                stop("categorytype input must be TRUE or FALSE")
         }
 
         # check on area details before calling data
@@ -123,14 +123,14 @@ fingertips_data <- function(IndicatorID = NULL,
 
         if (nrow(fingertips_data) > 0){
                 fingertips_data[fingertips_data==""] <- NA
-                if (inequalities == FALSE) {
+                if (categorytype == FALSE) {
                         fingertips_data <- filter(fingertips_data, is.na(CategoryType))
                 }
         }
-        
+
         if (stringsAsFactors == FALSE){
-                fingertips_data[sapply(fingertips_data, is.factor)] <- 
-                        lapply(fingertips_data[sapply(fingertips_data, is.factor)], 
+                fingertips_data[sapply(fingertips_data, is.factor)] <-
+                        lapply(fingertips_data[sapply(fingertips_data, is.factor)],
                                as.character)
         }
         return(fingertips_data)

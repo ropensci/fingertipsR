@@ -6,7 +6,7 @@
 \usage{
 fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
   ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL,
-  inequalities = FALSE)
+  categorytype = FALSE, stringsAsFactors = default.stringsAsFactors())
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -17,14 +17,15 @@ fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
 
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
-\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
-default is NULL}
+\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type; default is 102}
 
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function}
 
-\item{inequalities}{TRUE or FALSE, determines whether the final table includes inequalities data where it exists. Default
+\item{categorytype}{TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
 to FALSE}
+
+\item{stringsAsFactors}{logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but this can be changed by setting options(stringsAsFactors = FALSE).}
 }
 \value{
 A data frame of data extracted from the Fingertips API
