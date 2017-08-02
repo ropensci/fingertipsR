@@ -1,11 +1,12 @@
 ---
-title: 'DRAFT - fingertipsR: an R package for accessing population health information in England'
+title: 'DRAFT - fingertipsR: an R package for accessing population health information
+  in England'
 author: "Sebastian Fox, Julian Flowers, Simon Thelwall, Daniel Flint, Doris Hain"
 output:
-  pdf_document: default
-  html_notebook: default
-  html_document: default
   word_document: default
+  html_notebook: default
+  pdf_document: default
+  html_document: default
 bibliography: references.bib
 ---
 
