@@ -2,7 +2,7 @@
 #' @importFrom utils read.csv
 
 retrieve_indicator <- function(IndicatorIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "http://fingertips.phe.org.uk/api/"
+        path <- "https://fingertips.phe.org.uk/api/"
         fingertips_data <- data.frame()
         # total <- length(IndicatorIDs) * length(ChildAreaTypeIDs) * length(ParentAreaTypeIDs)
         # i <- 0
@@ -29,7 +29,7 @@ retrieve_indicator <- function(IndicatorIDs, ChildAreaTypeIDs, ParentAreaTypeIDs
 }
 
 retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "http://fingertips.phe.org.uk/api/"
+        path <- "https://fingertips.phe.org.uk/api/"
         fingertips_data <- data.frame()
         for (DomainID in DomainIDs) {
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {
@@ -47,7 +47,7 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
 }
 
 retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "http://fingertips.phe.org.uk/api/"
+        path <- "https://fingertips.phe.org.uk/api/"
         fingertips_data <- data.frame()
         for (ProfileID in ProfileIDs) {
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {

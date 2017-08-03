@@ -15,6 +15,7 @@
 #' profiles(ProfileName = "Public Health Outcomes Framework")
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
+#' @importFrom httr GET content set_config config
 #' @import tidyjson
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
@@ -25,6 +26,7 @@
 
 profiles <- function(ProfileID = NULL, ProfileName = NULL) {
         path <- "http://fingertips.phe.org.uk/api/"
+        set_config(config(ssl_verifypeer = 0L))
         profiles <- gather_array(paste0(path,"profiles")) %>%
                 spread_values(ID = jnumber("Id"),
                               Name = jstring("Name")) %>%

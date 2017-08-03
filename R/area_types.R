@@ -21,6 +21,7 @@
 #' @import dplyr
 #' @import tidyjson
 #' @importFrom stats complete.cases
+#' @importFrom httr GET content set_config config
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -31,12 +32,17 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
                 warning("AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
         }
-        path <- "http://fingertips.phe.org.uk/api/"
-        area_types <- fromJSON(paste0(path,
-                                     "area_types"))
+        path <- "https://fingertips.phe.org.uk/api/"
+        set_config(config(ssl_verifypeer = 0L))
+        area_types <- paste0(path,"area_types") %>%
+                GET %>%
+                content("text") %>%
+                fromJSON
         area_types <- area_types[,c("Id","Name")]
         names(area_types) <- c("AreaTypeID","AreaTypeName")
-        parentAreas <- paste0(path,"area_types/parent_area_types")  %>%
+        parentAreas <- paste0(path,"area_types/parent_area_types") %>%
+                GET %>%
+                content("text") %>%
                 gather_array %>%
                 spread_values(Id = jstring("Id"),
                               Name = jstring("Name"),

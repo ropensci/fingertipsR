@@ -10,7 +10,8 @@ BugReports: https://github.com/PublicHealthEngland/fingertipsR/issues
 Imports:
     dplyr,
     jsonlite,
-    tidyjson
+    tidyjson,
+    httr
 Suggests:
     knitr,
     rmarkdown,
