@@ -33,7 +33,7 @@ A data frame of data extracted from the Fingertips API
 }
 \description{
 Outputs a data frame of data from
-\href{http://fingertips.phe.org.uk/}{Fingertips}
+\href{https://fingertips.phe.org.uk/}{Fingertips}
 }
 \examples{
 \dontrun{

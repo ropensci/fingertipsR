@@ -1,7 +1,7 @@
 #' Fingertips data
 #'
 #' Outputs a data frame of data from
-#' \href{http://fingertips.phe.org.uk/}{Fingertips}
+#' \href{https://fingertips.phe.org.uk/}{Fingertips}
 #' @return A data frame of data extracted from the Fingertips API
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
