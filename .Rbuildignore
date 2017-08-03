@@ -2,3 +2,9 @@
 ^\.Rproj\.user$
 
 ^temp$
+cran-comments.md
+^\.travis\.yml$
+^README\.Rmd$
+^README-.*\.png$
+
+\.ssh/*

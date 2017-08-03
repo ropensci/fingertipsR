@@ -12,7 +12,7 @@ and data extract.
 }
 \section{Lookup functions}{
  The lookup functions are to provide users the
-  ablity to understand the ID inputs for the data extract functions.
+  ability to understand the ID inputs for the data extract functions.
 }
 
 \section{Data extract functions}{

@@ -22,7 +22,7 @@ retrieve_test.Rd
 # produced vignettes
 vignettes/*.pdf
 vignettes/*.html
-vignettes/*.R
+vignettes/lifeExpectancy.R
 vignettes/lifeExpectancy_*
 
 
@@ -40,3 +40,7 @@ vignettes/lifeExpectancy_*
 *.xls*
 
 inst/doc
+README\.Rmd
+
+\.ssh/*
+monitoring/

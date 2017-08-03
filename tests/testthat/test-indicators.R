@@ -1,5 +1,5 @@
 library(testthat)
-library(fingertips)
+library(fingertipsR)
 
 context("Profiles and indicators lookup")
 

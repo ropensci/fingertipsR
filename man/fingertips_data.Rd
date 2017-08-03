@@ -5,7 +5,9 @@
 \title{Fingertips data}
 \usage{
 fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
-  ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL)
+  ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL,
+  categorytype = FALSE, rank = FALSE,
+  stringsAsFactors = default.stringsAsFactors())
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -17,23 +19,31 @@ fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
 \item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
-default is NULL}
+default is 102}
 
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function}
+
+\item{categorytype}{TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
+to FALSE}
+
+\item{rank}{TRUE or FALE, the rank of the area compared to other areas for that indicator, sex, age, categorytype, category. 1 is best for indicators that have a good to bad spectrum, or 1 is the highest value for other indicators. NAs will be bottom and ties will return the average position.}
+
+\item{stringsAsFactors}{logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but this can be changed by setting options(stringsAsFactors = FALSE).}
 }
 \value{
 A data frame of data extracted from the Fingertips API
 }
 \description{
 Outputs a data frame of data from
-\href{http://fingertips.phe.org.uk/}{Fingertips}
+\href{https://fingertips.phe.org.uk/}{Fingertips}
 }
 \examples{
+\dontrun{
 # Returns data for the two selected domains at county and unitary authority geography
 doms <- c(1000049,1938132983)
-fingdata <- fingertips_data(DomainID = doms)
+fingdata <- fingertips_data(DomainID = doms)#'
 
 # Returns data at local authority district geography for the indicator with the id 22401
-fingdata <- fingertips_data(22401, AreaTypeID = 101)
+fingdata <- fingertips_data(22401, AreaTypeID = 101)}
 }

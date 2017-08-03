@@ -4,17 +4,12 @@
 \alias{indicators}
 \title{Profiles}
 \usage{
-indicators(ProfileID = NULL, ProfileName = NULL, DomainID = NULL,
-  DomainName = NULL)
+indicators(ProfileID = NULL, DomainID = NULL)
 }
 \arguments{
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
-\item{ProfileName}{Character vector, names of profiles of interest}
-
 \item{DomainID}{Numeric vector, id of domains of interest}
-
-\item{DomainName}{Character vector, names of domains of interest}
 }
 \value{
 A data frame of indicators within a profile or domain.
@@ -23,11 +18,12 @@ A data frame of indicators within a profile or domain.
 Outputs a data frame of indicators within a profile or domain
 }
 \examples{
+\dontrun{
 # Returns a complete data frame of indicators and their domains and profiles
 indicators()
 
 # Returns a data frame of all of the indicators in the Public Health Outcomes Framework
-indicators(ProfileName = "Public Health Outcomes Framework")
+indicators(ProfileID = 19)}
 }
 \seealso{
 \code{\link{area_types}} for area type  and their parent mappings,

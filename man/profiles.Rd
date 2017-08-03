@@ -9,7 +9,7 @@ profiles(ProfileID = NULL, ProfileName = NULL)
 \arguments{
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
-\item{ProfileName}{Character vector, names of profiles of interest}
+\item{ProfileName}{Character vector, full name of profile(s)}
 }
 \value{
 A data frame of live profile ids and names along with their domain
@@ -20,10 +20,11 @@ Outputs a data frame of live profiles that data are available for in
 Fingertips \url{http://fingertips.phe.org.uk/}
 }
 \examples{
+\dontrun{
 # Returns a complete data frame of domains and their profiles
-profiles()
+profiles()}
 
-# Returns a data frame of all of the indicators in the Public Health Outcomes Framework
+# Returns a data frame of all of the domains in the Public Health Outcomes Framework
 profiles(ProfileName = "Public Health Outcomes Framework")
 }
 \seealso{

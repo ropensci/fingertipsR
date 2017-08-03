@@ -1,9 +1,9 @@
 #' Deprivation deciles
 #'
-#' Outputs a data frame allocating deprivation decile to  area code base on the Indices of Multiple Deprivation (IMD) produced by CIPFA
+#' Outputs a data frame allocating deprivation decile to  area code base on the Indices of Multiple Deprivation (IMD) produced by Department of Communities and Local Government
 #' @param AreaTypeID Numeric value, limited to either 102 (counties and unitary
 #'   authorities) or 101 (local authority districts and unitary authorities); default is 102
-#' @param Year Numeric value, representing the year of IMD relsease to be applied, limited to either 2010 or 2015; default is 2015
+#' @param Year Numeric value, representing the year of IMD release to be applied, limited to either 2010 or 2015; default is 2015
 #' @examples # Return 2015 deciles for counties and unitary authorities
 #' @examples deprivation_decile()
 #'
