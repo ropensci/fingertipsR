@@ -12,6 +12,7 @@
 #'   default is 102
 #' @param categorytype TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
 #'   to FALSE
+#' @param rank TRUE or FALE, the rank of the area compared to other areas for that indicator, sex, age, categorytype, category. 1 is best for indicators that have a good to bad spectrum, or 1 is the highest value for other indicators. NAs will be bottom and ties will return the average position.
 #' @param stringsAsFactors logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but this can be changed by setting options(stringsAsFactors = FALSE).
 #' @examples
 #' \dontrun{
@@ -32,6 +33,7 @@ fingertips_data <- function(IndicatorID = NULL,
                             AreaTypeID = 102,
                             ParentAreaTypeID = NULL,
                             categorytype = FALSE,
+                            rank = FALSE,
                             stringsAsFactors = default.stringsAsFactors()) {
 
         path <- "http://fingertips.phe.org.uk/api/"
@@ -117,7 +119,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         }
                 }
         }
-        if (!is.null(AreaCode)){
+        if (!is.null(AreaCode)) {
                 fingertips_data <- fingertips_data[fingertips_data$Area.Code %in% AreaCode,]
         }
         names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
@@ -129,7 +131,23 @@ fingertips_data <- function(IndicatorID = NULL,
                 }
         }
 
-        if (stringsAsFactors == FALSE){
+        if (rank == TRUE) {
+                inds <- unique(fingertips_data$IndicatorID)
+                polarities <- indicator_metadata(inds) %>%
+                        select(IndicatorID, Polarity)
+                fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%
+                        group_by(IndicatorID, Timeperiod, Sex, Age, CategoryType, Category, AreaType) %>%
+                        mutate(Rank = ifelse(
+                                Polarity == "RAG - Low is good   ",
+                                rank(Value),
+                                ifelse(is.na(Value),rank(Value),
+                                       sum(!(is.na(Value))) + 1 - rank(Value)))) %>%
+                        ungroup() %>%
+                        select(-Polarity)
+
+        }
+
+        if (stringsAsFactors == FALSE) {
                 fingertips_data[sapply(fingertips_data, is.factor)] <-
                         lapply(fingertips_data[sapply(fingertips_data, is.factor)],
                                as.character)
