@@ -26,7 +26,7 @@ source("fingertips_paper_captions.R", echo = FALSE)
 
 # Abstract
 
-This paper describes the `fingertipsR` package which provides tools accessing a wide range of public health data for England from the [Fingertips website](https://fingertips.phe.org.uk) using its API.
+This paper describes the `fingertipsR` package which provides tools accessing a wide range of public health data for England from the [Fingertips website](https://fingertips.phe.org.uk) using its Application Programming Interface (API).
 
 [Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England. 
 The indicators are arranged in thematic or topical profiles covering a wide range of health issues including:
@@ -39,10 +39,11 @@ The indicators are arranged in thematic or topical profiles covering a wide rang
 * lifecourse profiles for younger and older people
 * mortality and morbidity.
 
-Fingertips makes data available for more than 1500 indicators spread across more than 60 profiles. The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts for comparing multiple indicators for a single area, scatter plots and so on.
+Fingertips makes data available for more than 1,500 indicators spread across more than 60 profiles. 
+The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts for comparing multiple indicators for a single area, scatter plots and so on.
 Data can be obtained as downloads or figures which can be exported or cut and paste into reports and slides.
 
-A recent addition to the Fingertips platform was an [Automated Programming Interface (API)](https://fingertips.phe.org.uk/api) to enable developers to re-use the data. 
+A recent addition to the Fingertips platform was an [API](https://fingertips.phe.org.uk/api) to enable developers to re-use the data. 
 To facilitate access we have designed an *R* package - `fingertipsR` - to facilitate rapid and easy access to the data by analysts and data scientists. 
 The package is available from [CRAN](https://cran.r-project.org/).
 
