@@ -119,6 +119,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         }
                 }
         }
+        names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
         if (rank == TRUE) {
                 inds <- unique(fingertips_data$IndicatorID)
                 polarities <- indicator_metadata(inds) %>%
@@ -135,9 +136,8 @@ fingertips_data <- function(IndicatorID = NULL,
 
         }
         if (!is.null(AreaCode)) {
-                fingertips_data <- fingertips_data[fingertips_data$Area.Code %in% AreaCode,]
+                fingertips_data <- fingertips_data[fingertips_data$AreaCode %in% AreaCode,]
         }
-        names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
 
         if (nrow(fingertips_data) > 0){
                 fingertips_data[fingertips_data==""] <- NA
