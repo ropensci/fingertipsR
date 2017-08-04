@@ -119,18 +119,6 @@ fingertips_data <- function(IndicatorID = NULL,
                         }
                 }
         }
-        if (!is.null(AreaCode)) {
-                fingertips_data <- fingertips_data[fingertips_data$Area.Code %in% AreaCode,]
-        }
-        names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
-
-        if (nrow(fingertips_data) > 0){
-                fingertips_data[fingertips_data==""] <- NA
-                if (categorytype == FALSE) {
-                        fingertips_data <- filter(fingertips_data, is.na(CategoryType))
-                }
-        }
-
         if (rank == TRUE) {
                 inds <- unique(fingertips_data$IndicatorID)
                 polarities <- indicator_metadata(inds) %>%
@@ -146,7 +134,17 @@ fingertips_data <- function(IndicatorID = NULL,
                         select(-Polarity)
 
         }
+        if (!is.null(AreaCode)) {
+                fingertips_data <- fingertips_data[fingertips_data$Area.Code %in% AreaCode,]
+        }
+        names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
 
+        if (nrow(fingertips_data) > 0){
+                fingertips_data[fingertips_data==""] <- NA
+                if (categorytype == FALSE) {
+                        fingertips_data <- filter(fingertips_data, is.na(CategoryType))
+                }
+        }
         if (stringsAsFactors == FALSE) {
                 fingertips_data[sapply(fingertips_data, is.factor)] <-
                         lapply(fingertips_data[sapply(fingertips_data, is.factor)],
