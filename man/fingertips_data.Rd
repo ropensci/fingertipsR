@@ -27,7 +27,7 @@ extracted; if NULL the function will use the first record for the specified `Are
 \item{categorytype}{TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
 to FALSE}
 
-\item{rank}{TRUE or FALE, the rank of the area compared to other areas for that indicator, sex, age, categorytype, category. 1 is best for indicators that have a good to bad spectrum, or 1 is the highest value for other indicators. NAs will be bottom and ties will return the average position.}
+\item{rank}{TRUE or FALE, the rankof the area compared to other areas for that indicator, sex, age, categorytype, category along with the indicator's polarity. 1 is lowest NAs will be bottom and ties will return the average position.}
 
 \item{stringsAsFactors}{logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but this can be changed by setting options(stringsAsFactors = FALSE).}
 }

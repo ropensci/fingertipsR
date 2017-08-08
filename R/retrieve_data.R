@@ -14,7 +14,7 @@ retrieve_indicator <- function(IndicatorIDs, ChildAreaTypeIDs, ParentAreaTypeIDs
                                 #                      max = total,
                                 #                      style = 3)
                                 dataurl <- paste0(path,
-                                                  sprintf("/all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
+                                                  sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
                                                           IndicatorID,ChildAreaTypeID,ParentAreaTypeID),
                                                   "&include_sortable_time_periods=yes")
                                 fingertips_data <- rbind(read.csv(dataurl),
@@ -35,7 +35,7 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {
                         for (ParentAreaTypeID  in ParentAreaTypeIDs) {
                                 dataurl <- paste0(path,
-                                                  sprintf("/all_data/csv/by_group_id?child_area_type_id=%s&parent_area_type_id=%s&group_id=%s",
+                                                  sprintf("all_data/csv/by_group_id?child_area_type_id=%s&parent_area_type_id=%s&group_id=%s",
                                                           ChildAreaTypeID,ParentAreaTypeID,DomainID),
                                                   "&include_sortable_time_periods=yes")
                                 fingertips_data <- rbind(read.csv(dataurl),
@@ -53,7 +53,7 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {
                         for (ParentAreaTypeID  in ParentAreaTypeIDs) {
                                 dataurl <- paste0(path,
-                                                  sprintf("/all_data/csv/by_profile_id?child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s",
+                                                  sprintf("all_data/csv/by_profile_id?child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s",
                                                           ChildAreaTypeID,ParentAreaTypeID,ProfileID),
                                                   "&include_sortable_time_periods=yes")
                                 fingertips_data <- rbind(read.csv(dataurl),
