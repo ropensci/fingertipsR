@@ -12,6 +12,7 @@
 #'   default is 102
 #' @param categorytype TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
 #'   to FALSE
+#' @param inequalities deprecated: TRUE or FALSE, same as categorytype
 #' @param rank TRUE or FALE, the rankof the area compared to other areas for that indicator, sex, age, categorytype, category along with the indicator's polarity. 1 is lowest NAs will be bottom and ties will return the average position.
 #' @param stringsAsFactors logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but this can be changed by setting options(stringsAsFactors = FALSE).
 #' @examples
@@ -33,9 +34,15 @@ fingertips_data <- function(IndicatorID = NULL,
                             AreaTypeID = 102,
                             ParentAreaTypeID = NULL,
                             categorytype = FALSE,
+                            inequalities,
                             rank = FALSE,
                             stringsAsFactors = default.stringsAsFactors()) {
 
+        if (!missing(inequalities)) {
+                warning("argument inequalities is deprecated; please use categorytype instead.",
+                        call. = FALSE)
+                categorytype <- inequalities
+        }
         path <- "http://fingertips.phe.org.uk/api/"
 
         # ensure there are the correct inputs

@@ -6,7 +6,7 @@
 \usage{
 fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
   ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL,
-  categorytype = FALSE, rank = FALSE,
+  categorytype = FALSE, inequalities, rank = FALSE,
   stringsAsFactors = default.stringsAsFactors())
 }
 \arguments{
@@ -26,6 +26,8 @@ extracted; if NULL the function will use the first record for the specified `Are
 
 \item{categorytype}{TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
 to FALSE}
+
+\item{inequalities}{deprecated: TRUE or FALSE, same as categorytype}
 
 \item{rank}{TRUE or FALE, the rankof the area compared to other areas for that indicator, sex, age, categorytype, category along with the indicator's polarity. 1 is lowest NAs will be bottom and ties will return the average position.}
 
