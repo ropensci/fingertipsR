@@ -27,9 +27,7 @@ source("fingertips_paper_captions.R", echo = FALSE)
 
 # Abstract
 
-This paper describes the `fingertipsR` package which provides tools accessing a wide range of public health data for England from the [Fingertips website](https://fingertips.phe.org.uk) using its API.
-
-[Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England. 
+[Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England (PHE). 
 The indicators are arranged in thematic or topical profiles covering a wide range of health issues including:
 
 * broad Health Profiles
@@ -40,13 +38,14 @@ The indicators are arranged in thematic or topical profiles covering a wide rang
 * lifecourse profiles for younger and older people
 * mortality and morbidity.
 
-Fingertips makes data available for more than 1500 indicators spread across more than 60 profiles. The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts for comparing multiple indicators for a single area, scatter plots and so on.
+Fingertips makes data available for more than 1,500 indicators spread across more than 60 profiles. The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts for comparing multiple indicators for a single area, scatter plots and so on.
 Data can be obtained as downloads or figures which can be exported or cut and paste into reports and slides.
 
-A recent addition to the Fingertips platform was an [Automated Programming Interface (API)](https://fingertips.phe.org.uk/api) to enable developers to re-use the data. 
+A recent addition to the Fingertips platform was an [Automated Programming Interface](https://fingertips.phe.org.uk/api) to enable developers to re-use the data. 
 To facilitate access we have designed an *R* package - `fingertipsR` - to facilitate rapid and easy access to the data by analysts and data scientists. 
-The package is available from [CRAN](https://cran.r-project.org/).
+The package is available from the Comprehensive R Archive Network [CRAN](https://cran.r-project.org/).
 
+This paper describes the `fingertipsR` package which provides tools accessing a wide range of public health data for England from the [Fingertips website](https://fingertips.phe.org.uk) using its Application Programming Interface (API).
 
 # Introduction
 <!--
@@ -57,7 +56,7 @@ The package is available from [CRAN](https://cran.r-project.org/).
  
 [Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England (PHE). 
 Data are organised thematically, grouping related indicators together. 
-The web interface provides an interactive data visualisations allowing users to examine trends over time, geographical distribution and make comparisons between health providers. 
+The web interface provides an interactive platform for data visualisations allowing users to examine trends over time, geographical distribution and make comparisons between health providers. 
 The web interface also provides a means to download the data behind the visualisations for re-use.
 However, accessing the data in this manner limits the user to a single group of indicators for a specified geography per download. 
 To enable programmatic access to the data PHE developed an application programming interface (API). 
@@ -67,9 +66,9 @@ R is free, open source software for statistical analysis. [@rsoftware]
 It doubles as both a programming language and analytical environment for performing statistical analyses.
 The programming language facilitates expansion of the software through additional user-written 'packages' which are then stored in an online repository. 
 Such packages bundle together analytic commands which share a common purpose.
-The ease with which R can be expanded has lead to exponential growth in the software, creating a very broad ecosystem of statistical techniques.[citation needed]
+The ease with which R can be expanded has lead to exponential growth in the software, creating a very broad ecosystem of statistical techniques. [@johnfox2009]
 
-The `fingertipsR` package extends R by providing an easy to use access to the Fingertips API allowing direct import of data to R.[@fingertipsrpkg]
+The `fingertipsR` package extends R by providing an easy-to-use set of functions to query the Fingertips API, allowing direct import of data to R.[@fingertipsrpkg]
 
 # The `fingertipsR` package
 <!--
@@ -84,20 +83,24 @@ Public health data gathered and synthesised by PHE are stored on Fingertips in n
 Profiles group together broad themes of data such as antimicrobial resistance or diabetes. [@johnson2016improving]
 These profiles may consist of multiple domains - such as prevalence or targets.
 Individual indicators then provide actual values for different measures within the domains for example prevalence among those $\geq$ 65 years of age. 
-
 In addition, indicators can vary by different area types within two broad main geography themes, administrative and health: commissioners of of health care services for local areas (known as Clinical Commissioning Groups or CCGs), hospital groups (acute trusts), upper- and lower-tier local authorities, administrative regions or general practitioner practices among others.
 These geographies themselves fall within nested geographies based on whether they are in the administrative or health geography hierarchy. 
 
-All indicators have a fundamentally identical structure; a code that uniquely identifies a geography, three time variables specify the year, quarter and month, variables for count and denominator are provided where appropriate, a value column gives the actual value - such as a prevalence or rate - plotted in the various representations on the website. 
+All indicators have a fundamentally identical structure. 
+Columns provide: a code that uniquely identifies a geography, three time variables that specify the year, quarter and month, variables for count and denominator are provided where appropriate, a value column gives the actual value - such as a prevalence or rate - plotted in the various representations on the website. 
+Rows provide an observation for the indicator at a given point in time and for a given geography.
 
 ## Accessing the fingertips API
 
-The API aims to provide the same data through a collection of RESTful web services as can be visualised on the Fingertips web site. The API was created following open data principles so that the data on the Fingertips site could be available for anyone to access, use or share. The web-based API enables the data to be accessed from any location over the internet using the researcher's programming language of choice without any knowledge required of the system that provides that data. The data is transferred in JSON, a lightweight data format that is easy for both humans to read and machines to generate and parse.
+The API aims to provide the same data through a collection of RESTful web services as can be visualised on the Fingertips web site. 
+The API was created following open data principles so that the data on the Fingertips site could be available for anyone to access, use or share. [@ahmed] <!--ST - Q for DF, is this a suitable reference?-->
+The web-based API enables the data to be accessed from any location over the internet using the researcher's programming language of choice without any knowledge required of the system that provides that data. 
+The data are transferred in JSON, a lightweight data format that is easy for both humans to read and machines to generate and parse.
 
 ## Functions provided by the fingertipsR package
 
 The functions of the fingertipsR package facilitate exploration of the fingertips data in a way that reflects the structure of the data. 
-A public health researcher may start by examining which profiles and domains are available
+A public health researcher may start by examining which profiles and domains are available:
 ```{r}
 library(fingertipsR)
 # for common data manipulation functions
@@ -150,7 +153,7 @@ head(dep)
 
 The researcher can then limit the previously loaded data set giving life expectancy at birth to the level of upper-tier local authority and apply the deprivation data to it.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 ftips_data <- ftips_data %>%
         # restrict to relevant geography and time
         filter(AreaType == "County & UA" & Timeperiod == "2012 - 14") %>% 
@@ -189,7 +192,7 @@ p
 
 The Fingertips website, along with its API, are in continuous development. 
 The website has new data added to it on a monthly schedule, and any changes to the API are implemented at the same time. 
-As a result there is a lot of scope for extension to data available from the R package. 
+As a result there is a lot of scope for extension to the functions that could be provided in the R package. 
 
 The package was developed openly on [GitHub](https://GitHub.com/PublicHealthEngland/fingertipsR), an online store of computer code that is carefully version controlled through Git software.
 Various features of Git and GitHub facilitate scientific collaboration. [@ram2013git] 
@@ -198,23 +201,26 @@ Also, don't think database fits exactly.
 But not particularly satisfied with 'store' either so suggestions welcome-->
 GitHub is a decentralised system - copies of code can be stored locally and then synchronised at the central repository.
 Crucially, Git and GitHub allow any user to examine and adapt code then provide the adapted code back to the main repository for a project. <!--ST I think I'm repeating myself here.-->
-GitHub provides an issue tracker in which users of softare can report problems with the software or suggest new features. 
+Additionally, GitHub provides an issue tracker with which users of software can report problems with the software or suggest new features that might be incorporated. 
 The inherent version control allows analytic code to be reverted to previous states, meaning that breaking changes can be easily resolved. 
 Some suggested extensions to the fingertipsR package include: 
 
-* add a `find_indicator` graphical user interface, to support users that have lesser coding skills 
+* add a `find_indicator` graphical user interface, to support users less comfortable with R's square bracket indexing
 * add a function to identify areas that are significantly worse than the national average or show a significant trend towards worse values
 * predict future indicator values based on other indicators within a profile
 
-Users are encouraged to add to the issues list if they feel extensions might be beneficial for the users of this package.
-At the date of writing, the package itself has been downloaded *n* times, *n* issues have been raised and *n* researchers have controbuted to the project repository. 
+Users of the fingertipsR package are encouraged to add to the issues list if they feel extensions might be beneficial for the users of this package.
+<!--ST - Seb, can you replace the *n*s here?-->
+At the date of writing, the package itself has been downloaded *n* times, *n* issues have been raised and *n* researchers have contributed to the project repository. 
 
 # Discussion/conclusions
 
-The work presented here illustrate a number of new and important concepts in public health research. 
+The work presented here illustrates a number of new and important concepts in public health research. 
 Software for public health can be developed by researchers who are not professional software developers and can be distributed freely and easily on the web. 
-Open source software (softare where the code can be examined and adapted) allows the rapid development of new functionality, greatly expanding the uses to which it can be put and rapidly providing solutions to otherwise unmet need. 
+Open source software (software where the code can be examined and adapted) allows the rapid development of new functionality, greatly expanding the uses to which it can be put and rapidly providing solutions to otherwise unmet need. 
 The decentralised nature of the version control software Git means that scientific software and analytic code can be developed without the need for phsical co-location of collaborators - some of the authors of this paper have never physically met. 
+Open data facilitates the sharing of information important to public health. 
+Together, open data, open source software and distributed software development have a great deal to offer public health. 
 
 # References
 
