@@ -18,11 +18,12 @@ A data frame of indicators within a profile or domain.
 Outputs a data frame of indicators within a profile or domain
 }
 \examples{
+\dontrun{
 # Returns a complete data frame of indicators and their domains and profiles
 indicators()
 
 # Returns a data frame of all of the indicators in the Public Health Outcomes Framework
-indicators(ProfileID = 19)
+indicators(ProfileID = 19)}
 }
 \seealso{
 \code{\link{area_types}} for area type  and their parent mappings,

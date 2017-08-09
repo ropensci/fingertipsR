@@ -1,22 +1,28 @@
 #' Fingertips data
 #'
 #' Outputs a data frame of data from
-#' \href{http://fingertips.phe.org.uk/}{Fingertips}
+#' \href{https://fingertips.phe.org.uk/}{Fingertips}
 #' @return A data frame of data extracted from the Fingertips API
-#' @inheritParams area_types
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
 #' @param AreaCode Character vector, ONS area code of area of interest
 #' @param ParentAreaTypeID Numeric vector, the comparator area type for the data
 #'   extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function
-#' @param inequalities TRUE or FALSE, determines whether the final table includes inequalities data where it exists. Default
+#' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
+#'   default is 102
+#' @param categorytype TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
 #'   to FALSE
-#' @examples # Returns data for the two selected domains at county and unitary authority geography
-#' @examples doms <- c(1000049,1938132983)
-#' @examples fingdata <- fingertips_data(DomainID = doms)
+#' @param inequalities deprecated: TRUE or FALSE, same as categorytype
+#' @param rank TRUE or FALE, the rankof the area compared to other areas for that indicator, sex, age, categorytype, category along with the indicator's polarity. 1 is lowest NAs will be bottom and ties will return the average position.
+#' @param stringsAsFactors logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but this can be changed by setting options(stringsAsFactors = FALSE).
+#' @examples
+#' \dontrun{
+#' # Returns data for the two selected domains at county and unitary authority geography
+#' doms <- c(1000049,1938132983)
+#' fingdata <- fingertips_data(DomainID = doms)#'
 #'
-#' @examples # Returns data at local authority district geography for the indicator with the id 22401
-#' @examples fingdata <- fingertips_data(22401, AreaTypeID = 101)
+#' # Returns data at local authority district geography for the indicator with the id 22401
+#' fingdata <- fingertips_data(22401, AreaTypeID = 101)}
 #' @importFrom jsonlite fromJSON
 #' @family data extract functions
 #' @export
@@ -27,8 +33,16 @@ fingertips_data <- function(IndicatorID = NULL,
                             ProfileID = NULL,
                             AreaTypeID = 102,
                             ParentAreaTypeID = NULL,
-                            inequalities = FALSE) {
+                            categorytype = FALSE,
+                            inequalities,
+                            rank = FALSE,
+                            stringsAsFactors = default.stringsAsFactors()) {
 
+        if (!missing(inequalities)) {
+                warning("argument inequalities is deprecated; please use categorytype instead.",
+                        call. = FALSE)
+                categorytype <- inequalities
+        }
         path <- "http://fingertips.phe.org.uk/api/"
 
         # ensure there are the correct inputs
@@ -52,8 +66,8 @@ fingertips_data <- function(IndicatorID = NULL,
                 }
         }
 
-        if (!(inequalities == FALSE|inequalities == TRUE)){
-                stop("inequalities input must be TRUE or FALSE")
+        if (!(categorytype == FALSE|categorytype == TRUE)){
+                stop("categorytype input must be TRUE or FALSE")
         }
 
         # check on area details before calling data
@@ -112,12 +126,31 @@ fingertips_data <- function(IndicatorID = NULL,
                         }
                 }
         }
-        if (!is.null(AreaCode)){
-                fingertips_data <- fingertips_data[fingertips_data$Area.Code %in% AreaCode,]
-        }
         names(fingertips_data) <- gsub("\\.","",names(fingertips_data))
-        if (inequalities == FALSE) {
-                fingertips_data <- filter(fingertips_data, CategoryType == "")
+        if (rank == TRUE) {
+                inds <- unique(fingertips_data$IndicatorID)
+                polarities <- indicator_metadata(inds) %>%
+                        select(IndicatorID, Polarity)
+                fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%
+                        group_by(IndicatorID, Timeperiod, Sex, Age, CategoryType, Category, AreaType) %>%
+                        mutate(Rank = rank(Value)) %>%
+                        ungroup()
+
+        }
+        if (!is.null(AreaCode)) {
+                fingertips_data <- fingertips_data[fingertips_data$AreaCode %in% AreaCode,]
+        }
+
+        if (nrow(fingertips_data) > 0){
+                fingertips_data[fingertips_data==""] <- NA
+                if (categorytype == FALSE) {
+                        fingertips_data <- filter(fingertips_data, is.na(CategoryType))
+                }
+        }
+        if (stringsAsFactors == FALSE) {
+                fingertips_data[sapply(fingertips_data, is.factor)] <-
+                        lapply(fingertips_data[sapply(fingertips_data, is.factor)],
+                               as.character)
         }
         return(fingertips_data)
 }

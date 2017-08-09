@@ -4,13 +4,16 @@
 #' @return A data frame of indicators within a profile or domain.
 #' @param ProfileID Numeric vector, id of profiles of interest
 #' @param DomainID Numeric vector, id of domains of interest
-#' @examples # Returns a complete data frame of indicators and their domains and profiles
-#' @examples indicators()
+#' @examples
+#' \dontrun{
+#' # Returns a complete data frame of indicators and their domains and profiles
+#' indicators()
 #'
-#' @examples # Returns a data frame of all of the indicators in the Public Health Outcomes Framework
-#' @examples indicators(ProfileID = 19)
+#' # Returns a data frame of all of the indicators in the Public Health Outcomes Framework
+#' indicators(ProfileID = 19)}
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
+#' @importFrom httr GET content set_config config
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
 #'   \code{\link{indicator_metadata}} for indicator metadata and
@@ -21,6 +24,7 @@
 indicators <- function(ProfileID = NULL,
                        DomainID = NULL) {
         path <- "http://fingertips.phe.org.uk/api/"
+        set_config(config(ssl_verifypeer = 0L))
         if (!is.null(ProfileID)){
                 tempdf <- profiles(ProfileID = ProfileID)
                 DomainID <- tempdf$DomainID
@@ -33,16 +37,21 @@ indicators <- function(ProfileID = NULL,
         }
         df <- data.frame()
         for (dom in DomainID) {
-                dfRaw <- fromJSON(paste0(path,
-                                         "indicator_metadata/by_group_id?group_ids=",
-                                         dom),
-                                  flatten = TRUE)
+                dfRaw <- paste0(path,"indicator_metadata/by_group_id?group_ids=",dom) %>%
+                        GET %>%
+                        content("text") %>%
+                        fromJSON(flatten = TRUE)
                 if (length(dfRaw) != 0){
                         dfRaw <- unlist(dfRaw, recursive = FALSE)
                         dfIDs <- dfRaw[grepl("IID", names(dfRaw))]
+                        names(dfIDs) <- gsub(".IID","",names(dfIDs))
                         dfDescription <- unlist(dfRaw[grepl("Descriptive", names(dfRaw))],
                                                 recursive = FALSE)
                         dfDescription <- dfDescription[grepl("NameLong", names(dfDescription))]
+                        names(dfDescription) <- gsub(".Descriptive.NameLong","",names(dfDescription))
+                        commonNames <- intersect(names(dfIDs), names(dfDescription))
+                        dfIDs <- dfIDs[commonNames]
+                        dfDescription <- dfDescription[commonNames]
                         dfFinal <- data.frame(IndicatorID = unlist(dfIDs),
                                          IndicatorName = unlist(dfDescription),
                                          DomainID = dom,
