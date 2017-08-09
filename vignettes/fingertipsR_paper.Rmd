@@ -38,7 +38,7 @@ The indicators are arranged in thematic or topical profiles covering a wide rang
 * lifecourse profiles for younger and older people
 * mortality and morbidity.
 
-Fingertips makes data available for more than 1,500 indicators spread across more than 60 profiles. The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts for comparing multiple indicators for a single area, scatter plots and so on.
+Fingertips makes data available for more than 1,500 indicators spread across more than 70 profiles. The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts for comparing multiple indicators for a single area, scatter plots and so on.
 Data can be obtained as downloads or figures which can be exported or cut and paste into reports and slides.
 
 A recent addition to the Fingertips platform was an [Automated Programming Interface](https://fingertips.phe.org.uk/api) to enable developers to re-use the data. 
@@ -211,7 +211,7 @@ Some suggested extensions to the fingertipsR package include:
 
 Users of the fingertipsR package are encouraged to add to the issues list if they feel extensions might be beneficial for the users of this package.
 <!--ST - Seb, can you replace the *n*s here?-->
-At the date of writing, the package itself has been downloaded *n* times, *n* issues have been raised and *n* researchers have contributed to the project repository. 
+At the date of writing, the package itself has been downloaded 454 times, 26 issues have been raised and 4 researchers have contributed to the project repository. 
 
 # Discussion/conclusions
 
