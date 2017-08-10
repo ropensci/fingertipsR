@@ -32,6 +32,7 @@ deprivation_decile(101, 2010)
   \code{\link{area_types}} for area types and their parent mappings
 
 Other lookup functions: \code{\link{area_types}},
+  \code{\link{category_types}},
   \code{\link{indicator_metadata}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

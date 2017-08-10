@@ -34,9 +34,11 @@ area_types(areas)
 \seealso{
 \code{\link{indicators}} for indicator lookups,
   \code{\link{profiles}} for profile lookups and
-  \code{\link{deprivation_decile}} for deprivation decile lookups
+  \code{\link{deprivation_decile}} for deprivation decile lookups and
+  \code{\link{category_types}} for category lookups
 
-Other lookup functions: \code{\link{deprivation_decile}},
+Other lookup functions: \code{\link{category_types}},
+  \code{\link{deprivation_decile}},
   \code{\link{indicator_metadata}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

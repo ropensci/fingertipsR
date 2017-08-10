@@ -20,13 +20,15 @@
 #' @examples area_types(areas)
 #' @import dplyr
 #' @import tidyjson
+#' @importFrom jsonlite fromJSON
 #' @importFrom stats complete.cases
 #' @importFrom httr GET content set_config config
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups and
-#'   \code{\link{deprivation_decile}} for deprivation decile lookups
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
+#'   \code{\link{category_types}} for category lookups
 
 area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
@@ -69,4 +71,33 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
                 }
         }
         return(area_types[complete.cases(area_types),])
+}
+
+#' Category types
+#'
+#' Outputs a data frame of area type ids, their descriptions, and how they map
+#' to parent area types
+#'
+#' @return A data frame of area type ids and their descriptions
+#' @import dplyr
+#' @import tidyjson
+#' @importFrom jsonlite fromJSON
+#' @importFrom purrr map_df
+#' @importFrom httr GET content set_config config
+#' @export
+#' @family lookup functions
+#' @seealso \code{\link{indicators}} for indicator lookups,
+#'   \code{\link{profiles}} for profile lookups and
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
+#'   \code{\link{area_types}} for area type lookups
+
+category_types <- function() {
+        path <- "https://fingertips.phe.org.uk/api/"
+        set_config(config(ssl_verifypeer = 0L))
+        category_types <- paste0(path,"category_types") %>%
+                GET %>%
+                content("text") %>%
+                fromJSON %>%
+                pull(Categories) %>%
+                map_df(rbind)
 }

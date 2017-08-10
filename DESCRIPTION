@@ -11,7 +11,8 @@ Imports:
     dplyr,
     jsonlite,
     tidyjson,
-    httr
+    httr,
+    purrr
 Suggests:
     knitr,
     rmarkdown,
