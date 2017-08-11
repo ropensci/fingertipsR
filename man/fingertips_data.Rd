@@ -29,9 +29,12 @@ to FALSE}
 
 \item{inequalities}{deprecated: TRUE or FALSE, same as categorytype}
 
-\item{rank}{TRUE or FALE, the rankof the area compared to other areas for that indicator, sex, age, categorytype, category along with the indicator's polarity. 1 is lowest NAs will be bottom and ties will return the average position.}
+\item{rank}{TRUE or FALE, the rank of the area compared to other areas for that combination of indicator, sex, age, categorytype
+and category along with the indicator's polarity. 1 is lowest NAs will be bottom and ties will return the average position. The
+total count of areas with a non-NA value are returned also in AreaValuesCount}
 
-\item{stringsAsFactors}{logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but this can be changed by setting options(stringsAsFactors = FALSE).}
+\item{stringsAsFactors}{logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but
+this can be changed by setting options(stringsAsFactors = FALSE).}
 }
 \value{
 A data frame of data extracted from the Fingertips API
