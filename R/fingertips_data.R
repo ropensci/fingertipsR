@@ -16,7 +16,7 @@
 #' @param rank TRUE or FALE, the rank of the area compared to other areas for that combination of indicator, sex, age, categorytype
 #'   and category along with the indicator's polarity. 1 is lowest NAs will be bottom and ties will return the average position. The
 #'   total count of areas with a non-NA value are returned also in AreaValuesCount
-#' @param stringsAsFactors logical: should character vectors be converted to factors? The ‘factory-fresh’ default is TRUE, but
+#' @param stringsAsFactors logical: should character vectors be converted to factors? The 'factory-fresh' default is TRUE, but
 #'   this can be changed by setting options(stringsAsFactors = FALSE).
 #' @examples
 #' \dontrun{
