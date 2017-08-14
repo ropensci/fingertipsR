@@ -38,12 +38,12 @@ The indicators are arranged in thematic or topical profiles covering a wide rang
 * lifecourse profiles for younger and older people
 * mortality and morbidity.
 
-Fingertips makes data available for more than 1,500 indicators spread across more than 70 profiles. The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts for comparing multiple indicators for a single area, scatter plots and so on.
+Fingertips makes data available for more than 1,500 indicators spread across more than 70 profiles. The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts, which compare multiple indicators for a single area, scatter plots and so on.
 Data can be obtained as downloads or figures which can be exported or cut and paste into reports and slides.
 
 A recent addition to the Fingertips platform was an [Automated Programming Interface](https://fingertips.phe.org.uk/api) to enable developers to re-use the data. 
 To facilitate access we have designed an *R* package - `fingertipsR` - to facilitate rapid and easy access to the data by analysts and data scientists. 
-The package is available from the Comprehensive R Archive Network [CRAN](https://cran.r-project.org/).
+The package is available from the Comprehensive R Archive Network ([CRAN](https://cran.r-project.org/)).
 
 This paper describes the `fingertipsR` package which provides tools accessing a wide range of public health data for England from the [Fingertips website](https://fingertips.phe.org.uk) using its Application Programming Interface (API).
 
