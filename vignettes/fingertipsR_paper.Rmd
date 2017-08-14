@@ -3,20 +3,19 @@ title: 'DRAFT - fingertipsR: an R package for accessing population health inform
   in England'
 author: "Sebastian Fox, Julian Flowers, Simon Thelwall, Daniel Flint, Doris Hain"
 output:
-  word_document: default
-  html_notebook: default
   pdf_document: default
+  html_notebook: default
   html_document: default
+  word_document: default
 bibliography: references.bib
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(dev="png", 
                dev.args=list(type="cairo"),
-               cache = TRUE,
+               cache = FALSE,
                dpi=300)
 knitr::opts_chunk$set(echo = TRUE, cache = FALSE)
-library(fingertipsR)
 library(cowplot)
 library(Cairo) # for high quality graphics
 library(ggplot2)
@@ -85,33 +84,37 @@ Profiles group together broad themes of data such as antimicrobial resistance or
 These profiles may consist of multiple domains - such as prevalence or targets.
 Individual indicators then provide actual values for different measures within the domains for example prevalence among those $\geq$ 65 years of age. 
 
-In addition, indicators can vary by different area types within two broad main geography themes, administrative and health: commissioners of of health care services for local areas (known as Clinical Commissioning Groups or CCGs), hospital groups (acute trusts), upper- and lower-tier local authorities, administrative regions or general practitioner practices among others.
+In addition, indicators can vary by different area types within two broad main geography themes, administrative and health: commissioners of health care services for local areas (known as Clinical Commissioning Groups or CCGs), hospital groups (acute trusts), upper- and lower-tier local authorities, administrative regions or general practitioner practices among others.
 These geographies themselves fall within nested geographies based on whether they are in the administrative or health geography hierarchy. 
 
 All indicators have a fundamentally identical structure; a code that uniquely identifies a geography, three time variables specify the year, quarter and month, variables for count and denominator are provided where appropriate, a value column gives the actual value - such as a prevalence or rate - plotted in the various representations on the website. 
 
 ## Accessing the fingertips API
 
-The API aims to provide the same data through a collection of RESTful web services as can be visualised on the Fingertips web site. The API was created following open data principles so that the data on the Fingertips site could be available for anyone to access, use or share. The web-based API enables the data to be accessed from any location over the internet using the researcher's programming language of choice without any knowledge required of the system that provides that data. The data is transferred in JSON, a lightweight data format that is easy for both humans to read and machines to generate and parse.
+The API aims to provide the same data through a collection of RESTful web services as can be visualised on the Fingertips web site. 
+The API was created following open data principles so that the data on the Fingertips site could be available for anyone to access, use or share.[@ahmed_2012] <!--ST - Question for DF, is this an appropriate reference?-->
+The web-based API enables the data to be accessed from any location over the internet using the researcher's programming language of choice without any knowledge required of the system that provides that data. 
+The data are transferred in JavaScript Object Notification (JSON), a lightweight data format that is easy for both humans to read and for machines to generate and parse.
 
 ## Functions provided by the fingertipsR package
 
 The functions of the fingertipsR package facilitate exploration of the fingertips data in a way that reflects the structure of the data. 
 A public health researcher may start by examining which profiles and domains are available
-```{r}
-library(fingertipsR)
+```{r, warning=FALSE}
 # for common data manipulation functions
-library(dplyr, warn.conflicts = FALSE, quietly = TRUE)
+#library(dplyr, warn.conflicts = FALSE, quietly = TRUE)
+library(fingertipsR)
 ftips_profiles <- profiles(ProfileID = NULL, ProfileName = NULL)
 head(ftips_profiles)
 ```
 
 The researcher could examine what indicators constitute a domain
 
-```{r}
+```{r, warning=FALSE}
 ftips_indicators <- indicators(ProfileID = 8, DomainID = 1000101)
 ftips_indicators %>% 
-        mutate(IndicatorName = str_trunc(as.character(IndicatorName), width = 20, "right")) %>% 
+        mutate(IndicatorName = str_trunc(as.character(IndicatorName), 
+                                         width = 20, "right")) %>% 
         head()
 ```
 
@@ -144,13 +147,13 @@ The fingertipsR package provides a convenient method to extract the data from th
 First, the research loads in the deprivation data at the level of the upper-tier local authorities (also described as County and Unitary Authorities). [@IMD]
 
 ```{r}
-dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
+dep <- deprivation_decile(AreaTypeID = 102, Year = 2015) 
 head(dep)
 ```
 
 The researcher can then limit the previously loaded data set giving life expectancy at birth to the level of upper-tier local authority and apply the deprivation data to it.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 ftips_data <- ftips_data %>%
         # restrict to relevant geography and time
         filter(AreaType == "County & UA" & Timeperiod == "2012 - 14") %>% 

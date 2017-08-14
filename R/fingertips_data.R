@@ -6,7 +6,6 @@
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
 #' @param AreaCode Character vector, ONS area code of area of interest
-#' @param AreaTypeID Numeric vector, the Fingertips ID for the area type; default is 102
 #' @param ParentAreaTypeID Numeric vector, the comparator area type for the data
 #'   extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;

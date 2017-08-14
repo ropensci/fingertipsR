@@ -10,8 +10,7 @@ fingertips_redred(ProfileID = NULL, AreaTypeID = 102,
 \arguments{
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
-\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
-default is 102}
+\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type; default is 102}
 
 \item{Comparator}{String, either "England" or "Parent" to determine which field to compare the spot value significance to}
 }
