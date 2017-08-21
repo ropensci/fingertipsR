@@ -136,7 +136,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         select(IndicatorID, Polarity)
                 fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%
                         group_by(IndicatorID, Timeperiod, Sex, Age, CategoryType, Category, AreaType) %>%
-                        mutate(Rank = ifelse(!is.na(Value),rank(Value),NA),
+                        mutate(Rank = rank(Value, na.last = "keep"),
                                AreaValuesCount = sum(!is.na(Value))) %>%
                         ungroup()
 
