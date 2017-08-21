@@ -13,7 +13,7 @@
 #' @param categorytype TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
 #'   to FALSE
 #' @param inequalities deprecated: TRUE or FALSE, same as categorytype
-#' @param rank TRUE or FALE, the rank of the area compared to other areas for that combination of indicator, sex, age, categorytype
+#' @param rank TRUE or FALSE, the rank of the area compared to other areas for that combination of indicator, sex, age, categorytype
 #'   and category along with the indicator's polarity. 1 is lowest NAs will be bottom and ties will return the average position. The
 #'   total count of areas with a non-NA value are returned also in AreaValuesCount
 #' @param stringsAsFactors logical: should character vectors be converted to factors? The 'factory-fresh' default is TRUE, but
@@ -136,7 +136,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         select(IndicatorID, Polarity)
                 fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%
                         group_by(IndicatorID, Timeperiod, Sex, Age, CategoryType, Category, AreaType) %>%
-                        mutate(Rank = rank(Value),
+                        mutate(Rank = ifelse(!is.na(Value),rank(Value),NA),
                                AreaValuesCount = sum(!is.na(Value))) %>%
                         ungroup()
 
