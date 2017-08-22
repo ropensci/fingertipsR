@@ -6,9 +6,9 @@
 #' \dontrun{
 #' # Opens a browser window allowing the user to select indicators by their name, domain and profile
 #' inds <- select_indicator()}
-#' @import shiny
 #' @import miniUI
-#' @importFrom DT renderDataTable dataTableOutput
+#' @importFrom shiny runGadget fillRow h4 observeEvent browserViewer
+#' @importFrom DT dataTableOutput renderDataTable
 #' @export
 
 select_indicators <- function() {
@@ -17,21 +17,21 @@ select_indicators <- function() {
                 fillRow(flex = c(1, 3),
                         miniContentPanel(
                                 h4("Selected indicators"),
-                                DT::dataTableOutput("selected")
+                                dataTableOutput("selected")
                         ),
                         miniContentPanel(
-                                DT::dataTableOutput("indicators")
+                                dataTableOutput("indicators")
                                 )
                       )
         )
         server <- function(input, output, session) {
                 inds <- indicators()
-                output$indicators <- DT::renderDataTable({
+                output$indicators <- renderDataTable({
                         inds[,c("IndicatorID","IndicatorName","DomainName","ProfileName")]},
                         rownames = FALSE,
                         selection = "multiple",
                         filter = "top")
-                output$selected = DT::renderDataTable({
+                output$selected = renderDataTable({
                         inds[input$indicators_rows_selected,"IndicatorID", drop = FALSE]
                         },
                         rownames = FALSE,
