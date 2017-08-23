@@ -90,7 +90,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                                            areacodes)
                                 }
 
-                                if (sum(!(AreaCode %in% areacodes$Code)==TRUE)>0) {
+                                if (sum(!(AreaCode %in% c("E92000001",areacodes$Code))==TRUE)>0) {
                                         stop("Area code not contained AreaTypeID.")
                                 }
                         }
@@ -142,7 +142,8 @@ fingertips_data <- function(IndicatorID = NULL,
 
         }
         if (!is.null(AreaCode)) {
-                fingertips_data <- fingertips_data[fingertips_data$AreaCode %in% AreaCode,]
+                fingertips_data <- fingertips_data[fingertips_data$AreaCode %in% AreaCode,] %>%
+                        droplevels()
         }
 
         if (nrow(fingertips_data) > 0){
