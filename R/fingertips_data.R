@@ -78,7 +78,7 @@ fingertips_data <- function(IndicatorID = NULL,
                 stop("AreaTypeID must have a value. Use function area_types() to see what values can be used.")
         } else {
                 areaTypes <- area_types()
-                if (sum(!(AreaTypeID %in% areaTypes$AreaTypeID)==TRUE)>0) {
+                if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID))==TRUE)>0) {
                         stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
                 } else {
                         if (!is.null(AreaCode)) {
@@ -90,7 +90,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                                            areacodes)
                                 }
 
-                                if (sum(!(AreaCode %in% c("E92000001",areacodes$Code))==TRUE)>0) {
+                                if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
                                         stop("Area code not contained AreaTypeID.")
                                 }
                         }
@@ -103,7 +103,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         ParentAreaTypeIDs <- areaTypes$ParentAreaTypeID
                 } else {
                         areaTypes <- areaTypes[areaTypes$AreaTypeID %in% ChildAreaTypeIDs,]
-                        if (sum(!(ParentAreaTypeID %in% areaTypes$ParentAreaTypeID)==TRUE)>0) {
+                        if (sum(!(ParentAreaTypeID %in% areaTypes$ParentAreaTypeID)==TRUE) > 0) {
                                 warning("AreaTypeID not a child of ParentAreaTypeID. There may be duplicate values in data. Use function area_types() to see mappings of area type to parent area type.")
                         }
                         ParentAreaTypeIDs <- ParentAreaTypeID
