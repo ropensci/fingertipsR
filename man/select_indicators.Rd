@@ -15,5 +15,5 @@ Point and click method of selecting indicators and assigning them to object
 \examples{
 \dontrun{
 # Opens a browser window allowing the user to select indicators by their name, domain and profile
-inds <- select_indicator()}
+inds <- select_indicators()}
 }
