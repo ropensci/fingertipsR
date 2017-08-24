@@ -8,7 +8,9 @@ fingertips_redred(ProfileID = NULL, AreaTypeID = 102,
   Comparator = "England")
 }
 \arguments{
-\item{ProfileID}{Numeric vector, id of profiles of interest}
+\item{ProfileID}{Numeric vector, id of profiles of interest. Indicator polarity can vary between profiles therefore if using
+one of the comparison fields it is recommended to complete this field as well as IndicatorID. If IndicatorID is populated,
+ProfileID can be ignored or must be the same length as IndicatorID (but can contain NAs).}
 
 \item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
 default is 102}

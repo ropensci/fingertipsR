@@ -16,7 +16,9 @@ fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
 
 \item{DomainID}{Numeric vector, id of domains of interest}
 
-\item{ProfileID}{Numeric vector, id of profiles of interest}
+\item{ProfileID}{Numeric vector, id of profiles of interest. Indicator polarity can vary between profiles therefore if using
+one of the comparison fields it is recommended to complete this field as well as IndicatorID. If IndicatorID is populated,
+ProfileID can be ignored or must be the same length as IndicatorID (but can contain NAs).}
 
 \item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
 default is 102}
@@ -50,5 +52,10 @@ doms <- c(1000049,1938132983)
 fingdata <- fingertips_data(DomainID = doms)#'
 
 # Returns data at local authority district geography for the indicator with the id 22401
-fingdata <- fingertips_data(22401, AreaTypeID = 101)}
+fingdata <- fingertips_data(22401, AreaTypeID = 101)
+
+# Returns same indicator with different comparisons due to indicator polarity differences between profiles
+# It is recommended to check the website to ensure consistency between your data extract here and the polarity required
+fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
+fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
 }

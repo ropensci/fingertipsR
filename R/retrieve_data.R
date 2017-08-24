@@ -1,30 +1,37 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils read.csv
 
-retrieve_indicator <- function(IndicatorIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
+retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
         path <- "https://fingertips.phe.org.uk/api/"
         fingertips_data <- data.frame()
-        # total <- length(IndicatorIDs) * length(ChildAreaTypeIDs) * length(ParentAreaTypeIDs)
-        # i <- 0
-        for (IndicatorID in IndicatorIDs) {
+        for (i in 1:length(IndicatorIDs)) {
+                IndicatorID <- IndicatorIDs[i]
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {
                         for (ParentAreaTypeID  in ParentAreaTypeIDs) {
-                                # i <- i + 1
-                                # pb <- txtProgressBar(min = 0,
-                                #                      max = total,
-                                #                      style = 3)
-                                dataurl <- paste0(path,
-                                                  sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
-                                                          IndicatorID,ChildAreaTypeID,ParentAreaTypeID),
-                                                  "&include_sortable_time_periods=yes")
+                                if (missing(ProfileIDs)){
+                                        dataurl <- paste0(path,
+                                                          sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
+                                                                  IndicatorID, ChildAreaTypeID, ParentAreaTypeID),
+                                                          "&include_sortable_time_periods=yes")
+                                } else {
+                                        ProfileID <- ProfileIDs[i]
+                                        if (is.na(ProfileID)) {
+                                                dataurl <- paste0(path,
+                                                                  sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
+                                                                          IndicatorID,ChildAreaTypeID,ParentAreaTypeID),
+                                                                  "&include_sortable_time_periods=yes")
+                                        } else {
+                                                dataurl <- paste0(path,
+                                                                  sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s",
+                                                                          IndicatorID, ChildAreaTypeID, ParentAreaTypeID, ProfileID),
+                                                                  "&include_sortable_time_periods=yes")
+                                        }
+                                }
                                 fingertips_data <- rbind(read.csv(dataurl),
                                                          fingertips_data)
-                                # Sys.sleep(0.1)
-                                # setTxtProgressBar(pb, i)
                         }
                 }
         }
-        #close(pb)
         return(fingertips_data)
 }
 

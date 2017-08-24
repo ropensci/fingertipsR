@@ -5,6 +5,9 @@
 #' @return A data frame of data extracted from the Fingertips API
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
+#' @param ProfileID Numeric vector, id of profiles of interest. Indicator polarity can vary between profiles therefore if using
+#'   one of the comparison fields it is recommended to complete this field as well as IndicatorID. If IndicatorID is populated,
+#'   ProfileID can be ignored or must be the same length as IndicatorID (but can contain NAs).
 #' @param AreaCode Character vector, ONS area code of area of interest
 #' @param ParentAreaTypeID Numeric vector, the comparator area type for the data
 #'   extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function
@@ -25,7 +28,12 @@
 #' fingdata <- fingertips_data(DomainID = doms)#'
 #'
 #' # Returns data at local authority district geography for the indicator with the id 22401
-#' fingdata <- fingertips_data(22401, AreaTypeID = 101)}
+#' fingdata <- fingertips_data(22401, AreaTypeID = 101)
+#'
+#' # Returns same indicator with different comparisons due to indicator polarity differences between profiles
+#' # It is recommended to check the website to ensure consistency between your data extract here and the polarity required
+#' fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
+#' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
 #' @importFrom jsonlite fromJSON
 #' @family data extract functions
 #' @export
@@ -51,8 +59,13 @@ fingertips_data <- function(IndicatorID = NULL,
         # ensure there are the correct inputs
         if (!is.null(IndicatorID)) {
                 IndicatorIDs <- IndicatorID
-                if (!is.null(DomainID) | !is.null(ProfileID)) {
-                        warning("IndicatorID is complete so DomainID and/or ProfileID inputs are ignored")
+                if (!is.null(DomainID)) {
+                        warning("If IndicatorID is populated DomainID is ignored")
+                }
+                if (!is.null(ProfileID) & length(ProfileID) != length(IndicatorID)) {
+                        stop("If ProfileID and IndicatorID are populated, they must be the same length")
+                } else {
+                        ProfileIDs <- ProfileID
                 }
         } else {
                 if (!is.null(DomainID)) {
@@ -111,9 +124,16 @@ fingertips_data <- function(IndicatorID = NULL,
         }
         # this pulls the data from the API
         if (!is.null(IndicatorID)) {
-                fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
-                                                      ChildAreaTypeIDs = ChildAreaTypeIDs,
-                                                      ParentAreaTypeIDs = ParentAreaTypeIDs)
+                if (is.null(ProfileID)) {
+                        fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
+                                                              ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                                              ParentAreaTypeIDs = ParentAreaTypeIDs)
+                } else {
+                        fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
+                                                              ProfileIDs = ProfileIDs,
+                                                              ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                                              ParentAreaTypeIDs = ParentAreaTypeIDs)
+                }
         } else {
                 if (!is.null(DomainID)) {
                         fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
