@@ -12,7 +12,9 @@ Imports:
     jsonlite,
     tidyjson,
     httr,
-    purrr
+    purrr,
+    miniUI,
+    shiny
 Suggests:
     knitr,
     rmarkdown,
