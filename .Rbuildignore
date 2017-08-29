@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 
 ^temp$
+monitoring/
 cran-comments.md
 ^\.travis\.yml$
 ^README\.Rmd$

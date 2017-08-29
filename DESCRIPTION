@@ -13,6 +13,7 @@ Imports:
     tidyjson,
     httr,
     purrr,
+    DT,
     miniUI,
     shiny
 Suggests:
@@ -21,7 +22,6 @@ Suggests:
     testthat,
     ggplot2,
     pander,
-    DT,
     curl
 VignetteBuilder: knitr
 License: GPL-3

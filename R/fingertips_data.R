@@ -5,22 +5,28 @@
 #' @return A data frame of data extracted from the Fingertips API
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
-#' @param ProfileID Numeric vector, id of profiles of interest. Indicator polarity can vary between profiles therefore if using
-#'   one of the comparison fields it is recommended to complete this field as well as IndicatorID. If IndicatorID is populated,
-#'   ProfileID can be ignored or must be the same length as IndicatorID (but can contain NAs).
+#' @param ProfileID Numeric vector, id of profiles of interest. Indicator
+#'   polarity can vary between profiles therefore if using one of the comparison
+#'   fields it is recommended to complete this field as well as IndicatorID. If
+#'   IndicatorID is populated, ProfileID can be ignored or must be the same
+#'   length as IndicatorID (but can contain NAs).
 #' @param AreaCode Character vector, ONS area code of area of interest
 #' @param ParentAreaTypeID Numeric vector, the comparator area type for the data
-#'   extracted; if NULL the function will use the first record for the specified `AreaTypeID` from the area_types() function
+#'   extracted; if NULL the function will use the first record for the specified
+#'   `AreaTypeID` from the area_types() function
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
 #'   default is 102
-#' @param categorytype TRUE or FALSE, determines whether the final table includes categorytype data where it exists. Default
-#'   to FALSE
+#' @param categorytype TRUE or FALSE, determines whether the final table
+#'   includes categorytype data where it exists. Default to FALSE
 #' @param inequalities deprecated: TRUE or FALSE, same as categorytype
-#' @param rank TRUE or FALSE, the rank of the area compared to other areas for that combination of indicator, sex, age, categorytype
-#'   and category along with the indicator's polarity. 1 is lowest NAs will be bottom and ties will return the average position. The
-#'   total count of areas with a non-NA value are returned also in AreaValuesCount
-#' @param stringsAsFactors logical: should character vectors be converted to factors? The 'factory-fresh' default is TRUE, but
-#'   this can be changed by setting options(stringsAsFactors = FALSE).
+#' @param rank TRUE or FALSE, the rank of the area compared to other areas for
+#'   that combination of indicator, sex, age, categorytype and category along
+#'   with the indicator's polarity. 1 is lowest NAs will be bottom and ties will
+#'   return the average position. The total count of areas with a non-NA value
+#'   are returned also in AreaValuesCount
+#' @param stringsAsFactors logical: should character vectors be converted to
+#'   factors? The 'factory-fresh' default is TRUE, but this can be changed by
+#'   setting options(stringsAsFactors = FALSE).
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
@@ -30,8 +36,10 @@
 #' # Returns data at local authority district geography for the indicator with the id 22401
 #' fingdata <- fingertips_data(22401, AreaTypeID = 101)
 #'
-#' # Returns same indicator with different comparisons due to indicator polarity differences between profiles
-#' # It is recommended to check the website to ensure consistency between your data extract here and the polarity required
+#' # Returns same indicator with different comparisons due to indicator polarity
+#' # differences between profiles
+#' # It is recommended to check the website to ensure consistency between your
+#' # data extract here and the polarity required
 #' fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
 #' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
 #' @importFrom jsonlite fromJSON

@@ -11,9 +11,11 @@ indicator_metadata(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL)
 
 \item{DomainID}{Numeric vector, id of domains of interest}
 
-\item{ProfileID}{Numeric vector, id of profiles of interest. Indicator polarity can vary between profiles therefore if using
-one of the comparison fields it is recommended to complete this field as well as IndicatorID. If IndicatorID is populated,
-ProfileID can be ignored or must be the same length as IndicatorID (but can contain NAs).}
+\item{ProfileID}{Numeric vector, id of profiles of interest. Indicator
+polarity can vary between profiles therefore if using one of the comparison
+fields it is recommended to complete this field as well as IndicatorID. If
+IndicatorID is populated, ProfileID can be ignored or must be the same
+length as IndicatorID (but can contain NAs).}
 }
 \value{
 The metadata associated with each indicator/domain/profile identified
