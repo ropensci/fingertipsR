@@ -8,29 +8,43 @@
 #' inds <- select_indicators()}
 #' @import miniUI
 #' @importFrom shiny runGadget fillRow h4 observeEvent browserViewer stopApp
-#' @importFrom DT dataTableOutput renderDataTable
+#' @importFrom DT dataTableOutput renderDataTable JS datatable
+#' @importFrom shinycssloaders withSpinner
 #' @export
 
 select_indicators <- function() {
         ui <- miniPage(
                 gadgetTitleBar("Select indicators"),
                 fillRow(flex = c(1, 3),
-                        miniContentPanel(
-                                h4("Selected indicators"),
-                                dataTableOutput("selected")
-                        ),
-                        miniContentPanel(
-                                dataTableOutput("indicators")
+                                        miniContentPanel(
+                                                h4("Selected indicators"),
+                                                dataTableOutput("selected")
+                                        ),
+                                        miniContentPanel(
+                                                withSpinner(
+                                                        (dataTableOutput("indicators")
+                                                ),
+                                                color = "#98002E",
+                                                size = 2.5
+                                        )
                                 )
-                      )
-        )
+                        )
+                )
         server <- function(input, output, session) {
                 inds <- indicators()
-                output$indicators <- renderDataTable({
-                        inds[,c("IndicatorID","IndicatorName","DomainName","ProfileName")]},
-                        rownames = FALSE,
-                        selection = "multiple",
-                        filter = "top")
+                output$indicators <- renderDataTable(
+                        #inds[,c("IndicatorID","IndicatorName","DomainName","ProfileName")]
+                        datatable(inds[,c("IndicatorID","IndicatorName","DomainName","ProfileName")],
+                                  callback = JS("var tips = 'Select/unselect indicator',
+                                                   cells = $('#indicators tr td');
+                                                   for (var i = 0; i < tips.length; i++) {
+                                                   $(cells[i]).attr('title', tips );
+                                                   $(cells[i]).css('cursor', 'pointer');
+                                                   }"),
+                                  rownames = FALSE,
+                                  selection = "multiple"
+                        ), server = FALSE)
+
                 output$selected = renderDataTable({
                         inds[input$indicators_rows_selected,"IndicatorID", drop = FALSE]
                         },
@@ -41,8 +55,7 @@ select_indicators <- function() {
                         stopApp(returnValue)
                 })
                 observeEvent(input$cancel, {
-                        returnValue <- NULL
-                        stopApp(returnValue)
+                        stopApp(NULL)
                 })
         }
 

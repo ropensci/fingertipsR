@@ -15,7 +15,8 @@ Imports:
     purrr,
     DT,
     miniUI,
-    shiny
+    shiny,
+    shinycssloaders
 Suggests:
     knitr,
     rmarkdown,
