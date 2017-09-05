@@ -23,7 +23,7 @@
 
 indicators <- function(ProfileID = NULL,
                        DomainID = NULL) {
-        path <- "http://fingertips.phe.org.uk/api/"
+        path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         if (!is.null(ProfileID)){
                 tempdf <- profiles(ProfileID = ProfileID)

@@ -25,7 +25,7 @@
 #' @export
 
 profiles <- function(ProfileID = NULL, ProfileName = NULL) {
-        path <- "http://fingertips.phe.org.uk/api/"
+        path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         profiles <- gather_array(paste0(path,"profiles")) %>%
                 spread_values(ID = jnumber("Id"),
