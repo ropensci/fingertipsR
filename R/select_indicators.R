@@ -33,7 +33,6 @@ select_indicators <- function() {
         server <- function(input, output, session) {
                 inds <- indicators()
                 output$indicators <- renderDataTable(
-                        #inds[,c("IndicatorID","IndicatorName","DomainName","ProfileName")]
                         datatable(inds[,c("IndicatorID","IndicatorName","DomainName","ProfileName")],
                                   callback = JS("var tips = 'Select/unselect indicator',
                                                    cells = $('#indicators tr td');

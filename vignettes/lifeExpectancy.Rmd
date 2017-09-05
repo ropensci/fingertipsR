@@ -8,7 +8,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
+```{r echo=FALSE}
+httr::set_config(httr::config(ssl_verifypeer = 0L))
+```
 This worked example attempts to document a common workflow a user might follow when using the `fingertipsR` package.
 
 Suppose you want to plot healthy life expectancy and life expectancy by deprivation for a given year of data that fingertips contains - you will begin by wondering *where to start*.
