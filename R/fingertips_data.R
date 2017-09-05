@@ -106,9 +106,9 @@ fingertips_data <- function(IndicatorID = NULL,
                         if (!is.null(AreaCode)) {
                                 areacodes <- data.frame()
                                 for (i in AreaTypeID) {
-                                        areacodes <- rbind(fromJSON(paste0(path,
-                                                                           "areas/by_area_type?area_type_id=",
-                                                                           i)),
+                                        areacodes <- rbind(paste0(path,
+                                                                  "areas/by_area_type?area_type_id=",
+                                                                  i) %>% GET %>% content("text") %>% fromJSON(),
                                                            areacodes)
                                 }
 
