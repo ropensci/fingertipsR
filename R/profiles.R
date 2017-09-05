@@ -27,7 +27,10 @@
 profiles <- function(ProfileID = NULL, ProfileName = NULL) {
         path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
-        profiles <- gather_array(paste0(path,"profiles")) %>%
+        profiles <- paste0(path,"profiles") %>%
+                GET %>%
+                content("text") %>%
+                gather_array() %>%
                 spread_values(ID = jnumber("Id"),
                               Name = jstring("Name")) %>%
                 enter_object("GroupIds") %>%
@@ -50,7 +53,7 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
                 query <- paste0(path,"group_metadata?group_ids=",
                                 paste(profiles$groupid[profiles$ID == i],
                                       collapse = "%2C"))
-                groupDescriptions <- rbind(fromJSON(query), groupDescriptions)
+                groupDescriptions <- rbind(query %>% GET %>% content("text") %>% fromJSON(), groupDescriptions)
         }
         groupDescriptions <- groupDescriptions %>%
                 select(Id, Name)
