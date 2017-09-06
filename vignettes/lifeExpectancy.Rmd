@@ -38,10 +38,6 @@ library(fingertipsR)
 library(ggplot2)
 ```
 
-```{r test}
-knitr::kable(area_types(), row.names = FALSE)
-```
-
 ## IndicatorID
 
 There are two indicators we are interested in for this exercise. Without consulting the [Fingertips website](https://fingertips.phe.org.uk/  "Fingertips"), we know approximately what they are called:
