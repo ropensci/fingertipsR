@@ -36,7 +36,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
 }
 
 retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "https://fingertips.phe.org.uk/api/"
+        path <- "http://fingertips.phe.org.uk/api/"
         fingertips_data <- data.frame()
         for (DomainID in DomainIDs) {
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {
