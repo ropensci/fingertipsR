@@ -15,6 +15,8 @@
 #' indicator_metadata(ProfileID = 129)}
 #' @return The metadata associated with each indicator/domain/profile identified
 #' @importFrom utils read.csv
+#' @importFrom httr GET content set_config config
+#' @importFrom readr cols
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups,
@@ -25,6 +27,7 @@
 indicator_metadata <- function(IndicatorID = NULL,
                                DomainID = NULL,
                                ProfileID = NULL) {
+        set_config(config(ssl_verifypeer = 0L))
         if (!(is.null(IndicatorID))) {
                 AllIndicators <- indicators()
                 if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
@@ -33,7 +36,9 @@ indicator_metadata <- function(IndicatorID = NULL,
                 path <- "https://fingertips.phe.org.uk/api/indicator_metadata/csv/by_indicator_id?indicator_ids="
                 dataurl <- paste0(path,
                                   paste(IndicatorID, collapse = "%2C"))
-                indicator_metadata <- read.csv(dataurl)
+                indicator_metadata <- dataurl %>%
+                        GET %>%
+                        content("parsed", type = "text/csv", encoding = "UTF-8", col_types = cols())
         } else if (!(is.null(DomainID))) {
                 AllProfiles <- profiles()
                 if (sum(AllProfiles$DomainID %in% DomainID) == 0){
@@ -43,7 +48,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- data.frame()
                 for (Domain in DomainID) {
                         dataurl <- paste0(path, Domain)
-                        indicator_metadata <- rbind(read.csv(dataurl),
+                        indicator_metadata <- rbind(dataurl %>% GET %>% content("parsed", type = "text/csv", encoding = "UTF-8", col_types = cols()),
                                                     indicator_metadata)
                 }
         } else if (!(is.null(ProfileID))) {
@@ -55,7 +60,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- data.frame()
                 for (Profile in ProfileID) {
                         dataurl <- paste0(path, Profile)
-                        indicator_metadata <- rbind(read.csv(dataurl),
+                        indicator_metadata <- rbind(dataurl %>% GET %>% content("parsed", type = "text/csv", encoding = "UTF-8", col_types = cols()),
                                                     indicator_metadata)
                 }
         } else {
