@@ -4,7 +4,6 @@
 .Ruserdata
 
 temp/
-
 fingertips_test.R
 retrieve_test.R
 fingertips_test.Rd

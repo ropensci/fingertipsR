@@ -4,6 +4,17 @@ author: "Seb Fox"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+---
+title: "Interactively selecting indicators"
+author: "Seb Fox"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
   %\VignetteIndexEntry{Interactively selecting indicators}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
