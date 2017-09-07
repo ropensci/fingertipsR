@@ -122,7 +122,9 @@ The researcher may then wish to pull down the data for one or more indicators fr
 However, before they can do so, they need to check what geographies are represented by the indicators data are not always available at all geographies.
 
 ```{r}
-# can't do this at the moment, see issue #21: https://GitHub.com/PublicHealthEngland/fingertipsR/issues/21
+ind_at <- indicator_areatypes() %>%
+        left_join(area_types(), by = c("AreaTypeID","AreaTypeID")) %>%
+        head()
 ```
 
 The researcher is now in a position to read the data into the working environment in R. 

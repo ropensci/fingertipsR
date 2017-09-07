@@ -13,16 +13,20 @@
 #' indicators(ProfileID = 19)}
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
+#' @importFrom httr GET content set_config config
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
 #'   \code{\link{indicator_metadata}} for indicator metadata and
 #'   \code{\link{profiles}} for profile lookups and
-#'   \code{\link{deprivation_decile}} for deprivation decile lookups
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
+#'   \code{\link{category_types}} for category lookups and
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
 #' @export
 
 indicators <- function(ProfileID = NULL,
                        DomainID = NULL) {
-        path <- "http://fingertips.phe.org.uk/api/"
+        path <- "https://fingertips.phe.org.uk/api/"
+        set_config(config(ssl_verifypeer = 0L))
         if (!is.null(ProfileID)){
                 tempdf <- profiles(ProfileID = ProfileID)
                 DomainID <- tempdf$DomainID
@@ -35,10 +39,10 @@ indicators <- function(ProfileID = NULL,
         }
         df <- data.frame()
         for (dom in DomainID) {
-                dfRaw <- fromJSON(paste0(path,
-                                         "indicator_metadata/by_group_id?group_ids=",
-                                         dom),
-                                  flatten = TRUE)
+                dfRaw <- paste0(path,"indicator_metadata/by_group_id?group_ids=",dom) %>%
+                        GET %>%
+                        content("text") %>%
+                        fromJSON(flatten = TRUE)
                 if (length(dfRaw) != 0){
                         dfRaw <- unlist(dfRaw, recursive = FALSE)
                         dfIDs <- dfRaw[grepl("IID", names(dfRaw))]
