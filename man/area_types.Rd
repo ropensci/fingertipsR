@@ -35,10 +35,12 @@ area_types(areas)
 \code{\link{indicators}} for indicator lookups,
   \code{\link{profiles}} for profile lookups and
   \code{\link{deprivation_decile}} for deprivation decile lookups and
-  \code{\link{category_types}} for category lookups
+  \code{\link{category_types}} for category lookups and
+  \code{\link{indicator_areatypes}} for indicators by area types lookups
 
 Other lookup functions: \code{\link{category_types}},
   \code{\link{deprivation_decile}},
+  \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

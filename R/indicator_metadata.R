@@ -21,7 +21,9 @@
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups,
 #'   \code{\link{deprivation_decile}} for deprivation lookups and
-#'   \code{\link{area_types}} for area types and their parent mappings
+#'   \code{\link{area_types}} for area types and their parent mappings and
+#'   \code{\link{category_types}} for category lookups and
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
 #' @export
 
 indicator_metadata <- function(IndicatorID = NULL,

@@ -28,7 +28,8 @@
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups and
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups and
-#'   \code{\link{category_types}} for category lookups
+#'   \code{\link{category_types}} for category lookups and
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
 
 area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
@@ -75,10 +76,9 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
 
 #' Category types
 #'
-#' Outputs a data frame of area type ids, their descriptions, and how they map
-#' to parent area types
+#' Outputs a data frame of category type ids, their name (along with a short name)
 #'
-#' @return A data frame of area type ids and their descriptions
+#' @return A data frame of category type ids and their descriptions
 #' @import dplyr
 #' @import tidyjson
 #' @importFrom jsonlite fromJSON
@@ -89,7 +89,8 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups and
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups and
-#'   \code{\link{area_types}} for area type lookups
+#'   \code{\link{area_types}} for area type lookups and
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
 
 category_types <- function() {
         path <- "https://fingertips.phe.org.uk/api/"
@@ -100,4 +101,22 @@ category_types <- function() {
                 fromJSON %>%
                 pull(Categories) %>%
                 map_df(rbind)
+}
+
+#' Area types by indicator
+#'
+#' Outputs a data frame of indicator ids and the area type ids that exist for that indicator
+#'
+#' @return A data frame of indicator ids and area type ids
+#' @importFrom utils data
+#' @export
+#' @family lookup functions
+#' @seealso \code{\link{indicators}} for indicator lookups,
+#'   \code{\link{profiles}} for profile lookups and
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
+#'   \code{\link{area_types}} for area type lookups and
+#'   \code{\link{category_types}} for category type lookups
+indicator_areatypes <- function() {
+        data("areatypes_by_indicators", envir = environment())
+        return(areatypes_by_indicators)
 }

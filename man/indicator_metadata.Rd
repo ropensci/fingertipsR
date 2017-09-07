@@ -39,10 +39,13 @@ indicator_metadata(ProfileID = 129)}
 \code{\link{indicators}} for indicator lookups,
   \code{\link{profiles}} for profile lookups,
   \code{\link{deprivation_decile}} for deprivation lookups and
-  \code{\link{area_types}} for area types and their parent mappings
+  \code{\link{area_types}} for area types and their parent mappings and
+  \code{\link{category_types}} for category lookups and
+  \code{\link{indicator_areatypes}} for indicators by area types lookups
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
   \code{\link{deprivation_decile}},
+  \code{\link{indicator_areatypes}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

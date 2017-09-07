@@ -10,6 +10,10 @@
 
 * `fingertips_redred` highlights which areas are statistically different to comparator *and* trending in the wrong direction
 
+* `category_types()` lookup function to support ordering where categories exist (eg, deprivation decile)
+
+* `areatypes_by_indicators()` to help users determine which indicators are available for each area type (and vice versa)
+
 # fingertipsR version 0.1.0
 
 This package allows the user to retrieve tables of:

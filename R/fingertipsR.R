@@ -39,4 +39,5 @@ globalVariables(c("Id",
                   "TimeperiodSortable",
                   "RecentTrend",
                   "ComparedtoEnglandvalueorpercentiles",
-                  "Comparedtosubnationalparentvalueorpercentiles"))
+                  "Comparedtosubnationalparentvalueorpercentiles",
+                  "areatypes_by_indicators"))
