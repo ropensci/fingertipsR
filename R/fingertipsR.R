@@ -40,4 +40,6 @@ globalVariables(c("Id",
                   "RecentTrend",
                   "ComparedtoEnglandvalueorpercentiles",
                   "Comparedtosubnationalparentvalueorpercentiles",
-                  "areatypes_by_indicators"))
+                  "areatypes_by_indicators",
+                  "ProfileID",
+                  "AreaTypeID"))

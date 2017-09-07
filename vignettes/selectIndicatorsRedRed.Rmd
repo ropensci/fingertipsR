@@ -1,0 +1,65 @@
+---
+title: "Interactively selecting indicators"
+author: "Seb Fox"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Interactively selecting indicators}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This short example introduces two new features included in the 0.1.1 version of the package:
+
+* interactively selecting indicators
+* highlighting the areas for each indicator that are deteriorating and are already significantly worse than the England (or parent) value
+
+The following libraries are needed for this vignette:
+```{r libraries, message=FALSE}
+library(fingertipsR)
+library(ggplot2)
+```
+
+To begin with, we want to select the indicators that we want to analyse in this example. The `select_indicators()` function helps us do this:
+
+```{r select indicators, eval=FALSE}
+inds <- select_indicators()
+```
+
+Once running the above code a browser window opens and will spend some time loading while it access the available indicators. Once loaded, the search bar in the top right corner allows the user to type in any searches to help locate the indicators of interest. This example will use the following indicators, selected at random, which belong to the Wider Determinants of Health profile. Note, the indicator IDs of the selected indicators are displayed on the left-hand side. The user can click an indicator for a second time if the indicator has been selected unnecessarily.
+
+```{r inds, echo=FALSE}
+inds <- c(90630, 10101, 10301, 
+          92313, 10401, 11401, 
+          10501, 92314, 11502, 
+          10601, 20101, 20201, 
+          20601, 20301, 20602, 
+          90284, 90832, 90285, 
+          22001, 22002, 90244)
+inds
+```
+
+The second function to be highlighted in this vignette is `fingertips_redred()`. This will return a data frame of the data for all of the areas that are performing significantly worse than the chosen benchmark value and are deteriorating.
+
+```{r fingertips redred}
+df <- fingertips_redred(inds, Comparator = "England")
+```
+
+The `geom_time()` function from `ggplot2` can be used to visualise the poorly performing areas:
+
+```{r ggplot, fig.height=16, fig.width=8}
+df$IndicatorName <- sapply(strwrap(df$IndicatorName, 60, 
+                                   simplify = FALSE), 
+                           paste, collapse= "\n")
+p <- ggplot(df, aes(IndicatorName, AreaName)) + 
+        geom_tile(fill = "darkred",
+                  colour = "white") + 
+        theme_minimal() +
+        theme(axis.text.x = element_text(angle = 45,
+                                         hjust = 1,
+                                         size = rel(0.85)),
+              axis.text.y = element_text(size = rel(0.9))) +
+        labs(y = "Upper Tier Local Authority",
+             x = "Indicator")
+p
+```

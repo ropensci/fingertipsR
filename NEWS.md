@@ -14,6 +14,8 @@
 
 * `areatypes_by_indicators()` to help users determine which indicators are available for each area type (and vice versa)
 
+* A new vignette demonstrating how some of the new functions can be used
+
 # fingertipsR version 0.1.0
 
 This package allows the user to retrieve tables of:

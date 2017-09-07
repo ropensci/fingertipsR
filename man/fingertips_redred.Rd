@@ -4,20 +4,12 @@
 \alias{fingertips_redred}
 \title{Red significance and red trend}
 \usage{
-fingertips_redred(ProfileID = NULL, AreaTypeID = 102,
-  Comparator = "England")
+fingertips_redred(Comparator = "England", ...)
 }
 \arguments{
-\item{ProfileID}{Numeric vector, id of profiles of interest. Indicator
-polarity can vary between profiles therefore if using one of the comparison
-fields it is recommended to complete this field as well as IndicatorID. If
-IndicatorID is populated, ProfileID can be ignored or must be the same
-length as IndicatorID (but can contain NAs).}
-
-\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
-default is 102}
-
 \item{Comparator}{String, either "England" or "Parent" to determine which field to compare the spot value significance to}
+
+\item{...}{Parameters provided to fingertips_data()}
 }
 \description{
 Filters data returned by the fingertips_data function for values for areas that are trending significantly
