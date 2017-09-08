@@ -62,7 +62,7 @@ However, accessing the data in this manner limits the user to a single group of 
 To enable programmatic access to the data PHE developed an application programming interface (API). 
 However, use of an API is highly technical and not always suited to the public health researcher. 
 
-R is free, open source software for statistical analysis. [@rsoftware]
+R is a free, open source software for statistical analysis. [@rsoftware]
 It doubles as both a programming language and analytical environment for performing statistical analyses.
 The programming language facilitates expansion of the software through additional user-written 'packages' which are then stored in an online repository. 
 Such packages bundle together analytic commands which share a common purpose.
@@ -88,7 +88,7 @@ These geographies themselves fall within nested geographies based on whether the
 
 All indicators have a fundamentally identical structure. 
 Columns provide: a code that uniquely identifies a geography, three time variables that specify the year, quarter and month, variables for count and denominator are provided where appropriate, a value column gives the actual value - such as a prevalence or rate - plotted in the various representations on the website. 
-Rows provide an observation for the indicator at a given point in time and for a given geography.
+Rows provide an observation for the indicator at a specified time period, age group and sex for a given geography.
 
 ## Accessing the fingertips API
 
@@ -119,12 +119,14 @@ ftips_indicators %>%
 ```
 
 The researcher may then wish to pull down the data for one or more indicators from one or more domains or profiles.
-However, before they can do so, they need to check what geographies are represented by the indicators data are not always available at all geographies.
+However, before they can do so, they need to check what geographies are represented as the indicators data are not always available at all geographies.
 
 ```{r}
 ind_at <- indicator_areatypes() %>%
-        left_join(area_types(), by = c("AreaTypeID","AreaTypeID")) %>%
-        head()
+        left_join(area_types(), by = c("AreaTypeID","AreaTypeID"))  %>%
+        select(IndicatorID, AreaTypeID, AreaTypeName) %>%
+        unique()
+head(ind_at)
 ```
 
 The researcher is now in a position to read the data into the working environment in R. 
@@ -196,24 +198,28 @@ The Fingertips website, along with its API, are in continuous development.
 The website has new data added to it on a monthly schedule, and any changes to the API are implemented at the same time. 
 As a result there is a lot of scope for extension to the functions that could be provided in the R package. 
 
-The package was developed openly on [GitHub](https://GitHub.com/PublicHealthEngland/fingertipsR), an online store of computer code that is carefully version controlled through Git software.
+The package was developed openly on [GitHub](https://GitHub.com/PublicHealthEngland/fingertipsR), an online location where computer code is stored, where it is carefully version controlled through Git software.
 Various features of Git and GitHub facilitate scientific collaboration. [@ram2013git] 
 <!--ST I struggle a little on terminology here, I don't want to call GitHub a repository as this means the repo. 
 Also, don't think database fits exactly. 
 But not particularly satisfied with 'store' either so suggestions welcome-->
+<!--SF I've tried re-wording it a little to make it more lay, not sure I've succeeded-->
 GitHub is a decentralised system - copies of code can be stored locally and then synchronised at the central repository.
 Crucially, Git and GitHub allow any user to examine and adapt code then provide the adapted code back to the main repository for a project. <!--ST I think I'm repeating myself here.-->
+<!--SF I think this is a useful summarising sentence.-->
 Additionally, GitHub provides an issue tracker with which users of software can report problems with the software or suggest new features that might be incorporated. 
 The inherent version control allows analytic code to be reverted to previous states, meaning that breaking changes can be easily resolved. 
-Some suggested extensions to the fingertipsR package include: 
+Feedback based on the original release of the package has lead to developments to support different types of researchers, including: 
 
 * add a `find_indicator` graphical user interface, to support users less comfortable with R's square bracket indexing
 * add a function to identify areas that are significantly worse than the national average and show a significant trend towards worse values
+
+Additional suggestions for future updates are:
 * predict future indicator values based on other indicators within a profile
 
 Users of the fingertipsR package are encouraged to add to the issues list if they feel extensions might be beneficial for the users of this package.
 <!--ST - Seb, can you replace the *n*s here?-->
-At the date of writing, the package itself has been downloaded 454 times, 26 issues have been raised and 4 researchers have contributed to the project repository. 
+At the date of writing, the package itself has been downloaded 607 times, 30 issues have been raised and 4 researchers have contributed to the project repository. 
 
 # Discussion/conclusions
 
