@@ -18,7 +18,7 @@ select_indicators <- function() {
                 fillRow(flex = c(1, 3),
                                         miniContentPanel(
                                                 h4("Selected indicators"),
-                                                dataTableOutput("selected")
+                                                tableOutput("selected")
                                         ),
                                         miniContentPanel(
                                                 withSpinner(
@@ -36,19 +36,19 @@ select_indicators <- function() {
                         datatable(inds[,c("IndicatorID","IndicatorName","DomainName","ProfileName")],
                                   callback = JS("var tips = 'Select/unselect indicator',
                                                    cells = $('#indicators tr td');
-                                                   for (var i = 0; i < tips.length; i++) {
-                                                   $(cells[i]).attr('title', tips );
-                                                   $(cells[i]).css('cursor', 'pointer');
-                                                   }"),
+                                                   $(cells).attr('title', tips );
+                                                   $(cells).css('cursor', 'pointer');
+                                                   "),
+                                  options = list(
+                                          pageLength = 25),
                                   rownames = FALSE,
                                   selection = "multiple"
                         ), server = FALSE)
 
-                output$selected = renderDataTable({
+                output$selected = renderTable({
                         inds[input$indicators_rows_selected,"IndicatorID", drop = FALSE]
                         },
-                        rownames = FALSE,
-                        selection = "none")
+                        rownames = FALSE)
                 observeEvent(input$done, {
                         returnValue <- as.numeric(inds[input$indicators_rows_selected,1])
                         stopApp(returnValue)
