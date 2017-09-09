@@ -6,6 +6,7 @@ output:
   pdf_document: default
   html_notebook: default
   word_document: default
+  html_document: default
 bibliography: references.bib
 ---
 
