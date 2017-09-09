@@ -34,7 +34,9 @@ profiles(ProfileName = "Public Health Outcomes Framework")
   \code{\link{deprivation_decile}} for deprivation decile lookups
 
 Other lookup functions: \code{\link{area_types}},
+  \code{\link{category_types}},
   \code{\link{deprivation_decile}},
+  \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
   \code{\link{indicators}}
 }

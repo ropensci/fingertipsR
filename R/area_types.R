@@ -20,13 +20,16 @@
 #' @examples area_types(areas)
 #' @import dplyr
 #' @import tidyjson
+#' @importFrom jsonlite fromJSON
 #' @importFrom stats complete.cases
 #' @importFrom httr GET content set_config config
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups and
-#'   \code{\link{deprivation_decile}} for deprivation decile lookups
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
+#'   \code{\link{category_types}} for category lookups and
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
 
 area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
@@ -69,4 +72,51 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
                 }
         }
         return(area_types[complete.cases(area_types),])
+}
+
+#' Category types
+#'
+#' Outputs a data frame of category type ids, their name (along with a short name)
+#'
+#' @return A data frame of category type ids and their descriptions
+#' @import dplyr
+#' @import tidyjson
+#' @importFrom jsonlite fromJSON
+#' @importFrom purrr map_df
+#' @importFrom httr GET content set_config config
+#' @export
+#' @family lookup functions
+#' @seealso \code{\link{indicators}} for indicator lookups,
+#'   \code{\link{profiles}} for profile lookups and
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
+#'   \code{\link{area_types}} for area type lookups and
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+
+category_types <- function() {
+        path <- "https://fingertips.phe.org.uk/api/"
+        set_config(config(ssl_verifypeer = 0L))
+        category_types <- paste0(path,"category_types") %>%
+                GET %>%
+                content("text") %>%
+                fromJSON %>%
+                pull(Categories) %>%
+                map_df(rbind)
+}
+
+#' Area types by indicator
+#'
+#' Outputs a data frame of indicator ids and the area type ids that exist for that indicator
+#'
+#' @return A data frame of indicator ids and area type ids
+#' @importFrom utils data
+#' @export
+#' @family lookup functions
+#' @seealso \code{\link{indicators}} for indicator lookups,
+#'   \code{\link{profiles}} for profile lookups and
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
+#'   \code{\link{area_types}} for area type lookups and
+#'   \code{\link{category_types}} for category type lookups
+indicator_areatypes <- function() {
+        data("areatypes_by_indicators", envir = environment())
+        return(areatypes_by_indicators)
 }
