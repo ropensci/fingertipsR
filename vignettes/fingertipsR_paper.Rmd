@@ -67,7 +67,7 @@ R is a free, open source software for statistical analysis. [@rsoftware]
 It doubles as both a programming language and analytical environment for performing statistical analyses.
 The programming language facilitates expansion of the software through additional user-written 'packages' which are then stored in an online repository. 
 Such packages bundle together analytic commands which share a common purpose.
-The ease with which R can be expanded through its packaging system has lead to exponential growth in the software, creating a very broad ecosystem of statistical techniques. [@johnfox2009]
+The ease with which R can be expanded through its packaging system has led to exponential growth in the software, creating a very broad ecosystem of statistical techniques. [@johnfox2009]
 
 The `fingertipsR` package extends R by providing an easy-to-use set of functions to query the Fingertips API, allowing direct import of data to R. [@fingertipsrpkg]
 
