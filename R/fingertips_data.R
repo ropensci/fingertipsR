@@ -183,10 +183,10 @@ fingertips_data <- function(IndicatorID = NULL,
                         fingertips_data <- filter(fingertips_data, is.na(CategoryType))
                 }
         }
-        if (stringsAsFactors == FALSE) {
-                fingertips_data[sapply(fingertips_data, is.factor)] <-
-                        lapply(fingertips_data[sapply(fingertips_data, is.factor)],
-                               as.character)
+        if (stringsAsFactors == TRUE) {
+                fingertips_data[sapply(fingertips_data, is.character)] <-
+                        lapply(fingertips_data[sapply(fingertips_data, is.character)],
+                               factor)
         }
         return(fingertips_data)
 }

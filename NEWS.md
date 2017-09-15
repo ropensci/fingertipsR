@@ -1,3 +1,7 @@
+# fingertipsR 0.1.1.9000
+
+* fixed issue with rank and some `fingertips_data` queries
+
 # fingertipsR 0.1.1
 
 * `select_indicators()` allows user to point and click to select indicators

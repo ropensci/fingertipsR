@@ -68,6 +68,6 @@ indicator_metadata <- function(IndicatorID = NULL,
         } else {
                 stop("One of IndicatorID, DomainID or ProfileID must be populated")
         }
-        colnames(indicator_metadata)[colnames(indicator_metadata)=="Indicator.ID"] <- "IndicatorID"
+        colnames(indicator_metadata)[colnames(indicator_metadata)=="Indicator ID"] <- "IndicatorID"
         return(indicator_metadata)
 }
