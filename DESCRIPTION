@@ -11,14 +11,13 @@ BugReports: https://github.com/PublicHealthEngland/fingertipsR/issues
 Imports:
     dplyr,
     jsonlite,
-    tidyjson,
+    data.table,
     httr,
     purrr,
     DT,
     miniUI,
     shiny,
-    shinycssloaders,
-    readr
+    shinycssloaders
 Suggests:
     knitr,
     rmarkdown,
