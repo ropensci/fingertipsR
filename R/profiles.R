@@ -16,7 +16,7 @@
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET content set_config config
-#' @import tidyjson
+#' @importFrom data.table rbindlist
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
 #'   \code{\link{indicators}} for indicator lookups,
@@ -30,13 +30,19 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
         profiles <- paste0(path,"profiles") %>%
                 GET %>%
                 content("text") %>%
-                gather_array() %>%
-                spread_values(ID = jnumber("Id"),
-                              Name = jstring("Name")) %>%
-                enter_object("GroupIds") %>%
-                gather_array %>%
-                append_values_number("groupid") %>%
-                select(ID, Name, groupid)
+                fromJSON
+        idname <- profiles[,c("Id", "Name")]
+
+        profiles <- lapply(profiles$GroupIds, data.frame)
+        names(profiles) <- idname$Id
+        profiles <- rbindlist(profiles,
+                              use.names = TRUE,
+                              fill = TRUE,
+                              idcol = "profiles") %>%
+                mutate(profiles = as.numeric(profiles)) %>%
+                left_join(idname, by = c("profiles" = "Id"))
+        names(profiles) <- c("ID", "groupid", "Name")
+        profiles <- profiles[, c("ID", "Name", "groupid")]
         if (!is.null(ProfileID)) {
                 profiles <- filter(profiles, ID %in% ProfileID)
                 if (nrow(profiles) == 0){

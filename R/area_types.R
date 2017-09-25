@@ -51,10 +51,10 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         names(parentAreasNoNames) <- parentAreas$Id
         parentAreas <- parentAreasNoNames
 
-        parentAreas <- data.table::rbindlist(parentAreas,
-                                             use.names = TRUE,
-                                             fill = TRUE,
-                                             idcol = "t") %>%
+        parentAreas <- rbindlist(parentAreas,
+                                 use.names = TRUE,
+                                 fill = TRUE,
+                                 idcol = "t") %>%
                 select(t, Id, Name) %>%
                 rename(AreaTypeID = t,
                        ParentAreaTypeID = Id,
