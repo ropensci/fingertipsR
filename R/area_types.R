@@ -19,10 +19,10 @@
 #' @examples areas <- c("counties","district")
 #' @examples area_types(areas)
 #' @import dplyr
-#' @import tidyjson
 #' @importFrom jsonlite fromJSON
 #' @importFrom stats complete.cases
 #' @importFrom httr GET content set_config config
+#' @importFrom data.table rbindlist
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -46,18 +46,19 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         parentAreas <- paste0(path,"area_types/parent_area_types") %>%
                 GET %>%
                 content("text") %>%
-                gather_array %>%
-                spread_values(Id = jstring("Id"),
-                              Name = jstring("Name"),
-                              Short = jstring("Short"))  %>%
-                enter_object("ParentAreaTypes") %>%
-                gather_array  %>%
-                spread_values(ParentAreaID = jstring("Id"),
-                              ParentAreaName = jstring("Name")) %>%
-                select(Id,ParentAreaID,ParentAreaName) %>%
-                rename(AreaTypeID = Id,
-                       ParentAreaTypeID = ParentAreaID,
-                       ParentAreaTypeName = ParentAreaName) %>%
+                fromJSON
+        parentAreasNoNames <- parentAreas$ParentAreaTypes
+        names(parentAreasNoNames) <- parentAreas$Id
+        parentAreas <- parentAreasNoNames
+
+        parentAreas <- data.table::rbindlist(parentAreas,
+                                             use.names = TRUE,
+                                             fill = TRUE,
+                                             idcol = "t") %>%
+                select(t, Id, Name) %>%
+                rename(AreaTypeID = t,
+                       ParentAreaTypeID = Id,
+                       ParentAreaTypeName = Name) %>%
                 mutate(AreaTypeID = as.numeric(AreaTypeID),
                        ParentAreaTypeID = as.numeric(ParentAreaTypeID)) %>%
                 data.frame()
@@ -80,7 +81,6 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
 #'
 #' @return A data frame of category type ids and their descriptions
 #' @import dplyr
-#' @import tidyjson
 #' @importFrom jsonlite fromJSON
 #' @importFrom purrr map_df
 #' @importFrom httr GET content set_config config

@@ -1,7 +1,6 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
-#' @importFrom readr cols
 retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
         path <- "https://fingertips.phe.org.uk/api/"
         types <- "icccccccccccnnnnicccci"
@@ -41,7 +40,6 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
-#' @importFrom readr cols
 retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
         path <- "https://fingertips.phe.org.uk/api/"
         types <- "icccccccccccnnnnicccci"
@@ -65,7 +63,6 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
-#' @importFrom readr cols
 retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
         path <- "https://fingertips.phe.org.uk/api/"
         types <- "icccccccccccnnnnicccci"
