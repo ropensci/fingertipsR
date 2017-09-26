@@ -1,9 +1,10 @@
-This is the second submission of this package
+This is the third submission of this package.
+This submission is due to package being archived because of dependency on other archived package (tidyjson). The dependecies have been removed now.
 
 ## Test 
 
 * local OS X install, R 3.4.1
-* used Travis to check on Linux (07/09/2017)
+* used Travis to check on Linux (26/09/2017)
 
 ## R CMD check results
 
