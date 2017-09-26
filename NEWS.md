@@ -1,6 +1,8 @@
-# fingertipsR 0.1.1.9000
+# fingertipsR 0.1.2
 
 * fixed issue with rank and some `fingertips_data` queries
+
+* removed dependency on tidyjson as a result of its removal from CRAN
 
 # fingertipsR 0.1.1
 
