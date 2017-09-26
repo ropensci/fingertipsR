@@ -7,7 +7,7 @@
 #' # Opens a browser window allowing the user to select indicators by their name, domain and profile
 #' inds <- select_indicators()}
 #' @import miniUI
-#' @importFrom shiny runGadget fillRow h4 observeEvent browserViewer stopApp
+#' @importFrom shiny runGadget fillRow h4 observeEvent browserViewer stopApp renderTable tableOutput
 #' @importFrom DT dataTableOutput renderDataTable JS datatable
 #' @importFrom shinycssloaders withSpinner
 #' @export
