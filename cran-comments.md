@@ -8,7 +8,18 @@ The package was archived because of dependency on other archived package (tidyjs
 
 ## R CMD check results
 
-There were no NOTEs, WARNINGs or ERRORs.
+There were no WARNINGs or ERRORs.
+
+There was one NOTE:
+Maintainer: 'Sebastian Fox <sebastian.fox@phe.gov.uk>'
+
+New submission
+
+Package was archived on CRAN
+
+CRAN repository db overrides:
+  X-CRAN-Comment: Archived on 2017-09-18 as it depends on 'tidyjson',
+    which was archived.
 
 ## Downstream dependencies
 
