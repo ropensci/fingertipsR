@@ -1,5 +1,5 @@
-This is the third submission of this package.
-This submission is due to package being archived because of dependency on other archived package (tidyjson). The dependecies have been removed now.
+This is a resubmission of this package following it being archived.
+The package was archived because of dependency on other archived package (tidyjson). The dependecies have been removed now.
 
 ## Test 
 
