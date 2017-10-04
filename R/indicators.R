@@ -30,6 +30,7 @@ indicators <- function(ProfileID = NULL,
         if (!is.null(ProfileID)){
                 tempdf <- profiles(ProfileID = ProfileID)
                 DomainID <- tempdf$DomainID
+                if (!is.null(DomainID)) warning("DomainID is ignored as ProfileID has also been entered")
         } else if (!is.null(DomainID)) {
                 tempdf <- profiles()
                 DomainID <- DomainID
