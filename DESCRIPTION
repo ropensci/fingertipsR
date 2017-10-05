@@ -17,8 +17,7 @@ Imports:
     DT,
     miniUI,
     shiny,
-    shinycssloaders,
-    readr
+    shinycssloaders
 Suggests:
     knitr,
     rmarkdown,
