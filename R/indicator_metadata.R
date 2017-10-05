@@ -16,6 +16,7 @@
 #' @return The metadata associated with each indicator/domain/profile identified
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
+#' @importFrom readr read_csv
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups,
