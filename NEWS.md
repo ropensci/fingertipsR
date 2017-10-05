@@ -1,3 +1,7 @@
+# fingetipsR 0.1.3
+
+* API structure updated to include 99.8 and 95 confidence intervals. Reflected in the outputs of `fingertips_data`. **NOTE** earlier versions of the package will not work anymore because of the underlying change in the API structure
+
 # fingertipsR 0.1.2
 
 * fixed issue with rank and some `fingertips_data` queries

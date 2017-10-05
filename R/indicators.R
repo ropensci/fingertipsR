@@ -29,8 +29,8 @@ indicators <- function(ProfileID = NULL,
         set_config(config(ssl_verifypeer = 0L))
         if (!is.null(ProfileID)){
                 tempdf <- profiles(ProfileID = ProfileID)
-                DomainID <- tempdf$DomainID
                 if (!is.null(DomainID)) warning("DomainID is ignored as ProfileID has also been entered")
+                DomainID <- tempdf$DomainID
         } else if (!is.null(DomainID)) {
                 tempdf <- profiles()
                 DomainID <- DomainID
