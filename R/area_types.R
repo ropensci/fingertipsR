@@ -31,22 +31,18 @@
 #'   \code{\link{category_types}} for category lookups and
 #'   \code{\link{indicator_areatypes}} for indicators by area types lookups
 
-area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
+area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
                 warning("AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
         }
         path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
-        area_types <- paste0(path,"area_types") %>%
-                GET %>%
-                content("text") %>%
-                fromJSON
-        area_types <- area_types[,c("Id","Name")]
-        names(area_types) <- c("AreaTypeID","AreaTypeName")
         parentAreas <- paste0(path,"area_types/parent_area_types") %>%
                 GET %>%
                 content("text") %>%
                 fromJSON
+        area_types <- parentAreas[,c("Id", "Name")]
+        names(area_types) <- c("AreaTypeID","AreaTypeName")
         parentAreasNoNames <- parentAreas$ParentAreaTypes
         names(parentAreasNoNames) <- parentAreas$Id
         parentAreas <- parentAreasNoNames
@@ -62,7 +58,8 @@ area_types <- function(AreaTypeName = NULL, AreaTypeID = NULL){
                 mutate(AreaTypeID = as.numeric(AreaTypeID),
                        ParentAreaTypeID = as.numeric(ParentAreaTypeID)) %>%
                 data.frame()
-        area_types <- left_join(area_types, parentAreas, by = c("AreaTypeID" = "AreaTypeID"))
+        area_types <- left_join(area_types, parentAreas, by = c("AreaTypeID" = "AreaTypeID")) %>%
+                arrange(AreaTypeID)
         if (!is.null(AreaTypeName)) {
                 AreaTypeName <- paste(AreaTypeName, collapse = "|")
                 area_types <- area_types[grep(tolower(AreaTypeName),
