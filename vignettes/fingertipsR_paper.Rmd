@@ -30,17 +30,17 @@ source("fingertips_paper_captions.R", echo = FALSE)
 [Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England (PHE). 
 The indicators are arranged in thematic or topical profiles covering a wide range of health issues including:
 
-* broad Health Profiles
-* specific topics such as liver disease and end of life
-* risk factors including alcohol, smoking, physical activity
-* population healthcare health services data for general practices, cancer, mental health
-* health protection data on general health protection, TB, antimicrobial resistance
-* lifecourse profiles for younger and older people
-* mortality and morbidity.
+* geographically-themed groupings providing broad health profiles for local geographies
+* disease-themed groupings such as liver disease and cardiovascular
+* risk factor-themed groupings based on risk factors including alcohol, smoking, physical activity
+* population healthcare health services-themed groupings including data for general practices and end of life care
+* health protection-themed groupings including data for topics such as tuberculosis, antimicrobial resistance
+* age-themed groupings including data for younger and older people.
+* outcomes-themed groupings including data on mortality and morbidity.
 
 Fingertips makes data available for more than 1,500 indicators spread across more than 70 profiles. 
-The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts (graphs which compare multiple indicators for a single geographic area), scatter plots and so on.
-Data can be obtained as downloads or figures which can be exported or cut and paste into reports and slides.
+The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth geographical maps, line charts for trends, "spine" charts (graphs which compare multiple indicators for a single geographic area), scatter plots and so on.
+Data can be obtained as downloads or figures which can be exported or cut and pasted into reports and slides.
 
 A recent addition to the Fingertips platform was an [Automated Programming Interface](https://fingertips.phe.org.uk/api) (API) to enable developers to re-use the data. 
 To facilitate access to Fingertips data we have designed an *R* package - `fingertipsR` - enabling rapid and easy access to the data by analysts and data scientists. 
@@ -139,7 +139,7 @@ The researcher is now in a position to read the data into the working environmen
 ftips_data <- fingertips_data(IndicatorID = 90362, AreaTypeID = 102)
 ftips_data %>% 
         select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, 
-               Sex, Age, Timeperiod, Value, LowerCIlimit, UpperCIlimit) %>%
+               Sex, Age, Timeperiod, Value, LowerCI95.0limit, UpperCI95.0limit) %>%
         mutate(IndicatorName = 
                        str_trunc(as.character(IndicatorName), width = 20, "right"),
                AreaName = str_trunc(as.character(AreaName), width = 20, "right")) %>% 
@@ -215,8 +215,8 @@ The inherent version control identifies all changes that were made to analytic c
 This allows analytic code to be reverted to previous states, meaning that breaking changes can be easily reverted. 
 Feedback based on the original release of the package has lead to developments to support different types of researchers, including: 
 
-* add a `find_indicator` graphical user interface, to support users less comfortable with R's square bracket indexing
-* add a function to identify areas that are significantly worse than the national average and show a significant trend towards worse values
+* add a `select_indicators` graphical user interface, to support users less comfortable with R's square bracket indexing
+* add a function to identify areas that are significantly worse than the national average and show a significant deteriorating trend
 
 Additional suggestions for future updates include:
 
@@ -225,7 +225,7 @@ Additional suggestions for future updates include:
  * flag new or recently updated indicators
 
 Users of the fingertipsR package are encouraged to add to the issues list if they feel extensions might be beneficial for the users of this package.
-At the date of writing, the package itself has been downloaded from CRAN 607 times, 30 issues have been raised at GitHub and four researchers have contributed to the project repository. 
+Between its release at the start of June 2017 and mid-Octber 2017, the package itself has been downloaded from CRAN over 2,000 times. This figure includes occasions where a later version of the package has been released on CRAN and subsequently updated by the user. In addition, 32 issues have been raised at GitHub and four researchers have contributed to the project repository. 
 
 # Discussion/conclusions
 
