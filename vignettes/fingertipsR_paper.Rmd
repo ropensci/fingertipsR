@@ -1,6 +1,5 @@
 ---
-title: 'DRAFT - fingertipsR: an R package for accessing population health information
-  in England'
+title: 'fingertipsR: an R package for accessing population health information in England'
 author: "Sebastian Fox, Julian Flowers, Simon Thelwall, Daniel Flint, Doris Hain"
 output:
   pdf_document: default
@@ -28,18 +27,9 @@ source("fingertips_paper_captions.R", echo = FALSE)
 # Abstract
 
 [Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England (PHE). 
-The indicators are arranged in thematic or topical profiles covering a wide range of health issues including:
-
-* broad Health Profiles
-* specific topics such as liver disease and end of life
-* risk factors including alcohol, smoking, physical activity
-* population healthcare health services data for general practices, cancer, mental health
-* health protection data on general health protection, TB, antimicrobial resistance
-* lifecourse profiles for younger and older people
-* mortality and morbidity.
-
+The indicators are arranged in thematic or topical profiles covering a wide range of health issues.
 Fingertips makes data available for more than 1,500 indicators spread across more than 70 profiles. 
-The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, "spine" charts (graphs which compare multiple indicators for a single geographic area), scatter plots and so on.
+The data can be accessed from <https://fingertips.phe.org.uk> where the data can be visualised in variety of ways including heatmaps, choropleth maps, line charts for trends, scatter plots and so on.
 Data can be obtained as downloads or figures which can be exported or cut and paste into reports and slides.
 
 A recent addition to the Fingertips platform was an [Automated Programming Interface](https://fingertips.phe.org.uk/api) (API) to enable developers to re-use the data. 
@@ -139,7 +129,7 @@ The researcher is now in a position to read the data into the working environmen
 ftips_data <- fingertips_data(IndicatorID = 90362, AreaTypeID = 102)
 ftips_data %>% 
         select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, 
-               Sex, Age, Timeperiod, Value, LowerCIlimit, UpperCIlimit) %>%
+               Sex, Age, Timeperiod, Value, LowerCI95.0limit, UpperCI95.0limit) %>%
         mutate(IndicatorName = 
                        str_trunc(as.character(IndicatorName), width = 20, "right"),
                AreaName = str_trunc(as.character(AreaName), width = 20, "right")) %>% 
