@@ -2,9 +2,15 @@
 ^\.Rproj\.user$
 
 ^temp$
+
+monitoring/
 cran-comments.md
 ^\.travis\.yml$
 ^README\.Rmd$
 ^README-.*\.png$
-
 \.ssh/*
+^revdep$
+
+vignettes/*.html
+vignettes/fingertipsR_paper*
+vignettes/references.bib

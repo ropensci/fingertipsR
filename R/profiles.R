@@ -15,7 +15,8 @@
 #' profiles(ProfileName = "Public Health Outcomes Framework")
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @import tidyjson
+#' @importFrom httr GET content set_config config
+#' @importFrom data.table rbindlist
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
 #'   \code{\link{indicators}} for indicator lookups,
@@ -24,14 +25,24 @@
 #' @export
 
 profiles <- function(ProfileID = NULL, ProfileName = NULL) {
-        path <- "http://fingertips.phe.org.uk/api/"
-        profiles <- gather_array(paste0(path,"profiles")) %>%
-                spread_values(ID = jnumber("Id"),
-                              Name = jstring("Name")) %>%
-                enter_object("GroupIds") %>%
-                gather_array %>%
-                append_values_number("groupid") %>%
-                select(ID, Name, groupid)
+        path <- "https://fingertips.phe.org.uk/api/"
+        set_config(config(ssl_verifypeer = 0L))
+        profiles <- paste0(path,"profiles") %>%
+                GET %>%
+                content("text") %>%
+                fromJSON
+        idname <- profiles[,c("Id", "Name")]
+
+        profiles <- lapply(profiles$GroupIds, data.frame)
+        names(profiles) <- idname$Id
+        profiles <- rbindlist(profiles,
+                              use.names = TRUE,
+                              fill = TRUE,
+                              idcol = "profiles") %>%
+                mutate(profiles = as.numeric(profiles)) %>%
+                left_join(idname, by = c("profiles" = "Id"))
+        names(profiles) <- c("ID", "groupid", "Name")
+        profiles <- profiles[, c("ID", "Name", "groupid")]
         if (!is.null(ProfileID)) {
                 profiles <- filter(profiles, ID %in% ProfileID)
                 if (nrow(profiles) == 0){
@@ -48,7 +59,7 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
                 query <- paste0(path,"group_metadata?group_ids=",
                                 paste(profiles$groupid[profiles$ID == i],
                                       collapse = "%2C"))
-                groupDescriptions <- rbind(fromJSON(query), groupDescriptions)
+                groupDescriptions <- rbind(query %>% GET %>% content("text") %>% fromJSON(), groupDescriptions)
         }
         groupDescriptions <- groupDescriptions %>%
                 select(Id, Name)
