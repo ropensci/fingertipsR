@@ -2,6 +2,11 @@ library(testthat)
 library(fingertipsR)
 
 context("Test metadata")
+ncols <- 31
+
+df1 <- suppressWarnings(indicator_metadata(IndicatorID = 10101))
+df2 <- suppressWarnings(indicator_metadata(DomainID = 1938132767))
+df3 <- suppressWarnings(indicator_metadata(ProfileID = 132))
 
 test_that("bad inputs give bad outputs", {
         expect_error(indicator_metadata("blah blah"),
@@ -12,4 +17,10 @@ test_that("bad inputs give bad outputs", {
                      "ProfileID\\(s\\) do not exist, use profiles\\(\\) to identify existing profiles")
         expect_error(indicator_metadata(),
                      "One of IndicatorID, DomainID or ProfileID must be populated")
+})
+
+test_that(paste("the number of fields in the output are", ncols), {
+        expect_equal(ncol(df1), ncols)
+        expect_equal(ncol(df2), ncols)
+        expect_equal(ncol(df3), ncols)
 })

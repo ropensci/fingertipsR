@@ -20,7 +20,7 @@ fingertips_redred <- function(Comparator = "England", ...) {
                                        grepl("[Ww]orse",RecentTrend) &
                                        grepl("[Ww]orse", ComparedtoEnglandvalueorpercentiles))
         } else if (Comparator == "Parent") {
-                fingertips_redred <- fingertips_data(ProfileID = ProfileID, AreaTypeID = AreaTypeID) %>%
+                fingertips_redred <- fingertips_data(...) %>%
                         group_by(IndicatorID, Sex, Age, CategoryType, Category) %>%
                         filter(TimeperiodSortable == max(TimeperiodSortable) &
                                        grepl("[Ww]orse",RecentTrend) &

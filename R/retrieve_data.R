@@ -7,7 +7,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
         types <- "icccccccccccnnnnnnncccci"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()
-        for (i in 1:length(IndicatorIDs)) {
+        for (i in seq_len(length(IndicatorIDs))) {
                 IndicatorID <- IndicatorIDs[i]
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {
                         for (ParentAreaTypeID  in ParentAreaTypeIDs) {

@@ -100,7 +100,7 @@ fingertips_data <- function(IndicatorID = NULL,
                 stop("AreaTypeID must have a value. Use function area_types() to see what values can be used.")
         } else {
                 areaTypes <- area_types()
-                if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID))==TRUE)>0) {
+                if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID)) == TRUE) > 0) {
                         stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
                 } else {
                         if (!is.null(AreaCode)) {
@@ -113,7 +113,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                 }
 
                                 if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
-                                        stop("Area code not contained AreaTypeID.")
+                                        stop("Area code not contained in AreaTypeID.")
                                 }
                         }
                         ChildAreaTypeIDs <- AreaTypeID
@@ -184,8 +184,8 @@ fingertips_data <- function(IndicatorID = NULL,
                 }
         }
         if (stringsAsFactors == TRUE) {
-                fingertips_data[sapply(fingertips_data, is.character)] <-
-                        lapply(fingertips_data[sapply(fingertips_data, is.character)],
+                fingertips_data[vapply(fingertips_data, is.character, logical(1))] <-
+                        lapply(fingertips_data[vapply(fingertips_data, is.character, logical(1))],
                                factor)
         }
         return(fingertips_data)
