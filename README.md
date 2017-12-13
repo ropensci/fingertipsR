@@ -1,5 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+[![Build Status](https://travis-ci.org/PublicHealthEngland/fingertipsR.svg)](https://travis-ci.org/PublicHealthEngland/fingertipsR.svg?branch=master)
+
+[![CRAN Status Badge](http://www.r-pkg.org/badges/version/fingertipsR)](https://cran.r-project.org/package=fingertipsR) [![CRAN Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/fingertipsR)](https://cran.r-project.org/package=fingertipsR) [![CRAN Monthly Downloads](http://cranlogs.r-pkg.org/badges/fingertipsR)](https://cran.r-project.org/package=fingertipsR)
+
 fingertipsR
 ===========
 
@@ -36,18 +40,18 @@ library(fingertipsR)
 df <- profiles(ProfileName = "Public Health Outcomes Framework")
 print(df)
 #>   ProfileID                      ProfileName   DomainID
-#> 1        19 Public Health Outcomes Framework    1000041
-#> 2        19 Public Health Outcomes Framework    1000042
-#> 3        19 Public Health Outcomes Framework    1000043
-#> 4        19 Public Health Outcomes Framework    1000044
-#> 5        19 Public Health Outcomes Framework    1000049
+#> 1        19 Public Health Outcomes Framework    1000049
+#> 2        19 Public Health Outcomes Framework    1000041
+#> 3        19 Public Health Outcomes Framework    1000042
+#> 4        19 Public Health Outcomes Framework    1000043
+#> 5        19 Public Health Outcomes Framework    1000044
 #> 6        19 Public Health Outcomes Framework 1938132983
 #>                           DomainName
-#> 1       Wider determinants of health
-#> 2                 Health improvement
-#> 3                  Health protection
-#> 4 Healthcare and premature mortality
-#> 5             Overarching indicators
+#> 1             Overarching indicators
+#> 2       Wider determinants of health
+#> 3                 Health improvement
+#> 4                  Health protection
+#> 5 Healthcare and premature mortality
 #> 6             Supporting information
 ```
 

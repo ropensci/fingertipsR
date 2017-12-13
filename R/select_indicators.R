@@ -45,7 +45,7 @@ select_indicators <- function() {
                                   selection = "multiple"
                         ), server = FALSE)
 
-                output$selected = renderTable({
+                output$selected <- renderTable({
                         inds[input$indicators_rows_selected,"IndicatorID", drop = FALSE]
                         },
                         rownames = FALSE)

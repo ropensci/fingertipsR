@@ -9,7 +9,7 @@
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
 #' reddata <- fingertips_redred(ProfileID = 26, AreaTypeID = 102)}
-#' #' @family data extract functions
+#' @family data extract functions
 #' @export
 
 fingertips_redred <- function(Comparator = "England", ...) {
