@@ -30,7 +30,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                                DomainID = NULL,
                                ProfileID = NULL) {
         set_config(config(ssl_verifypeer = 0L))
-        types <- "icccccccccccccccccccciccciccccc"
+        types <- "icccccccccccccccccccccccciccccc"
         if (!(is.null(IndicatorID))) {
                 AllIndicators <- indicators()
                 if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
