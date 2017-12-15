@@ -67,3 +67,6 @@ fingdata <- fingertips_data(22401, AreaTypeID = 101)
 fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
 fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
 }
+\seealso{
+Other data extract functions: \code{\link{fingertips_redred}}
+}

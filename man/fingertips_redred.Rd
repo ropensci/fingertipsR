@@ -20,5 +20,7 @@ worse and the spot value is significantly worse than the England value in the la
 \dontrun{
 # Returns data for the two selected domains at county and unitary authority geography
 reddata <- fingertips_redred(ProfileID = 26, AreaTypeID = 102)}
-#' @family data extract functions
+}
+\seealso{
+Other data extract functions: \code{\link{fingertips_data}}
 }
