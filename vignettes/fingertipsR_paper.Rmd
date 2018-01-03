@@ -31,7 +31,7 @@ The indicators are arranged in thematic or topical profiles covering a wide rang
 The data can be accessed from <https://fingertips.phe.org.uk> where the data can be visualised using a variety of methods.
 Data can be also be exported for a group of indicators, for a single geography per download. 
 
-A recent addition to the Fingertips platform was an [Automated Programming Interface](https://fingertips.phe.org.uk/api) (API) to enable developers to re-use the data. 
+A recent addition to the Fingertips platform was an [Application Programming Interface](https://fingertips.phe.org.uk/api) (API) to enable developers to re-use the data. 
 To facilitate access to Fingertips data we have developed an R package - `fingertipsR` - enabling rapid and easy access to fingertips data by analysts and data scientists. 
 The package is available from the [Comprehensive R Archive Network](https://cran.r-project.org/) (CRAN).
 
@@ -48,9 +48,10 @@ This paper describes the Fingertips API and the use of the `fingertipsR` package
 Data are organised thematically, grouping related indicators together. 
 The web interface provides an interactive platform for data visualisations allowing users to examine trends over time, geographical distribution and make comparisons between health providers. 
 The web interface also provides a means to download the data behind the visualisations for re-use.
-However, accessing the data in this manner limits the user to a single group of indicators for a specified geography per download. 
+However, accessing the data in this manner limits the user to a single group of indicators within for a specified geography per download, creating a time burden on the researchers. 
 To enable programmatic access to the data PHE developed an application programming interface (API). 
-Use of an API is highly technical and not always suited to the public health researcher. 
+In contrast to the web interface, the API allows a researcher to extract data for many different indicators across domains and for multiple geographies. 
+However, use of an API is highly technical and not always suited to the public health researcher. 
 
 R is a free, open source software for statistical analysis. [@rsoftware]
 It doubles as both a programming language and analytical environment for performing statistical analyses.
@@ -71,12 +72,12 @@ The `fingertipsR` package extends R by providing an easy-to-use set of functions
 
 Public health data gathered and synthesised by PHE are stored on Fingertips in nested thematic groups. 
 Profiles group together broad themes of data such as antimicrobial resistance or diabetes. [@johnson2016improving]
-These profiles may consist of multiple domains - such as prevalence or targets.
-Individual indicators then provide actual values for different measures within the domains for example prevalence of dementia among those $\geq$ 65 years of age. 
+These profiles may consist of multiple domains bundling together common indicators within a theme - such as prevalence of disease or primary care treatment targets. <!-- e.g. diabetes profile -->
+Individual indicators then provide actual values for different measures within the domains, for example prevalence of dementia among those $\geq$ 65 years of age. 
 In addition, indicators can vary by different area types within two broad geographic themes, administrative and health.
 Health geographies include commissioners of health care services for local areas (known as Clinical Commissioning Groups or CCGs), hospital groups (acute trusts) and general practices. 
 Administrative geographies include upper- and lower-tier local authorities and government regions among others.
-These geographies themselves fall within nested geographies based on whether they are in the administrative or health geography hierarchy. 
+These geographies themselves fall within nested geographies according to whether they are in the administrative or health geography hierarchy. 
 
 All indicators have a fundamentally identical structure. 
 Columns provide: a code that uniquely identifies a geography, three time variables that specify the year, quarter and month, counts and denominators (data are provided where appropriate) and a value column gives the actual value - such as a prevalence or rate - to be plotted in the various representations on the website. 
@@ -94,9 +95,12 @@ The data are transferred in JavaScript Object Notation (JSON), a lightweight dat
 The functions of the fingertipsR package facilitate exploration of the fingertips data in a way that reflects the structure of the data. 
 A public health researcher may start by examining which profiles and domains are available:
 ```{r}
+# load the fingertipsR package
 library(fingertipsR)
-# for common data manipulation functions
+
+# load dplyr for common data manipulation functions
 library(dplyr, warn.conflicts = FALSE, quietly = TRUE)
+
 ftips_profiles <- profiles(ProfileID = NULL, ProfileName = NULL)
 head(ftips_profiles)
 ```
@@ -138,16 +142,19 @@ ftips_data %>%
 ## Using the package to investigate deprivation and life expectancy at birth
 
 To expand on the functions described above, suppose a researcher wishes to examine the relationship between socio-economic deprivation and life-expectancy at birth.
-The fingertipsR package provides a convenient method to extract the data from the fingertips website directly into the working environment of R. 
+The fingertipsR package provides a convenient method to extract the data from the fingertips website directly into the working environment of R.
 
-First, the researcher loads in the deprivation data at the level of the upper-tier local authorities (also described as County and Unitary Authorities). [@IMD]
+The Index of Multiple Deprivation is a score based on 7 domains of relative deprivation. 
+These domains are: Income Deprivation, Employment Deprivation, Education, Skills and Training Deprivation, Health Deprivation and Disability, Crime, Barriers to Housing and Services, Living Environment Deprivation. [@IMD]
+
+First, the researcher loads in the deprivation data for the upper-tier local authorities geographies (also described as County and Unitary Authorities).
 
 ```{r}
 dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
 head(dep)
 ```
 
-The researcher can then limit the previously loaded data set giving life expectancy at birth to the level of upper-tier local authority and apply the deprivation data to it.
+The researcher can then limit the previously loaded data set giving life expectancy at birth to the level of upper-tier local authority and merge the deprivation data onto it.
 
 ```{r, message=FALSE, warning=FALSE}
 ftips_data <- ftips_data %>%
@@ -157,7 +164,7 @@ ftips_data <- ftips_data %>%
         left_join(., dep)
 ```
 
-The researcher can then plot the relationship between life expectancy at birth and deprivation
+The researcher can then plot the relationship between life expectancy at birth and deprivation.
 
 <!-- eval=FALSE to print code into paper -->
 ```{r, eval=FALSE}
@@ -166,7 +173,7 @@ p <- ggplot(ftips_data, aes(x = IMDscore, y = Value)) +
         geom_smooth(se = FALSE, method = "loess") + 
         facet_wrap(~ Sex) + 
         scale_x_reverse("IMD score") + 
-        scale_y_continuous("Life expectancy")
+        scale_y_continuous("Life expectancy at birth (years)")
 p
 ```
 
@@ -196,7 +203,7 @@ Various features of Git and GitHub facilitate scientific collaboration. [@ram201
 GitHub is a decentralised system - copies of code can be stored locally (i.e. on a computer hard drive) and remotely (as *forks* on the GitHub website) then synchronised at the main repository.
 Crucially, Git and GitHub allow any user to examine and adapt code then provide the adapted code back to the main repository for a project.
 Additionally, GitHub provides an issue tracker with which users of software can report problems with the software or suggest new features that might be incorporated. 
-The inherent version control identifies all changes that were made to analytic code, who made them and at what time. 
+The version control features identify all changes that were made to analytic code, who made them and at what time. 
 This allows analytic code to be reverted to previous states, meaning that breaking changes can be easily reverted. 
 Feedback based on the original release of the package has lead to developments to support different types of researchers, including: 
 
