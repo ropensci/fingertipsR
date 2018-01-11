@@ -12,18 +12,15 @@ This is an R package to interact with Public Health England's [Fingertips](http:
 Installation
 ------------
 
-### From zip
+### CRAN
 
-Download this repository from GitHub and either build from source or do:
+Get the latest released, stable version from CRAN:
 
-``` r
-source <- devtools:::source_pkg("C:/path/to/fingertips-master")
-install(source)
-```
+`{ r CRAN install, eval=FALSE} install.packages("fingertipsR")`
 
 ### With devtools
 
-You can install the latest version of fingertipsR from github with:
+You can install the latest development version from github unsing [devtools](https://github.com/hadley/devtools):
 
 ``` r
 # install.packages("devtools")
@@ -31,6 +28,25 @@ devtools::install_github("PublicHealthEngland/fingertipsR",
                          build_vignettes = TRUE,
                          dependencies = "suggests")
 ```
+
+### From zip
+
+Download this repository from GitHub and either build from source or do the following, that also requires [devtools](https://github.com/hadley/devtools):
+
+``` r
+source <- devtools:::source_pkg("C:/path/to/fingertips-master")
+install(source)
+```
+
+### Base R instructions
+
+To install the package without the use of CRAN or [devtools](https://github.com/hadley/devtools), download the `.tar.gz` file and then run:
+
+``` r
+install.packages(path_to_file, repos = NULL, type="source")
+```
+
+Where `path_to_file` would represent the full path and file name.
 
 Example
 -------
