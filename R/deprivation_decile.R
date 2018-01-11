@@ -18,7 +18,8 @@
 #'   \code{\link{indicator_metadata}} for the metadata for each indicator and
 #'   \code{\link{area_types}} for area types and their parent mappings and
 #'   \code{\link{category_types}} for category lookups and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names
 
 deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
         if (!(Year %in% c(2010, 2011, 2012, 2015))) {

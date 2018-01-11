@@ -31,11 +31,13 @@ deprivation_decile(101, 2010)
   \code{\link{indicator_metadata}} for the metadata for each indicator and
   \code{\link{area_types}} for area types and their parent mappings and
   \code{\link{category_types}} for category lookups and
-  \code{\link{indicator_areatypes}} for indicators by area types lookups
+  \code{\link{indicator_areatypes}} for indicators by area types lookups and
+  \code{\link{indicators_unique}} for unique indicatorids and their names
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
   \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
+  \code{\link{indicators_unique}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

@@ -1,4 +1,4 @@
-#' Profiles
+#' Live indicators and the profiles and domains they belong to
 #'
 #' Outputs a data frame of indicators within a profile or domain
 #' @return A data frame of indicators within a profile or domain.
@@ -20,7 +20,8 @@
 #'   \code{\link{profiles}} for profile lookups and
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups and
 #'   \code{\link{category_types}} for category lookups and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names
 #' @export
 
 indicators <- function(ProfileID = NULL,
@@ -65,4 +66,28 @@ indicators <- function(ProfileID = NULL,
         df <- left_join(df, tempdf, by = c("DomainID" = "DomainID")) %>%
                 select(IndicatorID, IndicatorName, DomainID, DomainName, ProfileID, ProfileName)
         return(df)
+}
+
+#' Live indicators
+#'
+#' Outputs a data frame of indicators (their id and name only)
+#' @return A data frame of indicator ids and names
+#' @inheritParams indicators
+#' @examples
+#' indicators_unique(ProfileID = 21)
+#' @family lookup functions
+#' @seealso \code{\link{indicators}} for indicators and their parent domains and
+#'   profiles, \code{\link{area_types}} for area type  and their parent
+#'   mappings, \code{\link{indicator_metadata}} for indicator metadata and
+#'   \code{\link{profiles}} for profile lookups and
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
+#'   \code{\link{category_types}} for category lookups and
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+#' @export
+indicators_unique <- function(ProfileID = NULL,
+                            DomainID = NULL) {
+        df <- indicators(ProfileID, DomainID)
+        df <- unique(df[,c("IndicatorID", "IndicatorName")])
+        return(df)
+
 }

@@ -31,12 +31,15 @@ profiles(ProfileName = "Public Health Outcomes Framework")
 \code{\link{area_types}} for area type  and their parent mappings,
   \code{\link{indicators}} for indicator lookups,
   \code{\link{indicator_metadata}} for indicator metadata and
-  \code{\link{deprivation_decile}} for deprivation decile lookups
+  \code{\link{deprivation_decile}} for deprivation decile lookups and
+  \code{\link{category_types}} for category lookups and
+  \code{\link{indicator_areatypes}} for indicators by area types lookups and
+  \code{\link{indicators_unique}} for unique indicatorids and their names
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
   \code{\link{deprivation_decile}},
   \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
-  \code{\link{indicators}}
+  \code{\link{indicators_unique}}, \code{\link{indicators}}
 }

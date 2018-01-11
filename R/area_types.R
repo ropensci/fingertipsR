@@ -29,7 +29,8 @@
 #'   \code{\link{profiles}} for profile lookups and
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups and
 #'   \code{\link{category_types}} for category lookups and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names
 
 area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
@@ -87,7 +88,8 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
 #'   \code{\link{profiles}} for profile lookups and
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups and
 #'   \code{\link{area_types}} for area type lookups and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names
 
 category_types <- function() {
         path <- "https://fingertips.phe.org.uk/api/"
