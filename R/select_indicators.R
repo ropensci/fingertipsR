@@ -13,6 +13,7 @@
 #' @export
 
 select_indicators <- function() {
+        # nocov start
         ui <- miniPage(
                 gadgetTitleBar("Select indicators"),
                 fillRow(flex = c(1, 3),
@@ -59,4 +60,5 @@ select_indicators <- function() {
         }
 
         runGadget(ui, server, viewer = browserViewer())
+        # nocov end
 }
