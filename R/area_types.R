@@ -119,15 +119,38 @@ category_types <- function() {
 #' Outputs a data frame of indicator ids and the area type ids that exist for that indicator
 #'
 #' @return A data frame of indicator ids and area type ids
-#' @importFrom utils data
+#' @import dplyr
+#' @importFrom jsonlite fromJSON
+#' @importFrom httr GET content set_config config
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups and
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups and
 #'   \code{\link{area_types}} for area type lookups and
-#'   \code{\link{category_types}} for category type lookups
-indicator_areatypes <- function() {
-        data("areatypes_by_indicators", envir = environment())
+#'   \code{\link{category_types}} for category type lookups and
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names
+indicator_areatypes <- function(IndicatorID, AreaTypeID) {
+        path <- "https://fingertips.phe.org.uk/api/available_data"
+        if (!missing(IndicatorID)) {
+                if (length(IndicatorID) > 1) {
+                        stop("Length of IndicatorID must be 0 or 1")
+                } else {
+                        path <- paste0(path, "?indicator_id=", IndicatorID)
+                }
+        }
+        if (!missing(AreaTypeID)) {
+                if (length(AreaTypeID) > 1) {
+                        stop("Length of AreaTypeID must be 0 or 1")
+                } else {
+                        path <- paste0(path, "?area_type_id=", AreaTypeID)
+                }
+        }
+        set_config(config(ssl_verifypeer = 0L))
+        areatypes_by_indicators <- path %>%
+                GET %>%
+                content("text") %>%
+                fromJSON
+        names(areatypes_by_indicators) <- c("IndicatorID", "AreaTypeID")
         return(areatypes_by_indicators)
 }

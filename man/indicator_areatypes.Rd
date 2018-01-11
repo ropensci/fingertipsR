@@ -4,7 +4,7 @@
 \alias{indicator_areatypes}
 \title{Area types by indicator}
 \usage{
-indicator_areatypes()
+indicator_areatypes(IndicatorID, AreaTypeID)
 }
 \value{
 A data frame of indicator ids and area type ids
@@ -17,7 +17,8 @@ Outputs a data frame of indicator ids and the area type ids that exist for that 
   \code{\link{profiles}} for profile lookups and
   \code{\link{deprivation_decile}} for deprivation decile lookups and
   \code{\link{area_types}} for area type lookups and
-  \code{\link{category_types}} for category type lookups
+  \code{\link{category_types}} for category type lookups and
+  \code{\link{indicators_unique}} for unique indicatorids and their names
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
