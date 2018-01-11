@@ -27,7 +27,8 @@ area_types()
 # Returns a data frame of county and unitary authority mappings
  area_types("counties")
 
-# Returns a data frame of both counties, district and unitary authorities and their respective mappings
+# Returns a data frame of both counties, district
+# and unitary authorities and their respective mappings
 areas <- c("counties","district")
 area_types(areas)
 

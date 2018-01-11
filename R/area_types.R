@@ -16,7 +16,8 @@
 #' # Returns a data frame of county and unitary authority mappings
 #'  area_types("counties")
 #'
-#' # Returns a data frame of both counties, district and unitary authorities and their respective mappings
+#' # Returns a data frame of both counties, district
+#' # and unitary authorities and their respective mappings
 #' areas <- c("counties","district")
 #' area_types(areas)
 #'
@@ -116,12 +117,18 @@ category_types <- function() {
 
 #' Area types by indicator
 #'
-#' Outputs a data frame of indicator ids and the area type ids that exist for that indicator
+#' Outputs a data frame of indicator ids and the area type ids that exist for
+#' that indicator
 #'
 #' @return A data frame of indicator ids and area type ids
+#' @param AreaTypeID integer; the Area Type ID (can be ignored or of length 1)
+#' @param IndicatorID integer; the Indicator ID (can be ignored or of length 1).
+#'   Takes priority over AreaTypeID if both are entered
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET content set_config config
+#' @examples
+#' indicator_areatypes()
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,

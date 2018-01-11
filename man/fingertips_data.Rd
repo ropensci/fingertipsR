@@ -52,7 +52,8 @@ Outputs a data frame of data from
 doms <- c(1000049,1938132983)
 fingdata <- fingertips_data(DomainID = doms)
 
-# Returns data at local authority district geography (AreaTypeID = 101) for the indicator with the id 22401
+# Returns data at local authority district geography (AreaTypeID = 101)
+# for the indicator with the id 22401
 fingdata <- fingertips_data(22401, AreaTypeID = 101)
 
 # Returns same indicator with different comparisons due to indicator polarity
