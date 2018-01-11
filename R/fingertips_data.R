@@ -15,7 +15,7 @@
 #'   extracted; if NULL the function will use the first record for the specified
 #'   `AreaTypeID` from the area_types() function
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
-#'   default is 102
+#'   default is 102 (Counties and Unitary Authorities)
 #' @param categorytype TRUE or FALSE, determines whether the final table
 #'   includes categorytype data where it exists. Default to FALSE
 #' @param inequalities deprecated: TRUE or FALSE, same as categorytype
@@ -24,20 +24,17 @@
 #'   with the indicator's polarity. 1 is lowest NAs will be bottom and ties will
 #'   return the average position. The total count of areas with a non-NA value
 #'   are returned also in AreaValuesCount
-#' @param stringsAsFactors logical: should character vectors be converted to
-#'   factors? The 'factory-fresh' default is TRUE, but this can be changed by
-#'   setting options(stringsAsFactors = FALSE).
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
 #' doms <- c(1000049,1938132983)
-#' fingdata <- fingertips_data(DomainID = doms)#'
+#' fingdata <- fingertips_data(DomainID = doms)
 #'
-#' # Returns data at local authority district geography for the indicator with the id 22401
+#' # Returns data at local authority district geography (AreaTypeID = 101) for the indicator with the id 22401
 #' fingdata <- fingertips_data(22401, AreaTypeID = 101)
 #'
 #' # Returns same indicator with different comparisons due to indicator polarity
-#' # differences between profiles
+#' # differences between profiles on the website
 #' # It is recommended to check the website to ensure consistency between your
 #' # data extract here and the polarity required
 #' fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
@@ -54,8 +51,7 @@ fingertips_data <- function(IndicatorID = NULL,
                             ParentAreaTypeID = NULL,
                             categorytype = FALSE,
                             inequalities,
-                            rank = FALSE,
-                            stringsAsFactors = default.stringsAsFactors()) {
+                            rank = FALSE) {
 
         if (!missing(inequalities)) {
                 warning("argument inequalities is deprecated; please use categorytype instead.",
@@ -182,11 +178,6 @@ fingertips_data <- function(IndicatorID = NULL,
                 if (categorytype == FALSE) {
                         fingertips_data <- filter(fingertips_data, is.na(CategoryType))
                 }
-        }
-        if (stringsAsFactors == TRUE) {
-                fingertips_data[vapply(fingertips_data, is.character, logical(1))] <-
-                        lapply(fingertips_data[vapply(fingertips_data, is.character, logical(1))],
-                               factor)
         }
         return(fingertips_data)
 }

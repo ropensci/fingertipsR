@@ -12,6 +12,11 @@ A data frame of category type ids and their descriptions
 \description{
 Outputs a data frame of category type ids, their name (along with a short name)
 }
+\examples{
+# Returns the deprivation category types
+cats <- category_types()
+cats[cats$CategoryTypeId == 1,]
+}
 \seealso{
 \code{\link{indicators}} for indicator lookups,
   \code{\link{profiles}} for profile lookups and

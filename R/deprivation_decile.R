@@ -3,16 +3,21 @@
 #' Outputs a data frame allocating deprivation decile to  area code based on the
 #' Indices of Multiple Deprivation (IMD) produced by Department of Communities
 #' and Local Government
+#' @details This function uses the fingertips_data function to filter for the Index
+#'   of multiple deprivation score for the year and area supplied, and returns
+#'   the area code, along with the score and the deprivation decile, which is
+#'   calculated using the ntile function from dplyr
 #' @param AreaTypeID Numeric value, limited to either 102 (counties and unitary
 #'   authorities), 101 (local authority districts and unitary authorities) or 7
 #'   (General Practice); default is 102
 #' @param Year Numeric value, representing the year of IMD release to be
 #'   applied, limited to either 2010 or 2015; default is 2015
-#' @examples # Return 2015 deciles for counties and unitary authorities
-#' @examples deprivation_decile()
+#' @examples
+#' # Return 2015 deciles for counties and unitary authorities
+#' deprivation_decile()
 #'
-#' @examples # Return 2010 deciles for local authority districts and unitary authorities
-#' @examples deprivation_decile(101, 2010)
+#' # Return 2010 deciles for local authority districts and unitary authorities
+#' deprivation_decile(101, 2010)
 #' @return A lookup table providing deprivation decile and area code
 #' @import dplyr
 #' @export

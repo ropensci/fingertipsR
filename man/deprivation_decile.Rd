@@ -8,15 +8,25 @@ deprivation_decile(AreaTypeID = 102, Year = 2015)
 }
 \arguments{
 \item{AreaTypeID}{Numeric value, limited to either 102 (counties and unitary
-authorities), 101 (local authority districts and unitary authorities) or 7 (General Practice); default is 102}
+authorities), 101 (local authority districts and unitary authorities) or 7
+(General Practice); default is 102}
 
-\item{Year}{Numeric value, representing the year of IMD release to be applied, limited to either 2010 or 2015; default is 2015}
+\item{Year}{Numeric value, representing the year of IMD release to be
+applied, limited to either 2010 or 2015; default is 2015}
 }
 \value{
 A lookup table providing deprivation decile and area code
 }
 \description{
-Outputs a data frame allocating deprivation decile to  area code base on the Indices of Multiple Deprivation (IMD) produced by Department of Communities and Local Government
+Outputs a data frame allocating deprivation decile to  area code based on the
+Indices of Multiple Deprivation (IMD) produced by Department of Communities
+and Local Government
+}
+\details{
+This function uses the fingertips_data function to filter for the Index
+  of multiple deprivation score for the year and area supplied, and returns
+  the area code, along with the score and the deprivation decile, which is
+  calculated using the ntile function from dplyr
 }
 \examples{
 # Return 2015 deciles for counties and unitary authorities
@@ -27,12 +37,12 @@ deprivation_decile(101, 2010)
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
-  \code{\link{profiles}} for profile lookups
-  \code{\link{indicator_metadata}} for the metadata for each indicator and
-  \code{\link{area_types}} for area types and their parent mappings and
-  \code{\link{category_types}} for category lookups and
-  \code{\link{indicator_areatypes}} for indicators by area types lookups and
-  \code{\link{indicators_unique}} for unique indicatorids and their names
+  \code{\link{profiles}} for profile lookups \code{\link{indicator_metadata}}
+  for the metadata for each indicator and \code{\link{area_types}} for area
+  types and their parent mappings and \code{\link{category_types}} for
+  category lookups and \code{\link{indicator_areatypes}} for indicators by
+  area types lookups and \code{\link{indicators_unique}} for unique
+  indicatorids and their names
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},

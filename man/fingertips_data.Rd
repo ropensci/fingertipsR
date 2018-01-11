@@ -6,8 +6,7 @@
 \usage{
 fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
   ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL,
-  categorytype = FALSE, inequalities, rank = FALSE,
-  stringsAsFactors = default.stringsAsFactors())
+  categorytype = FALSE, inequalities, rank = FALSE)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -23,7 +22,7 @@ IndicatorID is populated, ProfileID can be ignored or must be the same
 length as IndicatorID (but can contain NAs).}
 
 \item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
-default is 102}
+default is 102 (Counties and Unitary Authorities)}
 
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified
@@ -39,10 +38,6 @@ that combination of indicator, sex, age, categorytype and category along
 with the indicator's polarity. 1 is lowest NAs will be bottom and ties will
 return the average position. The total count of areas with a non-NA value
 are returned also in AreaValuesCount}
-
-\item{stringsAsFactors}{logical: should character vectors be converted to
-factors? The 'factory-fresh' default is TRUE, but this can be changed by
-setting options(stringsAsFactors = FALSE).}
 }
 \value{
 A data frame of data extracted from the Fingertips API
@@ -55,13 +50,13 @@ Outputs a data frame of data from
 \dontrun{
 # Returns data for the two selected domains at county and unitary authority geography
 doms <- c(1000049,1938132983)
-fingdata <- fingertips_data(DomainID = doms)#'
+fingdata <- fingertips_data(DomainID = doms)
 
-# Returns data at local authority district geography for the indicator with the id 22401
+# Returns data at local authority district geography (AreaTypeID = 101) for the indicator with the id 22401
 fingdata <- fingertips_data(22401, AreaTypeID = 101)
 
 # Returns same indicator with different comparisons due to indicator polarity
-# differences between profiles
+# differences between profiles on the website
 # It is recommended to check the website to ensure consistency between your
 # data extract here and the polarity required
 fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")

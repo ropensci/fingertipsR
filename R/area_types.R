@@ -9,15 +9,19 @@
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
 #'   default is NULL
 #'
-#' @examples # Returns a data frame with all levels of area and how they map to one another
-#' @examples area_types()
+#' @examples
+#' # Returns a data frame with all levels of area and how they map to one another
+#' area_types()
 #'
-#' @examples # Returns a data frame of county and unitary authority mappings
-#' @examples area_types("counties")
+#' # Returns a data frame of county and unitary authority mappings
+#'  area_types("counties")
 #'
-#' @examples # Returns a table of both counties, district and unitary authorities and their respective mappings
-#' @examples areas <- c("counties","district")
-#' @examples area_types(areas)
+#' # Returns a data frame of both counties, district and unitary authorities and their respective mappings
+#' areas <- c("counties","district")
+#' area_types(areas)
+#'
+#' # Uses AreaTypeID to filter area types
+#' area_types(AreaTypeID = 152)
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
 #' @importFrom stats complete.cases
@@ -85,6 +89,10 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
 #' @importFrom jsonlite fromJSON
 #' @importFrom purrr map_df
 #' @importFrom httr GET content set_config config
+#' @examples
+#' # Returns the deprivation category types
+#' cats <- category_types()
+#' cats[cats$CategoryTypeId == 1,]
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -103,6 +111,7 @@ category_types <- function() {
                 fromJSON %>%
                 pull(Categories) %>%
                 map_df(rbind)
+        return(category_types)
 }
 
 #' Area types by indicator

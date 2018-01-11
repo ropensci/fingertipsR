@@ -1,9 +1,13 @@
 #' Red significance and red trend
 #'
-#' Filters data returned by the fingertips_data function for values for areas that are trending significantly
-#' worse and the spot value is significantly worse than the England value in the latest year of that indicator
-#' #' @return A data frame of data extracted from the Fingertips API
-#' @param Comparator String, either "England" or "Parent" to determine which field to compare the spot value significance to
+#' Filters data returned by the fingertips_data function for values for areas
+#' that are trending statistically significantly worse and the spot value is
+#' significantly worse than the comparator (England or Parent) value in the
+#' latest year of that indicator
+#' @return A data frame of data extracted from
+#' the Fingertips API
+#' @param Comparator String, either "England" or "Parent" to determine which
+#'   field to compare the spot value significance to
 #' @param ... Parameters provided to fingertips_data()
 #' @examples
 #' \dontrun{

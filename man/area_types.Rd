@@ -25,11 +25,14 @@ to parent area types
 area_types()
 
 # Returns a data frame of county and unitary authority mappings
-area_types("counties")
+ area_types("counties")
 
-# Returns a table of both counties, district and unitary authorities and their respective mappings
+# Returns a data frame of both counties, district and unitary authorities and their respective mappings
 areas <- c("counties","district")
 area_types(areas)
+
+# Uses AreaTypeID to filter area types
+area_types(AreaTypeID = 152)
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
