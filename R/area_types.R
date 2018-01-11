@@ -70,6 +70,9 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
                         area_types <- area_types[area_types$AreaTypeID %in% AreaTypeID,]
                 }
         }
+        area_types[vapply(area_types, is.numeric, logical(1))] <-
+                lapply(area_types[vapply(area_types, is.numeric, logical(1))],
+                       as.integer)
         return(area_types[complete.cases(area_types),])
 }
 
