@@ -27,12 +27,22 @@ test_that("error messages work", {
                      "AreaTypeID must have a value\\. Use function area_types\\(\\) to see what values can be used\\.")
         expect_error(fingertips_data(DomainID = 1938132767, AreaCode = "hello"),
                      "Area code not contained in AreaTypeID\\.")
+        expect_error(fingertips_data(IndicatorID = 90631, ProfileID = c(19, 20)),
+                     "If ProfileID and IndicatorID are populated, they must be the same length")
+        expect_error(fingertips_data(IndicatorID = 90631, categorytype = "testerror"),
+                     "categorytype input must be TRUE or FALSE")
+        expect_error(fingertips_data(),
+                     "One of IndicatorID, DomainID or ProfileID must have an input")
+
 })
 
 test_that("warning messages work", {
         expect_warning(fingertips_data(DomainID = 1938132767, AreaCode = "E06000015", ParentAreaTypeID = 153),
                        "AreaTypeID not a child of ParentAreaTypeID\\. There may be duplicate values in data\\. Use function area_types\\(\\) to see mappings of area type to parent area type\\.")
-
+        expect_warning(fingertips_data(IndicatorID = 10101, inequalities = F),
+                       "argument inequalities is deprecated; please use categorytype instead\\.")
+        expect_warning(fingertips_data(DomainID = 1938133114, ProfileID = 17),
+                       "DomainID is complete so ProfileID is ignored")
 })
 
 test_that(paste("number of fields returned by fingertips_data function are", ncols), {

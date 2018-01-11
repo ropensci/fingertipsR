@@ -2,7 +2,6 @@
 ^\.Rproj\.user$
 
 ^temp$
-
 monitoring/
 cran-comments.md
 ^\.travis\.yml$
@@ -10,9 +9,8 @@ cran-comments.md
 ^README-.*\.png$
 \.ssh/*
 ^revdep$
-
 vignettes/*.html
 vignettes/fingertipsR_paper*
 vignettes/references.bib
-
 .covrignore
+^CONDUCT\.md$

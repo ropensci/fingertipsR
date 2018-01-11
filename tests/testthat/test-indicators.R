@@ -18,3 +18,15 @@ test_that("the profiles function works", {
         expect_is(profiles(ProfileID = c(19, 8)),
                   "data.frame")
 })
+
+test_that("the indicators function works", {
+        expect_is(indicators(19),
+                  "data.frame")
+        expect_is(indicators(DomainID = 1938132767),
+                  "data.frame")
+})
+
+test_that("the indicators_unique function works", {
+        expect_is(indicators_unique(19),
+                  "data.frame")
+})

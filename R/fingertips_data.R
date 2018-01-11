@@ -87,7 +87,7 @@ fingertips_data <- function(IndicatorID = NULL,
                 }
         }
 
-        if (!(categorytype == FALSE|categorytype == TRUE)){
+        if (!(categorytype %in% c(TRUE, FALSE))){
                 stop("categorytype input must be TRUE or FALSE")
         }
 
