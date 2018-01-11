@@ -1,7 +1,5 @@
 ---
 title: "Interactively selecting indicators"
-author: "Seb Fox"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Interactively selecting indicators and identifying poorly performing areas}
@@ -9,21 +7,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
----
-title: "Interactively selecting indicators"
-author: "Seb Fox"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Interactively selecting indicators}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
 This short example introduces two new features included in the 0.1.1 version of the package:
 
 * interactively selecting indicators
-* highlighting the areas for each indicator that are deteriorating and are already significantly worse than the England (or parent) value
+* highlighting the areas for each indicator that are deteriorating and are already statistically significantly worse than the England (or parent) value
 
 The following libraries are needed for this vignette:
 ```{r libraries, message=FALSE}
@@ -63,8 +50,7 @@ df$IndicatorName <- sapply(strwrap(df$IndicatorName, 60,
                                    simplify = FALSE), 
                            paste, collapse= "\n")
 p <- ggplot(df, aes(IndicatorName, AreaName)) + 
-        geom_tile(fill = "darkred",
-                  colour = "white") + 
+        geom_point(colour = "darkred") + 
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 45,
                                          hjust = 1,
