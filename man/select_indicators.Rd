@@ -10,7 +10,9 @@ select_indicators()
 A numeric vector of indicator IDs
 }
 \description{
-Point and click method of selecting indicators and assigning them to object
+Point and click method of selecting indicators and assigning them to object.
+Note, this function can take up to a few minutes to run (depending on
+internet connection speeds).
 }
 \examples{
 \dontrun{

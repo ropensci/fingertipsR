@@ -21,7 +21,9 @@ length as IndicatorID (but can contain NAs).}
 The metadata associated with each indicator/domain/profile identified
 }
 \description{
-Outputs a data frame containing the metadata for selected indicators
+Outputs a data frame containing the metadata for selected indicators. Note, this
+function can take up to a few minutes to run (depending on internet
+connection speeds)
 }
 \examples{
 \dontrun{

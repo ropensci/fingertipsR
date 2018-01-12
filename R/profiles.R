@@ -16,7 +16,6 @@
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET content set_config config
-#' @importFrom data.table rbindlist
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
 #'   \code{\link{indicators}} for indicator lookups,
@@ -38,10 +37,8 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
 
         profiles <- lapply(profiles$GroupIds, data.frame)
         names(profiles) <- idname$Id
-        profiles <- rbindlist(profiles,
-                              use.names = TRUE,
-                              fill = TRUE,
-                              idcol = "profiles") %>%
+        profiles <- bind_rows(profiles,
+                              .id = "profiles") %>%
                 mutate(profiles = as.numeric(profiles)) %>%
                 left_join(idname, by = c("profiles" = "Id"))
         names(profiles) <- c("ID", "groupid", "Name")
@@ -68,6 +65,7 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
                 select(Id, Name)
         profiles <- rename(profiles,ProfileID = ID,ProfileName = Name, DomainID = groupid) %>%
                 left_join(groupDescriptions, by = c("DomainID" = "Id")) %>%
-                rename(DomainName = Name)
+                rename(DomainName = Name) %>%
+                as_tibble
         return(profiles)
 }

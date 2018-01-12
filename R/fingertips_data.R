@@ -1,7 +1,9 @@
 #' Fingertips data
 #'
 #' Outputs a data frame of data from
-#' \href{https://fingertips.phe.org.uk/}{Fingertips}
+#' \href{https://fingertips.phe.org.uk/}{Fingertips}. Note, this
+#' function can take up to a few minutes to run (depending on internet
+#' connection speeds and parameter selection).
 #' @return A data frame of data extracted from the Fingertips API
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
@@ -101,14 +103,21 @@ fingertips_data <- function(IndicatorID = NULL,
                         stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
                 } else {
                         if (!is.null(AreaCode)) {
-                                areacodes <- data.frame()
-                                for (i in AreaTypeID) {
-                                        areacodes <- rbind(paste0(path,
-                                                                  "areas/by_area_type?area_type_id=",
-                                                                  i) %>% GET %>% content("text") %>% fromJSON(),
-                                                           areacodes)
-                                }
-
+                                # areacodes <- data.frame()
+                                # for (i in AreaTypeID) {
+                                #         areacodes <- rbind(paste0(path,
+                                #                                   "areas/by_area_type?area_type_id=",
+                                #                                   i) %>% GET %>% content("text") %>% fromJSON(),
+                                #                            areacodes)
+                                # }
+                                areacodes <- AreaTypeID %>%
+                                        lapply(function(i) {
+                                                paste0(path, "areas/by_area_type?area_type_id=", i) %>%
+                                                        GET %>%
+                                                        content("text") %>%
+                                                        fromJSON
+                                        }) %>%
+                                        bind_rows
                                 if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
                                         stop("Area code not contained in AreaTypeID.")
                                 }
@@ -156,7 +165,6 @@ fingertips_data <- function(IndicatorID = NULL,
                 }
         }
         names(fingertips_data) <- gsub("\\s","",names(fingertips_data))
-        fingertips_data <- data.frame(fingertips_data)
 
         if (rank == TRUE) {
                 inds <- unique(fingertips_data$IndicatorID)

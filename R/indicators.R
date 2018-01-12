@@ -39,38 +39,46 @@ indicators <- function(ProfileID = NULL,
                 tempdf <- profiles()
                 DomainID <- tempdf$DomainID
         }
-        df <- data.frame()
-        for (dom in DomainID) {
-                dfRaw <- paste0(path,"indicator_metadata/by_group_id?group_ids=",dom) %>%
-                        GET %>%
-                        content("text") %>%
-                        fromJSON(flatten = TRUE)
-                if (length(dfRaw) != 0){
-                        dfRaw <- unlist(dfRaw, recursive = FALSE)
-                        dfIDs <- dfRaw[grepl("IID", names(dfRaw))]
-                        names(dfIDs) <- gsub(".IID","",names(dfIDs))
-                        dfDescription <- unlist(dfRaw[grepl("Descriptive", names(dfRaw))],
-                                                recursive = FALSE)
-                        dfDescription <- dfDescription[grepl("NameLong", names(dfDescription))]
-                        names(dfDescription) <- gsub(".Descriptive.NameLong","",names(dfDescription))
-                        commonNames <- intersect(names(dfIDs), names(dfDescription))
-                        dfIDs <- dfIDs[commonNames]
-                        dfDescription <- dfDescription[commonNames]
-                        dfFinal <- data.frame(IndicatorID = unlist(dfIDs),
-                                         IndicatorName = unlist(dfDescription),
-                                         DomainID = dom,
-                                         row.names=NULL)
-                        df <- rbind(dfFinal, df)
-                }
-        }
+        df <- DomainID %>%
+                lapply(function(dom) {
+                        dfRaw <- paste0(path,"indicator_metadata/by_group_id?group_ids=",dom) %>%
+                                GET %>%
+                                content("text") %>%
+                                fromJSON(flatten = TRUE)
+                        if (length(dfRaw) != 0){
+                                dfRaw <- unlist(dfRaw, recursive = FALSE)
+                                dfIDs <- dfRaw[grepl("IID", names(dfRaw))]
+                                names(dfIDs) <- gsub(".IID","",names(dfIDs))
+                                dfDescription <- unlist(dfRaw[grepl("Descriptive", names(dfRaw))],
+                                                        recursive = FALSE)
+                                dfDescription <- dfDescription[grepl("NameLong", names(dfDescription))]
+                                names(dfDescription) <- gsub(".Descriptive.NameLong","",names(dfDescription))
+                                commonNames <- intersect(names(dfIDs), names(dfDescription))
+                                dfIDs <- dfIDs[commonNames]
+                                dfDescription <- dfDescription[commonNames]
+
+                                data.frame(IndicatorID = unlist(dfIDs),
+                                           IndicatorName = unlist(dfDescription),
+                                           DomainID = dom,
+                                           row.names=NULL) %>%
+                                        mutate(IndicatorName = as.character(IndicatorName))
+                        }
+                }) %>%
+                bind_rows %>%
+                mutate(IndicatorName = factor(IndicatorName))
         df <- left_join(df, tempdf, by = c("DomainID" = "DomainID")) %>%
-                select(IndicatorID, IndicatorName, DomainID, DomainName, ProfileID, ProfileName)
+                select(IndicatorID, IndicatorName,
+                       DomainID, DomainName,
+                       ProfileID, ProfileName) %>%
+                as_tibble
         return(df)
 }
 
 #' Live indicators
 #'
-#' Outputs a data frame of indicators (their id and name only)
+#' Outputs a data frame of indicators (their id and name only). Note, this
+#' function can take up to a few minutes to run (depending on internet
+#' connection speeds)
 #' @return A data frame of indicator ids and names
 #' @inheritParams indicators
 #' @examples

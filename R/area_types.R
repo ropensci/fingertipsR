@@ -27,7 +27,6 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom stats complete.cases
 #' @importFrom httr GET content set_config config
-#' @importFrom data.table rbindlist
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -53,17 +52,13 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
         names(parentAreasNoNames) <- parentAreas$Id
         parentAreas <- parentAreasNoNames
 
-        parentAreas <- rbindlist(parentAreas,
-                                 use.names = TRUE,
-                                 fill = TRUE,
-                                 idcol = "t") %>%
+        parentAreas <- bind_rows(parentAreas, .id = "t") %>%
                 select(t, Id, Name) %>%
                 rename(AreaTypeID = t,
                        ParentAreaTypeID = Id,
                        ParentAreaTypeName = Name) %>%
                 mutate(AreaTypeID = as.numeric(AreaTypeID),
-                       ParentAreaTypeID = as.numeric(ParentAreaTypeID)) %>%
-                data.frame()
+                       ParentAreaTypeID = as.numeric(ParentAreaTypeID))
         area_types <- left_join(area_types, parentAreas, by = c("AreaTypeID" = "AreaTypeID")) %>%
                 arrange(AreaTypeID)
         if (!is.null(AreaTypeName)) {
@@ -88,7 +83,6 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
 #' @return A data frame of category type ids and their descriptions
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @importFrom purrr map_df
 #' @importFrom httr GET content set_config config
 #' @examples
 #' # Returns the deprivation category types
@@ -111,7 +105,8 @@ category_types <- function() {
                 content("text") %>%
                 fromJSON %>%
                 pull(Categories) %>%
-                map_df(rbind)
+                bind_rows %>%
+                as_tibble
         return(category_types)
 }
 
@@ -157,7 +152,8 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID) {
         areatypes_by_indicators <- path %>%
                 GET %>%
                 content("text") %>%
-                fromJSON
+                fromJSON %>%
+                as_tibble
         names(areatypes_by_indicators) <- c("IndicatorID", "AreaTypeID")
         return(areatypes_by_indicators)
 }

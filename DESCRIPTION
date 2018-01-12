@@ -11,22 +11,21 @@ URL: https://fingertips.phe.org.uk
 BugReports: https://github.com/PublicHealthEngland/fingertipsR/issues
 Imports:
     dplyr,
-    jsonlite,
-    data.table,
-    httr,
-    purrr,
     DT,
+    httr,
+    jsonlite,
     miniUI,
+    purrr,
+    readr,
     shiny,
-    shinycssloaders,
-    readr
+    shinycssloaders
 Suggests:
-    knitr,
-    rmarkdown,
-    testthat,
+    curl,
     ggplot2,
+    knitr,
     pander,
-    curl
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8

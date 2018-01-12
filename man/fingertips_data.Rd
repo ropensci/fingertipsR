@@ -44,7 +44,9 @@ A data frame of data extracted from the Fingertips API
 }
 \description{
 Outputs a data frame of data from
-\href{https://fingertips.phe.org.uk/}{Fingertips}
+\href{https://fingertips.phe.org.uk/}{Fingertips}. Note, this
+function can take up to a few minutes to run (depending on internet
+connection speeds and parameter selection).
 }
 \examples{
 \dontrun{

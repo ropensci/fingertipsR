@@ -15,7 +15,9 @@ indicators_unique(ProfileID = NULL, DomainID = NULL)
 A data frame of indicator ids and names
 }
 \description{
-Outputs a data frame of indicators (their id and name only)
+Outputs a data frame of indicators (their id and name only). Note, this
+function can take up to a few minutes to run (depending on internet
+connection speeds)
 }
 \examples{
 indicators_unique(ProfileID = 21)

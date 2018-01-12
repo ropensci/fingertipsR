@@ -1,6 +1,8 @@
 #' Indicator metadata
 #'
-#' Outputs a data frame containing the metadata for selected indicators
+#' Outputs a data frame containing the metadata for selected indicators. Note, this
+#' function can take up to a few minutes to run (depending on internet
+#' connection speeds)
 #' @inheritParams fingertips_data
 #' @examples
 #' \dontrun{
@@ -42,7 +44,10 @@ indicator_metadata <- function(IndicatorID = NULL,
                                   paste(IndicatorID, collapse = "%2C"))
                 indicator_metadata <- dataurl %>%
                         GET %>%
-                        content("parsed", type = "text/csv", encoding = "UTF-8", col_types = types)
+                        content("parsed",
+                                type = "text/csv",
+                                encoding = "UTF-8",
+                                col_types = types)
         } else if (!(is.null(DomainID))) {
                 AllProfiles <- profiles()
                 if (sum(AllProfiles$DomainID %in% DomainID) == 0){
@@ -52,7 +57,12 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- data.frame()
                 for (Domain in DomainID) {
                         dataurl <- paste0(path, Domain)
-                        indicator_metadata <- rbind(dataurl %>% GET %>% content("parsed", type = "text/csv", encoding = "UTF-8", col_types = types),
+                        indicator_metadata <- rbind(dataurl %>%
+                                                            GET %>%
+                                                            content("parsed",
+                                                                    type = "text/csv",
+                                                                    encoding = "UTF-8",
+                                                                    col_types = types),
                                                     indicator_metadata)
                 }
         } else if (!(is.null(ProfileID))) {
@@ -64,7 +74,12 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- data.frame()
                 for (Profile in ProfileID) {
                         dataurl <- paste0(path, Profile)
-                        indicator_metadata <- rbind(dataurl %>% GET %>% content("parsed", type = "text/csv", encoding = "UTF-8", col_types = types),
+                        indicator_metadata <- rbind(dataurl %>%
+                                                            GET %>%
+                                                            content("parsed",
+                                                                    type = "text/csv",
+                                                                    encoding = "UTF-8",
+                                                                    col_types = types),
                                                     indicator_metadata)
                 }
         } else {
