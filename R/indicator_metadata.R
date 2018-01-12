@@ -54,34 +54,32 @@ indicator_metadata <- function(IndicatorID = NULL,
                         stop("DomainID(s) do not exist, use profiles() to identify existing domains")
                 }
                 path <- "https://fingertips.phe.org.uk/api/indicator_metadata/csv/by_group_id?group_id="
-                indicator_metadata <- data.frame()
-                for (Domain in DomainID) {
-                        dataurl <- paste0(path, Domain)
-                        indicator_metadata <- rbind(dataurl %>%
-                                                            GET %>%
-                                                            content("parsed",
-                                                                    type = "text/csv",
-                                                                    encoding = "UTF-8",
-                                                                    col_types = types),
-                                                    indicator_metadata)
-                }
+                indicator_metadata <- paste0(path, DomainID) %>%
+                        lapply(function(dataurl) {
+                                dataurl %>%
+                                        GET %>%
+                                        content("parsed",
+                                                type = "text/csv",
+                                                encoding = "UTF-8",
+                                                col_types = types)
+                        }) %>%
+                        bind_rows
         } else if (!(is.null(ProfileID))) {
                 AllProfiles <- profiles()
                 if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
                         stop("ProfileID(s) do not exist, use profiles() to identify existing profiles")
                 }
                 path <- "https://fingertips.phe.org.uk/api/indicator_metadata/csv/by_profile_id?profile_id="
-                indicator_metadata <- data.frame()
-                for (Profile in ProfileID) {
-                        dataurl <- paste0(path, Profile)
-                        indicator_metadata <- rbind(dataurl %>%
-                                                            GET %>%
-                                                            content("parsed",
-                                                                    type = "text/csv",
-                                                                    encoding = "UTF-8",
-                                                                    col_types = types),
-                                                    indicator_metadata)
-                }
+                indicator_metadata <- paste0(path, ProfileID) %>%
+                        lapply(function(dataurl) {
+                                dataurl %>%
+                                        GET %>%
+                                        content("parsed",
+                                                type = "text/csv",
+                                                encoding = "UTF-8",
+                                                col_types = types)
+                        }) %>%
+                        bind_rows
         } else {
                 stop("One of IndicatorID, DomainID or ProfileID must be populated")
         }

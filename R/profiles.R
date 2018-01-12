@@ -54,13 +54,21 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
                         stop("Profile names are not in the list of profile names. Re-run the function without any inputs to see all possible names.")
                 }
         }
-        groupDescriptions <- data.frame()
-        for (i in unique(profiles$ID)){
-                query <- paste0(path,"group_metadata?group_ids=",
-                                paste(profiles$groupid[profiles$ID == i],
-                                      collapse = "%2C"))
-                groupDescriptions <- rbind(query %>% GET %>% content("text") %>% fromJSON(), groupDescriptions)
-        }
+        i <- profiles %>%
+                group_by(ID) %>%
+                summarise(combined = paste(groupid, collapse = "%2C"))
+        groupDescriptions <- data.frame(ID = unique(profiles$ID),
+                                        path = paste0(path,"group_metadata?group_ids=")) %>%
+                left_join(i, by = c("ID" = "ID")) %>%
+                mutate(dataurl = paste0(path, combined)) %>%
+                               pull %>%
+                lapply(function(dataurl) {
+                        dataurl %>%
+                                GET %>%
+                                content("text") %>%
+                                fromJSON
+                }) %>%
+                bind_rows
         groupDescriptions <- groupDescriptions %>%
                 select(Id, Name)
         profiles <- rename(profiles,ProfileID = ID,ProfileName = Name, DomainID = groupid) %>%

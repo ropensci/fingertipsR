@@ -1,10 +1,13 @@
 #' Fingertips data
 #'
 #' Outputs a data frame of data from
-#' \href{https://fingertips.phe.org.uk/}{Fingertips}. Note, this
-#' function can take up to a few minutes to run (depending on internet
-#' connection speeds and parameter selection).
+#' \href{https://fingertips.phe.org.uk/}{Fingertips}. Note, this function can
+#' take up to a few minutes to run (depending on internet connection speeds and
+#' parameter selection).
 #' @return A data frame of data extracted from the Fingertips API
+#' @details Note, polarity of an indicator is not automatically returned (eg,
+#'   whether a low value is good, bad or neither). Use the rank field for this
+#'   to be returned (though it adds a lot of time to the query)
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
 #' @param ProfileID Numeric vector, id of profiles of interest. Indicator
@@ -103,13 +106,6 @@ fingertips_data <- function(IndicatorID = NULL,
                         stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
                 } else {
                         if (!is.null(AreaCode)) {
-                                # areacodes <- data.frame()
-                                # for (i in AreaTypeID) {
-                                #         areacodes <- rbind(paste0(path,
-                                #                                   "areas/by_area_type?area_type_id=",
-                                #                                   i) %>% GET %>% content("text") %>% fromJSON(),
-                                #                            areacodes)
-                                # }
                                 areacodes <- AreaTypeID %>%
                                         lapply(function(i) {
                                                 paste0(path, "areas/by_area_type?area_type_id=", i) %>%

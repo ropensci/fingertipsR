@@ -42,4 +42,5 @@ globalVariables(c("Id",
                   "Comparedtosubnationalparentvalueorpercentiles",
                   "areatypes_by_indicators",
                   "ProfileID",
-                  "AreaTypeID"))
+                  "AreaTypeID",
+                  "combined"))

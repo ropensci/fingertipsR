@@ -6,7 +6,8 @@ Description: Fingertips (<http://fingertips.phe.org.uk/>) contains data for many
 Maintainer: Sebastian Fox <sebastian.fox@phe.gov.uk>
 Depends: R (>= 2.10)
 Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")),
-    person("Julian", "Flowers", , "julian.flowers@phe.gov.uk", c("aut","ctb")))
+    person("Julian", "Flowers", , "julian.flowers@phe.gov.uk", c("aut","ctb")),
+    person("Crown Copyright 2018", , , , c("cph")))
 URL: https://fingertips.phe.org.uk
 BugReports: https://github.com/PublicHealthEngland/fingertipsR/issues
 Imports:

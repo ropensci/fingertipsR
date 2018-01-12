@@ -32,7 +32,7 @@
 
 deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
         if (!(Year %in% c(2010, 2011, 2012, 2015))) {
-                stop("Year must be either 2010 or 2015")
+                stop("Year must be either 2010, 2011, 2012 or 2015")
         }
         if (!(AreaTypeID %in% c(101, 102, 7))) {
                 stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities), 102 (Counties and Unitary Authorities) or 7 (General Practice).")

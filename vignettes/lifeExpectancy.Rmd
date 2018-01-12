@@ -113,7 +113,7 @@ data <- data[data$AreaType == "County & UA" & data$Timeperiod == "2012 - 14", co
 
 ## Deprivation
 
-We want to plot life expectancy against deprivation information. The package has a `deprivation_deciles()` function that allows us to return this information. This is populated from the Department for Communities and Local Government Indices of Multiple Deprivation (IMD). Note, there is only information for upper and lower tier local authorities (*AreaTypeID* = 102 and 101 respectively). IMD has only been produced for the years 2010 and 2015.
+We want to plot life expectancy against deprivation information. As deprivation is a notable cause of health inequalities, the `deprivation_deciles()` function has been provided to allow easy access to this information. This is populated from the Department for Communities and Local Government Indices of Multiple Deprivation (IMD). Note, there is only information for General Practices, upper and lower tier local authorities (*AreaTypeID* = 7, 102 and 101 respectively). IMD has only been produced for the years 2010 and 2015 (for the latter areas) as well as 2011 and 2012 for General Practices.
 
 ```{r deprivation}
 dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
