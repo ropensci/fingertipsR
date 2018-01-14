@@ -44,9 +44,14 @@ A data frame of data extracted from the Fingertips API
 }
 \description{
 Outputs a data frame of data from
-\href{https://fingertips.phe.org.uk/}{Fingertips}. Note, this
-function can take up to a few minutes to run (depending on internet
-connection speeds and parameter selection).
+\href{https://fingertips.phe.org.uk/}{Fingertips}. Note, this function can
+take up to a few minutes to run (depending on internet connection speeds and
+parameter selection).
+}
+\details{
+Note, polarity of an indicator is not automatically returned (eg,
+  whether a low value is good, bad or neither). Use the rank field for this
+  to be returned (though it adds a lot of time to the query)
 }
 \examples{
 \dontrun{

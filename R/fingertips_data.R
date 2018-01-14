@@ -155,8 +155,6 @@ fingertips_data <- function(IndicatorID = NULL,
                                 fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                                     ParentAreaTypeIDs = ParentAreaTypeIDs,
                                                                     ProfileIDs = ProfileIDs)
-                        } else {
-                                stop("One of IndicatorID, DomainID or ProfileID must have an input")
                         }
                 }
         }

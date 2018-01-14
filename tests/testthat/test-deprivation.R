@@ -29,7 +29,7 @@ test_that("the class of columns returned are factor-numeric-numeric", {
 })
 
 test_that("error messages work correctly", {
-        expect_error(deprivation_decile(Year = 2014), "Year must be either 2010 or 2015")
+        expect_error(deprivation_decile(Year = 2014), "Year must be either 2010, 2011, 2012 or 2015")
         expect_error(deprivation_decile(AreaTypeID = 12),
                      "AreaTypeID must be either 101 \\(Local authority districts and Unitary Authorities\\), 102 \\(Counties and Unitary Authorities\\) or 7 \\(General Practice\\)\\.")
         expect_error(deprivation_decile(Year = 2011),

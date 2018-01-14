@@ -1,13 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/PublicHealthEngland/fingertipsR.svg)](https://travis-ci.org/PublicHealthEngland/fingertipsR.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/PublicHealthEngland/fingertipsR/badge.svg?branch=master)](https://coveralls.io/github/PublicHealthEngland/fingertipsR?branch=master) [![](https://badges.ropensci.org/168_status.svg)](https://github.com/ropensci/onboarding/issues/168)
+[![Build Status](https://travis-ci.org/PublicHealthEngland/fingertipsR.svg)](https://travis-ci.org/PublicHealthEngland/fingertipsR) [![Coverage Status](https://coveralls.io/repos/github/PublicHealthEngland/fingertipsR/badge.svg?branch=master)](https://coveralls.io/github/PublicHealthEngland/fingertipsR?branch=master) [![](https://badges.ropensci.org/168_status.svg)](https://github.com/ropensci/onboarding/issues/168)
 
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/fingertipsR)](https://cran.r-project.org/package=fingertipsR) [![CRAN Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/fingertipsR)](https://cran.r-project.org/package=fingertipsR) [![CRAN Monthly Downloads](http://cranlogs.r-pkg.org/badges/fingertipsR)](https://cran.r-project.org/package=fingertipsR)
 
 fingertipsR
 ===========
 
-This is an R package to interact with Public Health England's [Fingertips](http://fingertips.phe.org.uk/) data tool. Fingertips is a major public repository of population and public health indicators for England. The site presents the information in many ways to improve accesibility for a wide range of audiences ranging from public health professionals and researchers to the general public. This package can be used to load data from the Fingertips API into R for further use.
+This is an R package to interact with Public Health England's [Fingertips](http://fingertips.phe.org.uk/) data tool. Fingertips is a major public repository of population and public health indicators for England. The site presents the information in many ways to improve accessibility for a wide range of audiences ranging from public health professionals and researchers to the general public. The information presented is a mixture of data available from other public sources, and those that are available through user access agreements with other organisations. The source of each indicator presented is available using the `indicator_metadata()` function.
+
+This package can be used to load data from the Fingertips API into R for further use.
 
 Installation
 ------------
@@ -16,7 +18,9 @@ Installation
 
 Get the latest released, stable version from CRAN:
 
-`{ r CRAN install, eval=FALSE} install.packages("fingertipsR")`
+``` r
+install.packages("fingertipsR")
+```
 
 ### With devtools
 
@@ -60,20 +64,15 @@ library(fingertipsR)
 profs <- profiles()
 profs <- profs[grepl("Public Health Outcomes Framework", profs$ProfileName),]
 head(profs)
-#>    ProfileID                      ProfileName   DomainID
-#> 22        19 Public Health Outcomes Framework    1000049
-#> 23        19 Public Health Outcomes Framework    1000041
-#> 24        19 Public Health Outcomes Framework    1000042
-#> 25        19 Public Health Outcomes Framework    1000043
-#> 26        19 Public Health Outcomes Framework    1000044
-#> 27        19 Public Health Outcomes Framework 1938132983
-#>                            DomainName
-#> 22             Overarching indicators
-#> 23       Wider determinants of health
-#> 24                 Health improvement
-#> 25                  Health protection
-#> 26 Healthcare and premature mortality
-#> 27             Supporting information
+#> # A tibble: 6 x 4
+#>   ProfileID ProfileName                        DomainID DomainName        
+#>       <dbl> <chr>                                 <int> <chr>             
+#> 1      19.0 Public Health Outcomes Framework    1000049 Overarching indic~
+#> 2      19.0 Public Health Outcomes Framework    1000041 Wider determinant~
+#> 3      19.0 Public Health Outcomes Framework    1000042 Health improvement
+#> 4      19.0 Public Health Outcomes Framework    1000043 Health protection 
+#> 5      19.0 Public Health Outcomes Framework    1000044 Healthcare and pr~
+#> 6      19.0 Public Health Outcomes Framework 1938132983 Supporting inform~
 ```
 
 This table shows that the `ProfileID` for the Public Health Outcomes Framework is 19. This can be used as an input for the `indicators()` function:
@@ -82,12 +81,11 @@ This table shows that the `ProfileID` for the Public Health Outcomes Framework i
 profid <- 19
 inds <- indicators(ProfileID = profid)
 print(inds[grepl("Healthy", inds$IndicatorName), c("IndicatorID", "IndicatorName")])
-#>     IndicatorID
-#> 122       92543
-#> 168       90362
-#>                                                                                                                                                                                            IndicatorName
-#> 122                                                                               2.05ii - Proportion of children aged 2-2½yrs offered ASQ-3 as part of the Healthy Child Programme or integrated review
-#> 168 0.1i - Healthy life expectancy at birth: the average number of years a person would expect to live in good health based on contemporary mortality rates and prevalence of self-reported good health.
+#> # A tibble: 2 x 2
+#>   IndicatorID IndicatorName                                               
+#>         <int> <fctr>                                                      
+#> 1       90362 0.1i - Healthy life expectancy at birth: the average number~
+#> 2       92543 "2.05ii - Proportion of children aged 2-2\u00bdyrs offered ~
 ```
 
 Healthy Life Expectancy at Birth has the `IndicatorID` equal to 90362.
@@ -98,48 +96,21 @@ Finally, the data can be extracted using the `fingertips_data()` function using 
 indid <- 90362
 df <- fingertips_data(IndicatorID = indid)
 head(df)
-#>   IndicatorID                           IndicatorName ParentCode
-#> 1       90362 0.1i - Healthy life expectancy at birth       <NA>
-#> 2       90362 0.1i - Healthy life expectancy at birth       <NA>
-#> 3       90362 0.1i - Healthy life expectancy at birth  E92000001
-#> 4       90362 0.1i - Healthy life expectancy at birth  E92000001
-#> 5       90362 0.1i - Healthy life expectancy at birth  E92000001
-#> 6       90362 0.1i - Healthy life expectancy at birth  E92000001
-#>   ParentName  AreaCode                        AreaName AreaType    Sex
-#> 1       <NA> E92000001                         England  Country   Male
-#> 2       <NA> E92000001                         England  Country Female
-#> 3    England E12000001               North East region   Region   Male
-#> 4    England E12000002               North West region   Region   Male
-#> 5    England E12000003 Yorkshire and the Humber region   Region   Male
-#> 6    England E12000004            East Midlands region   Region   Male
-#>        Age CategoryType Category Timeperiod    Value LowerCI95.0limit
-#> 1 All ages         <NA>     <NA>  2009 - 11 63.03181         62.88849
-#> 2 All ages         <NA>     <NA>  2009 - 11 64.07049         63.92063
-#> 3 All ages         <NA>     <NA>  2009 - 11 59.74471         59.22943
-#> 4 All ages         <NA>     <NA>  2009 - 11 60.77587         60.41411
-#> 5 All ages         <NA>     <NA>  2009 - 11 60.84513         60.39213
-#> 6 All ages         <NA>     <NA>  2009 - 11 62.61274         62.08066
-#>   UpperCI95.0limit LowerCI99.8limit UpperCI99.8limit Count Denominator
-#> 1         63.17513               NA               NA    NA          NA
-#> 2         64.22036               NA               NA    NA          NA
-#> 3         60.26000               NA               NA    NA          NA
-#> 4         61.13762               NA               NA    NA          NA
-#> 5         61.29812               NA               NA    NA          NA
-#> 6         63.14483               NA               NA    NA          NA
-#>   Valuenote RecentTrend ComparedtoEnglandvalueorpercentiles
-#> 1      <NA>        <NA>                        Not compared
-#> 2      <NA>        <NA>                        Not compared
-#> 3      <NA>        <NA>                        Not compared
-#> 4      <NA>        <NA>                        Not compared
-#> 5      <NA>        <NA>                        Not compared
-#> 6      <NA>        <NA>                        Not compared
-#>   Comparedtosubnationalparentvalueorpercentiles TimeperiodSortable
-#> 1                                  Not compared           20090000
-#> 2                                  Not compared           20090000
-#> 3                                  Not compared           20090000
-#> 4                                  Not compared           20090000
-#> 5                                  Not compared           20090000
-#> 6                                  Not compared           20090000
+#> # A tibble: 6 x 24
+#>   Indic~ Indi~ Pare~ Pare~ Area~ Area~ Area~ Sex   Age   Cate~ Cate~ Time~
+#>    <int> <chr> <chr> <chr> <chr> <chr> <chr> <chr> <chr> <chr> <chr> <chr>
+#> 1  90362 0.1i~ <NA>  <NA>  E920~ Engl~ Coun~ Male  All ~ <NA>  <NA>  2009~
+#> 2  90362 0.1i~ <NA>  <NA>  E920~ Engl~ Coun~ Fema~ All ~ <NA>  <NA>  2009~
+#> 3  90362 0.1i~ E920~ Engl~ E120~ Nort~ Regi~ Male  All ~ <NA>  <NA>  2009~
+#> 4  90362 0.1i~ E920~ Engl~ E120~ Nort~ Regi~ Male  All ~ <NA>  <NA>  2009~
+#> 5  90362 0.1i~ E920~ Engl~ E120~ York~ Regi~ Male  All ~ <NA>  <NA>  2009~
+#> 6  90362 0.1i~ E920~ Engl~ E120~ East~ Regi~ Male  All ~ <NA>  <NA>  2009~
+#> # ... with 12 more variables: Value <dbl>, LowerCI95.0limit <dbl>,
+#> #   UpperCI95.0limit <dbl>, LowerCI99.8limit <dbl>, UpperCI99.8limit
+#> #   <dbl>, Count <dbl>, Denominator <dbl>, Valuenote <chr>, RecentTrend
+#> #   <chr>, ComparedtoEnglandvalueorpercentiles <chr>,
+#> #   Comparedtosubnationalparentvalueorpercentiles <chr>,
+#> #   TimeperiodSortable <int>
 ```
 
 Use

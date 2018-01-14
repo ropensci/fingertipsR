@@ -18,7 +18,8 @@ A data frame of area type ids and their descriptions
 }
 \description{
 Outputs a data frame of area type ids, their descriptions, and how they map
-to parent area types
+to parent area types. To understand more on mappings of areas, see the Where
+to start section of the Life Expectancy vignette.
 }
 \examples{
 # Returns a data frame with all levels of area and how they map to one another
