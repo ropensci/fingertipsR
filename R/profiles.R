@@ -39,7 +39,7 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL) {
         names(profiles) <- idname$Id
         profiles <- bind_rows(profiles,
                               .id = "profiles") %>%
-                mutate(profiles = as.numeric(profiles)) %>%
+                mutate(profiles = as.integer(profiles)) %>%
                 left_join(idname, by = c("profiles" = "Id"))
         names(profiles) <- c("ID", "groupid", "Name")
         profiles <- profiles[, c("ID", "Name", "groupid")]
