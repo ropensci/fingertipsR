@@ -1,6 +1,5 @@
 ---
-title: 'DRAFT - fingertipsR: an R package for accessing population health information
-  in England'
+title: 'fingertipsR: an R package for accessing population health information in England'
 author: "Sebastian Fox, Julian Flowers, Simon Thelwall, Daniel Flint, Doris Hain"
 output:
   pdf_document: default
@@ -28,25 +27,15 @@ source("fingertips_paper_captions.R", echo = FALSE)
 # Abstract
 
 [Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England (PHE). 
-The indicators are arranged in thematic or topical profiles covering a wide range of health issues including:
+The indicators are arranged in thematic or topical profiles covering a wide range of health issues.
+The data can be accessed from <https://fingertips.phe.org.uk> where the data can be visualised using a variety of methods.
+Data can be also be exported for a group of indicators, for a single geography per download. 
 
-* geographically-themed groupings providing broad health profiles for local geographies
-* disease-themed groupings such as liver disease and cardiovascular
-* risk factor-themed groupings based on risk factors including alcohol, smoking, physical activity
-* population healthcare health services-themed groupings including data for general practices and end of life care
-* health protection-themed groupings including data for topics such as tuberculosis, antimicrobial resistance
-* age-themed groupings including data for younger and older people.
-* outcomes-themed groupings including data on mortality and morbidity.
-
-Fingertips makes data available for more than 1,500 indicators spread across more than 70 profiles. 
-The data can be accessed from <https://fingertips.phe.org.uk> where the data are visualised in variety of ways including heatmaps, choropleth geographical maps, line charts for trends, "spine" charts (graphs which compare multiple indicators for a single geographic area), scatter plots and so on.
-Data can be obtained as downloads or figures which can be exported or cut and pasted into reports and slides.
-
-A recent addition to the Fingertips platform was an [Automated Programming Interface](https://fingertips.phe.org.uk/api) (API) to enable developers to re-use the data. 
-To facilitate access to Fingertips data we have designed an *R* package - `fingertipsR` - enabling rapid and easy access to the data by analysts and data scientists. 
+A recent addition to the Fingertips platform was an [Application Programming Interface](https://fingertips.phe.org.uk/api) (API) to enable developers to re-use the data. 
+To facilitate access to Fingertips data we have developed an R package - `fingertipsR` - enabling rapid and easy access to fingertips data by analysts and data scientists. 
 The package is available from the [Comprehensive R Archive Network](https://cran.r-project.org/) (CRAN).
 
-This paper describes the `fingertipsR` package which provides tools accessing a wide range of public health data for England from the [Fingertips website](https://fingertips.phe.org.uk) using its API.
+This paper describes the Fingertips API and the use of the `fingertipsR` package.
 
 # Introduction
 <!--
@@ -59,8 +48,9 @@ This paper describes the `fingertipsR` package which provides tools accessing a 
 Data are organised thematically, grouping related indicators together. 
 The web interface provides an interactive platform for data visualisations allowing users to examine trends over time, geographical distribution and make comparisons between health providers. 
 The web interface also provides a means to download the data behind the visualisations for re-use.
-However, accessing the data in this manner limits the user to a single group of indicators for a specified geography per download. 
+However, accessing the data in this manner limits the user to a single group of indicators within for a specified geography per download, creating a time burden on the researchers. 
 To enable programmatic access to the data PHE developed an application programming interface (API). 
+In contrast to the web interface, the API allows a researcher to extract data for many different indicators across domains and for multiple geographies. 
 However, use of an API is highly technical and not always suited to the public health researcher. 
 
 R is a free, open source software for statistical analysis. [@rsoftware]
@@ -82,12 +72,12 @@ The `fingertipsR` package extends R by providing an easy-to-use set of functions
 
 Public health data gathered and synthesised by PHE are stored on Fingertips in nested thematic groups. 
 Profiles group together broad themes of data such as antimicrobial resistance or diabetes. [@johnson2016improving]
-These profiles may consist of multiple domains - such as prevalence or targets.
-Individual indicators then provide actual values for different measures within the domains for example prevalence among those $\geq$ 65 years of age. 
+These profiles may consist of multiple domains bundling together common indicators within a theme - such as prevalence of disease or primary care treatment targets. <!-- e.g. diabetes profile -->
+Individual indicators then provide actual values for different measures within the domains, for example prevalence of dementia among those $\geq$ 65 years of age. 
 In addition, indicators can vary by different area types within two broad geographic themes, administrative and health.
 Health geographies include commissioners of health care services for local areas (known as Clinical Commissioning Groups or CCGs), hospital groups (acute trusts) and general practices. 
 Administrative geographies include upper- and lower-tier local authorities and government regions among others.
-These geographies themselves fall within nested geographies based on whether they are in the administrative or health geography hierarchy. 
+These geographies themselves fall within nested geographies according to whether they are in the administrative or health geography hierarchy. 
 
 All indicators have a fundamentally identical structure. 
 Columns provide: a code that uniquely identifies a geography, three time variables that specify the year, quarter and month, counts and denominators (data are provided where appropriate) and a value column gives the actual value - such as a prevalence or rate - to be plotted in the various representations on the website. 
@@ -95,8 +85,8 @@ Rows provide an observation for the indicator at a specified time period, age gr
 
 ## Accessing the fingertips API
 
-The API aims to provide the same data through a collection of RESTful web services as can be visualised on the Fingertips web site. 
-The API was created following open data principles so that the data on the Fingertips site could be available for anyone to access, use or share. [@ahmed] 
+The API aims to provide the same data as can be visualised on the Fingertips web site through a collection of RESTful web services. 
+The API was created according to open data principles so that the data on the Fingertips site could be available for anyone to access, use or share. [@ahmed] 
 The web-based API enables the data to be accessed from any location over the internet using the researcher's programming language of choice without any knowledge required of the system that provides that data. 
 The data are transferred in JavaScript Object Notation (JSON), a lightweight data format that is intended to be easy for both humans to read and machines to generate and parse.
 
@@ -105,9 +95,12 @@ The data are transferred in JavaScript Object Notation (JSON), a lightweight dat
 The functions of the fingertipsR package facilitate exploration of the fingertips data in a way that reflects the structure of the data. 
 A public health researcher may start by examining which profiles and domains are available:
 ```{r}
+# load the fingertipsR package
 library(fingertipsR)
-# for common data manipulation functions
+
+# load dplyr for common data manipulation functions
 library(dplyr, warn.conflicts = FALSE, quietly = TRUE)
+
 ftips_profiles <- profiles(ProfileID = NULL, ProfileName = NULL)
 head(ftips_profiles)
 ```
@@ -122,7 +115,7 @@ ftips_indicators %>%
         head()
 ```
 
-The researcher may then wish to pull down the data for one or more indicators from one or more domains or profiles.
+The researcher may then wish to retrieve data for one or more indicators from one or more domains or profiles.
 However, before they can do so, they need to check what geographies are represented as the indicators data are not always available for all geographies.
 
 ```{r}
@@ -149,16 +142,19 @@ ftips_data %>%
 ## Using the package to investigate deprivation and life expectancy at birth
 
 To expand on the functions described above, suppose a researcher wishes to examine the relationship between socio-economic deprivation and life-expectancy at birth.
-The fingertipsR package provides a convenient method to extract the data from the fingertips website directly into the working environment of R. 
+The fingertipsR package provides a convenient method to extract the data from the fingertips website directly into the working environment of R.
 
-First, the researcher loads in the deprivation data at the level of the upper-tier local authorities (also described as County and Unitary Authorities). [@IMD]
+The Index of Multiple Deprivation is a score based on 7 domains of relative deprivation. 
+These domains are: Income Deprivation, Employment Deprivation, Education, Skills and Training Deprivation, Health Deprivation and Disability, Crime, Barriers to Housing and Services, Living Environment Deprivation. [@IMD]
+
+First, the researcher loads in the deprivation data for the upper-tier local authorities geographies (also described as County and Unitary Authorities).
 
 ```{r}
 dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
 head(dep)
 ```
 
-The researcher can then limit the previously loaded data set giving life expectancy at birth to the level of upper-tier local authority and apply the deprivation data to it.
+The researcher can then limit the previously loaded data set giving life expectancy at birth to the level of upper-tier local authority and merge the deprivation data onto it.
 
 ```{r, message=FALSE, warning=FALSE}
 ftips_data <- ftips_data %>%
@@ -168,7 +164,7 @@ ftips_data <- ftips_data %>%
         left_join(., dep)
 ```
 
-The researcher can then plot the relationship between life expectancy at birth and deprivation
+The researcher can then plot the relationship between life expectancy at birth and deprivation.
 
 <!-- eval=FALSE to print code into paper -->
 ```{r, eval=FALSE}
@@ -177,7 +173,7 @@ p <- ggplot(ftips_data, aes(x = IMDscore, y = Value)) +
         geom_smooth(se = FALSE, method = "loess") + 
         facet_wrap(~ Sex) + 
         scale_x_reverse("IMD score") + 
-        scale_y_continuous("Life expectancy")
+        scale_y_continuous("Life expectancy at birth (years)")
 p
 ```
 
@@ -203,20 +199,16 @@ As a result there is a lot of scope for extension to the functions that could be
 
 The package was developed openly on [GitHub](https://GitHub.com/PublicHealthEngland/fingertipsR), an online archive where computer code is stored, and in which it is carefully version controlled through Git software.
 Various features of Git and GitHub facilitate scientific collaboration. [@ram2013git, @Bryan2017] 
-<!--ST I struggle a little on terminology here, I don't want to call GitHub a repository as this means the repo. 
-Also, don't think database fits exactly. 
-But not particularly satisfied with 'store' either so suggestions welcome-->
-<!--SF I've tried re-wording it a little to make it more lay, not sure I've succeeded-->
+
 GitHub is a decentralised system - copies of code can be stored locally (i.e. on a computer hard drive) and remotely (as *forks* on the GitHub website) then synchronised at the main repository.
-<!-- Reading this back I realise that it can't be both decentralised and have a central repository, can it? Hence a couple of changes.-->
 Crucially, Git and GitHub allow any user to examine and adapt code then provide the adapted code back to the main repository for a project.
 Additionally, GitHub provides an issue tracker with which users of software can report problems with the software or suggest new features that might be incorporated. 
-The inherent version control identifies all changes that were made to analytic code, who made them and at what time. 
+The version control features identify all changes that were made to analytic code, who made them and at what time. 
 This allows analytic code to be reverted to previous states, meaning that breaking changes can be easily reverted. 
 Feedback based on the original release of the package has lead to developments to support different types of researchers, including: 
 
-* add a `select_indicators` graphical user interface, to support users less comfortable with R's square bracket indexing
-* add a function to identify areas that are significantly worse than the national average and show a significant deteriorating trend
+* add a `find_indicator` graphical user interface, to support users less comfortable with R's square bracket indexing
+* add a function to identify areas that are significantly worse than the national average and show a significant trend towards worse values
 
 Additional suggestions for future updates include:
 
@@ -225,7 +217,7 @@ Additional suggestions for future updates include:
  * flag new or recently updated indicators
 
 Users of the fingertipsR package are encouraged to add to the issues list if they feel extensions might be beneficial for the users of this package.
-Between its release at the start of June 2017 and mid-Octber 2017, the package itself has been downloaded from CRAN over 2,000 times. This figure includes occasions where a later version of the package has been released on CRAN and subsequently updated by the user. In addition, 32 issues have been raised at GitHub and four researchers have contributed to the project repository. 
+At the date of writing, the package itself has been downloaded from CRAN 607 times, 30 issues have been raised at GitHub and four researchers have contributed to the project repository. 
 
 # Discussion/conclusions
 
