@@ -57,14 +57,17 @@ fingertips_data <- function(IndicatorID = NULL,
                             ParentAreaTypeID = NULL,
                             categorytype = FALSE,
                             inequalities,
-                            rank = FALSE) {
+                            rank = FALSE,
+                            path) {
 
         if (!missing(inequalities)) {
                 warning("argument inequalities is deprecated; please use categorytype instead.",
                         call. = FALSE)
                 categorytype <- inequalities
         }
-        path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) {
+                path <- "https://fingertips.phe.org.uk/api/"
+        }
         set_config(config(ssl_verifypeer = 0L))
 
         # ensure there are the correct inputs
@@ -101,7 +104,7 @@ fingertips_data <- function(IndicatorID = NULL,
         if (is.null(AreaTypeID)) {
                 stop("AreaTypeID must have a value. Use function area_types() to see what values can be used.")
         } else {
-                areaTypes <- area_types()
+                areaTypes <- area_types(path = path)
                 if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID)) == TRUE) > 0) {
                         stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
                 } else {
@@ -121,7 +124,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         ChildAreaTypeIDs <- AreaTypeID
                 }
                 if (is.null(ParentAreaTypeID)) {
-                        areaTypes <- area_types(AreaTypeID = AreaTypeID) %>%
+                        areaTypes <- area_types(AreaTypeID = AreaTypeID, path = path) %>%
                                 group_by(AreaTypeID) %>%
                                 filter(row_number() == 1)
                         ParentAreaTypeIDs <- areaTypes$ParentAreaTypeID
@@ -138,23 +141,27 @@ fingertips_data <- function(IndicatorID = NULL,
                 if (is.null(ProfileID)) {
                         fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
                                                               ChildAreaTypeIDs = ChildAreaTypeIDs,
-                                                              ParentAreaTypeIDs = ParentAreaTypeIDs)
+                                                              ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                              path = path)
                 } else {
                         fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
                                                               ProfileIDs = ProfileIDs,
                                                               ChildAreaTypeIDs = ChildAreaTypeIDs,
-                                                              ParentAreaTypeIDs = ParentAreaTypeIDs)
+                                                              ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                              path = path)
                 }
         } else {
                 if (!is.null(DomainID)) {
                         fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                            ParentAreaTypeIDs = ParentAreaTypeIDs,
-                                                           DomainIDs = DomainIDs)
+                                                           DomainIDs = DomainIDs,
+                                                           path = path)
                 } else {
                         if (!is.null(ProfileID)) {
                                 fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                                     ParentAreaTypeIDs = ParentAreaTypeIDs,
-                                                                    ProfileIDs = ProfileIDs)
+                                                                    ProfileIDs = ProfileIDs,
+                                                                    path = path)
                         }
                 }
         }
@@ -162,7 +169,7 @@ fingertips_data <- function(IndicatorID = NULL,
 
         if (rank == TRUE) {
                 inds <- unique(fingertips_data$IndicatorID)
-                polarities <- indicator_metadata(inds) %>%
+                polarities <- indicator_metadata(inds, path) %>%
                         select(IndicatorID, Polarity)
                 fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%
                         group_by(IndicatorID, Timeperiod, Sex, Age, CategoryType, Category, AreaType) %>%

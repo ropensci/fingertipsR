@@ -4,6 +4,8 @@
 #' @return A data frame of indicators within a profile or domain.
 #' @param ProfileID Numeric vector, id of profiles of interest
 #' @param DomainID Numeric vector, id of domains of interest
+#' @param path String; Fingertips API address. Function will default to the
+#'   correct address
 #' @examples
 #' \dontrun{
 #' # Returns a complete data frame of indicators and their domains and profiles
@@ -25,18 +27,21 @@
 #' @export
 
 indicators <- function(ProfileID = NULL,
-                       DomainID = NULL) {
-        path <- "https://fingertips.phe.org.uk/api/"
+                       DomainID = NULL,
+                       path) {
+        if (missing(path)) {
+                path <- "https://fingertips.phe.org.uk/api/"
+        }
         set_config(config(ssl_verifypeer = 0L))
         if (!is.null(ProfileID)){
-                tempdf <- profiles(ProfileID = ProfileID)
+                tempdf <- profiles(ProfileID = ProfileID, path = path)
                 if (!is.null(DomainID)) warning("DomainID is ignored as ProfileID has also been entered")
                 DomainID <- tempdf$DomainID
         } else if (!is.null(DomainID)) {
-                tempdf <- profiles()
+                tempdf <- profiles(path = path)
                 DomainID <- DomainID
         } else {
-                tempdf <- profiles()
+                tempdf <- profiles(path = path)
                 DomainID <- tempdf$DomainID
         }
         df <- DomainID %>%
@@ -49,10 +54,13 @@ indicators <- function(ProfileID = NULL,
                                 dfRaw <- unlist(dfRaw, recursive = FALSE)
                                 dfIDs <- dfRaw[grepl("IID", names(dfRaw))]
                                 names(dfIDs) <- gsub(".IID","",names(dfIDs))
-                                dfDescription <- unlist(dfRaw[grepl("Descriptive", names(dfRaw))],
+                                dfDescription <- unlist(dfRaw[grepl("Descriptive",
+                                                                    names(dfRaw))],
                                                         recursive = FALSE)
-                                dfDescription <- dfDescription[grepl("NameLong", names(dfDescription))]
-                                names(dfDescription) <- gsub(".Descriptive.NameLong","",names(dfDescription))
+                                dfDescription <- dfDescription[grepl("NameLong",
+                                                                     names(dfDescription))]
+                                names(dfDescription) <- gsub(".Descriptive.NameLong","",
+                                                             names(dfDescription))
                                 commonNames <- intersect(names(dfIDs), names(dfDescription))
                                 dfIDs <- dfIDs[commonNames]
                                 dfDescription <- dfDescription[commonNames]
@@ -93,8 +101,12 @@ indicators <- function(ProfileID = NULL,
 #'   \code{\link{indicator_areatypes}} for indicators by area types lookups
 #' @export
 indicators_unique <- function(ProfileID = NULL,
-                            DomainID = NULL) {
-        df <- indicators(ProfileID, DomainID)
+                            DomainID = NULL,
+                            path) {
+        if (missing(path)) {
+                path <- "https://fingertips.phe.org.uk/api/"
+        }
+        df <- indicators(ProfileID, DomainID, path = path)
         df <- unique(df[,c("IndicatorID", "IndicatorName")])
         return(df)
 

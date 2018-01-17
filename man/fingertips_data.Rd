@@ -6,7 +6,7 @@
 \usage{
 fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
   ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL,
-  categorytype = FALSE, inequalities, rank = FALSE)
+  categorytype = FALSE, inequalities, rank = FALSE, path)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -38,6 +38,9 @@ that combination of indicator, sex, age, categorytype and category along
 with the indicator's polarity. 1 is lowest NAs will be bottom and ties will
 return the average position. The total count of areas with a non-NA value
 are returned also in AreaValuesCount}
+
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 A data frame of data extracted from the Fingertips API

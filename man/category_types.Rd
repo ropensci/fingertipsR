@@ -4,7 +4,11 @@
 \alias{category_types}
 \title{Category types}
 \usage{
-category_types()
+category_types(path)
+}
+\arguments{
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 A data frame of category type ids and their descriptions

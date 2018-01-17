@@ -31,7 +31,8 @@
 
 indicator_metadata <- function(IndicatorID = NULL,
                                DomainID = NULL,
-                               ProfileID = NULL) {
+                               ProfileID = NULL,
+                               path) {
         set_config(config(ssl_verifypeer = 0L))
         types <- "icccccccccccccccccccccccciccccc"
         if (!(is.null(IndicatorID))) {
@@ -39,7 +40,10 @@ indicator_metadata <- function(IndicatorID = NULL,
                 if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
                         stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
                 }
-                path <- "https://fingertips.phe.org.uk/api/indicator_metadata/csv/by_indicator_id?indicator_ids="
+                if (missing(path)) {
+                        path <- "https://fingertips.phe.org.uk/api/"
+                }
+                path <- paste0(path, "indicator_metadata/csv/by_indicator_id?indicator_ids=")
                 dataurl <- paste0(path,
                                   paste(IndicatorID, collapse = "%2C"))
                 indicator_metadata <- dataurl %>%
@@ -53,7 +57,10 @@ indicator_metadata <- function(IndicatorID = NULL,
                 if (sum(AllProfiles$DomainID %in% DomainID) == 0){
                         stop("DomainID(s) do not exist, use profiles() to identify existing domains")
                 }
-                path <- "https://fingertips.phe.org.uk/api/indicator_metadata/csv/by_group_id?group_id="
+                if (missing(path)) {
+                        path <- "https://fingertips.phe.org.uk/api/"
+                }
+                path <- paste0(path, "indicator_metadata/csv/by_group_id?group_id=")
                 indicator_metadata <- paste0(path, DomainID) %>%
                         lapply(function(dataurl) {
                                 dataurl %>%
@@ -69,7 +76,10 @@ indicator_metadata <- function(IndicatorID = NULL,
                 if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
                         stop("ProfileID(s) do not exist, use profiles() to identify existing profiles")
                 }
-                path <- "https://fingertips.phe.org.uk/api/indicator_metadata/csv/by_profile_id?profile_id="
+                if (missing(path)) {
+                        path <- "https://fingertips.phe.org.uk/api/"
+                }
+                path <- paste0(path, "indicator_metadata/csv/by_profile_id?profile_id=")
                 indicator_metadata <- paste0(path, ProfileID) %>%
                         lapply(function(dataurl) {
                                 dataurl %>%

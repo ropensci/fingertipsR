@@ -24,7 +24,7 @@ install.packages("fingertipsR")
 
 ### With devtools
 
-You can install the latest development version from github unsing [devtools](https://github.com/hadley/devtools):
+You can install the latest development version from github using [devtools](https://github.com/hadley/devtools):
 
 ``` r
 # install.packages("devtools")
@@ -66,13 +66,13 @@ profs <- profs[grepl("Public Health Outcomes Framework", profs$ProfileName),]
 head(profs)
 #> # A tibble: 6 x 4
 #>   ProfileID ProfileName                        DomainID DomainName        
-#>       <dbl> <chr>                                 <int> <chr>             
-#> 1      19.0 Public Health Outcomes Framework    1000049 Overarching indic~
-#> 2      19.0 Public Health Outcomes Framework    1000041 Wider determinant~
-#> 3      19.0 Public Health Outcomes Framework    1000042 Health improvement
-#> 4      19.0 Public Health Outcomes Framework    1000043 Health protection 
-#> 5      19.0 Public Health Outcomes Framework    1000044 Healthcare and pr~
-#> 6      19.0 Public Health Outcomes Framework 1938132983 Supporting inform~
+#>       <int> <chr>                                 <int> <chr>             
+#> 1        19 Public Health Outcomes Framework    1000049 Overarching indic~
+#> 2        19 Public Health Outcomes Framework    1000041 Wider determinant~
+#> 3        19 Public Health Outcomes Framework    1000042 Health improvement
+#> 4        19 Public Health Outcomes Framework    1000043 Health protection 
+#> 5        19 Public Health Outcomes Framework    1000044 Healthcare and pr~
+#> 6        19 Public Health Outcomes Framework 1938132983 Supporting inform~
 ```
 
 This table shows that the `ProfileID` for the Public Health Outcomes Framework is 19. This can be used as an input for the `indicators()` function:

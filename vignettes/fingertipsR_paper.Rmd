@@ -29,7 +29,7 @@ source("fingertips_paper_captions.R", echo = FALSE)
 [Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England (PHE). 
 The indicators are arranged in thematic or topical profiles covering a wide range of health issues.
 The data can be accessed from <https://fingertips.phe.org.uk> where the data can be visualised using a variety of methods.
-Data can be also be exported for a group of indicators, for a single geography per download. 
+Data can also be exported for a group of indicators, for a single geography per download. 
 
 A recent addition to the Fingertips platform was an [Application Programming Interface](https://fingertips.phe.org.uk/api) (API) to enable developers to re-use the data. 
 To facilitate access to Fingertips data we have developed an R package - `fingertipsR` - enabling rapid and easy access to fingertips data by analysts and data scientists. 
@@ -46,7 +46,7 @@ This paper describes the Fingertips API and the use of the `fingertipsR` package
  
 [Fingertips](https://fingertip.phe.org.uk) is a major public repository of population and public health indicators for England, built and maintained by Public Health England (PHE). 
 Data are organised thematically, grouping related indicators together. 
-The web interface provides an interactive platform for data visualisations allowing users to examine trends over time, geographical distribution and make comparisons between health providers. 
+The web interface provides an interactive platform for data visualisations allowing users to examine trends over time, geographical distribution and make comparisons between healthcare providers. 
 The web interface also provides a means to download the data behind the visualisations for re-use.
 However, accessing the data in this manner limits the user to a single group of indicators within for a specified geography per download, creating a time burden on the researchers. 
 To enable programmatic access to the data PHE developed an application programming interface (API). 
@@ -83,7 +83,7 @@ All indicators have a fundamentally identical structure.
 Columns provide: a code that uniquely identifies a geography, three time variables that specify the year, quarter and month, counts and denominators (data are provided where appropriate) and a value column gives the actual value - such as a prevalence or rate - to be plotted in the various representations on the website. 
 Rows provide an observation for the indicator at a specified time period, age group and sex for a given geography.
 
-## Accessing the fingertips API
+## Accessing the Fingertips API
 
 The API aims to provide the same data as can be visualised on the Fingertips web site through a collection of RESTful web services. 
 The API was created according to open data principles so that the data on the Fingertips site could be available for anyone to access, use or share. [@ahmed] 
@@ -108,11 +108,9 @@ head(ftips_profiles)
 The researcher could examine what indicators constitute a domain
 
 ```{r}
-ftips_indicators <- indicators(ProfileID = 8, DomainID = 1000101)
+ftips_indicators <- indicators(DomainID = 1000101)
 ftips_indicators %>% 
-        mutate(IndicatorName = 
-                       str_trunc(as.character(IndicatorName), width = 20, "right")) %>% 
-        head()
+        head
 ```
 
 The researcher may then wish to retrieve data for one or more indicators from one or more domains or profiles.
@@ -133,16 +131,13 @@ ftips_data <- fingertips_data(IndicatorID = 90362, AreaTypeID = 102)
 ftips_data %>% 
         select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, 
                Sex, Age, Timeperiod, Value, LowerCI95.0limit, UpperCI95.0limit) %>%
-        mutate(IndicatorName = 
-                       str_trunc(as.character(IndicatorName), width = 20, "right"),
-               AreaName = str_trunc(as.character(AreaName), width = 20, "right")) %>% 
         head()
 ```
 
 ## Using the package to investigate deprivation and life expectancy at birth
 
 To expand on the functions described above, suppose a researcher wishes to examine the relationship between socio-economic deprivation and life-expectancy at birth.
-The fingertipsR package provides a convenient method to extract the data from the fingertips website directly into the working environment of R.
+The `fingertipsR` package provides a convenient method to extract the data from the fingertips website directly into the working environment of R.
 
 The Index of Multiple Deprivation is a score based on 7 domains of relative deprivation. 
 These domains are: Income Deprivation, Employment Deprivation, Education, Skills and Training Deprivation, Health Deprivation and Disability, Crime, Barriers to Housing and Services, Living Environment Deprivation. [@IMD]
@@ -205,9 +200,9 @@ Crucially, Git and GitHub allow any user to examine and adapt code then provide 
 Additionally, GitHub provides an issue tracker with which users of software can report problems with the software or suggest new features that might be incorporated. 
 The version control features identify all changes that were made to analytic code, who made them and at what time. 
 This allows analytic code to be reverted to previous states, meaning that breaking changes can be easily reverted. 
-Feedback based on the original release of the package has lead to developments to support different types of researchers, including: 
+Feedback based on the original release of the package has led to developments to support different types of researchers, including: 
 
-* add a `find_indicator` graphical user interface, to support users less comfortable with R's square bracket indexing
+* add a `select_indicators()` graphical user interface function, to support users less comfortable with R's square bracket indexing
 * add a function to identify areas that are significantly worse than the national average and show a significant trend towards worse values
 
 Additional suggestions for future updates include:
@@ -216,7 +211,7 @@ Additional suggestions for future updates include:
  * detect extreme values 
  * flag new or recently updated indicators
 
-Users of the fingertipsR package are encouraged to add to the issues list if they feel extensions might be beneficial for the users of this package.
+Users of the `fingertipsR` package are encouraged to add to the issues list if they feel extensions might be beneficial for the users of this package.
 At the date of writing, the package itself has been downloaded from CRAN 607 times, 30 issues have been raised at GitHub and four researchers have contributed to the project repository. 
 
 # Discussion/conclusions
@@ -224,7 +219,7 @@ At the date of writing, the package itself has been downloaded from CRAN 607 tim
 The work presented here illustrates a number of new and important concepts in public health research. 
 Software for public health can be developed by researchers who are not professional software developers and can be distributed freely and easily on the web. 
 Open source software (software where the code can be examined and adapted) allows the rapid development of new functionality, greatly expanding the uses to which it can be put and rapidly providing solutions to otherwise unmet need. 
-The decentralised nature of the version control software Git means that scientific software and analytic code can be developed without the need for phsical co-location of collaborators - some of the authors of this paper have never physically met. 
+The decentralised nature of the version control software Git means that scientific software and analytic code can be developed without the need for physical co-location of collaborators - some of the authors of this paper have never physically met. 
 Open data facilitates the sharing of information important to public health. 
 Together, open data, open source software and distributed software development have a great deal to offer public health. 
 

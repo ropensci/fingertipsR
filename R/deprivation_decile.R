@@ -45,11 +45,14 @@ deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
         if (AreaTypeID == 101) AreaFilter <- "District & UA"
         if (AreaTypeID == 102) AreaFilter <- "County & UA"
         if (AreaTypeID == 7) AreaFilter <- "GP"
-        deprivation_decile <- fingertips_data(IndicatorID = IndicatorID, AreaTypeID = AreaTypeID) %>%
+        path <- "https://fingertips.phe.org.uk/api/"
+        deprivation_decile <- fingertips_data(IndicatorID = IndicatorID,
+                                              AreaTypeID = AreaTypeID,
+                                              path = path) %>%
                 filter(AreaType == AreaFilter &
                                Timeperiod == Year) %>%
                 select(AreaCode, Value) %>%
                 rename(IMDscore = Value) %>%
-                mutate(decile = 11 - ntile(IMDscore, 10))
+                mutate(decile = as.integer(11 - ntile(IMDscore, 10)))
         return(deprivation_decile)
 }

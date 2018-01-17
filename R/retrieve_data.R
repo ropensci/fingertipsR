@@ -2,8 +2,7 @@
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
 #' @importFrom readr read_csv
-retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "https://fingertips.phe.org.uk/api/"
+retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnncccci"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()
@@ -47,8 +46,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
 #' @importFrom readr read_csv
-retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "https://fingertips.phe.org.uk/api/"
+retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnncccci"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()
@@ -76,8 +74,7 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
 #' @importFrom readr read_csv
-retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "https://fingertips.phe.org.uk/api/"
+retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnncccci"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()

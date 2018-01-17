@@ -4,12 +4,15 @@
 \alias{indicators_unique}
 \title{Live indicators}
 \usage{
-indicators_unique(ProfileID = NULL, DomainID = NULL)
+indicators_unique(ProfileID = NULL, DomainID = NULL, path)
 }
 \arguments{
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
 \item{DomainID}{Numeric vector, id of domains of interest}
+
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 A data frame of indicator ids and names

@@ -9,7 +9,7 @@
 #'   is NULL
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
 #'   default is NULL
-#'
+#' @inheritParams indicators
 #' @examples
 #' # Returns a data frame with all levels of area and how they map to one another
 #' area_types()
@@ -37,11 +37,13 @@
 #'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
 #'   \code{\link{indicators_unique}} for unique indicatorids and their names
 
-area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
+area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
                 warning("AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
         }
-        path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) {
+                path <- "https://fingertips.phe.org.uk/api/"
+        }
         set_config(config(ssl_verifypeer = 0L))
         parentAreas <- paste0(path,"area_types/parent_area_types") %>%
                 GET %>%
@@ -81,6 +83,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
 #'
 #' Outputs a data frame of category type ids, their name (along with a short name)
 #'
+#' @inheritParams indicators
 #' @return A data frame of category type ids and their descriptions
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
@@ -98,8 +101,10 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL){
 #'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
 #'   \code{\link{indicators_unique}} for unique indicatorids and their names
 
-category_types <- function() {
-        path <- "https://fingertips.phe.org.uk/api/"
+category_types <- function(path) {
+        if (missing(path)) {
+                path <- "https://fingertips.phe.org.uk/api/"
+        }
         set_config(config(ssl_verifypeer = 0L))
         category_types <- paste0(path,"category_types") %>%
                 GET %>%
@@ -120,6 +125,7 @@ category_types <- function() {
 #' @param AreaTypeID integer; the Area Type ID (can be ignored or of length 1)
 #' @param IndicatorID integer; the Indicator ID (can be ignored or of length 1).
 #'   Takes priority over AreaTypeID if both are entered
+#' @inheritParams indicators
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET content set_config config
@@ -133,8 +139,11 @@ category_types <- function() {
 #'   \code{\link{area_types}} for area type lookups and
 #'   \code{\link{category_types}} for category type lookups and
 #'   \code{\link{indicators_unique}} for unique indicatorids and their names
-indicator_areatypes <- function(IndicatorID, AreaTypeID) {
-        path <- "https://fingertips.phe.org.uk/api/available_data"
+indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
+        if (missing(path)) {
+                path <- "https://fingertips.phe.org.uk/api/"
+        }
+        path <- paste0(path, "available_data")
         if (!missing(IndicatorID)) {
                 if (length(IndicatorID) > 1) {
                         stop("Length of IndicatorID must be 0 or 1")

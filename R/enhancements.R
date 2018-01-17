@@ -17,14 +17,15 @@
 #' @export
 
 fingertips_redred <- function(Comparator = "England", ...) {
+        path <- "https://fingertips.phe.org.uk/api/"
         if (Comparator == "England") {
-                fingertips_redred <- fingertips_data(...) %>%
+                fingertips_redred <- fingertips_data(path = path, ...) %>%
                         group_by(IndicatorID, Sex, Age, CategoryType, Category) %>%
                         filter(TimeperiodSortable == max(TimeperiodSortable) &
                                        grepl("[Ww]orse",RecentTrend) &
                                        grepl("[Ww]orse", ComparedtoEnglandvalueorpercentiles))
         } else if (Comparator == "Parent") {
-                fingertips_redred <- fingertips_data(...) %>%
+                fingertips_redred <- fingertips_data(path = path, ...) %>%
                         group_by(IndicatorID, Sex, Age, CategoryType, Category) %>%
                         filter(TimeperiodSortable == max(TimeperiodSortable) &
                                        grepl("[Ww]orse",RecentTrend) &

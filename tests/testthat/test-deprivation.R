@@ -17,7 +17,7 @@ test_that("the dimensions of deprivation decile function are as expected", {
         expect_equal(dim(dep_101_2010), c(326, 3))
 })
 
-exp_classes <- c("character","numeric","numeric")
+exp_classes <- c("character","numeric","integer")
 names(exp_classes) <- c("AreaCode", "IMDscore", "decile")
 test_that("the class of columns returned are factor-numeric-numeric", {
         expect_equal(vapply(dep_default, class, character(1)), exp_classes)

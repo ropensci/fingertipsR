@@ -4,7 +4,8 @@
 \alias{indicator_metadata}
 \title{Indicator metadata}
 \usage{
-indicator_metadata(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL)
+indicator_metadata(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL,
+  path)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -16,6 +17,9 @@ polarity can vary between profiles therefore if using one of the comparison
 fields it is recommended to complete this field as well as IndicatorID. If
 IndicatorID is populated, ProfileID can be ignored or must be the same
 length as IndicatorID (but can contain NAs).}
+
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 The metadata associated with each indicator/domain/profile identified

@@ -4,12 +4,15 @@
 \alias{profiles}
 \title{Live profiles}
 \usage{
-profiles(ProfileID = NULL, ProfileName = NULL)
+profiles(ProfileID = NULL, ProfileName = NULL, path)
 }
 \arguments{
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
 \item{ProfileName}{Character vector, full name of profile(s)}
+
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 A data frame of live profile ids and names along with their domain

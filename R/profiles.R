@@ -26,8 +26,10 @@
 #'   \code{\link{indicators_unique}} for unique indicatorids and their names
 #' @export
 
-profiles <- function(ProfileID = NULL, ProfileName = NULL) {
-        path <- "https://fingertips.phe.org.uk/api/"
+profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
+        if (missing(path)) {
+                path <- "https://fingertips.phe.org.uk/api/"
+        }
         set_config(config(ssl_verifypeer = 0L))
         profiles <- paste0(path,"profiles") %>%
                 GET %>%

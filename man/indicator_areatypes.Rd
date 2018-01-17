@@ -4,13 +4,16 @@
 \alias{indicator_areatypes}
 \title{Area types by indicator}
 \usage{
-indicator_areatypes(IndicatorID, AreaTypeID)
+indicator_areatypes(IndicatorID, AreaTypeID, path)
 }
 \arguments{
 \item{IndicatorID}{integer; the Indicator ID (can be ignored or of length 1).
 Takes priority over AreaTypeID if both are entered}
 
 \item{AreaTypeID}{integer; the Area Type ID (can be ignored or of length 1)}
+
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 A data frame of indicator ids and area type ids
