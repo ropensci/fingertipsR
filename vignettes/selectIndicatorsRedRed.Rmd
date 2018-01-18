@@ -43,7 +43,7 @@ The second function to be highlighted in this vignette is `fingertips_redred()`.
 df <- fingertips_redred(inds, Comparator = "England")
 ```
 
-The `geom_tile()` function from `ggplot2` can be used to visualise the poorly performing areas:
+`ggplot()` can be used to visualise the poorly performing areas:
 
 ```{r ggplot, fig.height=16, fig.width=8}
 df$IndicatorName <- sapply(strwrap(df$IndicatorName, 60, 
