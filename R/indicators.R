@@ -29,9 +29,7 @@
 indicators <- function(ProfileID = NULL,
                        DomainID = NULL,
                        path) {
-        if (missing(path)) {
-                path <- "https://fingertips.phe.org.uk/api/"
-        }
+        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         if (!is.null(ProfileID)){
                 tempdf <- profiles(ProfileID = ProfileID, path = path)
@@ -103,9 +101,7 @@ indicators <- function(ProfileID = NULL,
 indicators_unique <- function(ProfileID = NULL,
                             DomainID = NULL,
                             path) {
-        if (missing(path)) {
-                path <- "https://fingertips.phe.org.uk/api/"
-        }
+        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         df <- indicators(ProfileID, DomainID, path = path)
         df <- unique(df[,c("IndicatorID", "IndicatorName")])
         return(df)

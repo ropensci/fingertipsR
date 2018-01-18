@@ -65,9 +65,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         call. = FALSE)
                 categorytype <- inequalities
         }
-        if (missing(path)) {
-                path <- "https://fingertips.phe.org.uk/api/"
-        }
+        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
 
         # ensure there are the correct inputs
