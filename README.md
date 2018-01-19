@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/PublicHealthEngland/fingertipsR.svg)](https://travis-ci.org/PublicHealthEngland/fingertipsR) [![Coverage Status](https://coveralls.io/repos/github/PublicHealthEngland/fingertipsR/badge.svg?branch=master)](https://coveralls.io/github/PublicHealthEngland/fingertipsR?branch=master) [![](https://badges.ropensci.org/168_status.svg)](https://github.com/ropensci/onboarding/issues/168)
+[![Build Status](https://travis-ci.org/rOpenSci/fingertipsR.svg)](https://travis-ci.org/rOpenSci/fingertipsR) [![Coverage Status](https://coveralls.io/repos/github/rOpenSci/fingertipsR/badge.svg?branch=master)](https://coveralls.io/github/rOpenSci/fingertipsR?branch=master) [![](https://badges.ropensci.org/168_status.svg)](https://github.com/ropensci/onboarding/issues/168)
 
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/fingertipsR)](https://cran.r-project.org/package=fingertipsR) [![CRAN Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/fingertipsR)](https://cran.r-project.org/package=fingertipsR) [![CRAN Monthly Downloads](http://cranlogs.r-pkg.org/badges/fingertipsR)](https://cran.r-project.org/package=fingertipsR)
 
@@ -28,7 +28,7 @@ You can install the latest development version from github using [devtools](http
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("PublicHealthEngland/fingertipsR",
+devtools::install_github("rOpenSci/fingertipsR",
                          build_vignettes = TRUE,
                          dependencies = "suggests")
 ```
@@ -127,5 +127,3 @@ More
 
 -   Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms
 -   License: [GPL-3](https://opensource.org/licenses/GPL-3.0)
-
-[![ropensci\_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)
