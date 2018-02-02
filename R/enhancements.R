@@ -35,3 +35,29 @@ fingertips_redred <- function(Comparator = "England", ...) {
         }
         return(fingertips_redred)
 }
+
+#' High level statistics on Fingertips data
+#'
+#' A sentence that summarises the number of unique indicators, domains and
+#' profiles
+#' @return A string that summarises the high level statistics of indicators in
+#'   Fingertips
+#' @import dplyr
+#' @examples
+#' \dontrun{
+#' # Returns a sentence describing number of indicators, domains and profiles in Fingertips
+#' fingertips_stats()}
+#' @export
+fingertips_stats <- function() {
+        cat("This may take a few moments... ")
+        fingertips_stats <- indicators()
+        summarised_stats <- fingertips_stats %>%
+                summarise_if(is.integer, n_distinct)
+        fingertips_stats <- sprintf("On %s Fingertips consisted of %o profiles, made up of %o indicators and %o distinct indicators.",
+                                    format(Sys.Date(), "%d/%m/%Y"),
+                                    summarised_stats$ProfileID,
+                                    nrow(fingertips_stats),
+                                    summarised_stats$IndicatorID)
+        return(cat(fingertips_stats))
+
+}
