@@ -1,5 +1,7 @@
 This package allows users to pull data from an API into their R environment. This is a resubmission due to additional functionality, improved documentation, and a successful application to rOpenSci.
 
+**Note, I submitted to CRAN erroneously about an hour ago - would it be possible to ignore that submission as I spotted a minor error in a new function. I'm really sorry!**
+
 ## Test 
 
 * local OS X install, R 3.4.3

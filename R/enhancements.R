@@ -53,7 +53,7 @@ fingertips_stats <- function() {
         fingertips_stats <- indicators()
         summarised_stats <- fingertips_stats %>%
                 summarise_if(is.integer, n_distinct)
-        fingertips_stats <- sprintf("On %s Fingertips consisted of %o profiles, made up of %o indicators and %o distinct indicators.",
+        fingertips_stats <- sprintf("On %s Fingertips consisted of %s profiles, made up of %s indicators and %s distinct indicators.",
                                     format(Sys.Date(), "%d/%m/%Y"),
                                     summarised_stats$ProfileID,
                                     nrow(fingertips_stats),
