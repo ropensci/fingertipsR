@@ -1,13 +1,13 @@
-This package allows users to pull data from an API into their R environment. This resubmission is because the structure of the data in the API has changed, so some of the code needed modification to reflect this change.
+This package allows users to pull data from an API into their R environment. This is a resubmission due to additional functionality, improved documentation, and a successful application to rOpenSci.
 
 ## Test 
 
-* local OS X install, R 3.4.1
-* used Travis to check on Linux (05/10/2017)
+* local OS X install, R 3.4.3
+* used Travis to check on Linux (2/2/2018)
 
 ## R CMD check results
 
-There were no WARNINGs or ERRORs.
+There were no WARNINGs, NOTEs or ERRORs.
 
 ## Downstream dependencies
 

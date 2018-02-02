@@ -38,14 +38,14 @@ fingertips_redred <- function(Comparator = "England", ...) {
 
 #' High level statistics on Fingertips data
 #'
-#' A sentence that summarises the number of unique indicators, domains and
+#' A sentence that summarises the number of indicators, unique indicators and
 #' profiles
-#' @return A string that summarises the high level statistics of indicators in
-#'   Fingertips
+#' @return A string that summarises the high level statistics of indicators and
+#'   profiles in Fingertips
 #' @import dplyr
 #' @examples
 #' \dontrun{
-#' # Returns a sentence describing number of indicators, domains and profiles in Fingertips
+#' # Returns a sentence describing number of indicators and profiles in Fingertips
 #' fingertips_stats()}
 #' @export
 fingertips_stats <- function() {

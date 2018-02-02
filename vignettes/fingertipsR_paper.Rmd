@@ -1,6 +1,6 @@
 ---
 title: 'fingertipsR: an R package for accessing population health information in England'
-author: "Sebastian Fox, Julian Flowers, Simon Thelwall, Daniel Flint, Doris Hain"
+author: "Sebastian Fox, Simon Thelwall, Daniel Flint, Doris Hain, Julian Flowers"
 output:
   pdf_document: default
   html_notebook: default
@@ -68,7 +68,7 @@ The `fingertipsR` package extends R by providing an easy-to-use set of functions
  * Description of functions in package
  -->
 
-## The structure of data in fingertips
+## The structure of data in Fingertips
 
 Public health data gathered and synthesised by PHE are stored on Fingertips in nested thematic groups. 
 Profiles group together broad themes of data such as antimicrobial resistance or diabetes. [@johnson2016improving]
@@ -80,7 +80,7 @@ Administrative geographies include upper- and lower-tier local authorities and g
 These geographies themselves fall within nested geographies according to whether they are in the administrative or health geography hierarchy. 
 
 All indicators have a fundamentally identical structure. 
-Columns provide: a code that uniquely identifies a geography, three time variables that specify the year, quarter and month, counts and denominators (data are provided where appropriate) and a value column gives the actual value - such as a prevalence or rate - to be plotted in the various representations on the website. 
+Columns provide: a code that uniquely identifies a geography, four time variables that specify year, quarter, month and year range, counts and denominators (data are provided where appropriate) and a value column gives the actual value - such as a prevalence or rate - to be plotted in the various representations on the website. 
 Rows provide an observation for the indicator at a specified time period, age group and sex for a given geography.
 
 ## Accessing the Fingertips API
@@ -127,7 +127,7 @@ head(ind_at)
 The researcher is now in a position to read the data into the working environment in R. 
 
 ```{r}
-ftips_data <- fingertips_data(IndicatorID = 90362, AreaTypeID = 102)
+ftips_data <- fingertips_data(IndicatorID = 90366, AreaTypeID = 102)
 ftips_data %>% 
         select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, 
                Sex, Age, Timeperiod, Value, LowerCI95.0limit, UpperCI95.0limit) %>%
@@ -188,7 +188,7 @@ p
 
 ## Extending the package
 
-The Fingertips website, along with its API, are in continuous development. 
+The Fingertips website and API are under continuous development and improvement. 
 The website has new data added to it on a monthly schedule, and any changes to the API are implemented at the same time. 
 As a result there is a lot of scope for extension to the functions that could be provided in the R package. 
 
@@ -220,7 +220,7 @@ The work presented here illustrates a number of new and important concepts in pu
 Software for public health can be developed by researchers who are not professional software developers and can be distributed freely and easily on the web. 
 Open source software (software where the code can be examined and adapted) allows the rapid development of new functionality, greatly expanding the uses to which it can be put and rapidly providing solutions to otherwise unmet need. 
 The decentralised nature of the version control software Git means that scientific software and analytic code can be developed without the need for physical co-location of collaborators - some of the authors of this paper have never physically met. 
-Open data facilitates the sharing of information important to public health. 
+Open data facilitates the sharing of information important to public health. We have found that there is a strong need and demand for quality data to be openly available for public health professionals and researchers who may use a variety technologies to access it. Making the data available in technology-neutral and standard formats reduces barriers to its reuse and increases the value of the data as it can then be employed in novel contexts. 
 Together, open data, open source software and distributed software development have a great deal to offer public health. 
 
 # References

@@ -1,10 +1,16 @@
-# fingertipsR 0.1.3.9000
+# fingertipsR 0.1.4
 
 * modifications to the fingertipsR paper
 
 * badges added to README
 
-* package prepared for submission to ropensci
+* package approved by ropensci
+
+* fingertips_stats function added to give high level statistics of indicators in Fingertips
+
+* indicator_areatypes now links to API rather than built in dataset
+
+* indicators_unique function provides unique table of indicators
 
 # fingertipsR 0.1.3 (5/10/2017)
 
