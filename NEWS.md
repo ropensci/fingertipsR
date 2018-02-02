@@ -1,3 +1,7 @@
+# fingertipsR 0.1.4.9000
+
+* corrected fingertips_stats to give accurate stats
+
 # fingertipsR 0.1.4
 
 * modifications to the fingertipsR paper
