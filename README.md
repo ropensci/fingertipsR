@@ -122,8 +122,8 @@ Please see the vignettes for information on use.
 browseVignettes("fingertipsR")
 ```
 
-More
-----
+More information
+----------------
 
 -   Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms
 -   License: [GPL-3](https://opensource.org/licenses/GPL-3.0)
