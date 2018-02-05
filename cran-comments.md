@@ -1,4 +1,6 @@
-This package allows users to pull data from an API into their R environment. This is a resubmission due to additional functionality, improved documentation, and a successful application to rOpenSci.
+This package allows users to pull data from an API into their R environment. 
+
+This is a resubmission (following one I did on Friday 2nd Feb - I'm really sorry!). One of the new functions, albeit a minor one, returned incorrect information due to me using sprintf incorrectly (I used %o instead of %s). I thought it would be better to update it immediately rather than wait a few months.
 
 ## Test 
 
