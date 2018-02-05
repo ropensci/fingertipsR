@@ -5,7 +5,7 @@ This is a resubmission (following one I did on Friday 2nd Feb - I'm really sorry
 ## Test 
 
 * local OS X install, R 3.4.3
-* used Travis to check on Linux (2/2/2018)
+* used Travis to check on Linux (5/2/2018)
 
 ## R CMD check results
 
