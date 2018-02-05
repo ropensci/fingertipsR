@@ -9,7 +9,8 @@ This is a resubmission (following one I did on Friday 2nd Feb - I'm really sorry
 
 ## R CMD check results
 
-There were no WARNINGs, NOTEs or ERRORs.
+There were no WARNINGs or ERRORs.
+I have 1 x NOTE because I submitted version 0.1.4 three days ago. See above for justification (whether acceptible or not, I will take your judgement)
 
 ## Downstream dependencies
 
