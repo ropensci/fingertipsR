@@ -31,11 +31,12 @@
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
-#'   \code{\link{profiles}} for profile lookups and
-#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
-#'   \code{\link{category_types}} for category lookups and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names
+#'   \code{\link{profiles}} for profile lookups,
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups,
+#'   \code{\link{category_types}} for category lookups,
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups,
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names and
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
 
 area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
@@ -93,11 +94,12 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
-#'   \code{\link{profiles}} for profile lookups and
-#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
-#'   \code{\link{area_types}} for area type lookups and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names
+#'   \code{\link{profiles}} for profile lookups,
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups,
+#'   \code{\link{area_types}} for area type lookups,
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups,
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names and
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
 
 category_types <- function(path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
@@ -130,11 +132,12 @@ category_types <- function(path) {
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
-#'   \code{\link{profiles}} for profile lookups and
-#'   \code{\link{deprivation_decile}} for deprivation decile lookups and
-#'   \code{\link{area_types}} for area type lookups and
-#'   \code{\link{category_types}} for category type lookups and
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names
+#'   \code{\link{profiles}} for profile lookups,
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups,
+#'   \code{\link{area_types}} for area type lookups,
+#'   \code{\link{category_types}} for category type lookups,
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names and
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
 indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         path <- paste0(path, "available_data")
@@ -160,4 +163,65 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
                 as_tibble
         names(areatypes_by_indicators) <- c("IndicatorID", "AreaTypeID")
         return(areatypes_by_indicators)
+}
+
+#' Nearest neighbours
+#'
+#' Outputs a character vector of similar areas for given area. Currently returns
+#' similar areas for Clinical Commissioning Groups (old and new) based on
+#' \href{https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/}{NHS
+#' England's similar CCG explorer tool} or upper tier local authorities based on
+#' \href{https://www.cipfastats.net/resources/nearestneighbours/}{CIPFA's
+#' Nearest Neighbours Model}
+#'
+#' @details Use AreaTypeID = 102 for the AreaTypeID related to Children's
+#'   services statistical neighbours
+#' @return A character vector of area codes
+#' @param AreaTypeID AreaTypeID of the nearest neighbours (see
+#'   \code{\link{area_types}}) for IDs. Only returns information on AreaTypeIDs
+#'   101, 102, 152, and 153
+#' @inheritParams fingertips_data
+#' @import dplyr
+#' @importFrom jsonlite fromJSON
+#' @importFrom httr GET content set_config config
+#' @examples
+#' nearest_neighbours(AreaCode = "E38000003", AreaTypeID = 153)
+#' @export
+#' @family lookup functions
+#' @seealso \code{\link{indicators}} for indicator lookups,
+#'   \code{\link{profiles}} for profile lookups,
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups,
+#'   \code{\link{area_types}} for area type lookups,
+#'   \code{\link{category_types}} for category type lookups,
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names and
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+nearest_neighbours <- function(AreaCode, AreaTypeID = 102, path) {
+        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        val <- case_when(
+                AreaTypeID == 101 ~ 1,
+                AreaTypeID == 153 ~ 2,
+                AreaTypeID == 102 ~ 3,
+                AreaTypeID == 152 ~ 4,
+                TRUE ~ -1
+        )
+        areacheck <- paste0(path,
+                            sprintf("parent_to_child_areas?parent_area_type_id=%s",
+                                    AreaTypeID)) %>%
+                GET %>%
+                content("text") %>%
+                fromJSON %>%
+                names
+        areacheck <- areacheck[grepl("^E", areacheck)]
+        if (!(AreaCode %in% areacheck)) stop(paste0(AreaCode, " not in AreaTypeID = ", AreaTypeID))
+        if (val == -1) stop("AreaTypeID must be one of 101, 102, 152 or 153")
+        path <- paste0(path,
+                       sprintf("areas/by_parent_area_code?area_type_id=%s&parent_area_code=nn-%s-%s",
+                               AreaTypeID, val, AreaCode))
+        set_config(config(ssl_verifypeer = 0L))
+        nearest_neighbours <- path %>%
+                GET %>%
+                content("text") %>%
+                fromJSON %>%
+                pull(Code)
+        return(nearest_neighbours)
 }

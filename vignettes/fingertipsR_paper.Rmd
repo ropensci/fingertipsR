@@ -2,9 +2,9 @@
 title: 'fingertipsR: an R package for accessing population health information in England'
 author: "Sebastian Fox, Simon Thelwall, Daniel Flint, Doris Hain, Julian Flowers"
 output:
+  word_document: default
   pdf_document: default
   html_notebook: default
-  word_document: default
   html_document: default
 bibliography: references.bib
 ---

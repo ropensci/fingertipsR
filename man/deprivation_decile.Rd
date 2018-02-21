@@ -37,17 +37,19 @@ deprivation_decile(101, 2010)
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
-  \code{\link{profiles}} for profile lookups \code{\link{indicator_metadata}}
-  for the metadata for each indicator and \code{\link{area_types}} for area
-  types and their parent mappings and \code{\link{category_types}} for
-  category lookups and \code{\link{indicator_areatypes}} for indicators by
-  area types lookups and \code{\link{indicators_unique}} for unique
-  indicatorids and their names
+  \code{\link{profiles}} for profile lookups,
+  \code{\link{indicator_metadata}} for the metadata for each indicator,
+  \code{\link{area_types}} for area types and their parent mappings,
+  \code{\link{category_types}} for category lookups,
+  \code{\link{indicator_areatypes}} for indicators by area types lookups,
+  \code{\link{indicators_unique}} for unique indicatorids and their names and
+  \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
   \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
   \code{\link{indicators_unique}},
-  \code{\link{indicators}}, \code{\link{profiles}}
+  \code{\link{indicators}},
+  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
 }

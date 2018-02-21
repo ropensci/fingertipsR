@@ -39,5 +39,6 @@ Other lookup functions: \code{\link{area_types}},
   \code{\link{deprivation_decile}},
   \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
-  \code{\link{indicators}}, \code{\link{profiles}}
+  \code{\link{indicators}},
+  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
 }

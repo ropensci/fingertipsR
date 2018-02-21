@@ -44,16 +44,18 @@ indicator_metadata(ProfileID = 129)}
 \seealso{
 \code{\link{indicators}} for indicator lookups,
   \code{\link{profiles}} for profile lookups,
-  \code{\link{deprivation_decile}} for deprivation lookups and
-  \code{\link{area_types}} for area types and their parent mappings and
-  \code{\link{category_types}} for category lookups and
-  \code{\link{indicator_areatypes}} for indicators by area types lookups and
-  \code{\link{indicators_unique}} for unique indicatorids and their names
+  \code{\link{deprivation_decile}} for deprivation lookups,
+  \code{\link{area_types}} for area types and their parent mappings,
+  \code{\link{category_types}} for category lookups,
+  \code{\link{indicator_areatypes}} for indicators by area types lookups,
+  \code{\link{indicators_unique}} for unique indicatorids and their names and
+  \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
   \code{\link{deprivation_decile}},
   \code{\link{indicator_areatypes}},
   \code{\link{indicators_unique}},
-  \code{\link{indicators}}, \code{\link{profiles}}
+  \code{\link{indicators}},
+  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
 }

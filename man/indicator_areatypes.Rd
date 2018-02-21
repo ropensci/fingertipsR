@@ -27,16 +27,18 @@ indicator_areatypes()
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
-  \code{\link{profiles}} for profile lookups and
-  \code{\link{deprivation_decile}} for deprivation decile lookups and
-  \code{\link{area_types}} for area type lookups and
-  \code{\link{category_types}} for category type lookups and
-  \code{\link{indicators_unique}} for unique indicatorids and their names
+  \code{\link{profiles}} for profile lookups,
+  \code{\link{deprivation_decile}} for deprivation decile lookups,
+  \code{\link{area_types}} for area type lookups,
+  \code{\link{category_types}} for category type lookups,
+  \code{\link{indicators_unique}} for unique indicatorids and their names and
+  \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
   \code{\link{deprivation_decile}},
   \code{\link{indicator_metadata}},
   \code{\link{indicators_unique}},
-  \code{\link{indicators}}, \code{\link{profiles}}
+  \code{\link{indicators}},
+  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
 }

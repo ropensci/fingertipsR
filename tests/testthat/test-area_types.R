@@ -26,3 +26,11 @@ test_that("category_types returns as expected", {
         expect_is(category_types(), "data.frame")
         expect_equal(ncol(category_types()), 4)
 })
+
+context("nearest_neighbours works correctly")
+test_that("nearest_neighbours returns as expected", {
+        expect_is(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102), "character")
+        expect_is(nearest_neighbours(AreaCode = "E38000022", AreaTypeID = 153), "character")
+        expect_error(nearest_neighbours(AreaCode = "E12000001", AreaTypeID = 6), "AreaTypeID must be one of 101, 102, 152 or 153")
+        expect_error(nearest_neighbours(AreaCode = "E07000033", AreaTypeID = 152), "E07000033 not in AreaTypeID = 152")
+})
