@@ -35,8 +35,10 @@
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups,
 #'   \code{\link{category_types}} for category lookups,
 #'   \code{\link{indicator_areatypes}} for indicators by area types lookups,
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names and
-#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names,
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area and
+#'   \code{\link{indicator_order}} for the order indicators are presented on the
+#'   Fingertips website within a Domain
 
 area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
@@ -98,8 +100,10 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups,
 #'   \code{\link{area_types}} for area type lookups,
 #'   \code{\link{indicator_areatypes}} for indicators by area types lookups,
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names and
-#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names,
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area and
+#'   \code{\link{indicator_order}} for the order indicators are presented on the
+#'   Fingertips website within a Domain
 
 category_types <- function(path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
@@ -136,8 +140,10 @@ category_types <- function(path) {
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups,
 #'   \code{\link{area_types}} for area type lookups,
 #'   \code{\link{category_types}} for category type lookups,
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names and
-#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names,
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area and
+#'   \code{\link{indicator_order}} for the order indicators are presented on the
+#'   Fingertips website within a Domain
 indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         path <- paste0(path, "available_data")
@@ -193,8 +199,10 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups,
 #'   \code{\link{area_types}} for area type lookups,
 #'   \code{\link{category_types}} for category type lookups,
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names,
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
+#'   \code{\link{indicator_order}} for the order indicators are presented on the
+#'   Fingertips website within a Domain
 nearest_neighbours <- function(AreaCode, AreaTypeID = 102, path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         val <- case_when(

@@ -23,8 +23,10 @@
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups,
 #'   \code{\link{category_types}} for category lookups,
 #'   \code{\link{indicator_areatypes}} for indicators by area types lookups,
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names and
-#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names,
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area and
+#'   \code{\link{indicator_order}} for the order indicators are presented on the
+#'   Fingertips website within a Domain
 #' @export
 
 indicators <- function(ProfileID = NULL,
@@ -96,8 +98,10 @@ indicators <- function(ProfileID = NULL,
 #'   mappings, \code{\link{indicator_metadata}} for indicator metadata and
 #'   \code{\link{profiles}} for profile lookups and
 #'   \code{\link{deprivation_decile}} for deprivation decile lookups and
-#'   \code{\link{category_types}} for category lookups and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+#'   \code{\link{category_types}} for category lookups,
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
+#'   \code{\link{indicator_order}} for the order indicators are presented on the
+#'   Fingertips website within a Domain
 #' @export
 indicators_unique <- function(ProfileID = NULL,
                             DomainID = NULL,
@@ -107,4 +111,62 @@ indicators_unique <- function(ProfileID = NULL,
         df <- unique(df[,c("IndicatorID", "IndicatorName")])
         return(df)
 
+}
+
+#' Indicator order number
+#'
+#' Outputs a tibble of indicator ids and their sequence number for the provided
+#' domain and area type. This enables the user to order the indicators as they
+#' are ordered on the Fingertips website.
+#' @return A data frame of indicator ids and sequence number
+#' @inheritParams fingertips_data
+#' @examples
+#' indicator_order(DomainID = 3007000, AreaTypeID = 102, ParentAreaTypeID = 6)
+#' @family lookup functions
+#' @seealso \code{\link{indicators}} for indicators and their parent domains and profiles,
+#'   \code{\link{area_types}} for area type and their parent mappings,
+#'   \code{\link{indicator_metadata}} for indicator metadata,
+#'   \code{\link{profiles}} for profile lookups,
+#'   \code{\link{deprivation_decile}} for deprivation decile lookups,
+#'   \code{\link{category_types}} for category lookups,
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
+#' @export
+indicator_order <- function(DomainID,
+                            AreaTypeID,
+                            ParentAreaTypeID,
+                            path) {
+        if (missing(DomainID)|missing(AreaTypeID)|missing(ParentAreaTypeID))
+                stop("All of DomainID, AreaTypeID and ParentAreaTypeID are required")
+        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+
+        ParentAreaCode <- paste0(path,
+                                 sprintf("parent_to_child_areas?parent_area_type_id=%s",
+                                         ParentAreaTypeID)) %>%
+                GET %>%
+                content("text") %>%
+                fromJSON %>%
+                names
+        ParentAreaCode <- ParentAreaCode[grepl("^E", ParentAreaCode)][1]
+        domid <- DomainID
+        ProfileID <- profiles() %>%
+                filter(DomainID == domid)
+        if (nrow(ProfileID) == 0) {
+                stop("DomainID does not exist")
+        } else {
+                ProfileID <- unique(ProfileID$ProfileID)
+        }
+
+        path <- paste0(path,
+                       sprintf("latest_data/all_indicators_in_profile_group_for_child_areas?profile_id=%s&group_id=%s&area_type_id=%s&parent_area_code=%s",
+                               ProfileID, DomainID, AreaTypeID, ParentAreaCode))
+        set_config(config(ssl_verifypeer = 0L))
+        indicator_order <- path %>%
+                GET %>%
+                content("text") %>%
+                fromJSON %>%
+                select(IID, Sequence) %>%
+                rename(IndicatorID = IID) %>%
+                as_tibble
+        return(indicator_order)
 }

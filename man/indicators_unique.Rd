@@ -31,14 +31,16 @@ indicators_unique(ProfileID = 21)
   mappings, \code{\link{indicator_metadata}} for indicator metadata and
   \code{\link{profiles}} for profile lookups and
   \code{\link{deprivation_decile}} for deprivation decile lookups and
-  \code{\link{category_types}} for category lookups and
-  \code{\link{indicator_areatypes}} for indicators by area types lookups
+  \code{\link{category_types}} for category lookups,
+  \code{\link{indicator_areatypes}} for indicators by area types lookups and
+  \code{\link{indicator_order}} for the order indicators are presented on the
+  Fingertips website within a Domain
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
   \code{\link{deprivation_decile}},
   \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
-  \code{\link{indicators}},
+  \code{\link{indicator_order}}, \code{\link{indicators}},
   \code{\link{nearest_neighbours}}, \code{\link{profiles}}
 }

@@ -42,13 +42,16 @@ deprivation_decile(101, 2010)
   \code{\link{area_types}} for area types and their parent mappings,
   \code{\link{category_types}} for category lookups,
   \code{\link{indicator_areatypes}} for indicators by area types lookups,
-  \code{\link{indicators_unique}} for unique indicatorids and their names and
-  \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
+  \code{\link{indicators_unique}} for unique indicatorids and their names,
+  \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area and
+  \code{\link{indicator_order}} for the order indicators are presented on the
+  Fingertips website within a Domain
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
   \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
+  \code{\link{indicator_order}},
   \code{\link{indicators_unique}},
   \code{\link{indicators}},
   \code{\link{nearest_neighbours}}, \code{\link{profiles}}

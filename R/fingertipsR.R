@@ -46,4 +46,6 @@ globalVariables(c("Id",
                   "combined",
                   "areacheck",
                   "nearest_neighbours",
-                  "Code"))
+                  "Code",
+                  "IID",
+                  "Sequence"))

@@ -30,3 +30,11 @@ test_that("the indicators_unique function works", {
         expect_is(indicators_unique(19),
                   "data.frame")
 })
+
+test_that("the indicator_order function works", {
+        expect_is(indicator_order(DomainID = 3007000, AreaTypeID = 102, ParentAreaTypeID = 6),
+                  "data.frame")
+        expect_error(indicator_order(), "All of DomainID, AreaTypeID and ParentAreaTypeID are required")
+        expect_error(indicator_order(DomainID = 100, AreaTypeID = 102, ParentAreaTypeID = 6),
+                     "DomainID does not exist")
+})
