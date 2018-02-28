@@ -165,10 +165,11 @@ indicator_order <- function(DomainID,
                 GET %>%
                 content("text") %>%
                 fromJSON %>%
-                select(IID, Sequence, Sex, Age) %>%
-                rename(IndicatorID = IID) %>%
-                as_tibble
+                select(IID, Sequence, Sex, Age)
         indicator_order$Sex <- indicator_order$Sex$Name
         indicator_order$Age <- indicator_order$Age$Name
+        indicator_order <- indicator_order %>%
+                rename(IndicatorID = IID) %>%
+                as_tibble
         return(indicator_order)
 }
