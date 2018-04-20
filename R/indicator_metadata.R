@@ -40,7 +40,7 @@ indicator_metadata <- function(IndicatorID = NULL,
         types <- "icccccccccccccccccccccccciccccc"
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         if (!(is.null(IndicatorID))) {
-                AllIndicators <- indicators()
+                AllIndicators <- indicators(path = path)
                 if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
                         stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
                 }
