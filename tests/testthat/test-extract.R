@@ -3,12 +3,12 @@ library(fingertipsR)
 
 context("fingertips data extract")
 
-df1 <- fingertips_data(IndicatorID = 92309)
-df2 <- suppressWarnings(fingertips_data(IndicatorID = 92309, DomainID = 1938132983))
-df3 <- suppressWarnings(fingertips_data(IndicatorID = 92309, ProfileID = 19))
+df1 <- fingertips_data(IndicatorID = 259)
+df2 <- suppressWarnings(fingertips_data(IndicatorID = 259, DomainID = 2000008))
+df3 <- suppressWarnings(fingertips_data(IndicatorID = 259, ProfileID = 20))
 df4 <- fingertips_data(DomainID = 1938132767)
 df5 <- fingertips_data(ProfileID = 132)
-df6 <- fingertips_data(IndicatorID = 92309, ProfileID = NA)
+df6 <- fingertips_data(IndicatorID = 259, ProfileID = NA)
 df7 <- fingertips_data(DomainID = 1938132767, AreaCode = "E06000015")
 df8 <- fingertips_data(DomainID = 1938132767, rank = TRUE)
 
