@@ -1,4 +1,6 @@
-# fingertipsR 0.1.6 (01/05/2018)
+# fingertipsR 0.1.6.9000
+
+# fingertipsR 0.1.6 (03/05/2018)
 
 * nearest_neighbours() function added
 

@@ -54,7 +54,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                                 encoding = "UTF-8",
                                 col_types = types)
         } else if (!(is.null(DomainID))) {
-                AllProfiles <- profiles()
+                AllProfiles <- profiles(path = path)
                 if (sum(AllProfiles$DomainID %in% DomainID) == 0){
                         stop("DomainID(s) do not exist, use profiles() to identify existing domains")
                 }
@@ -70,7 +70,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                         }) %>%
                         bind_rows
         } else if (!(is.null(ProfileID))) {
-                AllProfiles <- profiles()
+                AllProfiles <- profiles(path = path)
                 if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
                         stop("ProfileID(s) do not exist, use profiles() to identify existing profiles")
                 }
