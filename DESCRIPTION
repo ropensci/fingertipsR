@@ -7,10 +7,14 @@ Maintainer: Sebastian Fox <sebastian.fox@phe.gov.uk>
 Depends: R (>= 3.4.0)
 Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")),
     person("Julian", "Flowers", , "julian.flowers@phe.gov.uk", c("aut","ctb")),
+    person("Simon", "Thelwall", , "simon.thelwall@phe.gov.uk", c("ctb")),
+    person("Duncan", "Gormansway", , "nacnudus@gmail.com", c("ctb")),
+    person("Carl", "Ganz", , "carlganz@gmail.com", c("ctb")),
     person("Crown Copyright 2018", , , , c("cph")))
 URL: https://fingertips.phe.org.uk
 BugReports: https://github.com/PublicHealthEngland/fingertipsR/issues
 Imports:
+    curl,
     dplyr,
     DT,
     httr,
@@ -21,7 +25,6 @@ Imports:
     shiny,
     shinycssloaders
 Suggests:
-    curl,
     ggplot2,
     knitr,
     pander,
