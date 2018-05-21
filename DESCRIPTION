@@ -14,7 +14,7 @@ Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "
 URL: https://fingertips.phe.org.uk
 BugReports: https://github.com/PublicHealthEngland/fingertipsR/issues
 Imports:
-    curl,
+    curl (>= 3.2),
     dplyr,
     DT,
     httr,
