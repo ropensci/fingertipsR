@@ -15,7 +15,8 @@
 #' indicators(ProfileID = 19)}
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
 #'   \code{\link{indicator_metadata}} for indicator metadata,
@@ -48,7 +49,7 @@ indicators <- function(ProfileID = NULL,
         df <- DomainID %>%
                 lapply(function(dom) {
                         dfRaw <- paste0(path,"indicator_metadata/by_group_id?group_ids=",dom) %>%
-                                GET %>%
+                                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                                 content("text") %>%
                                 fromJSON(flatten = TRUE)
                         if (length(dfRaw) != 0){
@@ -143,7 +144,7 @@ indicator_order <- function(DomainID,
         ParentAreaCode <- paste0(path,
                                  sprintf("parent_to_child_areas?parent_area_type_id=%s",
                                          ParentAreaTypeID)) %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                 content("text") %>%
                 fromJSON %>%
                 names
@@ -162,7 +163,7 @@ indicator_order <- function(DomainID,
                                ProfileID, DomainID, AreaTypeID, ParentAreaCode))
         set_config(config(ssl_verifypeer = 0L))
         indicator_order <- path %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                 content("text") %>%
                 fromJSON %>%
                 select(IID, Sequence, Sex, Age)

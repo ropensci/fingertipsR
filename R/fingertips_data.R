@@ -46,6 +46,8 @@
 #' fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
 #' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
 #' @importFrom jsonlite fromJSON
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @family data extract functions
 #' @export
 
@@ -110,7 +112,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                 areacodes <- AreaTypeID %>%
                                         lapply(function(i) {
                                                 paste0(path, "areas/by_area_type?area_type_id=", i) %>%
-                                                        GET %>%
+                                                        GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                                                         content("text") %>%
                                                         fromJSON
                                         }) %>%

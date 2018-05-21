@@ -15,7 +15,8 @@
 #' profiles(ProfileName = "Public Health Outcomes Framework")
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
 #'   \code{\link{indicators}} for indicator lookups,
@@ -32,8 +33,9 @@
 profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
+
         profiles <- paste0(path,"profiles") %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                 content("text") %>%
                 fromJSON
         idname <- profiles[,c("Id", "Name")]
@@ -67,7 +69,7 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
                                pull %>%
                 lapply(function(dataurl) {
                         dataurl %>%
-                                GET %>%
+                                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                                 content("text") %>%
                                 fromJSON
                 }) %>%

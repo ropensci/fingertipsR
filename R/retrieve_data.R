@@ -1,6 +1,7 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils read.csv
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @importFrom readr read_csv
 retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnncccci"
@@ -30,7 +31,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                                         }
                                 }
                                 fingertips_data <- rbind(dataurl %>%
-                                                                 GET %>%
+                                                                 GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                                                                  content("parsed",
                                                                          type = "text/csv",
                                                                          encoding = "UTF-8",
@@ -44,7 +45,8 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
 
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils read.csv
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @importFrom readr read_csv
 retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnncccci"
@@ -58,7 +60,7 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
                                                           ChildAreaTypeID,ParentAreaTypeID,DomainID),
                                                   "&include_sortable_time_periods=yes")
                                 fingertips_data <- rbind(dataurl %>%
-                                                                 GET %>%
+                                                                 GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                                                                  content("parsed",
                                                                          type = "text/csv",
                                                                          encoding = "UTF-8",
@@ -72,7 +74,8 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
 
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils read.csv
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @importFrom readr read_csv
 retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnncccci"
@@ -86,7 +89,7 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
                                                           ChildAreaTypeID,ParentAreaTypeID,ProfileID),
                                                   "&include_sortable_time_periods=yes")
                                 fingertips_data <- rbind(dataurl %>%
-                                                                 GET %>%
+                                                                 GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                                                                  content("parsed",
                                                                          type = "text/csv",
                                                                          encoding = "UTF-8",

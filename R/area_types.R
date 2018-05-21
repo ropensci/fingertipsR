@@ -27,7 +27,8 @@
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
 #' @importFrom stats complete.cases
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -47,7 +48,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         parentAreas <- paste0(path,"area_types/parent_area_types") %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                 content("text") %>%
                 fromJSON
         area_types <- parentAreas[,c("Id", "Name")]
@@ -88,7 +89,8 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
 #' @return A data frame of category type ids and their descriptions
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @examples
 #' # Returns the deprivation category types
 #' cats <- category_types()
@@ -109,7 +111,7 @@ category_types <- function(path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         category_types <- paste0(path,"category_types") %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                 content("text") %>%
                 fromJSON %>%
                 pull(Categories) %>%
@@ -130,7 +132,8 @@ category_types <- function(path) {
 #' @inheritParams indicators
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @examples
 #' indicator_areatypes()
 #' @export
@@ -163,7 +166,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
         }
         set_config(config(ssl_verifypeer = 0L))
         areatypes_by_indicators <- path %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                 content("text") %>%
                 fromJSON %>%
                 as_tibble
@@ -189,7 +192,8 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #' @inheritParams fingertips_data
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @examples
 #' nearest_neighbours(AreaCode = "E38000003", AreaTypeID = 153)
 #' @export
@@ -215,7 +219,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 102, path) {
         areacheck <- paste0(path,
                             sprintf("parent_to_child_areas?parent_area_type_id=%s",
                                     AreaTypeID)) %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                 content("text") %>%
                 fromJSON %>%
                 names
@@ -227,7 +231,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 102, path) {
                                AreaTypeID, val, AreaCode))
         set_config(config(ssl_verifypeer = 0L))
         nearest_neighbours <- path %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                 content("text") %>%
                 fromJSON %>%
                 pull(Code)

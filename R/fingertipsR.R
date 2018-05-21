@@ -48,4 +48,5 @@ globalVariables(c("Id",
                   "nearest_neighbours",
                   "Code",
                   "IID",
-                  "Sequence"))
+                  "Sequence",
+                  "."))
