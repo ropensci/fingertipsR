@@ -69,7 +69,7 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
                                pull %>%
                 lapply(function(dataurl) {
                         dataurl %>%
-                                GET %>%
+                                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
                                 content("text") %>%
                                 fromJSON
                 }) %>%
