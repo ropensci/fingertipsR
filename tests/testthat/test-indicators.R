@@ -8,6 +8,8 @@ test_that("profile warnings work", {
                        "ProfileID\\(s\\) are not in the list of profile IDs\\. Re-run the function without any inputs to see all possible IDs\\.")
         expect_error(profiles(ProfileName = "PHOF"),
                        "Profile names are not in the list of profile names\\. Re-run the function without any inputs to see all possible names\\.")
+        expect_warning(profiles(ProfileID = 19, DomainID = 1938132767),
+                       "DomainID is ignored as ProfileID has also been entered")
 })
 
 test_that("the profiles function works", {
