@@ -4,7 +4,7 @@
 \alias{nearest_neighbours}
 \title{Nearest neighbours}
 \usage{
-nearest_neighbours(AreaCode, AreaTypeID = 102, path)
+nearest_neighbours(AreaCode, AreaTypeID = 101, measure, path)
 }
 \arguments{
 \item{AreaCode}{Character vector, ONS area code of area of interest}
@@ -12,6 +12,10 @@ nearest_neighbours(AreaCode, AreaTypeID = 102, path)
 \item{AreaTypeID}{AreaTypeID of the nearest neighbours (see
 \code{\link{area_types}}) for IDs. Only returns information on AreaTypeIDs
 101, 102, 152, and 153}
+
+\item{measure}{string; when AreaTypeID = 102 measure must be either "CIPFA"
+for CIPFA local authority nearest neighbours or "CSSN" for Children's
+services statistical neighbours}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}
@@ -23,9 +27,12 @@ A character vector of area codes
 Outputs a character vector of similar areas for given area. Currently returns
 similar areas for Clinical Commissioning Groups (old and new) based on
 \href{https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/}{NHS
-England's similar CCG explorer tool} or upper tier local authorities based on
+England's similar CCG explorer tool} or lower and upper tier local
+authorities based on
 \href{https://www.cipfastats.net/resources/nearestneighbours/}{CIPFA's
-Nearest Neighbours Model}
+Nearest Neighbours Model} or upper tier local authorities based on
+\href{https://www.gov.uk/government/publications/local-authority-interactive-tool-lait}{Children's
+services statistical neighbour benchmarking tool}
 }
 \details{
 Use AreaTypeID = 102 for the AreaTypeID related to Children's

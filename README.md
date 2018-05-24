@@ -59,7 +59,7 @@ the following, that also requires
 [devtools](https://github.com/hadley/devtools):
 
 ``` r
-source <- devtools:::source_pkg("C:/path/to/fingertips-master")
+source <- devtools:::source_pkg("C:/path/to/fingertipsR-master")
 install(source)
 ```
 
