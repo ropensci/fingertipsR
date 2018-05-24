@@ -35,7 +35,7 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
         set_config(config(ssl_verifypeer = 0L))
 
         profiles <- paste0(path,"profiles") %>%
-                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON
         idname <- profiles[,c("Id", "Name")]
@@ -69,7 +69,7 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
                                pull %>%
                 lapply(function(dataurl) {
                         dataurl %>%
-                                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                                 content("text") %>%
                                 fromJSON
                 }) %>%

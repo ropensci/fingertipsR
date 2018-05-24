@@ -49,7 +49,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                 dataurl <- paste0(path,
                                   paste(IndicatorID, collapse = "%2C"))
                 indicator_metadata <- dataurl %>%
-                        GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                         content("parsed",
                                 type = "text/csv",
                                 encoding = "UTF-8",
@@ -63,7 +63,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- paste0(path, DomainID) %>%
                         lapply(function(dataurl) {
                                 dataurl %>%
-                                        GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                                         content("parsed",
                                                 type = "text/csv",
                                                 encoding = "UTF-8",
@@ -79,7 +79,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- paste0(path, ProfileID) %>%
                         lapply(function(dataurl) {
                                 dataurl %>%
-                                        GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                                         content("parsed",
                                                 type = "text/csv",
                                                 encoding = "UTF-8",

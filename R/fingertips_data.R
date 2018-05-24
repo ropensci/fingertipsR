@@ -112,7 +112,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                 areacodes <- AreaTypeID %>%
                                         lapply(function(i) {
                                                 paste0(path, "areas/by_area_type?area_type_id=", i) %>%
-                                                        GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                                                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                                                         content("text") %>%
                                                         fromJSON
                                         }) %>%

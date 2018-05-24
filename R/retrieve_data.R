@@ -31,7 +31,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                                         }
                                 }
                                 fingertips_data <- rbind(dataurl %>%
-                                                                 GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                                                                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                                                                  content("parsed",
                                                                          type = "text/csv",
                                                                          encoding = "UTF-8",
@@ -60,7 +60,7 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
                                                           ChildAreaTypeID,ParentAreaTypeID,DomainID),
                                                   "&include_sortable_time_periods=yes")
                                 fingertips_data <- rbind(dataurl %>%
-                                                                 GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                                                                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                                                                  content("parsed",
                                                                          type = "text/csv",
                                                                          encoding = "UTF-8",
@@ -89,7 +89,7 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
                                                           ChildAreaTypeID,ParentAreaTypeID,ProfileID),
                                                   "&include_sortable_time_periods=yes")
                                 fingertips_data <- rbind(dataurl %>%
-                                                                 GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                                                                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                                                                  content("parsed",
                                                                          type = "text/csv",
                                                                          encoding = "UTF-8",

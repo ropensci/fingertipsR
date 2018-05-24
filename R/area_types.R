@@ -48,7 +48,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         parentAreas <- paste0(path,"area_types/parent_area_types") %>%
-                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON
         area_types <- parentAreas[,c("Id", "Name")]
@@ -111,7 +111,7 @@ category_types <- function(path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         category_types <- paste0(path,"category_types") %>%
-                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON %>%
                 pull(Categories) %>%
@@ -166,7 +166,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
         }
         set_config(config(ssl_verifypeer = 0L))
         areatypes_by_indicators <- path %>%
-                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON %>%
                 as_tibble
@@ -219,7 +219,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 102, path) {
         areacheck <- paste0(path,
                             sprintf("parent_to_child_areas?parent_area_type_id=%s",
                                     AreaTypeID)) %>%
-                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON %>%
                 names
@@ -231,7 +231,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 102, path) {
                                AreaTypeID, val, AreaCode))
         set_config(config(ssl_verifypeer = 0L))
         nearest_neighbours <- path %>%
-                GET(use_proxy(ie_get_proxy_for_url(.))) %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON %>%
                 pull(Code)
