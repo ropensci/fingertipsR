@@ -29,7 +29,7 @@ test_that("category_types returns as expected", {
 
 context("nearest_neighbours works correctly")
 test_that("nearest_neighbours returns as expected", {
-        expect_is(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 101), "character")
+        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 101), "character")
         expect_is(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CIPFA"), "character")
         expect_is(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CSSN"), "character")
         expect_is(nearest_neighbours(AreaCode = "E38000022", AreaTypeID = 153), "character")
