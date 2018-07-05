@@ -165,7 +165,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         }
                 }
         }
-        names(fingertips_data) <- gsub("\\s|\\.","",names(fingertips_data))
+        names(fingertips_data) <- gsub("\\s","",names(fingertips_data))
 
         if (rank == TRUE) {
                 inds <- unique(fingertips_data$IndicatorID)

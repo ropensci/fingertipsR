@@ -90,6 +90,7 @@ new_data_formatting <- function(dataurl) {
                              fill = TRUE,
                              header = TRUE,
                              quote = "",
-                             stringsAsFactors = FALSE)
+                             stringsAsFactors = FALSE,
+                             check.names = FALSE)
         return(new_data)
 }

@@ -28,7 +28,8 @@ domain and area type. This enables the user to order the indicators as they
 are ordered on the Fingertips website.
 }
 \examples{
-indicator_order(DomainID = 1938133161, AreaTypeID = 102, ParentAreaTypeID = 6)
+\dontrun{
+indicator_order(DomainID = 1938133161, AreaTypeID = 102, ParentAreaTypeID = 6)}
 }
 \seealso{
 \code{\link{indicators}} for indicators and their parent domains and profiles,
