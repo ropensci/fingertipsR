@@ -12,7 +12,7 @@ df6 <- fingertips_data(IndicatorID = 259, ProfileID = NA)
 df7 <- fingertips_data(DomainID = 1938132767, AreaCode = "E06000015")
 df8 <- fingertips_data(DomainID = 1938132767, rank = TRUE)
 
-ncols <- 24
+ncols <- 25
 
 test_that("the data returned are the same despite different inputs", {
         expect_equal(df1, df2)

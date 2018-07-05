@@ -1,10 +1,6 @@
-#' @importFrom jsonlite fromJSON
-#' @importFrom utils read.csv
-#' @importFrom httr GET content set_config config use_proxy
-#' @importFrom curl ie_get_proxy_for_url
-#' @importFrom readr read_csv
+#' @importFrom httr set_config config
 retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        types <- "icccccccccccnnnnnnncccci"
+        types <- "icccccccccccnnnnnnnccccic"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()
         for (i in seq_len(length(IndicatorIDs))) {
@@ -30,12 +26,8 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                                                                   "&include_sortable_time_periods=yes")
                                         }
                                 }
-                                fingertips_data <- rbind(dataurl %>%
-                                                                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
-                                                                 content("parsed",
-                                                                         type = "text/csv",
-                                                                         encoding = "UTF-8",
-                                                                         col_types = types),
+                                new_data <- new_data_formatting(dataurl)
+                                fingertips_data <- rbind(new_data,
                                                          fingertips_data)
                         }
                 }
@@ -43,13 +35,9 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
         return(fingertips_data)
 }
 
-#' @importFrom jsonlite fromJSON
-#' @importFrom utils read.csv
-#' @importFrom httr GET content set_config config use_proxy
-#' @importFrom curl ie_get_proxy_for_url
-#' @importFrom readr read_csv
+#' @importFrom httr set_config config
 retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        types <- "icccccccccccnnnnnnncccci"
+        types <- "icccccccccccnnnnnnnccccic"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()
         for (DomainID in DomainIDs) {
@@ -59,12 +47,8 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
                                                   sprintf("all_data/csv/by_group_id?child_area_type_id=%s&parent_area_type_id=%s&group_id=%s",
                                                           ChildAreaTypeID,ParentAreaTypeID,DomainID),
                                                   "&include_sortable_time_periods=yes")
-                                fingertips_data <- rbind(dataurl %>%
-                                                                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
-                                                                 content("parsed",
-                                                                         type = "text/csv",
-                                                                         encoding = "UTF-8",
-                                                                         col_types = types),
+                                new_data <- new_data_formatting(dataurl)
+                                fingertips_data <- rbind(new_data,
                                                          fingertips_data)
                         }
                 }
@@ -72,13 +56,9 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
         return(fingertips_data)
 }
 
-#' @importFrom jsonlite fromJSON
-#' @importFrom utils read.csv
-#' @importFrom httr GET content set_config config use_proxy
-#' @importFrom curl ie_get_proxy_for_url
-#' @importFrom readr read_csv
+#' @importFrom httr set_config config
 retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        types <- "icccccccccccnnnnnnncccci"
+        types <- "icccccccccccnnnnnnnccccic"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()
         for (ProfileID in ProfileIDs) {
@@ -88,15 +68,28 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
                                                   sprintf("all_data/csv/by_profile_id?child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s",
                                                           ChildAreaTypeID,ParentAreaTypeID,ProfileID),
                                                   "&include_sortable_time_periods=yes")
-                                fingertips_data <- rbind(dataurl %>%
-                                                                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
-                                                                 content("parsed",
-                                                                         type = "text/csv",
-                                                                         encoding = "UTF-8",
-                                                                         col_types = types),
+                                new_data <- new_data_formatting(dataurl)
+                                fingertips_data <- rbind(new_data,
                                                          fingertips_data)
                         }
                 }
         }
         return(fingertips_data)
+}
+
+#' @importFrom httr GET content use_proxy
+#' @importFrom curl ie_get_proxy_for_url
+#' @importFrom utils read.table
+new_data_formatting <- function(dataurl) {
+        df_string  <- dataurl %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                content("text")
+        new_data <- read.table(text = df_string,
+                             encoding = "UTF-8",
+                             sep = ",",
+                             fill = TRUE,
+                             header = TRUE,
+                             quote = "",
+                             stringsAsFactors = FALSE)
+        return(new_data)
 }

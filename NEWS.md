@@ -1,4 +1,8 @@
-# fingertipsR 0.1.7
+# fingertipsR 0.1.8
+
+* fingertips_data function adapted for "New data" field in API
+
+# fingertipsR 0.1.7 (27/05/2018)
 
 * nearest_neighbours() modified to include `measure` parameter - so user can get 15 CIPFA nn for upper tier local authorities
 
