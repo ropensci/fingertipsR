@@ -77,20 +77,41 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
         return(fingertips_data)
 }
 
+#' @import dplyr
 #' @importFrom httr GET content use_proxy
 #' @importFrom curl ie_get_proxy_for_url
-#' @importFrom utils read.table
+#' @importFrom utils read.delim
 new_data_formatting <- function(dataurl) {
         df_string  <- dataurl %>%
                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text")
-        new_data <- read.table(text = df_string,
-                             encoding = "UTF-8",
-                             sep = ",",
-                             fill = TRUE,
-                             header = TRUE,
-                             quote = "",
-                             stringsAsFactors = FALSE,
-                             check.names = FALSE)
+        new_data <- read.delim(text = df_string,
+                               encoding = "UTF-8",
+                               sep = ",",
+                               fill = TRUE,
+                               header = TRUE,
+                               #quote = "",
+                               stringsAsFactors = FALSE,
+                               check.names = FALSE)
+        character_fields <- c("Indicator Name", "Parent Code",
+                              "Parent Name", "Area Code",
+                              "Area Name", "Area Type",
+                              "Sex", "Age", "Category Type",
+                              "Category", "Time period",
+                              "Value note", "Recent Trend",
+                              "Compared to England value or percentiles",
+                              "Compared to subnational parent value or percentiles",
+                              "New data")
+        numeric_fields <- c("Value", "Lower CI 95.0 limit",
+                            "Upper CI 95.0 limit", "Lower CI 99.8 limit",
+                            "Upper CI 99.8 limit", "Count",
+                            "Denominator")
+        integer_fields <- c("Indicator ID", "Time period Sortable")
+        new_data <- new_data %>%
+                mutate_at(.vars = character_fields, as.character)
+        new_data <- new_data %>%
+                mutate_at(.vars = numeric_fields, as.numeric)
+        new_data <- new_data %>%
+                mutate_at(.vars = integer_fields, as.integer)
         return(new_data)
 }
