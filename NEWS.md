@@ -1,4 +1,8 @@
-# fingertipsR 0.1.8
+# fingertipsR 0.1.8.9000
+
+
+
+# fingertipsR 0.1.8 (05/07/2018)
 
 * fingertips_data function adapted for "New data" field in API
 
