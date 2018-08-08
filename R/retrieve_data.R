@@ -93,6 +93,7 @@ new_data_formatting <- function(dataurl) {
                                #quote = "",
                                stringsAsFactors = FALSE,
                                check.names = FALSE)
+        names(new_data)[names(new_data)=="Target data"] <- "Compared to Target"
         character_fields <- c("Indicator Name", "Parent Code",
                               "Parent Name", "Area Code",
                               "Area Name", "Area Type",
@@ -101,7 +102,7 @@ new_data_formatting <- function(dataurl) {
                               "Value note", "Recent Trend",
                               "Compared to England value or percentiles",
                               "Compared to subnational parent value or percentiles",
-                              "New data")
+                              "New data", "Compared to Target")
         numeric_fields <- c("Value", "Lower CI 95.0 limit",
                             "Upper CI 95.0 limit", "Lower CI 99.8 limit",
                             "Upper CI 99.8 limit", "Count",

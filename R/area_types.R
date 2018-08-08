@@ -253,7 +253,12 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
         nearest_neighbours <- path %>%
                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
-                fromJSON %>%
-                pull(Code)
+                fromJSON
+        if (length(nearest_neighbours) != 0) {
+                nearest_neighbours <- nearest_neighbours %>%
+                        pull(Code)
+        } else {
+                nearest_neighbours <- character()
+        }
         return(nearest_neighbours)
 }
