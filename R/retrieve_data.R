@@ -93,7 +93,7 @@ new_data_formatting <- function(dataurl) {
                                #quote = "",
                                stringsAsFactors = FALSE,
                                check.names = FALSE)
-        names(new_data)[names(new_data)=="Target data"] <- "Compared to Target"
+        names(new_data)[names(new_data)=="Target data"] <- "Compared with goal"
         character_fields <- c("Indicator Name", "Parent Code",
                               "Parent Name", "Area Code",
                               "Area Name", "Area Type",
