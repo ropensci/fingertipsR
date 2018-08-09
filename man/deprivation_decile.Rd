@@ -30,10 +30,7 @@ This function uses the fingertips_data function to filter for the Index
 }
 \examples{
 # Return 2015 deciles for counties and unitary authorities
-deprivation_decile()
-
-# Return 2010 deciles for local authority districts and unitary authorities
-deprivation_decile(101, 2010)
+deprivation_decile(102, 2015)
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,

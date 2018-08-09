@@ -14,10 +14,7 @@
 #'   applied, limited to either 2010 or 2015; default is 2015
 #' @examples
 #' # Return 2015 deciles for counties and unitary authorities
-#' deprivation_decile()
-#'
-#' # Return 2010 deciles for local authority districts and unitary authorities
-#' deprivation_decile(101, 2010)
+#' deprivation_decile(102, 2015)
 #' @return A lookup table providing deprivation decile and area code
 #' @import dplyr
 #' @export
@@ -40,8 +37,8 @@ deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
         if (!(AreaTypeID %in% c(101, 102, 7))) {
                 stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities), 102 (Counties and Unitary Authorities) or 7 (General Practice).")
         }
-        if ((AreaTypeID %in% c(101, 102)) && !(Year %in% c(2010, 2015))) {
-                stop("Year must be either 2010 or 2015 for AreaTypeID of 101 or 102")
+        if ((AreaTypeID %in% c(101, 102)) && !(Year %in% c(2015))) {
+                stop("Year must be 2015 for AreaTypeID of 101 or 102")
         }
         if (Year %in% c(2010, 2011, 2012)) IndicatorID <- 338
         if (Year == 2015) IndicatorID <- 91872
