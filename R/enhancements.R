@@ -18,21 +18,22 @@
 
 fingertips_redred <- function(Comparator = "England", ...) {
         path <- "https://fingertips.phe.org.uk/api/"
+        fingertips_redred <- fingertips_data(path = path, ...)
+        filter_field <- names(fingertips_redred)[grepl("^Compared", names(fingertips_redred))]
         if (Comparator == "England") {
-                fingertips_redred <- fingertips_data(path = path, ...) %>%
-                        group_by(IndicatorID, Sex, Age, CategoryType, Category) %>%
-                        filter(TimeperiodSortable == max(TimeperiodSortable) &
-                                       grepl("[Ww]orse",RecentTrend) &
-                                       grepl("[Ww]orse", ComparedtoEnglandvalueorpercentiles))
+                filter_field <- filter_field[grepl("^ComparedtoEngland", filter_field)]
         } else if (Comparator == "Parent") {
-                fingertips_redred <- fingertips_data(path = path, ...) %>%
-                        group_by(IndicatorID, Sex, Age, CategoryType, Category) %>%
-                        filter(TimeperiodSortable == max(TimeperiodSortable) &
-                                       grepl("[Ww]orse",RecentTrend) &
-                                       grepl("[Ww]orse", Comparedtosubnationalparentvalueorpercentiles))
+                filter_field <- filter_field[!grepl("Comparedtogoal|ComparedtoEngland", filter_field)]
+        } else if (Comparator == "Goal") {
+                filter_field <- filter_field[grepl("^Comparedtogoal", filter_field)]
         } else {
-                stop("Comparator must be either England or Parent")
+                stop("Comparator must be either England, Parent or Goal")
         }
+        fingertips_redred <- fingertips_redred %>%
+                group_by(IndicatorID, Sex, Age, CategoryType, Category) %>%
+                filter(TimeperiodSortable == max(TimeperiodSortable) &
+                               grepl("[Ww]orse",RecentTrend) &
+                               grepl("[Ww]orse", !!as.name(filter_field)))
         return(fingertips_redred)
 }
 

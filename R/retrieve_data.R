@@ -93,7 +93,9 @@ new_data_formatting <- function(dataurl) {
                                #quote = "",
                                stringsAsFactors = FALSE,
                                check.names = FALSE)
-        names(new_data)[names(new_data)=="Target data"] <- "Compared with goal"
+        names(new_data)[names(new_data)=="Target data"] <- "Compared to goal"
+        parent_field_name <- names(new_data)[grepl("^Compared", names(new_data))]
+        parent_field_name <- parent_field_name[!grepl("Compared to goal|Compared to England", parent_field_name)]
         character_fields <- c("Indicator Name", "Parent Code",
                               "Parent Name", "Area Code",
                               "Area Name", "Area Type",
@@ -101,8 +103,8 @@ new_data_formatting <- function(dataurl) {
                               "Category", "Time period",
                               "Value note", "Recent Trend",
                               "Compared to England value or percentiles",
-                              "Compared to subnational parent value or percentiles",
-                              "New data", "Compared with goal")
+                              parent_field_name,
+                              "New data", "Compared to goal")
         numeric_fields <- c("Value", "Lower CI 95.0 limit",
                             "Upper CI 95.0 limit", "Lower CI 99.8 limit",
                             "Upper CI 99.8 limit", "Count",
