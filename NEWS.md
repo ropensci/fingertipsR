@@ -1,3 +1,7 @@
+# fingertipsR 0.1.9.9000
+
+* `select_indicators()` fixed for selecting more than one indicator
+
 # fingertipsR 0.1.9
 
 * New field "Compared to goal" in `fingertips_data()`

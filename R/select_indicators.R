@@ -54,7 +54,8 @@ select_indicators <- function() {
                         },
                         rownames = FALSE)
                 observeEvent(input$done, {
-                        returnValue <- as.numeric(inds[input$indicators_rows_selected,1])
+                        inds <- inds[input$indicators_rows_selected,1]
+                        returnValue <- as.numeric(inds$IndicatorID)
                         stopApp(returnValue)
                 })
                 observeEvent(input$cancel, {
