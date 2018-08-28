@@ -127,7 +127,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         areaTypes <- area_types(AreaTypeID = AreaTypeID, path = path) %>%
                                 group_by(AreaTypeID) %>%
                                 filter(row_number() == 1)
-                        ParentAreaTypeIDs <- areaTypes$ParentAreaTypeID
+                        ParentAreaTypeIDs <- unique(areaTypes$ParentAreaTypeID)
                 } else {
                         areaTypes <- areaTypes[areaTypes$AreaTypeID %in% ChildAreaTypeIDs,]
                         if (sum(!(ParentAreaTypeID %in% areaTypes$ParentAreaTypeID)==TRUE) > 0) {
