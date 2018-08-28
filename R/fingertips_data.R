@@ -133,7 +133,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         if (sum(!(ParentAreaTypeID %in% areaTypes$ParentAreaTypeID)==TRUE) > 0) {
                                 warning("AreaTypeID not a child of ParentAreaTypeID. There may be duplicate values in data. Use function area_types() to see mappings of area type to parent area type.")
                         }
-                        ParentAreaTypeIDs <- ParentAreaTypeID
+                        ParentAreaTypeIDs <- unique(ParentAreaTypeID)
                 }
         }
         # this pulls the data from the API
