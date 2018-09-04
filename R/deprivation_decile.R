@@ -34,20 +34,42 @@ deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
         if (!(Year %in% c(2010, 2011, 2012, 2015))) {
                 stop("Year must be either 2010, 2011, 2012 or 2015")
         }
-        if (!(AreaTypeID %in% c(101, 102, 7))) {
-                stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities), 102 (Counties and Unitary Authorities) or 7 (General Practice).")
+        if (!(AreaTypeID %in% c(101, 102, 7, 3))) {
+                stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities), 102 (Counties and Unitary Authorities), 3 (Middle Super Output Areas) or 7 (General Practice).")
         }
-        if ((AreaTypeID %in% c(101, 102)) && !(Year %in% c(2015))) {
+        if ((AreaTypeID %in% c(101, 102, 3)) && !(Year %in% c(2015))) {
                 stop("Year must be 2015 for AreaTypeID of 101 or 102")
         }
-        if (Year %in% c(2010, 2011, 2012)) IndicatorID <- 338
-        if (Year == 2015) IndicatorID <- 91872
+        # if (Year %in% c(2010, 2011, 2012)) {
+        #         IndicatorID <- 338
+        #         ProfileID <- 20
+        # } else if (Year == 2015) {
+        #         if (AreaTypeID %in% c(101, 102)) {
+        #                 IndicatorID <- 91872
+        #                 ProfileID <- 26
+        #         } else if (AreaTypeID == 3) {
+        #                 IndicatorID <- 93275
+        #                 ProfileID <- 143
+        #         }
+        # }
+        if (AreaTypeID == 7) {
+                IndicatorID <- 338
+                ProfileID <- 20
+        } else if (AreaTypeID %in% c(101, 102)) {
+                IndicatorID <- 91872
+                ProfileID <- 19
+        } else if (AreaTypeID == 3) {
+                IndicatorID <- 93275
+                ProfileID <- 143
+        }
         if (AreaTypeID == 101) AreaFilter <- "District & UA"
         if (AreaTypeID == 102) AreaFilter <- "County & UA"
         if (AreaTypeID == 7) AreaFilter <- "GP"
+        if (AreaTypeID == 3) AreaFilter <- "MSOA"
         path <- "https://fingertips.phe.org.uk/api/"
         deprivation_decile <- fingertips_data(IndicatorID = IndicatorID,
                                               AreaTypeID = AreaTypeID,
+                                              ProfileID = ProfileID,
                                               path = path) %>%
                 filter(AreaType == AreaFilter &
                                Timeperiod == Year) %>%

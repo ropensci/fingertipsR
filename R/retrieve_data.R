@@ -90,7 +90,6 @@ new_data_formatting <- function(dataurl) {
                                sep = ",",
                                fill = TRUE,
                                header = TRUE,
-                               #quote = "",
                                stringsAsFactors = FALSE,
                                check.names = FALSE)
         names(new_data)[names(new_data)=="Target data"] <- "Compared to goal"
