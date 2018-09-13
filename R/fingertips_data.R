@@ -189,5 +189,5 @@ fingertips_data <- function(IndicatorID = NULL,
                         fingertips_data <- filter(fingertips_data, is.na(CategoryType))
                 }
         }
-        return(fingertips_data)
+        return(unique(fingertips_data))
 }

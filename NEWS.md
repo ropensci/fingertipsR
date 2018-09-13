@@ -2,6 +2,8 @@
 
 * `select_indicators()` fixed for selecting more than one indicator
 
+* `deprivation_decile()` now includes MSOA (AreaTypeID = 3)
+
 # fingertipsR 0.1.9
 
 * New field "Compared to goal" in `fingertips_data()`
