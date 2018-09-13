@@ -3,10 +3,12 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
         types <- "icccccccccccnnnnnnnccccic"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- list()
+        subset_i <- 0
         for (i in seq_len(length(IndicatorIDs))) {
                 IndicatorID <- IndicatorIDs[i]
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {
                         for (ParentAreaTypeID  in ParentAreaTypeIDs) {
+                                subset_i <- subset_i + 1
                                 if (missing(ProfileIDs)){
                                         dataurl <- paste0(path,
                                                           sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
@@ -26,7 +28,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                                                                   "&include_sortable_time_periods=yes")
                                         }
                                 }
-                                fingertips_data[[i]] <- new_data_formatting(dataurl)
+                                fingertips_data[[subset_i]] <- new_data_formatting(dataurl)
 
                         }
                 }
