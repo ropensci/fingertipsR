@@ -2,7 +2,7 @@
 retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnnccccic"
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_data <- data.frame()
+        fingertips_data <- list()
         for (i in seq_len(length(IndicatorIDs))) {
                 IndicatorID <- IndicatorIDs[i]
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {
@@ -26,12 +26,12 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                                                                   "&include_sortable_time_periods=yes")
                                         }
                                 }
-                                new_data <- new_data_formatting(dataurl)
-                                fingertips_data <- rbind(new_data,
-                                                         fingertips_data)
+                                fingertips_data[[i]] <- new_data_formatting(dataurl)
+
                         }
                 }
         }
+        fingertips_data <- do.call("rbind", fingertips_data)
         return(fingertips_data)
 }
 
