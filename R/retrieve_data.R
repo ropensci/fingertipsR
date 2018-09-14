@@ -1,41 +1,41 @@
 #' @importFrom httr set_config config
 retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
+        if (missing(ProfileIDs)) {
+                ProfileIDs <- ""
+                profileID_bit <- ""
+        } else {
+                profileID_bit <- "&profile_id=%s"
+        }
+        fd <- expand.grid(IndicatorIDs = IndicatorIDs,
+                             ProfileIDs = ProfileIDs,
+                             ChildAreaTypeIDs = ChildAreaTypeIDs,
+                             ParentAreaTypeIDs = ParentAreaTypeIDs,
+                             path = path,
+                             profileID_bit = profileID_bit)
+
         types <- "icccccccccccnnnnnnnccccic"
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_data <- list()
-        subset_i <- 0
-        for (i in seq_len(length(IndicatorIDs))) {
-                IndicatorID <- IndicatorIDs[i]
-                for (ChildAreaTypeID in ChildAreaTypeIDs) {
-                        for (ParentAreaTypeID  in ParentAreaTypeIDs) {
-                                subset_i <- subset_i + 1
-                                if (missing(ProfileIDs)){
-                                        dataurl <- paste0(path,
-                                                          sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
-                                                                  IndicatorID, ChildAreaTypeID, ParentAreaTypeID),
-                                                          "&include_sortable_time_periods=yes")
-                                } else {
-                                        ProfileID <- ProfileIDs[i]
-                                        if (is.na(ProfileID)) {
-                                                dataurl <- paste0(path,
-                                                                  sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
-                                                                          IndicatorID,ChildAreaTypeID,ParentAreaTypeID),
-                                                                  "&include_sortable_time_periods=yes")
-                                        } else {
-                                                dataurl <- paste0(path,
-                                                                  sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s",
-                                                                          IndicatorID, ChildAreaTypeID, ParentAreaTypeID, ProfileID),
-                                                                  "&include_sortable_time_periods=yes")
-                                        }
-                                }
-                                fingertips_data[[subset_i]] <- new_data_formatting(dataurl)
 
-                        }
+        get_data <- function(x) {
+                if (!(x$ProfileIDs == "" | is.na(x$ProfileIDs))) {
+                        x$profiledID_bit <- sprintf(x$profiledID_bit, x$ProfileIDs)
                 }
+                dataurl <- paste0("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s", x$profiledID_bit)
+                dataurl <- paste0(x$path,
+                                  sprintf(dataurl, x$IndicatorIDs, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs),
+                                  "&include_sortable_time_periods=yes")
+                y <- new_data_formatting(dataurl)
+                y
         }
-        fingertips_data <- do.call("rbind", fingertips_data)
+
+        dd <- by(fd,
+                 list(fd$IndicatorIDs, fd$ProfileIDs, fd$ChildAreaTypeIDs,
+                      fd$ParentAreaTypeIDs, fd$profileID_bit),
+                 get_data)
+        fingertips_data <- do.call("rbind", dd)
         return(fingertips_data)
 }
+
 
 #' @importFrom httr set_config config
 retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
