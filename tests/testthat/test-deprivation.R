@@ -5,7 +5,6 @@ context("Deprivation extract")
 
 dep_default <- deprivation_decile()
 dep_101 <- deprivation_decile(101)
-dep_7 <- deprivation_decile(7)
 dep_7_2010 <- deprivation_decile(7, 2010)
 dep_3 <- deprivation_decile(3)
 
@@ -20,7 +19,6 @@ names(exp_classes) <- c("AreaCode", "IMDscore", "decile")
 test_that("the class of columns returned are character-numeric-integer", {
         expect_equal(vapply(dep_default, class, character(1)), exp_classes)
         expect_equal(vapply(dep_101, class, character(1)), exp_classes)
-        expect_equal(vapply(dep_7, class, character(1)), exp_classes)
         expect_equal(vapply(dep_7_2010, class, character(1)), exp_classes)
         expect_equal(vapply(dep_3, class, character(1)), exp_classes)
 })
@@ -30,9 +28,10 @@ test_that("error messages work correctly", {
         expect_error(deprivation_decile(AreaTypeID = 12),
                      "AreaTypeID must be either 101 \\(Local authority districts and Unitary Authorities\\), 102 \\(Counties and Unitary Authorities\\), 3 \\(Middle Super Output Areas\\) or 7 \\(General Practice\\)\\.")
         expect_error(deprivation_decile(Year = 2011),
-                     "Year must be 2015 for AreaTypeID of 101 or 102")
-
+                     "Year must be 2015 for AreaTypeID of 101, 102 or 3")
+        expect_error(deprivation_decile(7),
+                     "Year must be between 2010 and 2012 for AreaTypeID 7")
         expect_error(deprivation_decile(AreaType = 101, Year = 2011),
-                     "Year must be 2015 for AreaTypeID of 101 or 102")
+                     "Year must be 2015 for AreaTypeID of 101, 102 or 3")
 
 })

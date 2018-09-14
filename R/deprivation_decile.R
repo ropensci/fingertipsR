@@ -38,20 +38,11 @@ deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
                 stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities), 102 (Counties and Unitary Authorities), 3 (Middle Super Output Areas) or 7 (General Practice).")
         }
         if ((AreaTypeID %in% c(101, 102, 3)) && !(Year %in% c(2015))) {
-                stop("Year must be 2015 for AreaTypeID of 101 or 102")
+                stop("Year must be 2015 for AreaTypeID of 101, 102 or 3")
         }
-        # if (Year %in% c(2010, 2011, 2012)) {
-        #         IndicatorID <- 338
-        #         ProfileID <- 20
-        # } else if (Year == 2015) {
-        #         if (AreaTypeID %in% c(101, 102)) {
-        #                 IndicatorID <- 91872
-        #                 ProfileID <- 26
-        #         } else if (AreaTypeID == 3) {
-        #                 IndicatorID <- 93275
-        #                 ProfileID <- 143
-        #         }
-        # }
+        if ((AreaTypeID == 7 & !(Year %in% 2010:2012))) {
+                stop("Year must be between 2010 and 2012 for AreaTypeID 7")
+        }
         if (AreaTypeID == 7) {
                 IndicatorID <- 338
                 ProfileID <- 20
