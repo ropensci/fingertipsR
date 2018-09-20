@@ -7,11 +7,11 @@
 deprivation_decile(AreaTypeID = 102, Year = 2015)
 }
 \arguments{
-\item{AreaTypeID}{Numeric value, limited to either 102 (counties and unitary
-authorities), 101 (local authority districts and unitary authorities) or 7
-(General Practice); default is 102}
+\item{AreaTypeID}{Integer value, limited to either 102 (counties and unitary
+authorities), 101 (local authority districts and unitary authorities), 7
+(General Practice) or 3 (Middle Super Output Layer); default is 102}
 
-\item{Year}{Numeric value, representing the year of IMD release to be
+\item{Year}{Integer value, representing the year of IMD release to be
 applied, limited to either 2010 or 2015; default is 2015}
 }
 \value{
