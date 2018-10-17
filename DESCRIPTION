@@ -7,7 +7,8 @@ Maintainer: Sebastian Fox <sebastian.fox@phe.gov.uk>
 Depends: R (>= 3.4.0)
 Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")),
     person("Julian", "Flowers", , "julian.flowers@phe.gov.uk", c("aut","ctb")),
-    person("Simon", "Thelwall", , "simon.thelwall@phe.gov.uk", c("ctb")),
+    person("Simon", "Thelwall", , "simon.thelwall@phe.gov.uk", c("ctb"), 
+      comment = c(ORCID = "0000-0002-0434-2724")),
     person("Duncan", "Gormansway", , "nacnudus@gmail.com", c("ctb")),
     person("Carl", "Ganz", , "carlganz@gmail.com", c("ctb")),
     person("David", "Whiting", , "david.whiting@medway.gov.uk", c("ctb")),
