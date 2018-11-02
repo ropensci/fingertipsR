@@ -6,7 +6,7 @@
 \usage{
 fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
   ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL,
-  categorytype = FALSE, inequalities, rank = FALSE, path)
+  categorytype = FALSE, rank = FALSE, path)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -30,8 +30,6 @@ extracted; if NULL the function will use the first record for the specified
 
 \item{categorytype}{TRUE or FALSE, determines whether the final table
 includes categorytype data where it exists. Default to FALSE}
-
-\item{inequalities}{deprecated: TRUE or FALSE, same as categorytype}
 
 \item{rank}{TRUE or FALSE, the rank of the area compared to other areas for
 that combination of indicator, sex, age, categorytype and category along

@@ -4,6 +4,10 @@
 
 * `deprivation_decile()` now includes MSOA (AreaTypeID = 3)
 
+* removed deprecated `inequalities` argument from `fingertips_data()`
+
+* increased speed of `indicators()` function (and therefore `select_indicators()` and other functions that rely on it)
+
 # fingertipsR 0.1.9
 
 * New field "Compared to goal" in `fingertips_data()`

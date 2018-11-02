@@ -14,9 +14,6 @@
 #' # Returns a data frame of all of the domains in the Public Health Outcomes Framework
 #' profiles(ProfileName = "Public Health Outcomes Framework")
 #' @import dplyr
-#' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config use_proxy
-#' @importFrom curl ie_get_proxy_for_url
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
 #'   \code{\link{indicators}} for indicator lookups,
@@ -35,9 +32,7 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
         set_config(config(ssl_verifypeer = 0L))
 
         profiles <- paste0(path,"profiles") %>%
-                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
-                content("text") %>%
-                fromJSON
+                get_fingertips_api()
         idname <- profiles[,c("Id", "Name")]
 
         profiles <- lapply(profiles$GroupIds, data.frame)

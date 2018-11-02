@@ -14,9 +14,6 @@
 #' # Returns a data frame of all of the indicators in the Public Health Outcomes Framework
 #' indicators(ProfileID = 19)}
 #' @import dplyr
-#' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config use_proxy
-#' @importFrom curl ie_get_proxy_for_url
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,
 #'   \code{\link{indicator_metadata}} for indicator metadata,
@@ -49,9 +46,7 @@ indicators <- function(ProfileID = NULL,
         df <- DomainID %>%
                 lapply(function(dom) {
                         dfRaw <- paste0(path,"indicator_metadata/by_group_id?group_ids=",dom) %>%
-                                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
-                                content("text") %>%
-                                fromJSON(flatten = TRUE)
+                                get_fingertips_api()
                         if (length(dfRaw) != 0){
                                 dfRaw <- unlist(dfRaw, recursive = FALSE)
                                 dfIDs <- dfRaw[grepl("IID", names(dfRaw))]

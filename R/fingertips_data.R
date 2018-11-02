@@ -23,7 +23,6 @@
 #'   default is 102 (Counties and Unitary Authorities)
 #' @param categorytype TRUE or FALSE, determines whether the final table
 #'   includes categorytype data where it exists. Default to FALSE
-#' @param inequalities deprecated: TRUE or FALSE, same as categorytype
 #' @param rank TRUE or FALSE, the rank of the area compared to other areas for
 #'   that combination of indicator, sex, age, categorytype and category along
 #'   with the indicator's polarity. 1 is lowest NAs will be bottom and ties will
@@ -45,9 +44,6 @@
 #' # data extract here and the polarity required
 #' fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
 #' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
-#' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config use_proxy
-#' @importFrom curl ie_get_proxy_for_url
 #' @family data extract functions
 #' @export
 
@@ -58,15 +54,9 @@ fingertips_data <- function(IndicatorID = NULL,
                             AreaTypeID = 102,
                             ParentAreaTypeID = NULL,
                             categorytype = FALSE,
-                            inequalities,
                             rank = FALSE,
                             path) {
 
-        if (!missing(inequalities)) {
-                warning("argument inequalities is deprecated; please use categorytype instead.",
-                        call. = FALSE)
-                categorytype <- inequalities
-        }
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
 
@@ -112,9 +102,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                 areacodes <- AreaTypeID %>%
                                         lapply(function(i) {
                                                 paste0(path, "areas/by_area_type?area_type_id=", i) %>%
-                                                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
-                                                        content("text") %>%
-                                                        fromJSON
+                                                        get_fingertips_api()
                                         }) %>%
                                         bind_rows
                                 if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
