@@ -8,6 +8,8 @@
 
 * increased speed of `indicators()` function (and therefore `select_indicators()` and other functions that rely on it)
 
+* IndicatorName field in `indicators()` table returns short name rather than long name
+
 # fingertipsR 0.1.9
 
 * New field "Compared to goal" in `fingertips_data()`

@@ -49,4 +49,6 @@ globalVariables(c("Id",
                   "Code",
                   "IID",
                   "Sequence",
-                  "."))
+                  ".",
+                  "GroupId",
+                  "IndicatorId"))

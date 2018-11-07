@@ -39,7 +39,7 @@ test_that("error messages work", {
 test_that("warning messages work", {
         expect_warning(fingertips_data(DomainID = 1938132767, AreaCode = "E06000015", ParentAreaTypeID = 153),
                        "AreaTypeID not a child of ParentAreaTypeID\\. There may be duplicate values in data\\. Use function area_types\\(\\) to see mappings of area type to parent area type\\.")
-        expect_warning(fingertips_data(DomainID = 1938133114, ProfileID = 17),
+        expect_warning(fingertips_data(DomainID = 1938133152, ProfileID = 76),
                        "DomainID is complete so ProfileID is ignored")
 })
 

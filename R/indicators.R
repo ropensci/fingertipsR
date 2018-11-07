@@ -33,49 +33,38 @@ indicators <- function(ProfileID = NULL,
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         if (!is.null(ProfileID)){
-                tempdf <- profiles(ProfileID = ProfileID, path = path)
+                tempdf <- profiles(ProfileID = ProfileID)
                 if (!is.null(DomainID)) warning("DomainID is ignored as ProfileID has also been entered")
                 DomainID <- tempdf$DomainID
         } else if (!is.null(DomainID)) {
-                tempdf <- profiles(path = path)
+                tempdf <- profiles()
                 DomainID <- DomainID
         } else {
-                tempdf <- profiles(path = path)
+                tempdf <- profiles()
                 DomainID <- tempdf$DomainID
         }
-        df <- DomainID %>%
+        if (length(DomainID) > 150) {
+                DomainID <- c(paste(DomainID[1:149], collapse = ","),
+                              paste(DomainID[150:length(DomainID)], collapse = ","))
+        }
+        url <- paste0(path,
+                      "indicator_names/by_group_id?group_ids=",
+                      DomainID)
+        df <- url %>%
                 lapply(function(dom) {
-                        dfRaw <- paste0(path,"indicator_metadata/by_group_id?group_ids=",dom) %>%
-                                get_fingertips_api()
-                        if (length(dfRaw) != 0){
-                                dfRaw <- unlist(dfRaw, recursive = FALSE)
-                                dfIDs <- dfRaw[grepl("IID", names(dfRaw))]
-                                names(dfIDs) <- gsub(".IID","",names(dfIDs))
-                                dfDescription <- unlist(dfRaw[grepl("Descriptive",
-                                                                    names(dfRaw))],
-                                                        recursive = FALSE)
-                                dfDescription <- dfDescription[grepl("NameLong",
-                                                                     names(dfDescription))]
-                                names(dfDescription) <- gsub(".Descriptive.NameLong","",
-                                                             names(dfDescription))
-                                commonNames <- intersect(names(dfIDs), names(dfDescription))
-                                dfIDs <- dfIDs[commonNames]
-                                dfDescription <- dfDescription[commonNames]
-
-                                data.frame(IndicatorID = unlist(dfIDs),
-                                           IndicatorName = unlist(dfDescription),
-                                           DomainID = dom,
-                                           row.names=NULL) %>%
-                                        mutate(IndicatorName = as.character(IndicatorName))
-                        }
+                        dom %>%
+                                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                                content("text") %>%
+                                fromJSON(flatten = TRUE)
                 }) %>%
                 bind_rows %>%
-                mutate(IndicatorName = factor(IndicatorName))
-        df <- left_join(df, tempdf, by = c("DomainID" = "DomainID")) %>%
-                select(IndicatorID, IndicatorName,
-                       DomainID, DomainName,
+                left_join(tempdf, by = c("GroupId" = "DomainID")) %>%
+                select(IndicatorID = IndicatorId, IndicatorName,
+                       DomainID = GroupId, DomainName,
                        ProfileID, ProfileName) %>%
-                as_tibble
+                mutate(IndicatorName = factor(IndicatorName)) %>%
+                as_tibble()
+
         return(df)
 }
 
