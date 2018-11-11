@@ -52,3 +52,4 @@ Other lookup functions: \code{\link{area_types}},
   \code{\link{indicators}},
   \code{\link{nearest_neighbours}}
 }
+\concept{lookup functions}

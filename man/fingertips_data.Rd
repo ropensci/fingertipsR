@@ -74,3 +74,4 @@ fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
 \seealso{
 Other data extract functions: \code{\link{fingertips_redred}}
 }
+\concept{data extract functions}

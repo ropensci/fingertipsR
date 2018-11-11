@@ -49,3 +49,4 @@ Other lookup functions: \code{\link{area_types}},
   \code{\link{indicators_unique}},
   \code{\link{nearest_neighbours}}, \code{\link{profiles}}
 }
+\concept{lookup functions}

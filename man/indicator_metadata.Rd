@@ -4,8 +4,8 @@
 \alias{indicator_metadata}
 \title{Indicator metadata}
 \usage{
-indicator_metadata(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL,
-  path)
+indicator_metadata(IndicatorID = NULL, DomainID = NULL,
+  ProfileID = NULL, path)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -62,3 +62,4 @@ Other lookup functions: \code{\link{area_types}},
   \code{\link{indicators}},
   \code{\link{nearest_neighbours}}, \code{\link{profiles}}
 }
+\concept{lookup functions}

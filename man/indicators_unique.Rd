@@ -44,3 +44,4 @@ Other lookup functions: \code{\link{area_types}},
   \code{\link{indicator_order}}, \code{\link{indicators}},
   \code{\link{nearest_neighbours}}, \code{\link{profiles}}
 }
+\concept{lookup functions}

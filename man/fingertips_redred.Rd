@@ -30,3 +30,4 @@ reddata <- fingertips_redred(ProfileID = 26, AreaTypeID = 102)}
 \seealso{
 Other data extract functions: \code{\link{fingertips_data}}
 }
+\concept{data extract functions}
