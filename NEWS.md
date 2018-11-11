@@ -1,4 +1,4 @@
-# fingertipsR 0.1.9.9000
+# fingertipsR 0.2.0
 
 * `select_indicators()` fixed for selecting more than one indicator
 

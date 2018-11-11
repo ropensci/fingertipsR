@@ -1,6 +1,6 @@
 This package allows users to pull data from an API into their R environment. 
 
-The API recently changed structure resulting package tests causing errors (and an email from Kurt). These have all been fixed.
+The API recently changed structure resulting package tests causing errors. These have all been fixed.
 
 ## Test 
 
