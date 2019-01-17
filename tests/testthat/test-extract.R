@@ -41,6 +41,10 @@ test_that("warning messages work", {
                        "AreaTypeID not a child of ParentAreaTypeID\\. There may be duplicate values in data\\. Use function area_types\\(\\) to see mappings of area type to parent area type\\.")
         expect_warning(fingertips_data(DomainID = 1938133152, ProfileID = 76),
                        "DomainID is complete so ProfileID is ignored")
+        expect_warning(fingertips_data(IndicatorID = c(93105, 93107),
+                                       ProfileID = c(NA, 143),
+                                       AreaTypeID = 8),
+                       "ProfileID can not contain NAs - all ProfileIDs are ignored")
 })
 
 test_that(paste("number of fields returned by fingertips_data function are", ncols), {

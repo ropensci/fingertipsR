@@ -3,9 +3,10 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
         if (missing(ProfileIDs)) {
                 ProfileIDs <- ""
                 profileID_bit <- ""
-        } else if (is.na(ProfileIDs)) {
+        } else if (any(is.na(ProfileIDs))) {
                 ProfileIDs <- ""
                 profileID_bit <- ""
+                warning("ProfileID can not contain NAs - all ProfileIDs are ignored")
         } else {
                 profileID_bit <- "&profile_id=%s"
         }
@@ -14,7 +15,8 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                              ChildAreaTypeIDs = ChildAreaTypeIDs,
                              ParentAreaTypeIDs = ParentAreaTypeIDs,
                              path = path,
-                             profileID_bit = profileID_bit)
+                             profileID_bit = profileID_bit) %>%
+                unique()
 
         set_config(config(ssl_verifypeer = 0L))
 
