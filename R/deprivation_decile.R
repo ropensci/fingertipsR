@@ -31,24 +31,19 @@
 #'   Fingertips website within a Domain
 
 deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
-        if (!(Year %in% c(2010, 2011, 2012, 2015))) {
-                stop("Year must be either 2010, 2011, 2012 or 2015")
+        if (!(Year %in% c(2015))) {
+                stop("Year must be 2015")
         }
         if (!(AreaTypeID %in% c(101, 102, 7, 3))) {
                 stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities), 102 (Counties and Unitary Authorities), 3 (Middle Super Output Areas) or 7 (General Practice).")
         }
-        if ((AreaTypeID %in% c(101, 102, 3)) && !(Year %in% c(2015))) {
-                stop("Year must be 2015 for AreaTypeID of 101, 102 or 3")
-        }
-        if ((AreaTypeID == 7 & !(Year %in% 2010:2012))) {
-                stop("Year must be between 2010 and 2012 for AreaTypeID 7")
-        }
-        if (AreaTypeID == 7) {
-                IndicatorID <- 338
-                ProfileID <- 20
-        } else if (AreaTypeID %in% c(101, 102)) {
+        if (AreaTypeID %in% c(101, 102, 7)) {
                 IndicatorID <- 91872
-                ProfileID <- 19
+                if (AreaTypeID %in% c(101, 102)) {
+                        ProfileID <- 19
+                } else if (AreaTypeID %in% c(7)) {
+                        ProfileID <- 20
+                }
         } else if (AreaTypeID == 3) {
                 IndicatorID <- 93275
                 ProfileID <- 143

@@ -1,5 +1,5 @@
 # fingertipsR 0.2.0.9000
-
+ * `deprivation_decile()` for `AreaTypeID = 7` (General Practice) now only contains 2015 deprivation deciles. 2010 to 2012 have been removed
 
 
 # fingertipsR 0.2.0 (12/11/2018)

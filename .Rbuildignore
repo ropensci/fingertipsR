@@ -3,6 +3,7 @@
 
 ^temp$
 monitoring/
+changelog/
 cran-comments.md
 ^\.travis\.yml$
 ^README\.Rmd$

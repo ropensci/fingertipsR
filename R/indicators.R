@@ -33,14 +33,14 @@ indicators <- function(ProfileID = NULL,
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         if (!is.null(ProfileID)){
-                tempdf <- profiles(ProfileID = ProfileID)
+                tempdf <- profiles(ProfileID = ProfileID, path = path)
                 if (!is.null(DomainID)) warning("DomainID is ignored as ProfileID has also been entered")
                 DomainID <- tempdf$DomainID
         } else if (!is.null(DomainID)) {
-                tempdf <- profiles()
+                tempdf <- profiles(path = path)
                 DomainID <- DomainID
         } else {
-                tempdf <- profiles()
+                tempdf <- profiles(path = path)
                 DomainID <- tempdf$DomainID
         }
         if (length(DomainID) > 150) {

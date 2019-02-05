@@ -41,4 +41,5 @@ inst/doc
 README\.Rmd
 \.ssh/*
 monitoring/
+changelog/
 /revdep/.cache.rds
