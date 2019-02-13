@@ -10,12 +10,18 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
         } else {
                 profileID_bit <- "&profile_id=%s"
         }
-        fd <- expand.grid(IndicatorIDs = IndicatorIDs,
-                             ProfileIDs = ProfileIDs,
-                             ChildAreaTypeIDs = ChildAreaTypeIDs,
-                             ParentAreaTypeIDs = ParentAreaTypeIDs,
-                             path = path,
-                             profileID_bit = profileID_bit) %>%
+        # fd <- expand.grid(IndicatorIDs = IndicatorIDs,
+        #                      ProfileIDs = ProfileIDs,
+        #                      ChildAreaTypeIDs = ChildAreaTypeIDs,
+        #                      ParentAreaTypeIDs = ParentAreaTypeIDs,
+        #                      path = path,
+        #                      profileID_bit = profileID_bit) %>%
+        fd <- data.frame(IndicatorIDs = IndicatorIDs,
+                         ProfileIDs = ProfileIDs,
+                         ChildAreaTypeIDs = ChildAreaTypeIDs,
+                         ParentAreaTypeIDs = ParentAreaTypeIDs,
+                         path = path,
+                         profileID_bit = profileID_bit) %>%
                 unique()
 
         set_config(config(ssl_verifypeer = 0L))
