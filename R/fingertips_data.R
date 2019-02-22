@@ -172,7 +172,9 @@ fingertips_data <- function(IndicatorID = NULL,
         }
 
         if (nrow(fingertips_data) > 0){
+                fingertips_data <- fingertips_data[fingertips_data$AreaType != fingertips_data$ParentName,]
                 fingertips_data[fingertips_data==""] <- NA
+
                 if (categorytype == FALSE) {
                         fingertips_data <- filter(fingertips_data, is.na(CategoryType))
                 }
