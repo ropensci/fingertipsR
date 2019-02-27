@@ -19,7 +19,7 @@
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config use_proxy
 #' @importFrom curl ie_get_proxy_for_url
-#' @importFrom readr read_csv
+#' @importFrom readr read_csv cols
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups,
@@ -38,7 +38,38 @@ indicator_metadata <- function(IndicatorID = NULL,
                                ProfileID = NULL,
                                path) {
         set_config(config(ssl_verifypeer = 0L))
-        types <- "icccccccccccccccccccccccciccccc"
+        types <- cols(`Indicator ID` = "i",
+                      Indicator = "c",
+                      `Indicator full name` = "c",
+                      `Definition` = "c",
+                      `Rationale` = "c",
+                      `Policy` = "c",
+                      `Data source` = "c",
+                      `Indicator production` = "c",
+                      `Indicator source` = "c",
+                      `Methodology` = "c",
+                      `Standard population/values` = "c",
+                      `Confidence interval details` = "c",
+                      `Source of numerator` = "c",
+                      `Definition of numerator` = "c",
+                      `Source of denominator` = "c",
+                      `Definition of denominator` = "c",
+                      `Disclosure control` = "c",
+                      `Caveats` = "c",
+                      `Copyright` = "c",
+                      `Data re-use` = "c",
+                      `Links` = "c",
+                      `Indicator number` = "c",
+                      `Notes` = "c",
+                      `Frequency` = "c",
+                      `Rounding` = "c",
+                      `Data quality` = "i",
+                      `Indicator Content` = "c",
+                      `Unit` = "c",
+                      `Value type` = "c",
+                      `Year type` = "c",
+                      `Polarity` = "c")
+
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         if (!(is.null(IndicatorID))) {
                 AllIndicators <- indicators(path = path)
