@@ -11,3 +11,12 @@ get_fingertips_api <- function(api_path) {
                 fromJSON(flatten = TRUE)
         return(df)
 }
+
+#' Add timestamp onto end of api url to prevent caching issues
+#' @inheritParams get_fingertips_api
+add_timestamp <- function(api_path) {
+        api_path <- paste0(api_path,
+                           "&timestamp=",
+                           as.integer(Sys.time()))
+        return(api_path)
+}
