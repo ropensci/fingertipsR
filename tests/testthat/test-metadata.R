@@ -2,7 +2,7 @@ library(testthat)
 library(fingertipsR)
 
 context("Test metadata")
-ncols <- 31
+ncols <- 32
 
 df1 <- suppressWarnings(indicator_metadata(IndicatorID = 10101))
 df2 <- suppressWarnings(indicator_metadata(DomainID = 1938132767))
