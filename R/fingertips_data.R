@@ -66,10 +66,14 @@ fingertips_data <- function(IndicatorID = NULL,
                 if (!is.null(DomainID)) {
                         warning("If IndicatorID is populated DomainID is ignored")
                 }
-                if (!is.null(ProfileID) & length(ProfileID) != length(IndicatorID)) {
-                        stop("If ProfileID and IndicatorID are populated, they must be the same length")
-                } else {
-                        ProfileIDs <- ProfileID
+                if (!is.null(ProfileID)){
+                        if (length(ProfileID) == 1) {
+                                ProfileIDs <- rep(ProfileID, length(IndicatorIDs))
+                        } else if (length(ProfileID) != length(IndicatorID)) {
+                                stop("If ProfileID and IndicatorID are populated, they must be the same length")
+                        } else {
+                                ProfileIDs <- ProfileID
+                        }
                 }
         } else {
                 if (!is.null(DomainID)) {
