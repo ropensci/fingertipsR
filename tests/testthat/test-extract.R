@@ -17,9 +17,10 @@ df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
 
 ncols <- 26
 
+remove_col <- match("Newdata", names(df1))
 test_that("the data returned are the same despite different inputs", {
         expect_equal(df1, df2)
-        expect_equal(df1, df3)
+        expect_equal(df1[,-remove_col], df3[,-remove_col])
 })
 
 test_that("error messages work", {
