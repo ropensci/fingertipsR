@@ -1,4 +1,4 @@
-# fingertipsR 0.2.1.9000
+# fingertipsR 0.2.2
 
 * no changes from a user perspective to previous versions
 
