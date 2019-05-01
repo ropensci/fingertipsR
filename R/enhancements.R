@@ -50,7 +50,6 @@ fingertips_redred <- function(Comparator = "England", ...) {
 #' fingertips_stats()}
 #' @export
 fingertips_stats <- function() {
-        cat("This may take a few moments... ")
         fingertips_stats <- indicators()
         summarised_stats <- fingertips_stats %>%
                 summarise_if(is.integer, n_distinct)
