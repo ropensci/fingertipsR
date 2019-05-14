@@ -4,8 +4,8 @@ The API recently changed structure resulting package tests causing errors. These
 
 ## Test 
 
-* local Windows 10 install, R 3.5.3
-* used Travis to check on Linux (2019-04-08)
+* local Windows 10 install, R 3.6.0
+* used Travis to check on Linux (2019-05-13)
 
 ## R CMD check results
 

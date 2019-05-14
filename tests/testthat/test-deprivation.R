@@ -12,7 +12,7 @@ test_that("the dimensions of deprivation decile function are as expected", {
         expect_equal(dim(dep_default), c(152, 3))
         expect_equal(dim(dep_101), c(326, 3))
         expect_equal(dim(dep_3), c(6791, 3))
-        expect_equal(dim(dep_7), c(7143, 3))
+        expect_equal(dim(dep_7), c(6893, 3))
 })
 
 exp_classes <- c("character","numeric","integer")
