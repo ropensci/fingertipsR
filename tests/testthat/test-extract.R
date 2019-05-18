@@ -5,7 +5,7 @@ context("fingertips data extract")
 
 df1 <- fingertips_data(IndicatorID = 90616, AreaTypeID = 152)
 df2 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 152, DomainID = 1938133106))
-df3 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 152, ProfileID = 20))
+df3 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 152, ProfileID = 135))
 df4 <- fingertips_data(DomainID = 1938132767)
 df5 <- fingertips_data(ProfileID = 132)
 df6 <- fingertips_data(IndicatorID = 90616, AreaTypeID = 152, ProfileID = NA)
@@ -17,10 +17,14 @@ df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
 
 ncols <- 26
 
-remove_col <- match("Newdata", names(df1))
+cols_to_check <- c('IndicatorID', 'ParentCode', 'AreaCode',
+                   'Sex', 'Age', 'Timeperiod', 'Value',
+                   'LowerCI95.0limit', 'UpperCI95.0limit',
+                   'LowerCI99.8limit', 'UpperCI99.8limit',
+                   'Count', 'Denominator')
 test_that("the data returned are the same despite different inputs", {
-        expect_equal(df1, df2)
-        expect_equal(df1[,-remove_col], df3[,-remove_col])
+        expect_equal(df1[,cols_to_check], df2[,cols_to_check])
+        expect_equal(df1[,cols_to_check], df3[,cols_to_check])
 })
 
 test_that("error messages work", {
