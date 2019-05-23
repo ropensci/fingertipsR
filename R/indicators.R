@@ -127,7 +127,8 @@ indicator_order <- function(DomainID,
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
 
         ParentAreaCode <- paste0(path,
-                                 sprintf("parent_to_child_areas?parent_area_type_id=%s",
+                                 sprintf("parent_to_child_areas?child_area_type_id=%s&parent_area_type_id=%s",
+                                         AreaTypeID,
                                          ParentAreaTypeID)) %>%
                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%

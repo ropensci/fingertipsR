@@ -1,3 +1,7 @@
+# fingertipsR 0.2.4.9000
+
+* fixed `indicator_order()` function
+
 # fingertipsR 0.2.4
 
 * no changes from a user perspective to previous versions
