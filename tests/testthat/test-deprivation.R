@@ -8,11 +8,12 @@ dep_101 <- deprivation_decile(101)
 dep_7 <- deprivation_decile(7)
 dep_3 <- deprivation_decile(3)
 
+dep_cols <- 3
 test_that("the dimensions of deprivation decile function are as expected", {
-        expect_equal(dim(dep_default), c(152, 3))
-        expect_equal(dim(dep_101), c(326, 3))
-        expect_equal(dim(dep_3), c(6791, 3))
-        expect_equal(dim(dep_7), c(6893, 3))
+        expect_equal(ncol(dep_default), dep_cols)
+        expect_equal(ncol(dep_101), dep_cols)
+        expect_equal(ncol(dep_3), dep_cols)
+        expect_equal(ncol(dep_7), dep_cols)
 })
 
 exp_classes <- c("character","numeric","integer")

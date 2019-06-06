@@ -176,14 +176,15 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #' @return A character vector of area codes
 #' @param AreaTypeID AreaTypeID of the nearest neighbours (see
 #'   \code{\link{area_types}}) for IDs. Only returns information on AreaTypeIDs
-#'   101, 102, 152, and 153
+#'   101, 102, 152, and 154
 #' @param measure string; when AreaTypeID = 102 measure must be either "CIPFA"
 #'   for CIPFA local authority nearest neighbours or "CSSN" for Children's
 #'   services statistical neighbours
 #' @inheritParams fingertips_data
 #' @import dplyr
+#' @importFrom utils head
 #' @examples
-#' nearest_neighbours(AreaCode = "E38000003", AreaTypeID = 153)
+#' nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -207,7 +208,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
         if (missing(measure)) measure <- NA
         if (AreaTypeID == 101) {
                 val <- 1
-        } else if (AreaTypeID == 153) {
+        } else if (AreaTypeID == 154) {
                 val <- 2
         } else if (AreaTypeID == 102 & measure == "CSSN") {
                 val <- 3
@@ -218,14 +219,19 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
         } else {
                 val <- NA
         }
+        ParentAreaTypeID <- area_types(AreaTypeID = AreaTypeID) %>%
+                pull(ParentAreaTypeID) %>%
+                head(1)
+
         areacheck <- paste0(path,
-                            sprintf("parent_to_child_areas?parent_area_type_id=%s",
-                                    AreaTypeID)) %>%
+                            sprintf("parent_to_child_areas?child_area_type_id=%s&parent_area_type_id=%s",
+                                    AreaTypeID,
+                                    ParentAreaTypeID)) %>%
                 get_fingertips_api() %>%
-                names
+                unlist(use.names = FALSE)
         areacheck <- areacheck[grepl("^E", areacheck)]
         if (!(AreaCode %in% areacheck)) stop(paste0(AreaCode, " not in AreaTypeID = ", AreaTypeID))
-        if (is.na(val)) stop("AreaTypeID must be one of 101, 102, 152 or 153")
+        if (is.na(val)) stop("AreaTypeID must be one of 101, 102, 152 or 154")
         path <- paste0(path,
                        sprintf("areas/by_parent_area_code?area_type_id=%s&parent_area_code=nn-%s-%s",
                                AreaTypeID, val, AreaCode))

@@ -1,10 +1,9 @@
 The API recently changed structure resulting package tests causing errors. These have all been fixed.
-I have also attempted to make the tests more robust against future API changes.
 
 ## Test 
 
 * local Windows 10 install, R 3.6.0
-* used Travis to check on Linux (2019-05-18)
+* used Travis to check on Linux (2019-06-06)
 
 ## R CMD check results
 
