@@ -1,5 +1,5 @@
 #' fingertipsR: A package for extracting the data behind the Fingertips website
-#' (\url{fingertips.phe.gov.uk})
+#' (\url{https://fingertips.phe.org.uk/})
 #'
 #'
 #' The fingertipsR package provides two categories of important functions: lookup

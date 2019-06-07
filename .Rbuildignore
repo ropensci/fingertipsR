@@ -15,3 +15,4 @@ vignettes/fingertipsR_paper*
 vignettes/references.bib
 .covrignore
 ^CONDUCT\.md$
+^CODE_OF_CONDUCT\.md$

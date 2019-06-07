@@ -5,7 +5,7 @@
 \alias{fingertipsR}
 \alias{fingertipsR-package}
 \title{fingertipsR: A package for extracting the data behind the Fingertips website
-(\url{fingertips.phe.gov.uk})}
+(\url{https://fingertips.phe.org.uk/})}
 \description{
 The fingertipsR package provides two categories of important functions: lookup
 and data extract.
