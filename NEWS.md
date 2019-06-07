@@ -1,4 +1,4 @@
-# fingertipsR 0.2.5
+# fingertipsR 0.2.6
 
 * fixed `indicator_order()` function
 
