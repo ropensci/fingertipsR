@@ -47,9 +47,9 @@ You can install the latest development version from github using
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("rOpenSci/fingertipsR",
-                         build_vignettes = TRUE,
-                         dependencies = "suggests")
+remotes::install_github("rOpenSci/fingertipsR",
+                        build_vignettes = TRUE,
+                        dependencies = "suggests")
 ```
 
 ### From zip
