@@ -51,4 +51,5 @@ globalVariables(c("Id",
                   "Sequence",
                   ".",
                   "GroupId",
-                  "IndicatorId"))
+                  "IndicatorId",
+                  "ParentAreaTypeName"))

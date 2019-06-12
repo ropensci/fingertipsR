@@ -10,7 +10,9 @@ indicator_order(DomainID, AreaTypeID, ParentAreaTypeID, path)
 \item{DomainID}{Numeric vector, id of domains of interest}
 
 \item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
-default is 102 (Counties and Unitary Authorities)}
+default is 102 (Counties and Unitary Authorities). This argument also
+accepts "All", which returns data for all available area types for the
+indicator(s)}
 
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified

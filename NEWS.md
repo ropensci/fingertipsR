@@ -1,5 +1,5 @@
 # fingertipsR 0.2.6.9000
-
+ * Added option for `AreaTypeId = "All"` in `fingertips_data()`
 
 # fingertipsR 0.2.6
 

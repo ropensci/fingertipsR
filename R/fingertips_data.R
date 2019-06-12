@@ -20,7 +20,9 @@
 #'   extracted; if NULL the function will use the first record for the specified
 #'   `AreaTypeID` from the area_types() function
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
-#'   default is 102 (Counties and Unitary Authorities)
+#'   default is 102 (Counties and Unitary Authorities). This argument also
+#'   accepts "All", which returns data for all available area types for the
+#'   indicator(s)
 #' @param categorytype TRUE or FALSE, determines whether the final table
 #'   includes categorytype data where it exists. Default to FALSE
 #' @param rank TRUE or FALSE, the rank of the area compared to other areas for
@@ -43,7 +45,10 @@
 #' # It is recommended to check the website to ensure consistency between your
 #' # data extract here and the polarity required
 #' fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
-#' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
+#' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]
+#'
+#' # Returns data for all available area types for an indicator
+#' fingdata <- fingertips_data(10101, AreaTypeID = "All")}
 #' @family data extract functions
 #' @export
 
@@ -99,37 +104,75 @@ fingertips_data <- function(IndicatorID = NULL,
                 stop("AreaTypeID must have a value. Use function area_types() to see what values can be used.")
         } else {
                 areaTypes <- area_types(path = path)
-                if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID)) == TRUE) > 0) {
-                        stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
-                } else {
-                        if (!is.null(AreaCode)) {
-                                areacodes <- AreaTypeID %>%
-                                        lapply(function(i) {
-                                                paste0(path, "areas/by_area_type?area_type_id=", i) %>%
-                                                        get_fingertips_api()
-                                        }) %>%
-                                        bind_rows
-                                if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
-                                        stop("Area code not contained in AreaTypeID.")
+                if (AreaTypeID == "All") {
+                        if (is.null(IndicatorID)) {
+                                if (!is.null(ProfileID)) {
+                                        IndicatorIDs <- indicators(ProfileID = ProfileIDs, path = path) %>%
+                                                pull(IndicatorID)
+                                } else if (!is.null(DomainID)) {
+                                        IndicatorIDs <- indicators(DomainID = DomainIDs, path = path) %>%
+                                                pull(IndicatorID)
+                                }
+                        } else {
+                                if (!is.null(ProfileID)|!is.null(DomainID)) {
+                                        warning("DomainID/ProfileID ignored as IndicatorID is populated along with AreaTypeID = 'All'")
                                 }
                         }
-                        ChildAreaTypeIDs <- AreaTypeID
-                }
-                if (is.null(ParentAreaTypeID)) {
-                        areaTypes <- area_types(AreaTypeID = AreaTypeID, path = path) %>%
+                        ind_ats <- indicator_areatypes() %>%
+                                filter(IndicatorID %in% IndicatorIDs)
+                        at <- area_types() %>%
+                                filter(AreaTypeID %in% unique(ind_ats$AreaTypeID),
+                                       !grepl("[Dd]epriv", ParentAreaTypeName)) %>%
                                 group_by(AreaTypeID) %>%
-                                filter(row_number() == 1)
-                        ParentAreaTypeIDs <- unique(areaTypes$ParentAreaTypeID)
+                                arrange(-ParentAreaTypeID) %>%
+                                top_n(1, ParentAreaTypeID) %>%
+                                select(AreaTypeID, ParentAreaTypeID)
+                        ind_ats <- ind_ats %>%
+                                inner_join(at, by = "AreaTypeID")
+
                 } else {
-                        areaTypes <- areaTypes[areaTypes$AreaTypeID %in% ChildAreaTypeIDs,]
-                        if (sum(!(ParentAreaTypeID %in% areaTypes$ParentAreaTypeID)==TRUE) > 0) {
-                                warning("AreaTypeID not a child of ParentAreaTypeID. There may be duplicate values in data. Use function area_types() to see mappings of area type to parent area type.")
+                        if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID)) == TRUE) > 0) {
+                                stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
+                        } else {
+                                if (!is.null(AreaCode)) {
+                                        areacodes <- AreaTypeID %>%
+                                                lapply(function(i) {
+                                                        paste0(path, "areas/by_area_type?area_type_id=", i) %>%
+                                                                get_fingertips_api()
+                                                }) %>%
+                                                bind_rows
+                                        if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
+                                                stop("Area code not contained in AreaTypeID.")
+                                        }
+                                }
+                                ChildAreaTypeIDs <- AreaTypeID
                         }
-                        ParentAreaTypeIDs <- unique(ParentAreaTypeID)
+                        if (is.null(ParentAreaTypeID)) {
+                                areaTypes <- area_types(AreaTypeID = AreaTypeID, path = path) %>%
+                                        group_by(AreaTypeID) %>%
+                                        filter(row_number() == 1)
+                                ParentAreaTypeIDs <- unique(areaTypes$ParentAreaTypeID)
+                        } else {
+                                areaTypes <- areaTypes[areaTypes$AreaTypeID %in% ChildAreaTypeIDs,]
+                                if (sum(!(ParentAreaTypeID %in% areaTypes$ParentAreaTypeID)==TRUE) > 0) {
+                                        warning("AreaTypeID not a child of ParentAreaTypeID. There may be duplicate values in data. Use function area_types() to see mappings of area type to parent area type.")
+                                }
+                                ParentAreaTypeIDs <- unique(ParentAreaTypeID)
+                        }
                 }
+
+
         }
         # this pulls the data from the API
-        if (!is.null(IndicatorID)) {
+        if (AreaTypeID == "All") {
+                fingertips_data <- apply(ind_ats, 1,
+                                         function(x) retrieve_indicator(IndicatorIDs = x["IndicatorID"],
+                                                                        ChildAreaTypeIDs = x["AreaTypeID"],
+                                                                        ParentAreaTypeIDs = x["ParentAreaTypeID"],
+                                                                        generic_name = TRUE,
+                                                                        path = path)) %>%
+                        bind_rows()
+        } else if (!is.null(IndicatorID)) {
                 if (is.null(ProfileID)) {
                         fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
                                                               ChildAreaTypeIDs = ChildAreaTypeIDs,

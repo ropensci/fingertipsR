@@ -15,6 +15,11 @@ df8 <- fingertips_data(DomainID = 1938132767, rank = TRUE)
 inds <- c(93081, 93275, 93094)
 df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
 
+df10 <- fingertips_data(IndicatorID = 10101, AreaTypeID = "All")
+df11 <- fingertips_data(DomainID = 1938132954, AreaTypeID = "All")
+df12 <- fingertips_data(ProfileID = 132, AreaTypeID = "All")
+
+
 ncols <- 26
 
 cols_to_check <- c('IndicatorID', 'ParentCode', 'AreaCode',
@@ -53,6 +58,10 @@ test_that("warning messages work", {
                                        ProfileID = c(NA, 143),
                                        AreaTypeID = 8),
                        "ProfileID can not contain NAs - all ProfileIDs are ignored")
+        expect_warning(fingertips_data(IndicatorID = 10101,
+                                       ProfileID = 19,
+                                       AreaTypeID = "All"),
+                       "DomainID/ProfileID ignored as IndicatorID is populated along with AreaTypeID = 'All'")
 })
 
 test_that(paste("number of fields returned by fingertips_data function are", ncols), {
@@ -63,5 +72,7 @@ test_that(paste("number of fields returned by fingertips_data function are", nco
         expect_equal(ncol(df7), ncols)
         expect_equal(ncol(df8), ncols + 3)
         expect_equal(ncol(df9), ncols)
-
+        expect_equal(ncol(df10), ncols)
+        expect_equal(ncol(df11), ncols)
+        expect_equal(ncol(df12), ncols)
 })
