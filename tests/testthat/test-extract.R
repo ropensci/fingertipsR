@@ -17,8 +17,7 @@ df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
 
 df10 <- fingertips_data(IndicatorID = 10101, AreaTypeID = "All")
 df11 <- fingertips_data(DomainID = 1938132954, AreaTypeID = "All")
-df12 <- fingertips_data(ProfileID = 132, AreaTypeID = "All")
-
+df12 <- fingertips_data(ProfileID = 152, AreaTypeID = "All")
 
 ncols <- 26
 
