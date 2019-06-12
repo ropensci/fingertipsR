@@ -122,7 +122,8 @@ fingertips_data <- function(IndicatorID = NULL,
                                 filter(IndicatorID %in% IndicatorIDs)
                         at <- area_types() %>%
                                 filter(AreaTypeID %in% unique(ind_ats$AreaTypeID),
-                                       !grepl("[Dd]epriv", ParentAreaTypeName)) %>%
+                                       !grepl("[Dd]epriv", ParentAreaTypeName),
+                                       ParentAreaTypeID %in% c(15, unique(ind_ats$AreaTypeID))) %>%
                                 group_by(AreaTypeID) %>%
                                 arrange(-ParentAreaTypeID) %>%
                                 top_n(1, ParentAreaTypeID) %>%
