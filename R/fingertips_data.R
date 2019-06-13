@@ -107,30 +107,75 @@ fingertips_data <- function(IndicatorID = NULL,
                 if (AreaTypeID == "All") {
                         if (is.null(IndicatorID)) {
                                 if (!is.null(ProfileID)) {
-                                        IndicatorIDs <- indicators(ProfileID = ProfileIDs, path = path) %>%
-                                                pull(IndicatorID)
+                                        ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
+                                                select(IndicatorID, ProfileID)
+
                                 } else if (!is.null(DomainID)) {
                                         IndicatorIDs <- indicators(DomainID = DomainIDs, path = path) %>%
-                                                pull(IndicatorID)
+                                                select(IndicatorID, ProfileID)
                                 }
+                                prof_to_areatype <- data.frame()
+                                for (id in ProfileIDs) {
+                                        new_prof_to_areatype <- cbind(ProfileID = id,
+                                                                      area_types(ProfileID = id, path = path))
+                                        area_ids <- unique(new_prof_to_areatype$AreaTypeID)
+                                        new_prof_to_areatype <- new_prof_to_areatype %>%
+                                                filter(!(ParentAreaTypeID %in% area_ids)) %>%
+                                                select(ends_with("ID"))
+                                        prof_to_areatype <- rbind(new_prof_to_areatype, prof_to_areatype)
+                                }
+                                ind_ats <- ind_to_prof %>%
+                                        left_join(prof_to_areatype, by = "ProfileID")
                         } else {
-                                if (!is.null(ProfileID)|!is.null(DomainID)) {
-                                        warning("DomainID/ProfileID ignored as IndicatorID is populated along with AreaTypeID = 'All'")
-                                }
-                        }
-                        ind_ats <- indicator_areatypes() %>%
-                                filter(IndicatorID %in% IndicatorIDs)
-                        at <- area_types() %>%
-                                filter(AreaTypeID %in% unique(ind_ats$AreaTypeID),
-                                       !grepl("[Dd]epriv", ParentAreaTypeName),
-                                       ParentAreaTypeID %in% c(15, unique(ind_ats$AreaTypeID))) %>%
-                                group_by(AreaTypeID) %>%
-                                arrange(-ParentAreaTypeID) %>%
-                                top_n(1, ParentAreaTypeID) %>%
-                                select(AreaTypeID, ParentAreaTypeID)
-                        ind_ats <- ind_ats %>%
-                                inner_join(at, by = "AreaTypeID")
+                                if (!is.null(ProfileID)) {
+                                        prof_to_areatype <- data.frame()
+                                        for (id in ProfileIDs) {
+                                                new_prof_to_areatype <- cbind(ProfileID = id,
+                                                                              area_types(ProfileID = id, path = path))
+                                                area_ids <- unique(new_prof_to_areatype$AreaTypeID)
+                                                new_prof_to_areatype <- new_prof_to_areatype %>%
+                                                        filter(!(ParentAreaTypeID %in% area_ids)) %>%
+                                                        select(ends_with("ID"))
+                                                prof_to_areatype <- rbind(new_prof_to_areatype, prof_to_areatype)
 
+                                        }
+                                        ind_to_prof <- data.frame(IndicatorID = IndicatorIDs,
+                                                                  ProfileID = ProfileIDs)
+                                        ind_ats <- ind_to_prof %>%
+                                                left_join(prof_to_areatype, by = "ProfileID")
+                                } else {
+                                        at <- area_types()
+                                        ind_ats <- indicator_areatypes() %>%
+                                                filter(IndicatorID %in% IndicatorIDs)
+
+                                        # some area types only exist in ParentAreaTypeID - this identifies those
+                                        parent_only <- at %>%
+                                                mutate(parent_only = !(ParentAreaTypeID %in% unique(at$AreaTypeID))) %>%
+                                                filter(parent_only == TRUE,
+                                                       AreaTypeID %in% unique(ind_ats$AreaTypeID)) %>%
+                                                select(-parent_only) %>%
+                                                group_by(ParentAreaTypeID) %>%
+                                                slice(1) %>%
+                                                ungroup() %>%
+                                                select(AreaTypeID, ParentAreaTypeID)
+                                        remove_ats <- unique(c(parent_only$AreaTypeID,
+                                                               parent_only$ParentAreaTypeID))
+                                        at <- at %>%
+                                                filter(AreaTypeID %in% unique(ind_ats$AreaTypeID),
+                                                       ParentAreaTypeID %in% c(15, unique(ind_ats$AreaTypeID))) %>%
+                                                filter(!(AreaTypeID %in% remove_ats),
+                                                       !(ParentAreaTypeID %in% remove_ats)) %>%
+                                                group_by(AreaTypeID) %>%
+                                                arrange(-ParentAreaTypeID) %>%
+                                                top_n(1, ParentAreaTypeID) %>%
+                                                select(AreaTypeID, ParentAreaTypeID) %>%
+                                                bind_rows(parent_only)
+                                        ind_ats <- ind_ats %>%
+                                                inner_join(at, by = "AreaTypeID")
+                                }
+
+
+                        }
                 } else {
                         if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID)) == TRUE) > 0) {
                                 stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
@@ -165,39 +210,88 @@ fingertips_data <- function(IndicatorID = NULL,
 
         }
         # this pulls the data from the API
-        if (AreaTypeID == "All") {
-                fingertips_data <- apply(ind_ats, 1,
-                                         function(x) retrieve_indicator(IndicatorIDs = x["IndicatorID"],
-                                                                        ChildAreaTypeIDs = x["AreaTypeID"],
-                                                                        ParentAreaTypeIDs = x["ParentAreaTypeID"],
-                                                                        generic_name = TRUE,
-                                                                        path = path)) %>%
-                        bind_rows()
-        } else if (!is.null(IndicatorID)) {
+        if (!is.null(IndicatorID)) {
                 if (is.null(ProfileID)) {
-                        fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
-                                                              ChildAreaTypeIDs = ChildAreaTypeIDs,
-                                                              ParentAreaTypeIDs = ParentAreaTypeIDs,
-                                                              path = path)
+                        if (AreaTypeID == "All") {
+                                fingertips_data <- retrieve_all_area_data(ind_ats,
+                                                                          IndicatorID = "IndicatorID",
+                                                                          AreaTypeID = "AreaTypeID",
+                                                                          ParentAreaTypeID = "ParentAreaTypeID",
+                                                                          generic_name = TRUE,
+                                                                          path = path)
+                        } else {
+                                fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
+                                                                      ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                                                      ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                                      path = path)
+                        }
+
                 } else {
-                        fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
-                                                              ProfileIDs = ProfileIDs,
-                                                              ChildAreaTypeIDs = ChildAreaTypeIDs,
-                                                              ParentAreaTypeIDs = ParentAreaTypeIDs,
-                                                              path = path)
+                        if (AreaTypeID == "All") {
+                                # fingertips_data <- apply(ind_ats, 1,
+                                #                          function(x) retrieve_indicator(IndicatorIDs = x["IndicatorID"],
+                                #                                                         ProfileIDs = x["ProfileID"],
+                                #                                                         ChildAreaTypeIDs = x["AreaTypeID"],
+                                #                                                         ParentAreaTypeIDs = x["ParentAreaTypeID"],
+                                #                                                         generic_name = TRUE,
+                                #                                                         path = path)) %>%
+                                #         bind_rows()
+                                fingertips_data <- retrieve_all_area_data(ind_ats,
+                                                                          IndicatorID = "IndicatorID",
+                                                                          ProfileID = "ProfileID",
+                                                                          AreaTypeID = "AreaTypeID",
+                                                                          ParentAreaTypeID = "ParentAreaTypeID",
+                                                                          generic_name = TRUE,
+                                                                          path = path)
+                        } else {
+                                fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
+                                                                      ProfileIDs = ProfileIDs,
+                                                                      ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                                                      ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                                      path = path)
+                        }
+
                 }
         } else {
                 if (!is.null(DomainID)) {
-                        fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
+                        if (AreaTypeID == "All") {
+                                # fingertips_data <- apply(ind_ats, 1,
+                                #                          function(x) retrieve_indicator(IndicatorIDs = x["IndicatorID"],
+                                #                                                         ProfileIDs = x["ProfileID"],
+                                #                                                         ChildAreaTypeIDs = x["AreaTypeID"],
+                                #                                                         ParentAreaTypeIDs = x["ParentAreaTypeID"],
+                                #                                                         generic_name = TRUE,
+                                #                                                         path = path)) %>%
+                                #         bind_rows()
+                                fingertips_data <- retrieve_all_area_data(ind_ats,
+                                                                          IndicatorID = "IndicatorID",
+                                                                          ProfileID = "ProfileID",
+                                                                          AreaTypeID = "AreaTypeID",
+                                                                          ParentAreaTypeID = "ParentAreaTypeID",
+                                                                          generic_name = TRUE,
+                                                                          path = path)
+                        } else {
+                                fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                            ParentAreaTypeIDs = ParentAreaTypeIDs,
                                                            DomainIDs = DomainIDs,
                                                            path = path)
+                        }
                 } else {
                         if (!is.null(ProfileID)) {
-                                fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                if (AreaTypeID == "All") {
+                                        fingertips_data <- retrieve_all_area_data(ind_ats,
+                                                                                  IndicatorID = "IndicatorID",
+                                                                                  ProfileID = "ProfileID",
+                                                                                  AreaTypeID = "AreaTypeID",
+                                                                                  ParentAreaTypeID = "ParentAreaTypeID",
+                                                                                  generic_name = TRUE,
+                                                                                  path = path)
+                                } else {
+                                        fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                                     ParentAreaTypeIDs = ParentAreaTypeIDs,
                                                                     ProfileIDs = ProfileIDs,
                                                                     path = path)
+                                }
                         }
                 }
         }

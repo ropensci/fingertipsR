@@ -139,3 +139,27 @@ new_data_formatting <- function(dataurl, generic_name = FALSE) {
 
         return(new_data)
 }
+
+retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, ParentAreaTypeID, generic_name, path) {
+        if (missing(ProfileID)) {
+                all_area_data <- apply(data, 1,
+                                       function(x) retrieve_indicator(IndicatorIDs = x[IndicatorID],
+                                                                      ChildAreaTypeIDs = x[AreaTypeID],
+                                                                      ParentAreaTypeIDs = x[ParentAreaTypeID],
+                                                                      generic_name = generic_name,
+                                                                      path = path)) %>%
+                        bind_rows()
+        } else {
+                all_area_data <- apply(data, 1,
+                                       function(x) retrieve_indicator(IndicatorIDs = x[IndicatorID],
+                                                                      ProfileIDs = x[ProfileID],
+                                                                      ChildAreaTypeIDs = x[AreaTypeID],
+                                                                      ParentAreaTypeIDs = x[ParentAreaTypeID],
+                                                                      generic_name = generic_name,
+                                                                      path = path)) %>%
+                        bind_rows()
+        }
+
+        return(all_area_data)
+
+}

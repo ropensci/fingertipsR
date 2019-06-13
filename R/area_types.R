@@ -38,7 +38,7 @@
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
 
-area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
+area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL, path){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
                 warning("AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
         }
@@ -73,6 +73,14 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
         area_types[vapply(area_types, is.numeric, logical(1))] <-
                 lapply(area_types[vapply(area_types, is.numeric, logical(1))],
                        as.integer)
+
+        if (!is.null(ProfileID)) {
+                areas_in_profile <- paste0(path, "area_types?profile_ids=", ProfileID) %>%
+                        get_fingertips_api() %>%
+                        pull(Id)
+                area_types <- area_types %>%
+                        filter(AreaTypeID %in% areas_in_profile)
+        }
         return(area_types[complete.cases(area_types),])
 }
 
