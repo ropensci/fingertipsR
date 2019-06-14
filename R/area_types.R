@@ -111,10 +111,14 @@ category_types <- function(path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         category_types <- paste0(path,"category_types") %>%
-                get_fingertips_api() %>%
+                get_fingertips_api()
+        category_names <- category_types %>%
+                select(Id, CategoryType = Name)
+        category_types <- category_types %>%
                 pull(Categories) %>%
                 bind_rows %>%
-                as_tibble
+                as_tibble %>%
+                left_join(category_names, by = "Id")
         return(category_types)
 }
 
