@@ -1,5 +1,6 @@
 # fingertipsR 0.2.6.9000
  * Added option for `AreaTypeId = "All"` in `fingertips_data()`
+ * Added `ProfileID` argument to `area_types()` function
 
 # fingertipsR 0.2.6
 

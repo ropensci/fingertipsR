@@ -111,8 +111,9 @@ fingertips_data <- function(IndicatorID = NULL,
                                                 select(IndicatorID, ProfileID)
 
                                 } else if (!is.null(DomainID)) {
-                                        IndicatorIDs <- indicators(DomainID = DomainIDs, path = path) %>%
+                                        ind_to_prof <- indicators(DomainID = DomainIDs, path = path) %>%
                                                 select(IndicatorID, ProfileID)
+                                        ProfileIDs <- unique(ind_to_prof$ProfileID)
                                 }
                                 prof_to_areatype <- data.frame()
                                 for (id in ProfileIDs) {
