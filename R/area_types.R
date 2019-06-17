@@ -118,7 +118,7 @@ category_types <- function(path) {
                 pull(Categories) %>%
                 bind_rows %>%
                 as_tibble %>%
-                left_join(category_names, by = "Id")
+                left_join(category_names, by = c("CategoryTypeId" = "Id"))
         return(category_types)
 }
 
