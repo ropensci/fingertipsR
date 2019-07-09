@@ -1,10 +1,10 @@
-# fingertipsR 0.2.6.9000
+# fingertipsR 0.2.7
  * Added option for `AreaTypeId = "All"` in `fingertips_data()`
  * Added `ProfileID` argument to `area_types()` function
  * `category_types()` returns field called `CategoryType` which is joinable to `fingertips_data()` output when `categorytype = TRUE`
  * Added a retry function to handle occasions when the API times out when it shouldn't
 
-# fingertipsR 0.2.6
+# fingertipsR 0.2.6 (2019-06-07)
 
 * fixed `indicator_order()` function
 
@@ -12,7 +12,7 @@
 
 * `nearest_neighbours()` function has been fixed
 
-# fingertipsR 0.2.4
+# fingertipsR 0.2.4 (2019-05-19)
 
 * no changes from a user perspective to previous versions
 
