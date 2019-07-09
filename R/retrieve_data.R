@@ -96,9 +96,6 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
 #' @importFrom curl ie_get_proxy_for_url
 #' @importFrom utils read.delim
 new_data_formatting <- function(dataurl, generic_name = FALSE) {
-        # df_string  <- add_timestamp(dataurl) %>%
-        #         GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
-        #         content("text")
         df_string <- add_timestamp(dataurl)
         df_string <- RETRY("GET", url = df_string,
                            config = use_proxy(ie_get_proxy_for_url(df_string),
