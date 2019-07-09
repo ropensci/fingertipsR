@@ -1,5 +1,5 @@
 #' @importFrom httr set_config config
-retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
+retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, generic_name = FALSE, path){
         if (missing(ProfileIDs)) {
                 ProfileIDs <- ""
                 profileID_bit <- ""
@@ -28,7 +28,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$IndicatorIDs, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs),
                                   "&include_sortable_time_periods=yes")
-                y <- new_data_formatting(dataurl)
+                y <- new_data_formatting(dataurl, generic_name)
                 y
         }
 
@@ -92,12 +92,20 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
 }
 
 #' @import dplyr
-#' @importFrom httr GET content use_proxy
+#' @importFrom httr GET content use_proxy RETRY
 #' @importFrom curl ie_get_proxy_for_url
 #' @importFrom utils read.delim
-new_data_formatting <- function(dataurl) {
-        df_string  <- add_timestamp(dataurl) %>%
-                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+new_data_formatting <- function(dataurl, generic_name = FALSE) {
+        # df_string  <- add_timestamp(dataurl) %>%
+        #         GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+        #         content("text")
+        df_string <- add_timestamp(dataurl)
+        df_string <- RETRY("GET", url = df_string,
+                           config = use_proxy(ie_get_proxy_for_url(df_string),
+                                              username = "",
+                                              password = "",
+                                              auth = "ntlm"),
+                           times = 5) %>%
                 content("text")
         new_data <- read.delim(text = df_string,
                                encoding = "UTF-8",
@@ -108,7 +116,8 @@ new_data_formatting <- function(dataurl) {
                                check.names = FALSE)
         names(new_data)[names(new_data)=="Target data"] <- "Compared to goal"
         parent_field_name <- names(new_data)[grepl("^Compared", names(new_data))]
-        parent_field_name <- parent_field_name[!grepl("Compared to goal|Compared to England", parent_field_name)]
+                parent_field_name <- parent_field_name[!grepl("Compared to goal|Compared to England", parent_field_name)]
+
         character_fields <- c("Indicator Name", "Parent Code",
                               "Parent Name", "Area Code",
                               "Area Name", "Area Type",
@@ -129,5 +138,36 @@ new_data_formatting <- function(dataurl) {
                 mutate_at(.vars = numeric_fields, as.numeric)
         new_data <- new_data %>%
                 mutate_at(.vars = integer_fields, as.integer)
+        if (generic_name) {
+                parent_field_name <- gsub("\\(","\\\\\\(", parent_field_name)
+                parent_field_name <- gsub("\\)","\\\\\\)", parent_field_name)
+                names(new_data) <- gsub(parent_field_name, "ComparedtoParentvalueorpercentiles", names(new_data))
+
+        }
+
         return(new_data)
+}
+
+retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, ParentAreaTypeID, generic_name, path) {
+        if (missing(ProfileID)) {
+                all_area_data <- apply(data, 1,
+                                       function(x) retrieve_indicator(IndicatorIDs = x[IndicatorID],
+                                                                      ChildAreaTypeIDs = x[AreaTypeID],
+                                                                      ParentAreaTypeIDs = x[ParentAreaTypeID],
+                                                                      generic_name = generic_name,
+                                                                      path = path)) %>%
+                        bind_rows()
+        } else {
+                all_area_data <- apply(data, 1,
+                                       function(x) retrieve_indicator(IndicatorIDs = x[IndicatorID],
+                                                                      ProfileIDs = x[ProfileID],
+                                                                      ChildAreaTypeIDs = x[AreaTypeID],
+                                                                      ParentAreaTypeIDs = x[ParentAreaTypeID],
+                                                                      generic_name = generic_name,
+                                                                      path = path)) %>%
+                        bind_rows()
+        }
+
+        return(all_area_data)
+
 }

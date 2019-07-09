@@ -20,7 +20,9 @@
 #'   extracted; if NULL the function will use the first record for the specified
 #'   `AreaTypeID` from the area_types() function
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
-#'   default is 102 (Counties and Unitary Authorities)
+#'   default is 102 (Counties and Unitary Authorities). This argument also
+#'   accepts "All", which returns data for all available area types for the
+#'   indicator(s)
 #' @param categorytype TRUE or FALSE, determines whether the final table
 #'   includes categorytype data where it exists. Default to FALSE
 #' @param rank TRUE or FALSE, the rank of the area compared to other areas for
@@ -43,7 +45,10 @@
 #' # It is recommended to check the website to ensure consistency between your
 #' # data extract here and the polarity required
 #' fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
-#' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
+#' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]
+#'
+#' # Returns data for all available area types for an indicator
+#' fingdata <- fingertips_data(10101, AreaTypeID = "All")}
 #' @family data extract functions
 #' @export
 
@@ -99,61 +104,195 @@ fingertips_data <- function(IndicatorID = NULL,
                 stop("AreaTypeID must have a value. Use function area_types() to see what values can be used.")
         } else {
                 areaTypes <- area_types(path = path)
-                if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID)) == TRUE) > 0) {
-                        stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
-                } else {
-                        if (!is.null(AreaCode)) {
-                                areacodes <- AreaTypeID %>%
-                                        lapply(function(i) {
-                                                paste0(path, "areas/by_area_type?area_type_id=", i) %>%
-                                                        get_fingertips_api()
-                                        }) %>%
-                                        bind_rows
-                                if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
-                                        stop("Area code not contained in AreaTypeID.")
+                if (AreaTypeID == "All") {
+                        if (is.null(IndicatorID)) {
+                                if (!is.null(ProfileID)) {
+                                        ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
+                                                select(IndicatorID, ProfileID)
+
+                                } else if (!is.null(DomainID)) {
+                                        ind_to_prof <- indicators(DomainID = DomainIDs, path = path) %>%
+                                                select(IndicatorID, ProfileID)
+                                        ProfileIDs <- unique(ind_to_prof$ProfileID)
                                 }
+                                prof_to_areatype <- data.frame()
+                                for (id in ProfileIDs) {
+                                        new_prof_to_areatype <- cbind(ProfileID = id,
+                                                                      area_types(ProfileID = id, path = path))
+                                        area_ids <- unique(new_prof_to_areatype$AreaTypeID)
+                                        new_prof_to_areatype <- new_prof_to_areatype %>%
+                                                filter(!(ParentAreaTypeID %in% area_ids)) %>%
+                                                select(ends_with("ID"))
+                                        prof_to_areatype <- rbind(new_prof_to_areatype, prof_to_areatype)
+                                }
+                                ind_ats <- ind_to_prof %>%
+                                        left_join(prof_to_areatype, by = "ProfileID")
+                        } else {
+                                if (!is.null(ProfileID)) {
+                                        prof_to_areatype <- data.frame()
+                                        for (id in ProfileIDs) {
+                                                new_prof_to_areatype <- cbind(ProfileID = id,
+                                                                              area_types(ProfileID = id, path = path))
+                                                area_ids <- unique(new_prof_to_areatype$AreaTypeID)
+                                                new_prof_to_areatype <- new_prof_to_areatype %>%
+                                                        filter(!(ParentAreaTypeID %in% area_ids)) %>%
+                                                        select(ends_with("ID"))
+                                                prof_to_areatype <- rbind(new_prof_to_areatype, prof_to_areatype)
+
+                                        }
+                                        ind_to_prof <- data.frame(IndicatorID = IndicatorIDs,
+                                                                  ProfileID = ProfileIDs)
+                                        ind_ats <- ind_to_prof %>%
+                                                left_join(prof_to_areatype, by = "ProfileID")
+                                } else {
+                                        at <- area_types()
+                                        ind_ats <- indicator_areatypes() %>%
+                                                filter(IndicatorID %in% IndicatorIDs)
+
+                                        # some area types only exist in ParentAreaTypeID - this identifies those
+                                        parent_only <- at %>%
+                                                mutate(parent_only = !(ParentAreaTypeID %in% unique(at$AreaTypeID))) %>%
+                                                filter(parent_only == TRUE,
+                                                       AreaTypeID %in% unique(ind_ats$AreaTypeID)) %>%
+                                                select(-parent_only) %>%
+                                                group_by(ParentAreaTypeID) %>%
+                                                slice(1) %>%
+                                                ungroup() %>%
+                                                select(AreaTypeID, ParentAreaTypeID)
+                                        remove_ats <- unique(c(parent_only$AreaTypeID,
+                                                               parent_only$ParentAreaTypeID))
+                                        at <- at %>%
+                                                filter(AreaTypeID %in% unique(ind_ats$AreaTypeID),
+                                                       ParentAreaTypeID %in% c(15, unique(ind_ats$AreaTypeID))) %>%
+                                                filter(!(AreaTypeID %in% remove_ats),
+                                                       !(ParentAreaTypeID %in% remove_ats)) %>%
+                                                group_by(AreaTypeID) %>%
+                                                arrange(-ParentAreaTypeID) %>%
+                                                top_n(1, ParentAreaTypeID) %>%
+                                                select(AreaTypeID, ParentAreaTypeID) %>%
+                                                bind_rows(parent_only)
+                                        ind_ats <- ind_ats %>%
+                                                inner_join(at, by = "AreaTypeID")
+                                }
+
+
                         }
-                        ChildAreaTypeIDs <- AreaTypeID
-                }
-                if (is.null(ParentAreaTypeID)) {
-                        areaTypes <- area_types(AreaTypeID = AreaTypeID, path = path) %>%
-                                group_by(AreaTypeID) %>%
-                                filter(row_number() == 1)
-                        ParentAreaTypeIDs <- unique(areaTypes$ParentAreaTypeID)
                 } else {
-                        areaTypes <- areaTypes[areaTypes$AreaTypeID %in% ChildAreaTypeIDs,]
-                        if (sum(!(ParentAreaTypeID %in% areaTypes$ParentAreaTypeID)==TRUE) > 0) {
-                                warning("AreaTypeID not a child of ParentAreaTypeID. There may be duplicate values in data. Use function area_types() to see mappings of area type to parent area type.")
+                        if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID)) == TRUE) > 0) {
+                                stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
+                        } else {
+                                if (!is.null(AreaCode)) {
+                                        areacodes <- AreaTypeID %>%
+                                                lapply(function(i) {
+                                                        paste0(path, "areas/by_area_type?area_type_id=", i) %>%
+                                                                get_fingertips_api()
+                                                }) %>%
+                                                bind_rows
+                                        if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
+                                                stop("Area code not contained in AreaTypeID.")
+                                        }
+                                }
+                                ChildAreaTypeIDs <- AreaTypeID
                         }
-                        ParentAreaTypeIDs <- unique(ParentAreaTypeID)
+                        if (is.null(ParentAreaTypeID)) {
+                                areaTypes <- area_types(AreaTypeID = AreaTypeID, path = path) %>%
+                                        group_by(AreaTypeID) %>%
+                                        filter(row_number() == 1)
+                                ParentAreaTypeIDs <- unique(areaTypes$ParentAreaTypeID)
+                        } else {
+                                areaTypes <- areaTypes[areaTypes$AreaTypeID %in% ChildAreaTypeIDs,]
+                                if (sum(!(ParentAreaTypeID %in% areaTypes$ParentAreaTypeID)==TRUE) > 0) {
+                                        warning("AreaTypeID not a child of ParentAreaTypeID. There may be duplicate values in data. Use function area_types() to see mappings of area type to parent area type.")
+                                }
+                                ParentAreaTypeIDs <- unique(ParentAreaTypeID)
+                        }
                 }
+
+
         }
         # this pulls the data from the API
         if (!is.null(IndicatorID)) {
                 if (is.null(ProfileID)) {
-                        fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
-                                                              ChildAreaTypeIDs = ChildAreaTypeIDs,
-                                                              ParentAreaTypeIDs = ParentAreaTypeIDs,
-                                                              path = path)
+                        if (AreaTypeID == "All") {
+                                fingertips_data <- retrieve_all_area_data(ind_ats,
+                                                                          IndicatorID = "IndicatorID",
+                                                                          AreaTypeID = "AreaTypeID",
+                                                                          ParentAreaTypeID = "ParentAreaTypeID",
+                                                                          generic_name = TRUE,
+                                                                          path = path)
+                        } else {
+                                fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
+                                                                      ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                                                      ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                                      path = path)
+                        }
+
                 } else {
-                        fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
-                                                              ProfileIDs = ProfileIDs,
-                                                              ChildAreaTypeIDs = ChildAreaTypeIDs,
-                                                              ParentAreaTypeIDs = ParentAreaTypeIDs,
-                                                              path = path)
+                        if (AreaTypeID == "All") {
+                                # fingertips_data <- apply(ind_ats, 1,
+                                #                          function(x) retrieve_indicator(IndicatorIDs = x["IndicatorID"],
+                                #                                                         ProfileIDs = x["ProfileID"],
+                                #                                                         ChildAreaTypeIDs = x["AreaTypeID"],
+                                #                                                         ParentAreaTypeIDs = x["ParentAreaTypeID"],
+                                #                                                         generic_name = TRUE,
+                                #                                                         path = path)) %>%
+                                #         bind_rows()
+                                fingertips_data <- retrieve_all_area_data(ind_ats,
+                                                                          IndicatorID = "IndicatorID",
+                                                                          ProfileID = "ProfileID",
+                                                                          AreaTypeID = "AreaTypeID",
+                                                                          ParentAreaTypeID = "ParentAreaTypeID",
+                                                                          generic_name = TRUE,
+                                                                          path = path)
+                        } else {
+                                fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
+                                                                      ProfileIDs = ProfileIDs,
+                                                                      ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                                                      ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                                      path = path)
+                        }
+
                 }
         } else {
                 if (!is.null(DomainID)) {
-                        fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
+                        if (AreaTypeID == "All") {
+                                # fingertips_data <- apply(ind_ats, 1,
+                                #                          function(x) retrieve_indicator(IndicatorIDs = x["IndicatorID"],
+                                #                                                         ProfileIDs = x["ProfileID"],
+                                #                                                         ChildAreaTypeIDs = x["AreaTypeID"],
+                                #                                                         ParentAreaTypeIDs = x["ParentAreaTypeID"],
+                                #                                                         generic_name = TRUE,
+                                #                                                         path = path)) %>%
+                                #         bind_rows()
+                                fingertips_data <- retrieve_all_area_data(ind_ats,
+                                                                          IndicatorID = "IndicatorID",
+                                                                          ProfileID = "ProfileID",
+                                                                          AreaTypeID = "AreaTypeID",
+                                                                          ParentAreaTypeID = "ParentAreaTypeID",
+                                                                          generic_name = TRUE,
+                                                                          path = path)
+                        } else {
+                                fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                            ParentAreaTypeIDs = ParentAreaTypeIDs,
                                                            DomainIDs = DomainIDs,
                                                            path = path)
+                        }
                 } else {
                         if (!is.null(ProfileID)) {
-                                fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
+                                if (AreaTypeID == "All") {
+                                        fingertips_data <- retrieve_all_area_data(ind_ats,
+                                                                                  IndicatorID = "IndicatorID",
+                                                                                  ProfileID = "ProfileID",
+                                                                                  AreaTypeID = "AreaTypeID",
+                                                                                  ParentAreaTypeID = "ParentAreaTypeID",
+                                                                                  generic_name = TRUE,
+                                                                                  path = path)
+                                } else {
+                                        fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                                     ParentAreaTypeIDs = ParentAreaTypeIDs,
                                                                     ProfileIDs = ProfileIDs,
                                                                     path = path)
+                                }
                         }
                 }
         }

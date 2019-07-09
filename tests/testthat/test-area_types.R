@@ -24,7 +24,7 @@ test_that("the indicator_areatypes function is working correctly", {
 context("category_types works correctly")
 test_that("category_types returns as expected", {
         expect_is(category_types(), "data.frame")
-        expect_equal(ncol(category_types()), 4)
+        expect_equal(ncol(category_types()), 5)
 })
 
 context("nearest_neighbours works correctly")

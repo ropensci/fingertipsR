@@ -38,7 +38,7 @@
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
 
-area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
+area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL, path){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
                 warning("AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
         }
@@ -73,6 +73,14 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
         area_types[vapply(area_types, is.numeric, logical(1))] <-
                 lapply(area_types[vapply(area_types, is.numeric, logical(1))],
                        as.integer)
+
+        if (!is.null(ProfileID)) {
+                areas_in_profile <- paste0(path, "area_types?profile_ids=", ProfileID) %>%
+                        get_fingertips_api() %>%
+                        pull(Id)
+                area_types <- area_types %>%
+                        filter(AreaTypeID %in% areas_in_profile)
+        }
         return(area_types[complete.cases(area_types),])
 }
 
@@ -103,10 +111,14 @@ category_types <- function(path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         category_types <- paste0(path,"category_types") %>%
-                get_fingertips_api() %>%
+                get_fingertips_api()
+        category_names <- category_types %>%
+                select(Id, CategoryType = Name)
+        category_types <- category_types %>%
                 pull(Categories) %>%
                 bind_rows %>%
-                as_tibble
+                as_tibble %>%
+                left_join(category_names, by = c("CategoryTypeId" = "Id"))
         return(category_types)
 }
 
