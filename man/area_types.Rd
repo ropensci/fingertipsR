@@ -4,7 +4,8 @@
 \alias{area_types}
 \title{Area types}
 \usage{
-area_types(AreaTypeName = NULL, AreaTypeID = NULL, path)
+area_types(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL,
+  path)
 }
 \arguments{
 \item{AreaTypeName}{Character vector, description of the area type; default
@@ -12,6 +13,8 @@ is NULL}
 
 \item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
 default is NULL}
+
+\item{ProfileID}{Numeric vector, id of profiles of interest}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

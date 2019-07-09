@@ -22,7 +22,9 @@ IndicatorID is populated, ProfileID can be ignored or must be the same
 length as IndicatorID (but can contain NAs).}
 
 \item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
-default is 102 (Counties and Unitary Authorities)}
+default is 102 (Counties and Unitary Authorities). This argument also
+accepts "All", which returns data for all available area types for the
+indicator(s)}
 
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified
@@ -69,7 +71,10 @@ fingdata <- fingertips_data(22401, AreaTypeID = 101)
 # It is recommended to check the website to ensure consistency between your
 # data extract here and the polarity required
 fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
-fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]}
+fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]
+
+# Returns data for all available area types for an indicator
+fingdata <- fingertips_data(10101, AreaTypeID = "All")}
 }
 \seealso{
 Other data extract functions: \code{\link{fingertips_redred}}

@@ -15,6 +15,12 @@ df8 <- fingertips_data(DomainID = 1938132767, rank = TRUE)
 inds <- c(93081, 93275, 93094)
 df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
 
+# Testing different versions of AreaTypeID = "All"
+df10 <- fingertips_data(IndicatorID = 10101, AreaTypeID = "All")
+df11 <- fingertips_data(DomainID = 1938132954, AreaTypeID = "All")
+df12 <- fingertips_data(ProfileID = 152, AreaTypeID = "All")
+df13 <- fingertips_data(IndicatorID = 10101, ProfileID = 19, AreaTypeID = "All")
+
 ncols <- 26
 
 cols_to_check <- c('IndicatorID', 'ParentCode', 'AreaCode',
@@ -63,5 +69,8 @@ test_that(paste("number of fields returned by fingertips_data function are", nco
         expect_equal(ncol(df7), ncols)
         expect_equal(ncol(df8), ncols + 3)
         expect_equal(ncol(df9), ncols)
-
+        expect_equal(ncol(df10), ncols)
+        expect_equal(ncol(df11), ncols)
+        expect_equal(ncol(df12), ncols)
+        expect_equal(ncol(df13), ncols)
 })
