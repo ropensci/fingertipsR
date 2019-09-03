@@ -49,7 +49,7 @@ deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
                 ProfileID <- 143
         }
         if (AreaTypeID == 101) AreaFilter <- "District & UA"
-        if (AreaTypeID == 102) AreaFilter <- "County & UA"
+        if (AreaTypeID == 102) AreaFilter <- "County & UA (pre 4/19)"
         if (AreaTypeID == 7) AreaFilter <- "GP"
         if (AreaTypeID == 3) AreaFilter <- "MSOA"
         path <- "https://fingertips.phe.org.uk/api/"

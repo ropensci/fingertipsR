@@ -107,7 +107,7 @@ The data frame returned by `fingertips_data()` contains `r ncol(data)` variables
 
 ```{r refine variables}
 cols <- c("IndicatorID", "AreaCode", "Sex", "Timeperiod", "Value")
-data <- data[data$AreaType == "County & UA" & data$Timeperiod == "2012 - 14", cols]
+data <- data[data$AreaType == "County & UA (pre 4/19)" & data$Timeperiod == "2012 - 14", cols]
 
 ```
 
