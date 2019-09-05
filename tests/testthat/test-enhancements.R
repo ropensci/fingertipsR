@@ -4,23 +4,23 @@ library(fingertipsR)
 context("Enhancement functions")
 
 test_that("fingertips_redred should return an error", {
-        skip_if_offline(host = "https://fingertips.phe.org.uk/api/")
+        skip_if_offline()
         expect_error(fingertips_redred(Comparator = "Sub-national", IndicatorID = 10101),
                      "Comparator must be either England, Parent or Goal")
 })
 
 numcols <- 26
 test_that(paste("fingertips_redred should return a", numcols, "field data.frame"), {
-        skip_if_offline(host = "https://fingertips.phe.org.uk/api/")
+        skip_if_offline()
         expect_equal(ncol(fingertips_redred(90616, AreaTypeID = 152, Comparator = "England")), numcols)
-        skip_if_offline(host = "https://fingertips.phe.org.uk/api/")
+        skip_if_offline()
         expect_equal(ncol(fingertips_redred(90616, AreaTypeID = 152, Comparator = "Parent")), numcols)
-        skip_if_offline(host = "https://fingertips.phe.org.uk/api/")
+        skip_if_offline()
         expect_equal(ncol(fingertips_redred(90776, Comparator = "Goal")), numcols)
 })
 
 
 test_that("fingertips_stats functionality", {
-        skip_if_offline(host = "https://fingertips.phe.org.uk/api/")
+        skip_if_offline()
         expect_null(fingertips_stats())
 })
