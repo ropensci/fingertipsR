@@ -41,6 +41,8 @@ test_that("category_types returns as expected", {
 context("nearest_neighbours works correctly")
 test_that("nearest_neighbours returns as expected", {
         skip_if_offline()
+        expect_equal(nearest_neighbours("E09000001", 102, "CIPFA"), character())
+        skip_if_offline()
         expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 101), "character")
         skip_if_offline()
         expect_is(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CIPFA"), "character")
