@@ -3,6 +3,7 @@
 language: R
 sudo: false
 cache: packages
+install: travis_wait mvn install
 
 r_github_packages:
   - r-lib/covr
