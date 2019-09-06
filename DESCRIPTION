@@ -22,7 +22,6 @@ Imports:
     httr,
     jsonlite,
     miniUI,
-    purrr,
     readr,
     shiny,
     shinycssloaders
