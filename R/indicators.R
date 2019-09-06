@@ -30,8 +30,9 @@
 indicators <- function(ProfileID = NULL,
                        DomainID = NULL,
                        path) {
-        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
+        fingertips_ensure_api_available(endpoint = path)
         if (!is.null(ProfileID)){
                 tempdf <- profiles(ProfileID = ProfileID, path = path)
                 if (!is.null(DomainID)) warning("DomainID is ignored as ProfileID has also been entered")
@@ -91,7 +92,8 @@ indicators <- function(ProfileID = NULL,
 indicators_unique <- function(ProfileID = NULL,
                             DomainID = NULL,
                             path) {
-        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
+        fingertips_ensure_api_available(endpoint = path)
         df <- indicators(ProfileID, DomainID, path = path)
         df <- unique(df[,c("IndicatorID", "IndicatorName")])
         return(df)
@@ -124,7 +126,8 @@ indicator_order <- function(DomainID,
                             path) {
         if (missing(DomainID)|missing(AreaTypeID)|missing(ParentAreaTypeID))
                 stop("All of DomainID, AreaTypeID and ParentAreaTypeID are required")
-        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
+        fingertips_ensure_api_available(endpoint = path)
 
         ParentAreaCode <- paste0(path,
                                  sprintf("parent_to_child_areas?child_area_type_id=%s&parent_area_type_id=%s",

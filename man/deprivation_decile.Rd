@@ -4,7 +4,7 @@
 \alias{deprivation_decile}
 \title{Deprivation deciles}
 \usage{
-deprivation_decile(AreaTypeID = 102, Year = 2015)
+deprivation_decile(AreaTypeID = 102, Year = 2015, path)
 }
 \arguments{
 \item{AreaTypeID}{Integer value, limited to either 102 (counties and unitary
@@ -13,6 +13,9 @@ authorities), 101 (local authority districts and unitary authorities), 7
 
 \item{Year}{Integer value, representing the year of IMD release to be
 applied, limited to either 2010 or 2015; default is 2015}
+
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 A lookup table providing deprivation decile and area code

@@ -1,4 +1,6 @@
-# fingertipsR 0.2.7.9000
+# fingertipsR 0.2.8
+
+* no changes from a user perspective to previous versions
 
 # fingertipsR 0.2.7 (2019-07-18)
  * Added option for `AreaTypeID = "All"` in `fingertips_data()`

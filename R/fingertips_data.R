@@ -62,8 +62,9 @@ fingertips_data <- function(IndicatorID = NULL,
                             rank = FALSE,
                             path) {
 
-        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
+        fingertips_ensure_api_available(endpoint = path)
 
         # ensure there are the correct inputs
         if (!is.null(IndicatorID)) {

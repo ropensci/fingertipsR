@@ -69,7 +69,9 @@ indicator_metadata <- function(IndicatorID = NULL,
                       `Year type` = "c",
                       `Polarity` = "c")
 
-        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
+        set_config(config(ssl_verifypeer = 0L))
+        fingertips_ensure_api_available(endpoint = path)
         if (!(is.null(IndicatorID))) {
                 AllIndicators <- indicators(path = path)
                 if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){

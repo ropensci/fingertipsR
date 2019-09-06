@@ -1,12 +1,10 @@
 This package provides data from the Fingertips API owned by Public Health England.
-The package has been updated with a couple of new options for arguments in functions.
-It also includes a few retry attempts when accessing the API as a short term solution to failing, 
-old servers which will be replaced in the longer term
+This version has added graceful, informative fails if the internet resource is unavailable. It also fixes the failing tests.
 
 ## Test 
 
-* local Windows 10 install, R 3.6.0
-* used Travis to check on Linux (2019-07-09)
+* local Windows 10 install, R 3.6.1
+* used Travis to check on Linux (2019-09-05)
 
 ## R CMD check results
 

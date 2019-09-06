@@ -42,8 +42,9 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
                 warning("AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
         }
-        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
+        fingertips_ensure_api_available(endpoint = path)
         parentAreas <- paste0(path,"area_types/parent_area_types") %>%
                 get_fingertips_api()
         area_types <- parentAreas[,c("Id", "Name")]
@@ -108,8 +109,9 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
 #'   Fingertips website within a Domain
 
 category_types <- function(path) {
-        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
+        fingertips_ensure_api_available(endpoint = path)
         category_types <- paste0(path,"category_types") %>%
                 get_fingertips_api()
         category_names <- category_types %>%
@@ -147,7 +149,8 @@ category_types <- function(path) {
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
 indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
-        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
+        fingertips_ensure_api_available(endpoint = path)
         path <- paste0(path, "available_data")
         if (!missing(IndicatorID)) {
                 if (length(IndicatorID) > 1) {
@@ -209,7 +212,8 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
 nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
-        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
+        fingertips_ensure_api_available(endpoint = path)
         if (AreaTypeID == 102) {
                 if (missing(measure)) {
                         stop("If using AreaTypeID = 102, you must specify measure (CIPFA or CSSN)")

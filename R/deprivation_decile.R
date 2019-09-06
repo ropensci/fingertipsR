@@ -12,6 +12,7 @@
 #'   (General Practice) or 3 (Middle Super Output Layer); default is 102
 #' @param Year Integer value, representing the year of IMD release to be
 #'   applied, limited to either 2010 or 2015; default is 2015
+#' @inheritParams indicators
 #' @examples
 #' # Return 2015 deciles for counties and unitary authorities
 #' deprivation_decile(102, 2015)
@@ -30,7 +31,7 @@
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
 
-deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
+deprivation_decile <- function(AreaTypeID = 102, Year = 2015, path) {
         if (!(Year %in% c(2015))) {
                 stop("Year must be 2015")
         }
@@ -52,7 +53,9 @@ deprivation_decile <- function(AreaTypeID = 102, Year = 2015) {
         if (AreaTypeID == 102) AreaFilter <- "County & UA (pre 4/19)"
         if (AreaTypeID == 7) AreaFilter <- "GP"
         if (AreaTypeID == 3) AreaFilter <- "MSOA"
-        path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- fingertips_endpoint()
+        set_config(config(ssl_verifypeer = 0L))
+        fingertips_ensure_api_available(endpoint = path)
         deprivation_decile <- fingertips_data(IndicatorID = IndicatorID,
                                               AreaTypeID = AreaTypeID,
                                               ProfileID = ProfileID,
