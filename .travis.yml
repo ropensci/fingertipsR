@@ -4,11 +4,6 @@ language: R
 sudo: false
 cache: packages
 
-script:
-  - |
-    R CMD build .
-    travis_wait 20 R CMD check fingertipsR*tar.gz
-
 r_github_packages:
   - r-lib/covr
 
