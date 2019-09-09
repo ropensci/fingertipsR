@@ -136,7 +136,7 @@ category_types <- function(path) {
 #' @inheritParams indicators
 #' @import dplyr
 #' @examples
-#' indicator_areatypes()
+#' indicator_areatypes(IndicatorID = 10101)
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,

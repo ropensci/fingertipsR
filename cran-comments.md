@@ -4,7 +4,7 @@ This version has added graceful, informative fails if the internet resource is u
 ## Test 
 
 * local Windows 10 install, R 3.6.1
-* used Travis to check on Linux (2019-09-05)
+* used Travis to check on Linux (2019-09-09)
 
 ## R CMD check results
 

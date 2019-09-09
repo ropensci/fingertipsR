@@ -1,6 +1,6 @@
 # fingertipsR 0.2.8
 
-* no changes from a user perspective to previous versions
+* functions will provide informative message when they fail because of no response from the API
 
 # fingertipsR 0.2.7 (2019-07-18)
  * Added option for `AreaTypeID = "All"` in `fingertips_data()`
