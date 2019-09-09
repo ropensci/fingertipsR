@@ -40,8 +40,8 @@ fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint()) {
 
         if (code == 200) return(TRUE)
 
-        errtext <- paste('The API is currently unavailable:')
-        if (code != FALSE) errtext <- paste(errtext, 'HTTP code', code)
+        errtext <- paste('The API is currently unavailable')
+
         if (endpoint == default_api) {
                 errtext <- c(errtext, 'If the issue persists, please notify profilefeedback@phe.gov.uk')
         }
