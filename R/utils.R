@@ -46,5 +46,4 @@ fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint()) {
                 errtext <- c(errtext, 'If the issue persists, please notify profilefeedback@phe.gov.uk')
         }
         stop(paste(errtext, collapse='\n  '), call. = FALSE)
-        FALSE
 }
