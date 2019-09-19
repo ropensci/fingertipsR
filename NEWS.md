@@ -1,4 +1,8 @@
-# fingertipsR 0.2.8
+# fingertipsR 0.2.9.9000
+
+
+
+# fingertipsR 0.2.8 (2019-09-09)
 
 * functions will provide informative message when they fail because of no response from the API
 

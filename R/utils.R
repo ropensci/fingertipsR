@@ -34,6 +34,7 @@ fingertips_endpoint <- function() default_api
 #' @return \code{TRUE} if the API is available, otherwise \code{stop()} is called.
 fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint()) {
         code <- FALSE
+        endpoint <- gsub("/api/", "", endpoint)
         try({
                 code <- httr::status_code(httr::GET(endpoint))
         }, silent = TRUE)
