@@ -27,7 +27,7 @@ test_that("the profiles function works", {
 
 test_that("profile indicators work", {
         skip_if_offline()
-        expect_warning(indicators(ProfileID = 19, DomainID = 1938132767),
+        expect_warning(indicators(ProfileID = 156, DomainID = 1938133294),
                        "DomainID is ignored as ProfileID has also been entered")
 
 })
@@ -37,7 +37,7 @@ test_that("the indicators function works", {
         expect_is(indicators(19),
                   "data.frame")
         skip_if_offline()
-        expect_is(indicators(DomainID = 1938132767),
+        expect_is(indicators(DomainID = 1938133294),
                   "data.frame")
 })
 
@@ -49,7 +49,7 @@ test_that("the indicators_unique function works", {
 
 test_that("the indicator_order function works", {
         skip_if_offline()
-        expect_is(indicator_order(DomainID = 3007000, AreaTypeID = 102, ParentAreaTypeID = 6),
+        expect_is(indicator_order(DomainID = 1938133294, AreaTypeID = 102, ParentAreaTypeID = 6),
                   "data.frame")
         skip_if_offline()
         expect_error(indicator_order(), "All of DomainID, AreaTypeID and ParentAreaTypeID are required")

@@ -10,15 +10,15 @@ df2 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 152, D
 skip_if_offline()
 df3 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 152, ProfileID = 135))
 skip_if_offline()
-df4 <- fingertips_data(DomainID = 1938132767)
+df4 <- fingertips_data(DomainID = 1938133293)
 skip_if_offline()
-df5 <- fingertips_data(ProfileID = 152)
+df5 <- fingertips_data(ProfileID = 156)
 skip_if_offline()
 df6 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 152, ProfileID = NA))
 skip_if_offline()
-df7 <- fingertips_data(DomainID = 1938132767, AreaCode = "E06000015")
+df7 <- fingertips_data(DomainID = 1938133293, AreaCode = "E06000015")
 skip_if_offline()
-df8 <- fingertips_data(DomainID = 1938132767, rank = TRUE)
+df8 <- fingertips_data(DomainID = 1938133293, rank = TRUE)
 
 inds <- c(93081, 93275, 93094)
 skip_if_offline()
@@ -28,11 +28,11 @@ df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
 skip_if_offline()
 df10 <- fingertips_data(IndicatorID = 10101, AreaTypeID = "All")
 skip_if_offline()
-df11 <- fingertips_data(DomainID = 1938132891, AreaTypeID = "All")
+df11 <- fingertips_data(DomainID = 1938133293, AreaTypeID = "All")
 skip_if_offline()
-df12 <- fingertips_data(ProfileID = 152, AreaTypeID = "All")
+df12 <- fingertips_data(ProfileID = 156, AreaTypeID = "All")
 skip_if_offline()
-df13 <- fingertips_data(IndicatorID = 10101, ProfileID = 19, AreaTypeID = "All")
+df13 <- fingertips_data(IndicatorID = 90366, ProfileID = 156, AreaTypeID = "All")
 
 ncols <- 26
 
@@ -74,10 +74,10 @@ test_that("error messages work", {
 
 test_that("warning messages work", {
         skip_if_offline()
-        expect_warning(fingertips_data(DomainID = 1938132767, AreaCode = "E06000015", ParentAreaTypeID = 153),
+        expect_warning(fingertips_data(DomainID = 1938133293, AreaCode = "E06000015", ParentAreaTypeID = 153),
                        "AreaTypeID not a child of ParentAreaTypeID\\. There may be duplicate values in data\\. Use function area_types\\(\\) to see mappings of area type to parent area type\\.")
         skip_if_offline()
-        expect_warning(fingertips_data(DomainID = 1938133152, ProfileID = 76),
+        expect_warning(fingertips_data(DomainID = 1938133293, ProfileID = 156),
                        "DomainID is complete so ProfileID is ignored")
         skip_if_offline()
         expect_warning(fingertips_data(IndicatorID = c(93105, 93107),
