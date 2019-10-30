@@ -301,7 +301,7 @@ fingertips_data <- function(IndicatorID = NULL,
 
         if (rank == TRUE) {
                 inds <- unique(fingertips_data$IndicatorID)
-                polarities <- indicator_metadata(inds, path) %>%
+                polarities <- indicator_metadata(inds, path = path) %>%
                         select(IndicatorID, Polarity)
                 fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%
                         group_by(IndicatorID, Timeperiod, Sex, Age, CategoryType, Category, AreaType) %>%
