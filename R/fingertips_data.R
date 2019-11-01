@@ -301,7 +301,7 @@ fingertips_data <- function(IndicatorID = NULL,
 
         if (rank == TRUE) {
                 inds <- unique(fingertips_data$IndicatorID)
-                if (!is.null(ProfileIDs)) {
+                if (!is.null(ProfileID)) {
                         polarities <- indicator_metadata(inds,
                                                          ProfileID = ProfileIDs,
                                                          path = path) %>%
