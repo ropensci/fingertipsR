@@ -191,7 +191,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #' @return A character vector of area codes
 #' @param AreaTypeID AreaTypeID of the nearest neighbours (see
 #'   \code{\link{area_types}}) for IDs. Only returns information on AreaTypeIDs
-#'   101, 102, 152, and 154
+#'   101, 102, 201, 202, 152, 153 and 154
 #' @param measure string; when AreaTypeID = 102 measure must be either "CIPFA"
 #'   for CIPFA local authority nearest neighbours or "CSSN" for Children's
 #'   services statistical neighbours
@@ -224,7 +224,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
         if (missing(measure)) measure <- NA
         if (AreaTypeID == 101) {
                 val <- 1
-        } else if (AreaTypeID == 154) {
+        } else if (AreaTypeID == 153) {
                 val <- 2
         } else if (AreaTypeID == 102 & measure == "CSSN") {
                 val <- 3
@@ -232,6 +232,12 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
                 val <- 1
         } else if (AreaTypeID == 152) {
                 val <- 4
+        } else if (AreaTypeID == 154) {
+                val <- 6
+        } else if (AreaTypeID == 202) {
+                val <- 7
+        } else if (AreaTypeID == 201) {
+                val <- 7
         } else {
                 val <- NA
         }
@@ -247,7 +253,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
                 unlist(use.names = FALSE)
         areacheck <- areacheck[grepl("^E", areacheck)]
         if (!(AreaCode %in% areacheck)) stop(paste0(AreaCode, " not in AreaTypeID = ", AreaTypeID))
-        if (is.na(val)) stop("AreaTypeID must be one of 101, 102, 152 or 154")
+        if (is.na(val)) stop("AreaTypeID must be one of 101, 102, 201, 202, 152, 153 or 154")
         path <- paste0(path,
                        sprintf("areas/by_parent_area_code?area_type_id=%s&parent_area_code=nn-%s-%s",
                                AreaTypeID, val, AreaCode))

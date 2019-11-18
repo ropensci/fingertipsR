@@ -51,7 +51,7 @@ test_that("nearest_neighbours returns as expected", {
         skip_if_offline()
         expect_is(nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154), "character")
         skip_if_offline()
-        expect_error(nearest_neighbours(AreaCode = "E12000001", AreaTypeID = 6), "AreaTypeID must be one of 101, 102, 152 or 154")
+        expect_error(nearest_neighbours(AreaCode = "E12000001", AreaTypeID = 6), "AreaTypeID must be one of 101, 102, 201, 202, 152, 153 or 154")
         skip_if_offline()
         expect_error(nearest_neighbours(AreaCode = "E07000033", AreaTypeID = 152), "E07000033 not in AreaTypeID = 152")
         skip_if_offline()
