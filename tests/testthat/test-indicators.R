@@ -49,7 +49,8 @@ test_that("the indicators_unique function works", {
 
 test_that("the indicator_order function works", {
         skip_if_offline()
-        expect_is(indicator_order(DomainID = 1938133294, AreaTypeID = 102, ParentAreaTypeID = 6),
+        expect_is(indicator_order(DomainID = 1938133301, AreaTypeID = 6, ParentAreaTypeID = 15,
+                                  path = "https://testfingertipsws.phe.org.uk/api/"),
                   "data.frame")
         skip_if_offline()
         expect_error(indicator_order(), "All of DomainID, AreaTypeID and ParentAreaTypeID are required")
