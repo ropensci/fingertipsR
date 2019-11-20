@@ -3,17 +3,31 @@ library(fingertipsR)
 
 context("Deprivation extract")
 
+#202, 201, 165, 154, 152, 102, 101, 8, 7, 3
+
 skip_if_offline()
 dep_default <- deprivation_decile()
 skip_if_offline()
+dep_202 <- deprivation_decile(202)
+skip_if_offline()
+dep_201 <- deprivation_decile(201)
+skip_if_offline()
+dep_165 <- deprivation_decile(165)
+skip_if_offline()
+dep_154 <- deprivation_decile(154)
+skip_if_offline()
+dep_152 <- deprivation_decile(152)
+skip_if_offline()
 dep_101 <- deprivation_decile(101)
+skip_if_offline()
+dep_8 <- deprivation_decile(8)
 skip_if_offline()
 dep_7 <- deprivation_decile(7)
 skip_if_offline()
 dep_3 <- deprivation_decile(3)
 
 dep_cols <- 3
-test_that("the dimensions of deprivation decile function are as expected", {
+test_that("the columns of deprivation decile function are as expected", {
         skip_if_offline()
         expect_equal(ncol(dep_default), dep_cols)
         skip_if_offline()
@@ -22,6 +36,43 @@ test_that("the dimensions of deprivation decile function are as expected", {
         expect_equal(ncol(dep_3), dep_cols)
         skip_if_offline()
         expect_equal(ncol(dep_7), dep_cols)
+        skip_if_offline()
+        expect_equal(ncol(dep_201), dep_cols)
+        skip_if_offline()
+        expect_equal(ncol(dep_202), dep_cols)
+        skip_if_offline()
+        expect_equal(ncol(dep_154), dep_cols)
+        skip_if_offline()
+        expect_equal(ncol(dep_152), dep_cols)
+        skip_if_offline()
+        expect_equal(ncol(dep_165), dep_cols)
+        skip_if_offline()
+        expect_equal(ncol(dep_8), dep_cols)
+
+})
+
+test_that("the columns of deprivation decile function are as expected", {
+        skip_if_offline()
+        expect_true(nrow(dep_default) > 2)
+        skip_if_offline()
+        expect_true(nrow(dep_101) > 2)
+        skip_if_offline()
+        expect_true(nrow(dep_3) > 2)
+        skip_if_offline()
+        expect_true(nrow(dep_7) > 2)
+        skip_if_offline()
+        expect_true(nrow(dep_201) > 2)
+        skip_if_offline()
+        expect_true(nrow(dep_202) > 2)
+        skip_if_offline()
+        expect_true(nrow(dep_154) > 2)
+        skip_if_offline()
+        expect_true(nrow(dep_152) > 2)
+        skip_if_offline()
+        expect_true(nrow(dep_165) > 2)
+        skip_if_offline()
+        expect_true(nrow(dep_8) > 2)
+
 })
 
 exp_classes <- c("character","numeric","integer")
@@ -42,5 +93,5 @@ test_that("error messages work correctly", {
         expect_error(deprivation_decile(Year = 2014), "Year must be 2015")
         skip_if_offline()
         expect_error(deprivation_decile(AreaTypeID = 12),
-                     "AreaTypeID must be either 101 \\(Local authority districts and Unitary Authorities\\), 102 \\(Counties and Unitary Authorities\\), 3 \\(Middle Super Output Areas\\) or 7 \\(General Practice\\)\\.")
+                     "AreaTypeID must be one of 202, 201, 165, 154, 152, 102, 101, 8, 7, 3")
 })

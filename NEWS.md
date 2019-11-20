@@ -1,5 +1,7 @@
 # fingertipsR 0.2.9.9000
 
+* fixed issue where GP deprivation_decile returned data with 0 records
+* added more allowable AreaTypes to `deprivation_decile()` function
 
 # fingertipsR 0.2.9
 

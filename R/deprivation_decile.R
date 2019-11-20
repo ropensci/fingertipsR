@@ -3,21 +3,21 @@
 #' Outputs a data frame allocating deprivation decile to  area code based on the
 #' Indices of Multiple Deprivation (IMD) produced by Department of Communities
 #' and Local Government
-#' @details This function uses the fingertips_data function to filter for the Index
-#'   of multiple deprivation score for the year and area supplied, and returns
-#'   the area code, along with the score and the deprivation decile, which is
-#'   calculated using the ntile function from dplyr
-#' @param AreaTypeID Integer value, limited to either 102 (counties and unitary
-#'   authorities), 101 (local authority districts and unitary authorities), 7
-#'   (General Practice) or 3 (Middle Super Output Layer); default is 102
+#' @details This function uses the fingertips_data function to filter for the
+#'   Index of multiple deprivation score for the year and area supplied, and
+#'   returns the area code, along with the score and the deprivation decile,
+#'   which is calculated using the ntile function from dplyr
+#' @param AreaTypeID Integer value, limited to one of 202, 201, 165, 154, 152,
+#'   102, 101, 8, 7, 3; default is 102
 #' @param Year Integer value, representing the year of IMD release to be
-#'   applied, limited to either 2010 or 2015; default is 2015
+#'   applied, limited to 2015
 #' @inheritParams indicators
 #' @examples
-#' # Return 2015 deciles for counties and unitary authorities
-#' deprivation_decile(102, 2015)
+#' # Return 2015 deciles for counties and unitary authorities (post 4/19)
+#' deprivation_decile(202, 2015)
 #' @return A lookup table providing deprivation decile and area code
 #' @import dplyr
+#' @importFrom rlang  .data
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -27,41 +27,43 @@
 #'   \code{\link{category_types}} for category lookups,
 #'   \code{\link{indicator_areatypes}} for indicators by area types lookups,
 #'   \code{\link{indicators_unique}} for unique indicatorids and their names,
-#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area and
-#'   \code{\link{indicator_order}} for the order indicators are presented on the
-#'   Fingertips website within a Domain
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an
+#'   area and \code{\link{indicator_order}} for the order indicators are
+#'   presented on the Fingertips website within a Domain
 
 deprivation_decile <- function(AreaTypeID = 102, Year = 2015, path) {
         if (!(Year %in% c(2015))) {
                 stop("Year must be 2015")
         }
-        if (!(AreaTypeID %in% c(101, 102, 7, 3))) {
-                stop("AreaTypeID must be either 101 (Local authority districts and Unitary Authorities), 102 (Counties and Unitary Authorities), 3 (Middle Super Output Areas) or 7 (General Practice).")
+        accepted_areatypes <- c(202, 201, 165, 154, 152, 102, 101, 8, 7, 3)
+        if (!(AreaTypeID %in% accepted_areatypes)) {
+                stop(paste("AreaTypeID must be one of", paste(accepted_areatypes, collapse = ", ")))
         }
-        if (AreaTypeID %in% c(101, 102, 7)) {
+        if (AreaTypeID %in% accepted_areatypes[!(accepted_areatypes %in% c(3, 152))]) {
+                ProfileID <- 98
                 IndicatorID <- 91872
-                if (AreaTypeID %in% c(101, 102)) {
-                        ProfileID <- 19
-                } else if (AreaTypeID %in% c(7)) {
-                        ProfileID <- 20
-                }
+        } else if (AreaTypeID %in% 152) {
+                ProfileID <- 21
+                IndicatorID <- 91872
+
         } else if (AreaTypeID == 3) {
                 IndicatorID <- 93275
                 ProfileID <- 143
         }
-        if (AreaTypeID == 101) AreaFilter <- "District & UA"
-        if (AreaTypeID == 102) AreaFilter <- "County & UA (pre 4/19)"
-        if (AreaTypeID == 7) AreaFilter <- "GP"
-        if (AreaTypeID == 3) AreaFilter <- "MSOA"
+
         if (missing(path)) path <- fingertips_endpoint()
+
         set_config(config(ssl_verifypeer = 0L))
         fingertips_ensure_api_available(endpoint = path)
         deprivation_decile <- fingertips_data(IndicatorID = IndicatorID,
                                               AreaTypeID = AreaTypeID,
                                               ProfileID = ProfileID,
                                               path = path) %>%
-                filter(AreaType == AreaFilter &
-                               Timeperiod == Year) %>%
+                group_by(AreaType) %>%
+                mutate(records = n()) %>%
+                ungroup() %>%
+                filter(.data$records == max(.data$records),
+                       Timeperiod == Year) %>%
                 select(AreaCode, Value) %>%
                 rename(IMDscore = Value) %>%
                 mutate(decile = as.integer(11 - ntile(IMDscore, 10)))
