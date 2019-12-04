@@ -69,7 +69,10 @@ fingdata <- fingertips_data(22401, AreaTypeID = 101)
 # differences between profiles on the website
 # It is recommended to check the website to ensure consistency between your
 # data extract here and the polarity required
-fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaTypeID = 202, AreaCode = "E06000008")
+fingdata <- fingertips_data(rep(90282,2),
+                            ProfileID = c(19,93),
+                            AreaTypeID = 202,
+                            AreaCode = "E06000008")
 fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]
 
 # Returns data for all available area types for an indicator

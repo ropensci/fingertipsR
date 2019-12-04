@@ -43,7 +43,10 @@
 #' # differences between profiles on the website
 #' # It is recommended to check the website to ensure consistency between your
 #' # data extract here and the polarity required
-#' fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaTypeID = 202, AreaCode = "E06000008")
+#' fingdata <- fingertips_data(rep(90282,2),
+#'                             ProfileID = c(19,93),
+#'                             AreaTypeID = 202,
+#'                             AreaCode = "E06000008")
 #' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]
 #'
 #' # Returns data for all available area types for an indicator
@@ -107,6 +110,8 @@ fingertips_data <- function(IndicatorID = NULL,
         } else {
                 areaTypes <- area_types(path = path)
                 if (AreaTypeID == "All") {
+                        ######THIS SECTION NEEDS REDOING TO PRODUCE DF WITH INDICATORID, [PROFILEID], AREATYPEID, PARENTAREATYPEID = 15
+                        ##### USING areas_by_profile()
                         if (is.null(IndicatorID)) {
                                 if (!is.null(ProfileID)) {
                                         ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
@@ -116,19 +121,17 @@ fingertips_data <- function(IndicatorID = NULL,
                                         ind_to_prof <- indicators(DomainID = DomainIDs, path = path) %>%
                                                 select(IndicatorID, ProfileID)
                                         ProfileIDs <- unique(ind_to_prof$ProfileID)
+
                                 }
-                                prof_to_areatype <- data.frame()
-                                for (id in ProfileIDs) {
-                                        new_prof_to_areatype <- cbind(ProfileID = id,
-                                                                      area_types(ProfileID = id, path = path))
-                                        area_ids <- unique(new_prof_to_areatype$AreaTypeID)
-                                        new_prof_to_areatype <- new_prof_to_areatype %>%
-                                                filter(!(ParentAreaTypeID %in% area_ids)) %>%
-                                                select(ends_with("ID"))
-                                        prof_to_areatype <- rbind(new_prof_to_areatype, prof_to_areatype)
-                                }
-                                ind_ats <- ind_to_prof %>%
-                                        left_join(prof_to_areatype, by = "ProfileID")
+                                ats <- indicator_areatypes() %>%
+                                        filter(IndicatorID %in% unique(ind_to_prof$IndicatorID))
+                                ind_to_prof <- ind_to_prof %>%
+                                        left_join(ats, by = "IndicatorID")
+                                ind_ats <- areas_by_profile(ind_to_prof$AreaTypeID,
+                                                            ind_to_prof$ProfileID,
+                                                            path)
+                                if (!is.null(DomainID)) ind_ats <- ind_ats %>%
+                                        filter(DomainID %in% DomainIDs)
                         } else {
                                 if (!is.null(ProfileID)) {
                                         prof_to_areatype <- data.frame()

@@ -262,3 +262,31 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
         }
         return(nearest_neighbours)
 }
+
+
+areas_by_profile <- function(AreaTypeID, ProfileID, path) {
+        if (missing(path)) path <- fingertips_endpoint()
+        set_config(config(ssl_verifypeer = 0L))
+        fingertips_ensure_api_available(endpoint = path)
+
+        repeats <- max(length(AreaTypeID),
+                       length(ProfileID))
+        areas_by_profile <- mapply(sprintf,
+                                   paste0(path,
+                                          rep("grouproot_summaries/by_profile_id?profile_id=%s&area_type_id=%s", repeats)),
+                                   ProfileID,
+                                   AreaTypeID) %>%
+                lapply(function(x) get_fingertips_api(x))
+        names(areas_by_profile) <- AreaTypeID
+        areas_by_profile <- bind_rows(areas_by_profile, .id = "AreaTypeID") %>%
+                mutate(AreaTypeID = as.integer(AreaTypeID)) %>%
+                select(IndicatorID = IID, AreaTypeID, DomainID = GroupId)
+        profs <- profiles() %>%
+                filter(DomainID %in% areas_by_profile$DomainID) %>%
+                select(DomainID, ProfileID)
+        areas_by_profile <- areas_by_profile %>%
+                left_join(profs, by = "DomainID") %>%
+                unique() %>%
+                mutate(ParentAreaTypeID = 15)
+        return(areas_by_profile)
+}

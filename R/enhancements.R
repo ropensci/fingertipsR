@@ -17,8 +17,7 @@
 #' @export
 
 fingertips_redred <- function(Comparator = "England", ...) {
-        path <- "https://fingertips.phe.org.uk/api/"
-        fingertips_redred <- fingertips_data(path = path, ...)
+        fingertips_redred <- fingertips_data(...)
         filter_field <- names(fingertips_redred)[grepl("^Compared", names(fingertips_redred))]
         if (Comparator == "England") {
                 filter_field <- filter_field[grepl("^ComparedtoEngland", filter_field)]
@@ -32,7 +31,7 @@ fingertips_redred <- function(Comparator = "England", ...) {
         fingertips_redred <- fingertips_redred %>%
                 group_by(IndicatorID, Sex, Age, CategoryType, Category) %>%
                 filter(TimeperiodSortable == max(TimeperiodSortable) &
-                               grepl("[Ww]orse",RecentTrend) &
+                               grepl("[Ww]orse", RecentTrend) &
                                grepl("[Ww]orse", !!as.name(filter_field)))
         return(fingertips_redred)
 }

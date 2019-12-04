@@ -17,3 +17,5 @@ vignettes/references.bib
 ^CONDUCT\.md$
 ^CODE_OF_CONDUCT\.md$
 ^CRAN-RELEASE$
+
+paper/

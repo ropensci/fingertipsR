@@ -52,4 +52,5 @@ globalVariables(c("Id",
                   ".",
                   "GroupId",
                   "IndicatorId",
-                  "ParentAreaTypeName"))
+                  "ParentAreaTypeName",
+                  "DomainID"))
