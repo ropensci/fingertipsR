@@ -132,21 +132,6 @@ fingertips_data <- function(IndicatorID = NULL,
                                         filter(DomainID %in% DomainIDs)
                         } else {
                                 if (!is.null(ProfileID)) {
-                                        # prof_to_areatype <- data.frame()
-                                        # for (id in ProfileIDs) {
-                                        #         new_prof_to_areatype <- cbind(ProfileID = id,
-                                        #                                       area_types(ProfileID = id, path = path))
-                                        #         area_ids <- unique(new_prof_to_areatype$AreaTypeID)
-                                        #         new_prof_to_areatype <- new_prof_to_areatype %>%
-                                        #                 filter(!(ParentAreaTypeID %in% area_ids)) %>%
-                                        #                 select(ends_with("ID"))
-                                        #         prof_to_areatype <- rbind(new_prof_to_areatype, prof_to_areatype)
-                                        #
-                                        # }
-                                        # ind_to_prof <- data.frame(IndicatorID = IndicatorIDs,
-                                        #                           ProfileID = ProfileIDs)
-                                        # ind_ats <- ind_to_prof %>%
-                                        #         left_join(prof_to_areatype, by = "ProfileID")
                                         ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
                                                 select(IndicatorID, ProfileID) %>%
                                                 filter(IndicatorID %in% IndicatorIDs)
@@ -242,14 +227,6 @@ fingertips_data <- function(IndicatorID = NULL,
 
                 } else {
                         if (AreaTypeID == "All") {
-                                # fingertips_data <- apply(ind_ats, 1,
-                                #                          function(x) retrieve_indicator(IndicatorIDs = x["IndicatorID"],
-                                #                                                         ProfileIDs = x["ProfileID"],
-                                #                                                         ChildAreaTypeIDs = x["AreaTypeID"],
-                                #                                                         ParentAreaTypeIDs = x["ParentAreaTypeID"],
-                                #                                                         generic_name = TRUE,
-                                #                                                         path = path)) %>%
-                                #         bind_rows()
                                 fingertips_data <- retrieve_all_area_data(ind_ats,
                                                                           IndicatorID = "IndicatorID",
                                                                           ProfileID = "ProfileID",
@@ -269,14 +246,6 @@ fingertips_data <- function(IndicatorID = NULL,
         } else {
                 if (!is.null(DomainID)) {
                         if (AreaTypeID == "All") {
-                                # fingertips_data <- apply(ind_ats, 1,
-                                #                          function(x) retrieve_indicator(IndicatorIDs = x["IndicatorID"],
-                                #                                                         ProfileIDs = x["ProfileID"],
-                                #                                                         ChildAreaTypeIDs = x["AreaTypeID"],
-                                #                                                         ParentAreaTypeIDs = x["ParentAreaTypeID"],
-                                #                                                         generic_name = TRUE,
-                                #                                                         path = path)) %>%
-                                #         bind_rows()
                                 fingertips_data <- retrieve_all_area_data(ind_ats,
                                                                           IndicatorID = "IndicatorID",
                                                                           ProfileID = "ProfileID",
