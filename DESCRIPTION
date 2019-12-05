@@ -13,7 +13,9 @@ Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "
     person("Carl", "Ganz", , "carlganz@gmail.com", c("ctb")),
     person("David", "Whiting", , "david.whiting@medway.gov.uk", c("ctb")),
     person("Crown Copyright 2018", , , , c("cph")))
-URL: https://fingertips.phe.org.uk, https://github.com/ropensci/fingertipsR
+URL: https://fingertips.phe.org.uk, 
+    https://github.com/ropensci/fingertipsR, 
+    https://docs.ropensci.org/fingertipsR/
 BugReports: https://github.com/ropensci/fingertipsR/issues
 Imports:
     curl,

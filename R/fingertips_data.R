@@ -110,8 +110,6 @@ fingertips_data <- function(IndicatorID = NULL,
         } else {
                 areaTypes <- area_types(path = path)
                 if (AreaTypeID == "All") {
-                        ######THIS SECTION NEEDS REDOING TO PRODUCE DF WITH INDICATORID, [PROFILEID], AREATYPEID, PARENTAREATYPEID = 15
-                        ##### USING areas_by_profile()
                         if (is.null(IndicatorID)) {
                                 if (!is.null(ProfileID)) {
                                         ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
@@ -134,21 +132,31 @@ fingertips_data <- function(IndicatorID = NULL,
                                         filter(DomainID %in% DomainIDs)
                         } else {
                                 if (!is.null(ProfileID)) {
-                                        prof_to_areatype <- data.frame()
-                                        for (id in ProfileIDs) {
-                                                new_prof_to_areatype <- cbind(ProfileID = id,
-                                                                              area_types(ProfileID = id, path = path))
-                                                area_ids <- unique(new_prof_to_areatype$AreaTypeID)
-                                                new_prof_to_areatype <- new_prof_to_areatype %>%
-                                                        filter(!(ParentAreaTypeID %in% area_ids)) %>%
-                                                        select(ends_with("ID"))
-                                                prof_to_areatype <- rbind(new_prof_to_areatype, prof_to_areatype)
-
-                                        }
-                                        ind_to_prof <- data.frame(IndicatorID = IndicatorIDs,
-                                                                  ProfileID = ProfileIDs)
+                                        # prof_to_areatype <- data.frame()
+                                        # for (id in ProfileIDs) {
+                                        #         new_prof_to_areatype <- cbind(ProfileID = id,
+                                        #                                       area_types(ProfileID = id, path = path))
+                                        #         area_ids <- unique(new_prof_to_areatype$AreaTypeID)
+                                        #         new_prof_to_areatype <- new_prof_to_areatype %>%
+                                        #                 filter(!(ParentAreaTypeID %in% area_ids)) %>%
+                                        #                 select(ends_with("ID"))
+                                        #         prof_to_areatype <- rbind(new_prof_to_areatype, prof_to_areatype)
+                                        #
+                                        # }
+                                        # ind_to_prof <- data.frame(IndicatorID = IndicatorIDs,
+                                        #                           ProfileID = ProfileIDs)
+                                        # ind_ats <- ind_to_prof %>%
+                                        #         left_join(prof_to_areatype, by = "ProfileID")
+                                        ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
+                                                select(IndicatorID, ProfileID) %>%
+                                                filter(IndicatorID %in% IndicatorIDs)
+                                        ats <- indicator_areatypes()
+                                        indicator_profile_inputs <- data.frame(IndicatorID = IndicatorIDs,
+                                                                               ProfileID = ProfileIDs)
                                         ind_ats <- ind_to_prof %>%
-                                                left_join(prof_to_areatype, by = "ProfileID")
+                                                left_join(ats, by = "IndicatorID") %>%
+                                                mutate(ParentAreaTypeID = 15) %>%
+                                                inner_join(indicator_profile_inputs, by = c("IndicatorID", "ProfileID"))
                                 } else {
                                         at <- area_types()
                                         ind_ats <- indicator_areatypes() %>%
