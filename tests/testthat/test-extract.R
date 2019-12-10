@@ -26,7 +26,7 @@ df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
 
 # Testing different versions of AreaTypeID = "All"
 skip_if_offline()
-df10 <- fingertips_data(IndicatorID = 10101, AreaTypeID = "All")
+df10 <- fingertips_data(IndicatorID = 10101, AreaTypeID = "All", path = 'https://fingertips.phe.org.uk/api/')
 skip_if_offline()
 df11 <- fingertips_data(DomainID = 1938133301, AreaTypeID = "All")
 skip_if_offline()

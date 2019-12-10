@@ -11,6 +11,8 @@ test_that("the area_types function works correctly", {
         skip_if_offline()
         expect_equal(area_types(c("gov","count")), area_types(AreaTypeID = c(102,6)))
         skip_if_offline()
+        expect_equal(ncol(area_types(ProfileID = 156)), 4)
+        skip_if_offline()
         expect_warning(area_types(AreaTypeName = "gov", AreaTypeID = 102),
                        "AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
 })
@@ -59,3 +61,4 @@ test_that("nearest_neighbours returns as expected", {
         skip_if_offline()
         expect_error(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CIPPA"), "Measure must be either CIPFA or CSSN")
 })
+
