@@ -19,3 +19,4 @@ vignettes/references.bib
 ^CRAN-RELEASE$
 
 paper/
+_pkgdown.yml
