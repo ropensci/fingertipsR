@@ -80,6 +80,8 @@ indicator_metadata <- function(IndicatorID = NULL,
                 path <- paste0(path, "indicator_metadata/csv/by_indicator_id?indicator_ids=")
                 dataurl <- paste0(path,
                                   paste(IndicatorID, collapse = "%2C"))
+                if (!(is.null(ProfileID)) & length(ProfileID == 1))
+                        dataurl <- paste0(dataurl, "&profile_id=", ProfileID)
                 indicator_metadata <- dataurl %>%
                         GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                         content("parsed",

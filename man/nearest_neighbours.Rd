@@ -11,7 +11,7 @@ nearest_neighbours(AreaCode, AreaTypeID = 101, measure, path)
 
 \item{AreaTypeID}{AreaTypeID of the nearest neighbours (see
 \code{\link{area_types}}) for IDs. Only returns information on AreaTypeIDs
-101, 102, 152, and 154}
+101, 102, 201, 202, 152, 153 and 154}
 
 \item{measure}{string; when AreaTypeID = 102 measure must be either "CIPFA"
 for CIPFA local authority nearest neighbours or "CSSN" for Children's

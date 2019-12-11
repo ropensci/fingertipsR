@@ -25,6 +25,7 @@ Imports:
     jsonlite,
     miniUI,
     readr,
+    rlang,
     shiny,
     shinycssloaders
 Suggests:
