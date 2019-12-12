@@ -271,7 +271,6 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
 
 
 areas_by_profile <- function(AreaTypeID, ProfileID, path) {
-        if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
         fingertips_ensure_api_available(endpoint = path)
 
