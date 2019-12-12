@@ -224,8 +224,6 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
         if (missing(measure)) measure <- NA
         if (AreaTypeID == 101) {
                 val <- 1
-        } else if (AreaTypeID == 153) {
-                val <- 2
         } else if (AreaTypeID == 102 & measure == "CSSN") {
                 val <- 3
         } else if (AreaTypeID == 102 & measure == "CIPFA") {
@@ -253,7 +251,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
                 unlist(use.names = FALSE)
         areacheck <- areacheck[grepl("^E", areacheck)]
         if (!(AreaCode %in% areacheck)) stop(paste0(AreaCode, " not in AreaTypeID = ", AreaTypeID))
-        if (is.na(val)) stop("AreaTypeID must be one of 101, 102, 201, 202, 152, 153 or 154")
+        if (is.na(val)) stop("AreaTypeID must be one of 101, 102, 201, 202, 152 or 154")
         path <- paste0(path,
                        sprintf("areas/by_parent_area_code?area_type_id=%s&parent_area_code=nn-%s-%s",
                                AreaTypeID, val, AreaCode))
