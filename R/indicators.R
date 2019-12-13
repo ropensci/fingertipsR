@@ -139,7 +139,7 @@ indicator_order <- function(DomainID,
                 names
         ParentAreaCode <- ParentAreaCode[grepl("^E", ParentAreaCode)][1]
         domid <- DomainID
-        ProfileID <- profiles() %>%
+        ProfileID <- profiles(path = path) %>%
                 filter(DomainID == domid)
         if (nrow(ProfileID) == 0) {
                 stop("DomainID does not exist")

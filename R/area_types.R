@@ -224,8 +224,6 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
         if (missing(measure)) measure <- NA
         if (AreaTypeID == 101) {
                 val <- 1
-        } else if (AreaTypeID == 153) {
-                val <- 2
         } else if (AreaTypeID == 102 & measure == "CSSN") {
                 val <- 3
         } else if (AreaTypeID == 102 & measure == "CIPFA") {
@@ -253,7 +251,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
                 unlist(use.names = FALSE)
         areacheck <- areacheck[grepl("^E", areacheck)]
         if (!(AreaCode %in% areacheck)) stop(paste0(AreaCode, " not in AreaTypeID = ", AreaTypeID))
-        if (is.na(val)) stop("AreaTypeID must be one of 101, 102, 201, 202, 152, 153 or 154")
+        if (is.na(val)) stop("AreaTypeID must be one of 101, 102, 201, 202, 152 or 154")
         path <- paste0(path,
                        sprintf("areas/by_parent_area_code?area_type_id=%s&parent_area_code=nn-%s-%s",
                                AreaTypeID, val, AreaCode))
@@ -267,4 +265,31 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
                 nearest_neighbours <- character()
         }
         return(nearest_neighbours)
+}
+
+
+areas_by_profile <- function(AreaTypeID, ProfileID, path) {
+        set_config(config(ssl_verifypeer = 0L))
+        fingertips_ensure_api_available(endpoint = path)
+
+        repeats <- max(length(AreaTypeID),
+                       length(ProfileID))
+        areas_by_profile <- mapply(sprintf,
+                                   paste0(path,
+                                          rep("grouproot_summaries/by_profile_id?profile_id=%s&area_type_id=%s", repeats)),
+                                   ProfileID,
+                                   AreaTypeID) %>%
+                lapply(function(x) get_fingertips_api(x))
+        names(areas_by_profile) <- AreaTypeID
+        areas_by_profile <- bind_rows(areas_by_profile, .id = "AreaTypeID") %>%
+                mutate(AreaTypeID = as.integer(AreaTypeID)) %>%
+                select(IndicatorID = IID, AreaTypeID, DomainID = GroupId)
+        profs <- profiles() %>%
+                filter(DomainID %in% areas_by_profile$DomainID) %>%
+                select(DomainID, ProfileID)
+        areas_by_profile <- areas_by_profile %>%
+                left_join(profs, by = "DomainID") %>%
+                unique() %>%
+                mutate(ParentAreaTypeID = 15)
+        return(areas_by_profile)
 }

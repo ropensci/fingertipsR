@@ -5,11 +5,11 @@ context("Test metadata")
 ncols <- 30
 
 skip_if_offline()
-df1 <- suppressWarnings(indicator_metadata(IndicatorID = 10101))
+df1 <- indicator_metadata(IndicatorID = 10101)
 skip_if_offline()
-df2 <- suppressWarnings(indicator_metadata(DomainID = 1938132767))
+df2 <- indicator_metadata(DomainID = 1938133294)
 skip_if_offline()
-df3 <- suppressWarnings(indicator_metadata(ProfileID = 132))
+df3 <- indicator_metadata(ProfileID = 156)
 
 test_that("bad inputs give bad outputs", {
         skip_if_offline()
