@@ -3,7 +3,7 @@
 * fixed issue where GP deprivation_decile returned data with 0 records
 * added more allowable AreaTypes to `deprivation_decile()` function
 * `AreaTypeID = "All"` in `fingertips_data()` function now faster and accurate for specific profile
-
+ 
 # fingertipsR 0.2.9 (2019-09-25)
 
 * fixed issue caused by v0.2.8 for users behind organisational firewall
