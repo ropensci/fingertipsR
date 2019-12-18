@@ -2,7 +2,9 @@
 
 * fixed issue where GP deprivation_decile returned data with 0 records
 * added more allowable AreaTypes to `deprivation_decile()` function
+* added 2019 year to `deprivation_decile()`
 * `AreaTypeID = "All"` in `fingertips_data()` function now faster and accurate for specific profile
+
  
 # fingertipsR 0.2.9 (2019-09-25)
 

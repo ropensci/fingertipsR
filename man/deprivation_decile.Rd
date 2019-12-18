@@ -4,14 +4,15 @@
 \alias{deprivation_decile}
 \title{Deprivation deciles}
 \usage{
-deprivation_decile(AreaTypeID = 102, Year = 2015, path)
+deprivation_decile(AreaTypeID, Year = 2019, path)
 }
 \arguments{
-\item{AreaTypeID}{Integer value, limited to one of 202, 201, 165, 154, 152,
-102, 101, 8, 7, 3; default is 102}
+\item{AreaTypeID}{Integer value, limited to one of 202, 201, 165, 154, 120,
+104, 102, 101, 46, 7, 6, 3, though not all are available for both years;
+default is 202}
 
 \item{Year}{Integer value, representing the year of IMD release to be
-applied, limited to 2015}
+applied, limited to 2015 or 2019}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

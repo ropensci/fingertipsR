@@ -7,10 +7,11 @@
 #'   Index of multiple deprivation score for the year and area supplied, and
 #'   returns the area code, along with the score and the deprivation decile,
 #'   which is calculated using the ntile function from dplyr
-#' @param AreaTypeID Integer value, limited to one of 202, 201, 165, 154, 152,
-#'   102, 101, 8, 7, 3; default is 102
+#' @param AreaTypeID Integer value, limited to one of 202, 201, 165, 154, 120,
+#'   104, 102, 101, 46, 7, 6, 3, though not all are available for both years;
+#'   default is 202
 #' @param Year Integer value, representing the year of IMD release to be
-#'   applied, limited to 2015
+#'   applied, limited to 2015 or 2019
 #' @inheritParams indicators
 #' @examples
 #' # Return 2015 deciles for counties and unitary authorities (post 4/19)
@@ -31,21 +32,41 @@
 #'   area and \code{\link{indicator_order}} for the order indicators are
 #'   presented on the Fingertips website within a Domain
 
-deprivation_decile <- function(AreaTypeID = 102, Year = 2015, path) {
-        if (!(Year %in% c(2015))) {
-                stop("Year must be 2015")
+deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
+        if (missing(AreaTypeID)) stop("AreaTypeID must be specified")
+
+        if (!(Year %in% c(2015, 2019))) {
+                stop("Year must be 2015 or 2019")
         }
-        accepted_areatypes <- c(202, 201, 165, 154, 102, 101, 8, 7, 3)
+        accepted_areatypes <- c(202, 201, 165, 154, 120, 104, 102, 101, 46, 8, 7, 6, 3)
         if (!(AreaTypeID %in% accepted_areatypes)) {
                 stop(paste("AreaTypeID must be one of", paste(accepted_areatypes, collapse = ", ")))
         }
-        if (AreaTypeID %in% accepted_areatypes[!(accepted_areatypes %in% c(3))]) {
-                ProfileID <- 98
-                IndicatorID <- 91872
-        } else if (AreaTypeID == 3) {
-                IndicatorID <- 93275
-                ProfileID <- 143
+        if (Year == 2015) {
+                years2015 <- c(202, 201, 165, 154, 152, 102, 101, 8, 7, 3)
+                if (AreaTypeID %in% years2015[!(years2015 %in% c(3))]) {
+                        ProfileID <- 98
+                        IndicatorID <- 91872
+                } else if (AreaTypeID == 3) {
+                        IndicatorID <- 93275
+                        ProfileID <- 143
+                } else {
+                        stop("AreaTypeID unavailable for 2015")
+                }
+        } else if (Year == 2019) {
+                years2019 <- c(202, 201, 165, 154, 120, 104, 102, 101, 46, 7, 6)
+                IndicatorID <- 93553
+                if (AreaTypeID %in% years2019[!(years2019 %in% c(6, 7, 46, 104, 120))]) {
+                        ProfileID <- 146
+                } else if (AreaTypeID %in% c(6, 104)) {
+                        ProfileID <- 76
+                } else if (AreaTypeID %in% c(7, 46, 120)) {
+                        ProfileID <- 20
+                } else {
+                        stop("AreaTypeID unavailable for 2019")
+                }
         }
+
 
         if (missing(path)) path <- fingertips_endpoint()
 
