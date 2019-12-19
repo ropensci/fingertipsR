@@ -20,3 +20,4 @@ vignettes/references.bib
 
 paper/
 _pkgdown.yml
+^\.github$

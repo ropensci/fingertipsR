@@ -89,14 +89,14 @@ profs <- profiles()
 profs <- profs[grepl("Public Health Outcomes Framework", profs$ProfileName),]
 head(profs)
 #> # A tibble: 6 x 4
-#>   ProfileID ProfileName                 DomainID DomainName                
-#>       <int> <chr>                          <int> <chr>                     
-#> 1        19 Public Health Outcomes Fr~    1.00e6 Overarching indicators    
-#> 2        19 Public Health Outcomes Fr~    1.00e6 Wider determinants of hea~
-#> 3        19 Public Health Outcomes Fr~    1.00e6 Health improvement        
-#> 4        19 Public Health Outcomes Fr~    1.00e6 Health protection         
-#> 5        19 Public Health Outcomes Fr~    1.00e6 Healthcare and premature ~
-#> 6        19 Public Health Outcomes Fr~    1.94e9 Supporting information
+#>   ProfileID ProfileName                   DomainID DomainName                   
+#>       <int> <chr>                            <int> <chr>                        
+#> 1        19 Public Health Outcomes Fra~    1000049 A. Overarching indicators    
+#> 2        19 Public Health Outcomes Fra~    1000041 B. Wider determinants of hea~
+#> 3        19 Public Health Outcomes Fra~    1000042 C. Health improvement        
+#> 4        19 Public Health Outcomes Fra~    1000043 D. Health protection         
+#> 5        19 Public Health Outcomes Fra~    1000044 E. Healthcare and premature ~
+#> 6        19 Public Health Outcomes Fra~ 1938132983 Supporting information
 ```
 
 This table shows that the `ProfileID` for the Public Health Outcomes
@@ -107,11 +107,10 @@ function:
 profid <- 19
 inds <- indicators(ProfileID = profid)
 print(inds[grepl("Healthy", inds$IndicatorName), c("IndicatorID", "IndicatorName")])
-#> # A tibble: 2 x 2
-#>   IndicatorID IndicatorName                                                
-#>         <int> <fct>                                                        
-#> 1       90362 0.1i - Healthy life expectancy at birth                      
-#> 2       92543 2.05ii - Proportion of children aged 2-2½yrs receiving ASQ-3~
+#> # A tibble: 1 x 2
+#>   IndicatorID IndicatorName                          
+#>         <int> <fct>                                  
+#> 1       90362 A01a - Healthy life expectancy at birth
 ```
 
 Healthy Life Expectancy at Birth has the `IndicatorID` equal to 90362.
@@ -121,57 +120,50 @@ function using that `IndicatorID`:
 
 ``` r
 indid <- 90362
-df <- fingertips_data(IndicatorID = indid)
+df <- fingertips_data(IndicatorID = indid, AreaTypeID = 202)
 head(df)
-#>   IndicatorID                    IndicatorName ParentCode ParentName
-#> 1       90362 Healthy life expectancy at birth       <NA>       <NA>
-#> 2       90362 Healthy life expectancy at birth       <NA>       <NA>
-#> 3       90362 Healthy life expectancy at birth  E92000001    England
-#> 4       90362 Healthy life expectancy at birth  E92000001    England
-#> 5       90362 Healthy life expectancy at birth  E92000001    England
-#> 6       90362 Healthy life expectancy at birth  E92000001    England
-#>    AreaCode                        AreaName AreaType    Sex      Age
-#> 1 E92000001                         England  England   Male All ages
-#> 2 E92000001                         England  England Female All ages
-#> 3 E12000001               North East region   Region   Male All ages
-#> 4 E12000002               North West region   Region   Male All ages
-#> 5 E12000003 Yorkshire and the Humber region   Region   Male All ages
-#> 6 E12000004            East Midlands region   Region   Male All ages
-#>   CategoryType Category Timeperiod    Value LowerCI95.0limit
-#> 1         <NA>     <NA>  2009 - 11 63.02647         62.87787
-#> 2         <NA>     <NA>  2009 - 11 64.03794         63.88135
-#> 3         <NA>     <NA>  2009 - 11 59.71114         59.19049
-#> 4         <NA>     <NA>  2009 - 11 60.76212         60.39880
-#> 5         <NA>     <NA>  2009 - 11 60.84033         60.38649
-#> 6         <NA>     <NA>  2009 - 11 62.60207         62.07083
-#>   UpperCI95.0limit LowerCI99.8limit UpperCI99.8limit Count Denominator
-#> 1         63.17508               NA               NA    NA          NA
-#> 2         64.19453               NA               NA    NA          NA
-#> 3         60.23179               NA               NA    NA          NA
-#> 4         61.12544               NA               NA    NA          NA
-#> 5         61.29417               NA               NA    NA          NA
-#> 6         63.13332               NA               NA    NA          NA
-#>   Valuenote RecentTrend ComparedtoEnglandvalueorpercentiles
-#> 1      <NA>        <NA>                        Not compared
-#> 2      <NA>        <NA>                        Not compared
-#> 3      <NA>        <NA>                               Worse
-#> 4      <NA>        <NA>                               Worse
-#> 5      <NA>        <NA>                               Worse
-#> 6      <NA>        <NA>                             Similar
-#>   ComparedtoRegionvalueorpercentiles TimeperiodSortable Newdata
-#> 1                       Not compared           20090000    <NA>
-#> 2                       Not compared           20090000    <NA>
-#> 3                       Not compared           20090000    <NA>
-#> 4                       Not compared           20090000    <NA>
-#> 5                       Not compared           20090000    <NA>
-#> 6                       Not compared           20090000    <NA>
-#>   Comparedtogoal
-#> 1           <NA>
-#> 2           <NA>
-#> 3           <NA>
-#> 4           <NA>
-#> 5           <NA>
-#> 6           <NA>
+#>   IndicatorID                    IndicatorName ParentCode ParentName  AreaCode
+#> 1       90362 Healthy life expectancy at birth       <NA>       <NA> E92000001
+#> 2       90362 Healthy life expectancy at birth       <NA>       <NA> E92000001
+#> 3       90362 Healthy life expectancy at birth  E92000001    England E12000001
+#> 4       90362 Healthy life expectancy at birth  E92000001    England E12000002
+#> 5       90362 Healthy life expectancy at birth  E92000001    England E12000003
+#> 6       90362 Healthy life expectancy at birth  E92000001    England E12000004
+#>                          AreaName AreaType    Sex      Age CategoryType
+#> 1                         England  England   Male All ages         <NA>
+#> 2                         England  England Female All ages         <NA>
+#> 3               North East region   Region   Male All ages         <NA>
+#> 4               North West region   Region   Male All ages         <NA>
+#> 5 Yorkshire and the Humber region   Region   Male All ages         <NA>
+#> 6            East Midlands region   Region   Male All ages         <NA>
+#>   Category Timeperiod    Value LowerCI95.0limit UpperCI95.0limit
+#> 1     <NA>  2009 - 11 63.02647         62.87787         63.17508
+#> 2     <NA>  2009 - 11 64.03794         63.88135         64.19453
+#> 3     <NA>  2009 - 11 59.71114         59.19049         60.23179
+#> 4     <NA>  2009 - 11 60.76212         60.39880         61.12544
+#> 5     <NA>  2009 - 11 60.84033         60.38649         61.29417
+#> 6     <NA>  2009 - 11 62.60207         62.07083         63.13332
+#>   LowerCI99.8limit UpperCI99.8limit Count Denominator Valuenote RecentTrend
+#> 1               NA               NA    NA          NA      <NA>        <NA>
+#> 2               NA               NA    NA          NA      <NA>        <NA>
+#> 3               NA               NA    NA          NA      <NA>        <NA>
+#> 4               NA               NA    NA          NA      <NA>        <NA>
+#> 5               NA               NA    NA          NA      <NA>        <NA>
+#> 6               NA               NA    NA          NA      <NA>        <NA>
+#>   ComparedtoEnglandvalueorpercentiles ComparedtoRegionvalueorpercentiles
+#> 1                        Not compared                       Not compared
+#> 2                        Not compared                       Not compared
+#> 3                               Worse                       Not compared
+#> 4                               Worse                       Not compared
+#> 5                               Worse                       Not compared
+#> 6                             Similar                       Not compared
+#>   TimeperiodSortable Newdata Comparedtogoal
+#> 1           20090000    <NA>           <NA>
+#> 2           20090000    <NA>           <NA>
+#> 3           20090000    <NA>           <NA>
+#> 4           20090000    <NA>           <NA>
+#> 5           20090000    <NA>           <NA>
+#> 6           20090000    <NA>           <NA>
 ```
 
 ## Use
