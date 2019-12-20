@@ -103,7 +103,7 @@ test_that(paste("number of fields returned by fingertips_data function are", nco
         skip_if_offline()
         expect_equal(ncol(df8), ncols + 3)
         skip_if_offline()
-        expect_equal(ncol(df9), ncols + 3)
+        expect_equal(ncol(df9), ncols)
         skip_if_offline()
         expect_equal(ncol(df10), ncols)
         skip_if_offline()
