@@ -10,6 +10,8 @@ skip_if_offline()
 df2 <- indicator_metadata(DomainID = 1938133294)
 skip_if_offline()
 df3 <- indicator_metadata(ProfileID = 156)
+skip_if_offline()
+df4 <- indicator_metadata(IndicatorID = 90362, ProfileID = 156)
 
 test_that("bad inputs give bad outputs", {
         skip_if_offline()
@@ -33,4 +35,6 @@ test_that(paste("the number of fields in the output are", ncols), {
         expect_equal(ncol(df2), ncols)
         skip_if_offline()
         expect_equal(ncol(df3), ncols)
+        skip_if_offline()
+        expect_equal(ncol(df4), ncols)
 })

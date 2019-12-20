@@ -22,7 +22,7 @@ df8 <- fingertips_data(DomainID = 1938133301, AreaTypeID = 6, rank = TRUE)
 
 inds <- c(93081, 93275)
 skip_if_offline()
-df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
+df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3, rank = TRUE)
 
 # Testing different versions of AreaTypeID = "All"
 skip_if_offline()
@@ -103,7 +103,7 @@ test_that(paste("number of fields returned by fingertips_data function are", nco
         skip_if_offline()
         expect_equal(ncol(df8), ncols + 3)
         skip_if_offline()
-        expect_equal(ncol(df9), ncols)
+        expect_equal(ncol(df9), ncols + 3)
         skip_if_offline()
         expect_equal(ncol(df10), ncols)
         skip_if_offline()

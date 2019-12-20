@@ -171,4 +171,7 @@ test_that("error messages work correctly", {
         skip_if_offline()
         expect_error(deprivation_decile(AreaTypeID = 120, Year = 2015),
                      "AreaTypeID unavailable for 2015")
+        skip_if_offline()
+        expect_error(deprivation_decile(Year = 2015),
+                     "AreaTypeID must be specified")
 })
