@@ -28,8 +28,9 @@ to parent area types. To understand more on mappings of areas, see the Where
 to start section of the Life Expectancy vignette.
 }
 \examples{
+\dontrun{
 # Returns a data frame with all levels of area and how they map to one another
-area_types()
+area_types()}
 
 # Returns a data frame of county and unitary authority mappings
  area_types("counties")

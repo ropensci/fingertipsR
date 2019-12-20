@@ -1,4 +1,5 @@
 #' @importFrom httr set_config config
+#' @importFrom utils setTxtProgressBar
 retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, generic_name = FALSE,
                                perc, progress_bar, path) {
         if (missing(ProfileIDs)) {
@@ -165,6 +166,7 @@ new_data_formatting <- function(dataurl, generic_name = FALSE) {
         return(new_data)
 }
 
+#' @importFrom utils txtProgressBar
 retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, ParentAreaTypeID, generic_name, path) {
         pb <- txtProgressBar(style = 3)
         data <- data %>%

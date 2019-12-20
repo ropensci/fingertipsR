@@ -11,8 +11,9 @@
 #'   default is NULL
 #' @inheritParams indicators
 #' @examples
+#' \dontrun{
 #' # Returns a data frame with all levels of area and how they map to one another
-#' area_types()
+#' area_types()}
 #'
 #' # Returns a data frame of county and unitary authority mappings
 #'  area_types("counties")
