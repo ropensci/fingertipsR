@@ -8,7 +8,7 @@ df1 <- fingertips_data(IndicatorID = 90616, AreaTypeID = 120)
 skip_if_offline()
 df2 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 120, DomainID = 1938133106))
 skip_if_offline()
-df3 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 120, ProfileID = 135))
+df3 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 120, ProfileID = 135, rank = TRUE))
 skip_if_offline()
 df4 <- fingertips_data(DomainID = 1938133301, AreaTypeID = 6)
 skip_if_offline()
@@ -22,7 +22,7 @@ df8 <- fingertips_data(DomainID = 1938133301, AreaTypeID = 6, rank = TRUE)
 
 inds <- c(93081, 93275)
 skip_if_offline()
-df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3, rank = TRUE)
+df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
 
 # Testing different versions of AreaTypeID = "All"
 skip_if_offline()
