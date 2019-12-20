@@ -1,5 +1,6 @@
 #' @importFrom httr set_config config
-retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, generic_name = FALSE, path){
+retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, generic_name = FALSE,
+                               perc, progress_bar, path) {
         if (missing(ProfileIDs)) {
                 ProfileIDs <- ""
                 profileID_bit <- ""
@@ -20,7 +21,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
 
         set_config(config(ssl_verifypeer = 0L))
 
-        get_data <- function(x) {
+        get_data <- function(x, progress_bar) {
                 if (!(x$ProfileIDs == "" | is.na(x$ProfileIDs))) {
                         x$profileID_bit <- sprintf(as.character(x$profileID_bit), x$ProfileIDs)
                 }
@@ -29,13 +30,32 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                                   sprintf(dataurl, x$IndicatorIDs, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs),
                                   "&include_sortable_time_periods=yes")
                 y <- new_data_formatting(dataurl, generic_name)
-                y
+                if (!missing(progress_bar)) setTxtProgressBar(progress_bar, x$percentage_complete)
+                return(y)
         }
 
-        dd <- by(fd,
-                 list(fd$IndicatorIDs, fd$ProfileIDs, fd$ChildAreaTypeIDs,
-                      fd$ParentAreaTypeIDs, fd$profileID_bit),
-                 get_data)
+        if (!missing(progress_bar)) {
+                fd <- fd %>%
+                        mutate(percentage_complete = perc)
+                dd <- by(fd,
+                         list(fd$IndicatorIDs,
+                              fd$ProfileIDs,
+                              fd$ChildAreaTypeIDs,
+                              fd$ParentAreaTypeIDs,
+                              fd$profileID_bit,
+                              fd$percentage_complete),
+                         get_data,
+                         progress_bar)
+        } else {
+                dd <- by(fd,
+                         list(fd$IndicatorIDs,
+                              fd$ProfileIDs,
+                              fd$ChildAreaTypeIDs,
+                              fd$ParentAreaTypeIDs,
+                              fd$profileID_bit),
+                         get_data)
+        }
+
         fingertips_data <- do.call("rbind", dd)
         return(fingertips_data)
 }
@@ -146,12 +166,18 @@ new_data_formatting <- function(dataurl, generic_name = FALSE) {
 }
 
 retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, ParentAreaTypeID, generic_name, path) {
+        pb <- txtProgressBar(style = 3)
+        data <- data %>%
+                unique() %>%
+                mutate(percentage_complete = row_number() / n())
         if (missing(ProfileID)) {
                 all_area_data <- apply(data, 1,
                                        function(x) retrieve_indicator(IndicatorIDs = x[IndicatorID],
                                                                       ChildAreaTypeIDs = x[AreaTypeID],
                                                                       ParentAreaTypeIDs = x[ParentAreaTypeID],
                                                                       generic_name = generic_name,
+                                                                      perc = x["percentage_complete"],
+                                                                      progress_bar = pb,
                                                                       path = path)) %>%
                         bind_rows()
         } else {
@@ -161,10 +187,12 @@ retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, Par
                                                                       ChildAreaTypeIDs = x[AreaTypeID],
                                                                       ParentAreaTypeIDs = x[ParentAreaTypeID],
                                                                       generic_name = generic_name,
+                                                                      perc = x["percentage_complete"],
+                                                                      progress_bar = pb,
                                                                       path = path)) %>%
                         bind_rows()
         }
-
+        close(pb)
         return(all_area_data)
 
 }

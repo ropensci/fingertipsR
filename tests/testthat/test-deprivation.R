@@ -3,6 +3,10 @@ library(fingertipsR)
 
 context("Deprivation extract")
 
+# create progress bar so travis gets responses
+pb <- txtProgressBar(style = 3)
+setTxtProgressBar(pb, 0)
+
 skip_if_offline()
 dep_102_2015 <- deprivation_decile(AreaTypeID = 102, Year = 2015)
 skip_if_offline()
@@ -15,6 +19,8 @@ skip_if_offline()
 dep_154_2015 <- deprivation_decile(AreaTypeID = 154, Year = 2015)
 skip_if_offline()
 dep_101_2015 <- deprivation_decile(AreaTypeID = 101, Year = 2015)
+setTxtProgressBar(pb, 0.25)
+
 skip_if_offline()
 dep_8_2015 <- deprivation_decile(AreaTypeID = 8, Year = 2015)
 skip_if_offline()
@@ -26,6 +32,8 @@ dep_202_2019 <- deprivation_decile(AreaTypeID = 202, Year = 2019)
 skip_if_offline()
 dep_201_2019 <- deprivation_decile(AreaTypeID = 201, Year = 2019)
 skip_if_offline()
+setTxtProgressBar(pb, 0.5)
+
 dep_165_2019 <- deprivation_decile(AreaTypeID = 165, Year = 2019)
 skip_if_offline()
 dep_154_2019 <- deprivation_decile(AreaTypeID = 154, Year = 2019)
@@ -35,6 +43,8 @@ skip_if_offline()
 dep_104_2019 <- deprivation_decile(AreaTypeID = 104, Year = 2019)
 skip_if_offline()
 dep_102_2019 <- deprivation_decile(AreaTypeID = 102, Year = 2019)
+setTxtProgressBar(pb, 0.75)
+
 skip_if_offline()
 dep_101_2019 <- deprivation_decile(AreaTypeID = 101, Year = 2019)
 skip_if_offline()
@@ -43,6 +53,7 @@ skip_if_offline()
 dep_7_2019 <- deprivation_decile(AreaTypeID = 7, Year = 2019)
 skip_if_offline()
 dep_6_2019 <- deprivation_decile(AreaTypeID = 6, Year = 2019)
+setTxtProgressBar(pb, 1)
 
 dep_cols <- 3
 test_that("the columns of deprivation decile function are as expected", {

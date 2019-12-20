@@ -1,5 +1,6 @@
 # fingertipsR 1.0.0
 
+* progress bar added when AreaTypeID = "All" in `fingertips_data()`
 * fixed issue where GP deprivation_decile returned data with 0 records
 * added more allowable AreaTypes to `deprivation_decile()` function
 * added 2019 year to `deprivation_decile()`

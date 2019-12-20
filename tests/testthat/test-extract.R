@@ -20,7 +20,7 @@ df7 <- fingertips_data(DomainID = 1938133301, AreaCode = "E12000005", AreaTypeID
 skip_if_offline()
 df8 <- fingertips_data(DomainID = 1938133301, AreaTypeID = 6, rank = TRUE)
 
-inds <- c(93081, 93275, 93094)
+inds <- c(93081, 93275)
 skip_if_offline()
 df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
 
@@ -32,7 +32,7 @@ df11 <- fingertips_data(DomainID = 1938133301, AreaTypeID = "All")
 skip_if_offline()
 df12 <- fingertips_data(ProfileID = 156, AreaTypeID = "All")
 skip_if_offline()
-df13 <- fingertips_data(IndicatorID = 90366, ProfileID = 156, AreaTypeID = "All")
+df13 <- fingertips_data(IndicatorID = 90362, ProfileID = 156, AreaTypeID = "All")
 
 ncols <- 26
 
