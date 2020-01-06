@@ -4,9 +4,17 @@
 \alias{fingertips_data}
 \title{Fingertips data}
 \usage{
-fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
-  ProfileID = NULL, AreaTypeID, ParentAreaTypeID = NULL,
-  categorytype = FALSE, rank = FALSE, path)
+fingertips_data(
+  IndicatorID = NULL,
+  AreaCode = NULL,
+  DomainID = NULL,
+  ProfileID = NULL,
+  AreaTypeID,
+  ParentAreaTypeID = NULL,
+  categorytype = FALSE,
+  rank = FALSE,
+  path
+)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -79,6 +87,7 @@ fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]
 fingdata <- fingertips_data(10101, AreaTypeID = "All")}
 }
 \seealso{
-Other data extract functions: \code{\link{fingertips_redred}}
+Other data extract functions: 
+\code{\link{fingertips_redred}()}
 }
 \concept{data extract functions}

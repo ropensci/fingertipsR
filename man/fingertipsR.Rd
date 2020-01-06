@@ -3,7 +3,6 @@
 \docType{package}
 \name{fingertipsR}
 \alias{fingertipsR}
-\alias{fingertipsR-package}
 \title{fingertipsR: A package for extracting the data behind the Fingertips website
 (\url{https://fingertips.phe.org.uk/})}
 \description{

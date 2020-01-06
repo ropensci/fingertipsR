@@ -4,8 +4,7 @@
 \alias{area_types}
 \title{Area types}
 \usage{
-area_types(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL,
-  path)
+area_types(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL, path)
 }
 \arguments{
 \item{AreaTypeName}{Character vector, description of the area type; default
@@ -54,13 +53,15 @@ area_types(AreaTypeID = 152)
   \code{\link{indicator_order}} for the order indicators are presented on the
   Fingertips website within a Domain
 
-Other lookup functions: \code{\link{category_types}},
-  \code{\link{deprivation_decile}},
-  \code{\link{indicator_areatypes}},
-  \code{\link{indicator_metadata}},
-  \code{\link{indicator_order}},
-  \code{\link{indicators_unique}},
-  \code{\link{indicators}},
-  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
+Other lookup functions: 
+\code{\link{category_types}()},
+\code{\link{deprivation_decile}()},
+\code{\link{indicator_areatypes}()},
+\code{\link{indicator_metadata}()},
+\code{\link{indicator_order}()},
+\code{\link{indicators_unique}()},
+\code{\link{indicators}()},
+\code{\link{nearest_neighbours}()},
+\code{\link{profiles}()}
 }
 \concept{lookup functions}

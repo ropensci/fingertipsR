@@ -40,13 +40,15 @@ indicators(ProfileID = 19)}
   \code{\link{indicator_order}} for the order indicators are presented on the
   Fingertips website within a Domain
 
-Other lookup functions: \code{\link{area_types}},
-  \code{\link{category_types}},
-  \code{\link{deprivation_decile}},
-  \code{\link{indicator_areatypes}},
-  \code{\link{indicator_metadata}},
-  \code{\link{indicator_order}},
-  \code{\link{indicators_unique}},
-  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
+Other lookup functions: 
+\code{\link{area_types}()},
+\code{\link{category_types}()},
+\code{\link{deprivation_decile}()},
+\code{\link{indicator_areatypes}()},
+\code{\link{indicator_metadata}()},
+\code{\link{indicator_order}()},
+\code{\link{indicators_unique}()},
+\code{\link{nearest_neighbours}()},
+\code{\link{profiles}()}
 }
 \concept{lookup functions}

@@ -4,8 +4,7 @@
 \alias{indicator_metadata}
 \title{Indicator metadata}
 \usage{
-indicator_metadata(IndicatorID = NULL, DomainID = NULL,
-  ProfileID = NULL, path)
+indicator_metadata(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL, path)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -53,13 +52,15 @@ indicator_metadata(ProfileID = 129)}
   \code{\link{indicator_order}} for the order indicators are presented on the
   Fingertips website within a Domain
 
-Other lookup functions: \code{\link{area_types}},
-  \code{\link{category_types}},
-  \code{\link{deprivation_decile}},
-  \code{\link{indicator_areatypes}},
-  \code{\link{indicator_order}},
-  \code{\link{indicators_unique}},
-  \code{\link{indicators}},
-  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
+Other lookup functions: 
+\code{\link{area_types}()},
+\code{\link{category_types}()},
+\code{\link{deprivation_decile}()},
+\code{\link{indicator_areatypes}()},
+\code{\link{indicator_order}()},
+\code{\link{indicators_unique}()},
+\code{\link{indicators}()},
+\code{\link{nearest_neighbours}()},
+\code{\link{profiles}()}
 }
 \concept{lookup functions}

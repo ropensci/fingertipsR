@@ -42,13 +42,15 @@ indicator_order(DomainID = 1938133161, AreaTypeID = 102, ParentAreaTypeID = 6)}
   \code{\link{indicator_areatypes}} for indicators by area types lookups and
   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
 
-Other lookup functions: \code{\link{area_types}},
-  \code{\link{category_types}},
-  \code{\link{deprivation_decile}},
-  \code{\link{indicator_areatypes}},
-  \code{\link{indicator_metadata}},
-  \code{\link{indicators_unique}},
-  \code{\link{indicators}},
-  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
+Other lookup functions: 
+\code{\link{area_types}()},
+\code{\link{category_types}()},
+\code{\link{deprivation_decile}()},
+\code{\link{indicator_areatypes}()},
+\code{\link{indicator_metadata}()},
+\code{\link{indicators_unique}()},
+\code{\link{indicators}()},
+\code{\link{nearest_neighbours}()},
+\code{\link{profiles}()}
 }
 \concept{lookup functions}

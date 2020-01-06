@@ -3,7 +3,7 @@ This update removes some default values in functions as this is more appropriate
 
 ## Test 
 
-* local Windows 10 install, R 3.6.1
+* local Windows 10 install, R 3.6.2
 * used Travis to check on Linux (2019-12-19)
 
 ## R CMD check results
