@@ -1,5 +1,9 @@
-# fingertipsR 1.0.0
+# fingertipsR 1.0.0.9000
 
+
+# fingertipsR 1.0.0 (2020-01-08)
+
+* default value for `AreaTypeID` in `fingertips_data()` and `deprivation_decile()` removed (with helpful error message included if missing)
 * progress bar added when AreaTypeID = "All" in `fingertips_data()`
 * fixed issue where GP deprivation_decile returned data with 0 records
 * added more allowable AreaTypes to `deprivation_decile()` function
