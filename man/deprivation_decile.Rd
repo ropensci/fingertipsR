@@ -7,9 +7,9 @@
 deprivation_decile(AreaTypeID, Year = 2019, path)
 }
 \arguments{
-\item{AreaTypeID}{Integer value, limited to one of 202, 201, 165, 154, 120,
-104, 102, 101, 46, 7, 6, 3, though not all are available for both years;
-default is 202}
+\item{AreaTypeID}{Integer value; this function uses the IndicatorIDs 91872,
+93275 and 93553, please use the \code{indicator_areatypes()} function to
+see what AreaTypeIDs are available}
 
 \item{Year}{Integer value, representing the year of IMD release to be
 applied, limited to 2015 or 2019}

@@ -7,9 +7,9 @@
 #'   Index of multiple deprivation score for the year and area supplied, and
 #'   returns the area code, along with the score and the deprivation decile,
 #'   which is calculated using the ntile function from dplyr
-#' @param AreaTypeID Integer value, limited to one of 202, 201, 165, 154, 120,
-#'   104, 102, 101, 46, 7, 6, 3, though not all are available for both years;
-#'   default is 202
+#' @param AreaTypeID Integer value; this function uses the IndicatorIDs 91872,
+#'   93275 and 93553, please use the \code{indicator_areatypes()} function to
+#'   see what AreaTypeIDs are available
 #' @param Year Integer value, representing the year of IMD release to be
 #'   applied, limited to 2015 or 2019
 #' @inheritParams indicators
@@ -38,33 +38,38 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
         if (!(Year %in% c(2015, 2019))) {
                 stop("Year must be 2015 or 2019")
         }
-        accepted_areatypes <- c(202, 201, 165, 154, 120, 104, 102, 101, 46, 8, 7, 6, 3)
+
+        indicators_2015 <- c(91872, 93275)
+        accepted_areatypes_2015 <- lapply(indicators_2015, indicator_areatypes) %>%
+                bind_rows()
+
+        indicators_2019 <- 93553
+        accepted_areatypes_2019 <- lapply(indicators_2019, indicator_areatypes) %>%
+                bind_rows()
+
+        accepted_areatypes <- unique(c(accepted_areatypes_2015$AreaTypeID,
+                                       accepted_areatypes_2019$AreaTypeID))
+
         if (!(AreaTypeID %in% accepted_areatypes)) {
-                stop(paste("AreaTypeID must be one of", paste(accepted_areatypes, collapse = ", ")))
+                stop("AreaTypeID not available")
         }
+        ara_type_filter <- AreaTypeID
         if (Year == 2015) {
-                years2015 <- c(202, 201, 165, 154, 152, 102, 101, 8, 7, 3)
-                if (AreaTypeID %in% years2015[!(years2015 %in% c(3))]) {
-                        ProfileID <- 98
-                        IndicatorID <- 91872
-                } else if (AreaTypeID == 3) {
-                        IndicatorID <- 93275
-                        ProfileID <- 143
-                } else {
+                if (!(AreaTypeID %in% accepted_areatypes_2015$AreaTypeID)) {
                         stop("AreaTypeID unavailable for 2015")
                 }
+                IndicatorID <- accepted_areatypes_2015 %>%
+                        filter(AreaTypeID == ara_type_filter) %>%
+                        slice(1) %>%
+                        pull(IndicatorID)
         } else if (Year == 2019) {
-                years2019 <- c(202, 201, 165, 154, 120, 104, 102, 101, 46, 7, 6)
-                IndicatorID <- 93553
-                if (AreaTypeID %in% years2019[!(years2019 %in% c(6, 7, 46, 104, 120))]) {
-                        ProfileID <- 146
-                } else if (AreaTypeID %in% c(6, 104)) {
-                        ProfileID <- 76
-                } else if (AreaTypeID %in% c(7, 46, 120)) {
-                        ProfileID <- 20
-                } else {
+                if (!(AreaTypeID %in% accepted_areatypes_2019$AreaTypeID)) {
                         stop("AreaTypeID unavailable for 2019")
                 }
+                IndicatorID <- accepted_areatypes_2019 %>%
+                        filter(AreaTypeID == ara_type_filter) %>%
+                        slice(1) %>%
+                        pull(IndicatorID)
         }
 
 
@@ -74,7 +79,6 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
         fingertips_ensure_api_available(endpoint = path)
         deprivation_decile <- fingertips_data(IndicatorID = IndicatorID,
                                               AreaTypeID = AreaTypeID,
-                                              ProfileID = ProfileID,
                                               path = path) %>%
                 group_by(AreaType) %>%
                 mutate(records = n()) %>%
@@ -84,5 +88,10 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
                 select(AreaCode, Value) %>%
                 rename(IMDscore = Value) %>%
                 mutate(decile = as.integer(11 - ntile(IMDscore, 10)))
+
+        if (sum(is.na(deprivation_decile$IMDscore)) == nrow(deprivation_decile)) {
+                warning("All the values are NA in this data; this can happen when the data are automatically calculated")
+        }
+
         return(deprivation_decile)
 }
