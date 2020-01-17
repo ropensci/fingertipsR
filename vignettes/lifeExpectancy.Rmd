@@ -15,7 +15,7 @@ This worked example attempts to document a common workflow a user might follow w
 * Domains - these are subcategories of profiles, and break the profiles down to themes within the broader theme
 * Indicators - this is the lowest level of the structure and sit within the domains. Indicators are presented at different time periods, geographies, sexes, ageband and categories.
 
-This example demonstrates how you can plot healthy life expectancy and life expectancy by deprivation for a given year of data that fingertips contains. So, *where to start*?
+This example demonstrates how you can plot healthy life expectancy and life expectancy by geographical regions for a given year of data that fingertips contains. So, *where to start*?
 
 ## Where to start
 
@@ -25,10 +25,10 @@ There is one function in the `fingertipsR` package that extracts data from the F
 * AreaCode
 * DomainID
 * ProfileID
-* AreaTypeID (this defaults to 102; County and Unitary Authority)
-* ParentAreaTypeID (this defaults to 6 for an AreaTypeID of 102; Government Office Region)
+* AreaTypeID
+* ParentAreaTypeID1
 
-At least one of *IndicatorID*, *DomainID* or *ProfileID* must be complete. These fields relate to each other as described in the introduction. *AreaCode* needs completing if you are extracting data for a particular area or group of areas only. *AreaTypeID* determines the geography to extract the data for. In this case we want County and Unitary Authority level. *ParentAreaTypeID* requires an area type code that the *AreaTypeID* maps to at a higher level of geography. For example, when combining groups of County and Unitary Authorities it is possible to create Government Office Regions. These mappings can be identified using the `area_types()` function. If ignored, a *ParentAreaTypeID* will be chosen automatically.
+At least one of *IndicatorID*, *DomainID* or *ProfileID* must be complete. These fields relate to each other as described in the introduction. *AreaTypeID* is also required, and determines the geography for which data is extracted. In this case we want County and Unitary Authority level. *AreaCode* needs completing if you are extracting data for a particular area or group of areas only. *ParentAreaTypeID* requires an area type code that the *AreaTypeID* maps to at a higher level of geography. For example, County and Unitary Authorities map to a higher level of geography called Government Office Regions. These mappings can be identified using the `area_types()` function. If ignored, a *ParentAreaTypeID* will be chosen automatically.
 
 Therefore, the inputs to the `fingertips_data` function that we need to find out are the ID codes for:
 
@@ -53,8 +53,10 @@ We can use the `indicators()` function to return a list of all the indicators wi
 ```{r indicators}
 inds <- indicators_unique()
 life_expectancy <- inds[grepl("life expectancy", tolower(inds$IndicatorName)),]
+```
 
-knitr::kable(life_expectancy, row.names = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
+```{r display_indicators, echo=FALSE}
+knitr::kable(life_expectancy, row.names = FALSE)
 ```
 
 The two indicators we are interested in from this table are:
@@ -64,23 +66,24 @@ The two indicators we are interested in from this table are:
 
 ## AreaTypeID
 
-We can work out what the *AreaTypeID* codes we are interested in using the function `area_types()`. We've decided that we want to produce the graph at County and Unitary Authority level. From the section [Where to start] we need codes for *AreaTypeID* and *ParentAreaTypeID.*
+We can work out what the *AreaTypeID* codes we need using the function `area_types()`. We've decided that we want to produce the graph at County and Unitary Authority level. From the section [Where to start] we need codes for *AreaTypeID* and *ParentAreaTypeID.*
 
 ```{r area type}
 areaTypes <- area_types()
-DT::datatable(areaTypes, filter = "top", rownames = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 ```
 
-The table shows that the *AreaID* for County and Unitary Authority level is 102. The third column, *ParentAreaTypeID*, shows the IDs of the area types that these map to. In the case of County and Unitary Authorities, these are:
+```{r display_area_types, echo=FALSE}
+DT::datatable(areaTypes, filter = "top", rownames = FALSE)
+```
+
+The table shows that the *AreaTypeID* for County and Unitary Authority level is 202. The third column, *ParentAreaTypeID*, shows the IDs of the area types that these map to. In the case of County and Unitary Authorities, these are:
 
 ```{r dist, echo=FALSE}
-knitr::kable(areaTypes[areaTypes$AreaTypeID == 102,
-                       c("ParentAreaTypeID","ParentAreaTypeName")], 
-             row.names = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
+knitr::kable(areaTypes[areaTypes$AreaTypeID == 202, ], 
+             row.names = FALSE) 
 ```
 
-*ParentAreaTypeID* is 6 by default for the `fingertips_data()` function for `AreaTypeID` of 102 (though it changes if different `AreaTypeID`s are entered), so we can stick with that in this example. Use the `area_types()` function to understand more about how areas map to each other.
-
+*ParentAreaTypeID* is 6 by default for the `fingertips_data()` function for `AreaTypeID` of 202 (this value changes if different `AreaTypeID`s are entered), so we can stick with that in this example. Use the `area_types()` function to understand more about how areas map to each other.
 
 ## Extracting the data
 
@@ -89,70 +92,68 @@ Finally, we can use the `fingertips_data()` function with the inputs we have det
 ```{r extract}
 indicators <- c(90362, 90366)
 data <- fingertips_data(IndicatorID = indicators,
-                        AreaTypeID = 102)
+                        AreaTypeID = 202)
+```
 
+```{r display_fingertips_data_outputs, echo=FALSE}
 pander::pandoc.table(tail(data), 
                      style="rmarkdown",
                      split.tables = 90, 
-                     keep.line.breaks = TRUE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
+                     keep.line.breaks = TRUE)
 ```
 
 The data frame returned by `fingertips_data()` contains `r ncol(data)` variables.  For this exercise, we are only interested in a few of them and for the time period 2012-14:
 
 * IndicatorID
 * AreaCode
+* ParentAreaName
 * Sex
 * Timeperiod
 * Value
 
+The data frame also contains data for the parent area, and for England, so we want to filter it to remove these too.
+
 ```{r refine variables}
-cols <- c("IndicatorID", "AreaCode", "Sex", "Timeperiod", "Value")
-data <- data[data$AreaType == "County & UA (pre 4/19)" & data$Timeperiod == "2012 - 14", cols]
+cols <- c("IndicatorID", "AreaCode", "ParentName", "Sex", "Timeperiod", "Value")
 
-```
+area_type_name <- table(data$AreaType) # tally each group in the AreaType field
 
-## Deprivation
+area_type_name <- area_type_name[area_type_name == max(area_type_name)] # pick the group with the highest frequency
+area_type_name <- names(area_type_name) # retrieve the name
 
-We want to plot life expectancy against deprivation information. As deprivation is a notable cause of health inequalities, the `deprivation_deciles()` function has been provided to allow easy access to this information. This is populated from the Department for Communities and Local Government Indices of Multiple Deprivation (IMD). Note, there is only information for General Practices, upper and lower tier local authorities (*AreaTypeID* = 7, 102 and 101 respectively). IMD has only been produced for the years 2010 and 2015 (for the latter areas) as well as 2011 and 2012 for General Practices.
+data <- data[data$AreaType == area_type_name & 
+               data$Timeperiod == "2012 - 14", cols]
 
-```{r deprivation}
-dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
-DT::datatable(dep, filter = "top", rownames = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
-```
-
-Now we need to merge this with the main dataset:
-
-```{r merge deprivation}
-
-# merge deprivation onto data
-data <- merge(data, dep, by.x = "AreaCode", by.y = "AreaCode", all.x = TRUE)
-
-# remove NA values
-data <- data[complete.cases(data),]
-DT::datatable(data, filter = "top", rownames = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 ```
 
 ## Plotting outputs
 
 Using `ggplot2` it is possible to plot the outputs.
 
-```{r plot, fig.width=8, fig.height=5, message=FALSE}
+```{r plot, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
 library(ggplot2)
-p <- ggplot(data, aes(x = IMDscore, y = Value, col = factor(IndicatorID)))
-p <- p + 
-        geom_point() +
-        geom_smooth(se = FALSE, method = "loess") +
+ggplot(data, aes(x = reorder(ParentName, Value, median), y = Value, col = factor(IndicatorID))) + 
+        geom_boxplot(data = data[data$IndicatorID == 90366, ]) +
+        geom_boxplot(data = data[data$IndicatorID == 90362, ]) +
         facet_wrap(~ Sex) +
         scale_colour_manual(name = "Indicator",
                             breaks = c("90366", "90362"),
                             labels = c("Life expectancy", "Healthy life expectancy"),
                             values = c("#128c4a", "#88c857")) +
-        scale_x_reverse() + 
-        labs(x = "IMD deprivation",
+        labs(x = "Region",
              y = "Age",
-             title = "Life expectancy and healthy life expectancy at birth \nfor Upper Tier Local Authorities (2012 - 2014)") +
-        theme_bw()
-print(p)
+             title = "Life expectancy and healthy life expectancy at birth \nfor Upper Tier Local Authorities within England regions (2012 - 2014)") +
+        theme_bw() +
+        theme(axis.text.x = element_text(angle = 45,
+                                         hjust = 1))
 ```
 
+## Other useful functions
 
+The plot above makes use of the fields that are within the dataset by default when using the `fingertips_data()` function. There is also a `deprivation_decile()` function, which provides an indicator of deprivation for each geographical area (see `?deprivation_decile()`). 
+
+Not all indicators are available for every geography. To understand how indicators are mapped to different gegoraphies, there is a function `indicator_areatypes()`.
+
+To understand more about what comprises each indicator, there is the `indicator_metadata()` function, which provides the information on the definitions page of the Fingertips website.
+
+Finally, the `nearest_neighbours()` function provides groups of statistically similar area for some of the geographies that are available. The geographies these are available for, and their sources, are documented within the function documentation (`?nearest_neighbours()`).
