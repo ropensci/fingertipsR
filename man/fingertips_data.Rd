@@ -13,6 +13,7 @@ fingertips_data(
   ParentAreaTypeID = NULL,
   categorytype = FALSE,
   rank = FALSE,
+  url_only = FALSE,
   path
 )
 }
@@ -30,8 +31,8 @@ IndicatorID is populated, ProfileID can be ignored or must be the same
 length as IndicatorID (but can contain NAs).}
 
 \item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type. This
-argument accepts "All", which returns data for all available area
-types for the indicator(s), though this can take a long time to run}
+argument accepts "All", which returns data for all available area types for
+the indicator(s), though this can take a long time to run}
 
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified
@@ -45,6 +46,9 @@ that combination of indicator, sex, age, categorytype and category along
 with the indicator's polarity. 1 is lowest NAs will be bottom and ties will
 return the average position. The total count of areas with a non-NA value
 are returned also in AreaValuesCount}
+
+\item{url_only}{TRUE or FALSE, return only the url of the api call as a
+character vector}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

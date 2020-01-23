@@ -20,8 +20,8 @@
 #'   extracted; if NULL the function will use the first record for the specified
 #'   `AreaTypeID` from the area_types() function
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type. This
-#'   argument accepts "All", which returns data for all available area
-#'   types for the indicator(s), though this can take a long time to run
+#'   argument accepts "All", which returns data for all available area types for
+#'   the indicator(s), though this can take a long time to run
 #' @param categorytype TRUE or FALSE, determines whether the final table
 #'   includes categorytype data where it exists. Default to FALSE
 #' @param rank TRUE or FALSE, the rank of the area compared to other areas for
@@ -29,6 +29,8 @@
 #'   with the indicator's polarity. 1 is lowest NAs will be bottom and ties will
 #'   return the average position. The total count of areas with a non-NA value
 #'   are returned also in AreaValuesCount
+#' @param url_only TRUE or FALSE, return only the url of the api call as a
+#'   character vector
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
@@ -62,6 +64,7 @@ fingertips_data <- function(IndicatorID = NULL,
                             ParentAreaTypeID = NULL,
                             categorytype = FALSE,
                             rank = FALSE,
+                            url_only = FALSE,
                             path) {
 
         if (missing(path)) path <- fingertips_endpoint()
@@ -223,6 +226,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                                                       ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                                       ParentAreaTypeIDs = ParentAreaTypeIDs,
                                                                       path = path)
+
                         }
 
                 } else {
@@ -277,6 +281,12 @@ fingertips_data <- function(IndicatorID = NULL,
                                 }
                         }
                 }
+        }
+        if (url_only) {
+                return(fingertips_data)
+        } else {
+                fingertips_data <- lapply(fingertips_data, new_data_formatting) %>%
+                        bind_rows()
         }
         names(fingertips_data) <- gsub("\\s","",names(fingertips_data))
 

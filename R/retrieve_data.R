@@ -30,9 +30,9 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$IndicatorIDs, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs),
                                   "&include_sortable_time_periods=yes")
-                y <- new_data_formatting(dataurl, generic_name)
+                #y <- new_data_formatting(dataurl, generic_name)
                 if (!missing(progress_bar)) setTxtProgressBar(progress_bar, x$percentage_complete)
-                return(y)
+                return(dataurl)
         }
 
         if (!missing(progress_bar)) {
@@ -57,7 +57,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                          get_data)
         }
 
-        fingertips_data <- do.call("rbind", dd)
+        fingertips_data <- do.call("c", list(dd))
         return(fingertips_data)
 }
 
@@ -74,8 +74,8 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs, x$DomainIDs),
                                   "&include_sortable_time_periods=yes")
-                y <- new_data_formatting(dataurl)
-                y
+                #y <- new_data_formatting(dataurl)
+                return(dataurl)
         }
 
         dd <- by(fd,
@@ -83,7 +83,7 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
                       fd$ChildAreaTypeIDs,
                       fd$ParentAreaTypeIDs),
                  get_data)
-        fingertips_data <- do.call("rbind", dd)
+        fingertips_data <- do.call("c", list(dd))
         return(fingertips_data)
 }
 
@@ -99,8 +99,8 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs, x$ProfileIDs),
                                   "&include_sortable_time_periods=yes")
-                y <- new_data_formatting(dataurl)
-                y
+                #y <- new_data_formatting(dataurl)
+                return(dataurl)
         }
 
         dd <- by(fd,
@@ -108,7 +108,7 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
                       fd$ChildAreaTypeIDs,
                       fd$ParentAreaTypeIDs),
                  get_data)
-        fingertips_data <- do.call("rbind", dd)
+        fingertips_data <- do.call("c", list(dd))
         return(fingertips_data)
 }
 
@@ -180,8 +180,7 @@ retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, Par
                                                                       generic_name = generic_name,
                                                                       perc = x["percentage_complete"],
                                                                       progress_bar = pb,
-                                                                      path = path)) %>%
-                        bind_rows()
+                                                                      path = path))
         } else {
                 all_area_data <- apply(data, 1,
                                        function(x) retrieve_indicator(IndicatorIDs = x[IndicatorID],
@@ -191,8 +190,7 @@ retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, Par
                                                                       generic_name = generic_name,
                                                                       perc = x["percentage_complete"],
                                                                       progress_bar = pb,
-                                                                      path = path)) %>%
-                        bind_rows()
+                                                                      path = path))
         }
         close(pb)
         return(all_area_data)
