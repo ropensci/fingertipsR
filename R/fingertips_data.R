@@ -219,7 +219,6 @@ fingertips_data <- function(IndicatorID = NULL,
                                                                           IndicatorID = "IndicatorID",
                                                                           AreaTypeID = "AreaTypeID",
                                                                           ParentAreaTypeID = "ParentAreaTypeID",
-                                                                          generic_name = TRUE,
                                                                           path = path)
                         } else {
                                 fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
@@ -236,7 +235,6 @@ fingertips_data <- function(IndicatorID = NULL,
                                                                           ProfileID = "ProfileID",
                                                                           AreaTypeID = "AreaTypeID",
                                                                           ParentAreaTypeID = "ParentAreaTypeID",
-                                                                          generic_name = TRUE,
                                                                           path = path)
                         } else {
                                 fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
@@ -255,7 +253,6 @@ fingertips_data <- function(IndicatorID = NULL,
                                                                           ProfileID = "ProfileID",
                                                                           AreaTypeID = "AreaTypeID",
                                                                           ParentAreaTypeID = "ParentAreaTypeID",
-                                                                          generic_name = TRUE,
                                                                           path = path)
                         } else {
                                 fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
@@ -271,7 +268,6 @@ fingertips_data <- function(IndicatorID = NULL,
                                                                                   ProfileID = "ProfileID",
                                                                                   AreaTypeID = "AreaTypeID",
                                                                                   ParentAreaTypeID = "ParentAreaTypeID",
-                                                                                  generic_name = TRUE,
                                                                                   path = path)
                                 } else {
                                         fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
@@ -282,10 +278,16 @@ fingertips_data <- function(IndicatorID = NULL,
                         }
                 }
         }
+        if (AreaTypeID == "All") {
+                apply_generic_name <- TRUE
+        } else {
+                apply_generic_name <- FALSE
+        }
+
         if (url_only) {
                 return(fingertips_data)
         } else {
-                fingertips_data <- lapply(fingertips_data, new_data_formatting) %>%
+                fingertips_data <- lapply(fingertips_data, new_data_formatting, generic_name = apply_generic_name) %>%
                         bind_rows()
         }
         names(fingertips_data) <- gsub("\\s","",names(fingertips_data))

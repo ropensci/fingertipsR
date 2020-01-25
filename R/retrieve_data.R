@@ -1,6 +1,6 @@
 #' @importFrom httr set_config config
 #' @importFrom utils setTxtProgressBar
-retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, generic_name = FALSE,
+retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs,
                                perc, progress_bar, path) {
         if (missing(ProfileIDs)) {
                 ProfileIDs <- ""
@@ -30,7 +30,6 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$IndicatorIDs, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs),
                                   "&include_sortable_time_periods=yes")
-                #y <- new_data_formatting(dataurl, generic_name)
                 if (!missing(progress_bar)) setTxtProgressBar(progress_bar, x$percentage_complete)
                 return(dataurl)
         }
@@ -74,7 +73,6 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs, x$DomainIDs),
                                   "&include_sortable_time_periods=yes")
-                #y <- new_data_formatting(dataurl)
                 return(dataurl)
         }
 
@@ -99,7 +97,6 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs, x$ProfileIDs),
                                   "&include_sortable_time_periods=yes")
-                #y <- new_data_formatting(dataurl)
                 return(dataurl)
         }
 
@@ -167,7 +164,7 @@ new_data_formatting <- function(dataurl, generic_name = FALSE) {
 }
 
 #' @importFrom utils txtProgressBar
-retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, ParentAreaTypeID, generic_name, path) {
+retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, ParentAreaTypeID, path) {
         pb <- txtProgressBar(style = 3)
         data <- data %>%
                 unique() %>%
@@ -177,7 +174,6 @@ retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, Par
                                        function(x) retrieve_indicator(IndicatorIDs = x[IndicatorID],
                                                                       ChildAreaTypeIDs = x[AreaTypeID],
                                                                       ParentAreaTypeIDs = x[ParentAreaTypeID],
-                                                                      generic_name = generic_name,
                                                                       perc = x["percentage_complete"],
                                                                       progress_bar = pb,
                                                                       path = path))
@@ -187,7 +183,6 @@ retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, Par
                                                                       ProfileIDs = x[ProfileID],
                                                                       ChildAreaTypeIDs = x[AreaTypeID],
                                                                       ParentAreaTypeIDs = x[ParentAreaTypeID],
-                                                                      generic_name = generic_name,
                                                                       perc = x["percentage_complete"],
                                                                       progress_bar = pb,
                                                                       path = path))
