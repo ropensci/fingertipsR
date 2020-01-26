@@ -31,6 +31,7 @@
 #'   are returned also in AreaValuesCount
 #' @param url_only TRUE or FALSE, return only the url of the api call as a
 #'   character vector
+#' @importFrom utils txtProgressBar
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
@@ -278,17 +279,28 @@ fingertips_data <- function(IndicatorID = NULL,
                         }
                 }
         }
-        if (AreaTypeID == "All") {
-                apply_generic_name <- TRUE
-        } else {
-                apply_generic_name <- FALSE
-        }
 
         if (url_only) {
                 return(fingertips_data)
         } else {
-                fingertips_data <- lapply(fingertips_data, new_data_formatting, generic_name = apply_generic_name) %>%
-                        bind_rows()
+                if (AreaTypeID == "All") {
+                        pb <- txtProgressBar(style = 3)
+                        data <- data.frame(dataurl = fingertips_data) %>%
+                                mutate(percentage_complete = row_number() / n())
+                        fingertips_data <- apply(data, 1,
+                                                 function(x) new_data_formatting(dataurl = x["dataurl"],
+                                                                                 generic_name = TRUE,
+                                                                                 item_of_total = x["percentage_complete"],
+                                                                                 progress_bar = pb)) %>%
+                                bind_rows()
+                        close(pb)
+                } else {
+                        fingertips_data <- Map(new_data_formatting,
+                                               dataurl = fingertips_data,
+                                               generic_name = FALSE) %>%
+                                bind_rows()
+                }
+
         }
         names(fingertips_data) <- gsub("\\s","",names(fingertips_data))
 
