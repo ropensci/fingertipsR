@@ -94,9 +94,10 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
 #' @return A data frame of category type ids and their descriptions
 #' @import dplyr
 #' @examples
+#' \dontrun{
 #' # Returns the deprivation category types
 #' cats <- category_types()
-#' cats[cats$CategoryTypeId == 1,]
+#' cats[cats$CategoryTypeId == 1,]}
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,

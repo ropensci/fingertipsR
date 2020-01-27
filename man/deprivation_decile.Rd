@@ -32,8 +32,9 @@ This function uses the fingertips_data function to filter for the
   which is calculated using the ntile function from dplyr
 }
 \examples{
+\dontrun{
 # Return 2019 deprivation scores for Sustainability and Transformation Footprints
-deprivation_decile(120, 2019)
+deprivation_decile(120, 2019)}
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
