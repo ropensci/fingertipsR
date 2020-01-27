@@ -1,1 +1,1 @@
-package_coverage(line_exclusions = list("R/select_indicators.R", "R/utils.R = c(51)"))
+package_coverage(line_exclusions = list("R/select_indicators.R", "R/utils.R = c(51)", "R/deprivation_decile.R = c(54)"))

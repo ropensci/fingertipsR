@@ -1,7 +1,6 @@
 #' @importFrom httr set_config config
 #' @importFrom utils setTxtProgressBar
-retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, generic_name = FALSE,
-                               perc, progress_bar, path) {
+retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path) {
         if (missing(ProfileIDs)) {
                 ProfileIDs <- ""
                 profileID_bit <- ""
@@ -30,34 +29,18 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$IndicatorIDs, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs),
                                   "&include_sortable_time_periods=yes")
-                y <- new_data_formatting(dataurl, generic_name)
-                if (!missing(progress_bar)) setTxtProgressBar(progress_bar, x$percentage_complete)
-                return(y)
+                return(dataurl)
         }
 
-        if (!missing(progress_bar)) {
-                fd <- fd %>%
-                        mutate(percentage_complete = perc)
-                dd <- by(fd,
-                         list(fd$IndicatorIDs,
-                              fd$ProfileIDs,
-                              fd$ChildAreaTypeIDs,
-                              fd$ParentAreaTypeIDs,
-                              fd$profileID_bit,
-                              fd$percentage_complete),
-                         get_data,
-                         progress_bar)
-        } else {
-                dd <- by(fd,
-                         list(fd$IndicatorIDs,
-                              fd$ProfileIDs,
-                              fd$ChildAreaTypeIDs,
-                              fd$ParentAreaTypeIDs,
-                              fd$profileID_bit),
-                         get_data)
-        }
+        dd <- by(fd,
+                 list(fd$IndicatorIDs,
+                      fd$ProfileIDs,
+                      fd$ChildAreaTypeIDs,
+                      fd$ParentAreaTypeIDs,
+                      fd$profileID_bit),
+                 get_data)
 
-        fingertips_data <- do.call("rbind", dd)
+        fingertips_data <- do.call("c", list(dd))
         return(fingertips_data)
 }
 
@@ -74,8 +57,7 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs, x$DomainIDs),
                                   "&include_sortable_time_periods=yes")
-                y <- new_data_formatting(dataurl)
-                y
+                return(dataurl)
         }
 
         dd <- by(fd,
@@ -83,7 +65,7 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
                       fd$ChildAreaTypeIDs,
                       fd$ParentAreaTypeIDs),
                  get_data)
-        fingertips_data <- do.call("rbind", dd)
+        fingertips_data <- do.call("c", list(dd))
         return(fingertips_data)
 }
 
@@ -99,8 +81,7 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
                 dataurl <- paste0(x$path,
                                   sprintf(dataurl, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs, x$ProfileIDs),
                                   "&include_sortable_time_periods=yes")
-                y <- new_data_formatting(dataurl)
-                y
+                return(dataurl)
         }
 
         dd <- by(fd,
@@ -108,7 +89,7 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
                       fd$ChildAreaTypeIDs,
                       fd$ParentAreaTypeIDs),
                  get_data)
-        fingertips_data <- do.call("rbind", dd)
+        fingertips_data <- do.call("c", list(dd))
         return(fingertips_data)
 }
 
@@ -116,7 +97,8 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
 #' @importFrom httr GET content use_proxy RETRY
 #' @importFrom curl ie_get_proxy_for_url
 #' @importFrom utils read.delim
-new_data_formatting <- function(dataurl, generic_name = FALSE) {
+new_data_formatting <- function(dataurl, generic_name = FALSE,
+                                item_of_total, progress_bar) {
         df_string <- add_timestamp(dataurl)
         df_string <- RETRY("GET", url = df_string,
                            config = use_proxy(ie_get_proxy_for_url(df_string),
@@ -134,7 +116,7 @@ new_data_formatting <- function(dataurl, generic_name = FALSE) {
                                check.names = FALSE)
         names(new_data)[names(new_data)=="Target data"] <- "Compared to goal"
         parent_field_name <- names(new_data)[grepl("^Compared", names(new_data))]
-                parent_field_name <- parent_field_name[!grepl("Compared to goal|Compared to England", parent_field_name)]
+        parent_field_name <- parent_field_name[!grepl("Compared to goal|Compared to England", parent_field_name)]
 
         character_fields <- c("Indicator Name", "Parent Code",
                               "Parent Name", "Area Code",
@@ -163,38 +145,26 @@ new_data_formatting <- function(dataurl, generic_name = FALSE) {
 
         }
 
+        if (!missing(progress_bar)) setTxtProgressBar(progress_bar, as.numeric(item_of_total))
+
         return(new_data)
 }
 
-#' @importFrom utils txtProgressBar
-retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, ParentAreaTypeID, generic_name, path) {
-        pb <- txtProgressBar(style = 3)
-        data <- data %>%
-                unique() %>%
-                mutate(percentage_complete = row_number() / n())
+retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, ParentAreaTypeID, path) {
         if (missing(ProfileID)) {
                 all_area_data <- apply(data, 1,
                                        function(x) retrieve_indicator(IndicatorIDs = x[IndicatorID],
                                                                       ChildAreaTypeIDs = x[AreaTypeID],
                                                                       ParentAreaTypeIDs = x[ParentAreaTypeID],
-                                                                      generic_name = generic_name,
-                                                                      perc = x["percentage_complete"],
-                                                                      progress_bar = pb,
-                                                                      path = path)) %>%
-                        bind_rows()
+                                                                      path = path))
         } else {
                 all_area_data <- apply(data, 1,
                                        function(x) retrieve_indicator(IndicatorIDs = x[IndicatorID],
                                                                       ProfileIDs = x[ProfileID],
                                                                       ChildAreaTypeIDs = x[AreaTypeID],
                                                                       ParentAreaTypeIDs = x[ParentAreaTypeID],
-                                                                      generic_name = generic_name,
-                                                                      perc = x["percentage_complete"],
-                                                                      progress_bar = pb,
-                                                                      path = path)) %>%
-                        bind_rows()
+                                                                      path = path))
         }
-        close(pb)
         return(all_area_data)
 
 }

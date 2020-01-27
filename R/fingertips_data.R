@@ -20,8 +20,8 @@
 #'   extracted; if NULL the function will use the first record for the specified
 #'   `AreaTypeID` from the area_types() function
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type. This
-#'   argument accepts "All", which returns data for all available area
-#'   types for the indicator(s), though this can take a long time to run
+#'   argument accepts "All", which returns data for all available area types for
+#'   the indicator(s), though this can take a long time to run
 #' @param categorytype TRUE or FALSE, determines whether the final table
 #'   includes categorytype data where it exists. Default to FALSE
 #' @param rank TRUE or FALSE, the rank of the area compared to other areas for
@@ -29,6 +29,9 @@
 #'   with the indicator's polarity. 1 is lowest NAs will be bottom and ties will
 #'   return the average position. The total count of areas with a non-NA value
 #'   are returned also in AreaValuesCount
+#' @param url_only TRUE or FALSE, return only the url of the api call as a
+#'   character vector
+#' @importFrom utils txtProgressBar
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
@@ -62,6 +65,7 @@ fingertips_data <- function(IndicatorID = NULL,
                             ParentAreaTypeID = NULL,
                             categorytype = FALSE,
                             rank = FALSE,
+                            url_only = FALSE,
                             path) {
 
         if (missing(path)) path <- fingertips_endpoint()
@@ -216,13 +220,13 @@ fingertips_data <- function(IndicatorID = NULL,
                                                                           IndicatorID = "IndicatorID",
                                                                           AreaTypeID = "AreaTypeID",
                                                                           ParentAreaTypeID = "ParentAreaTypeID",
-                                                                          generic_name = TRUE,
                                                                           path = path)
                         } else {
                                 fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
                                                                       ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                                       ParentAreaTypeIDs = ParentAreaTypeIDs,
                                                                       path = path)
+
                         }
 
                 } else {
@@ -232,7 +236,6 @@ fingertips_data <- function(IndicatorID = NULL,
                                                                           ProfileID = "ProfileID",
                                                                           AreaTypeID = "AreaTypeID",
                                                                           ParentAreaTypeID = "ParentAreaTypeID",
-                                                                          generic_name = TRUE,
                                                                           path = path)
                         } else {
                                 fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
@@ -251,7 +254,6 @@ fingertips_data <- function(IndicatorID = NULL,
                                                                           ProfileID = "ProfileID",
                                                                           AreaTypeID = "AreaTypeID",
                                                                           ParentAreaTypeID = "ParentAreaTypeID",
-                                                                          generic_name = TRUE,
                                                                           path = path)
                         } else {
                                 fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
@@ -267,7 +269,6 @@ fingertips_data <- function(IndicatorID = NULL,
                                                                                   ProfileID = "ProfileID",
                                                                                   AreaTypeID = "AreaTypeID",
                                                                                   ParentAreaTypeID = "ParentAreaTypeID",
-                                                                                  generic_name = TRUE,
                                                                                   path = path)
                                 } else {
                                         fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
@@ -277,6 +278,29 @@ fingertips_data <- function(IndicatorID = NULL,
                                 }
                         }
                 }
+        }
+
+        if (url_only) {
+                return(fingertips_data)
+        } else {
+                if (AreaTypeID == "All") {
+                        pb <- txtProgressBar(style = 3)
+                        data <- data.frame(dataurl = fingertips_data) %>%
+                                mutate(percentage_complete = row_number() / n())
+                        fingertips_data <- apply(data, 1,
+                                                 function(x) new_data_formatting(dataurl = x["dataurl"],
+                                                                                 generic_name = TRUE,
+                                                                                 item_of_total = x["percentage_complete"],
+                                                                                 progress_bar = pb)) %>%
+                                bind_rows()
+                        close(pb)
+                } else {
+                        fingertips_data <- Map(new_data_formatting,
+                                               dataurl = fingertips_data,
+                                               generic_name = FALSE) %>%
+                                bind_rows()
+                }
+
         }
         names(fingertips_data) <- gsub("\\s","",names(fingertips_data))
 

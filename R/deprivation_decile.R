@@ -14,8 +14,9 @@
 #'   applied, limited to 2015 or 2019
 #' @inheritParams indicators
 #' @examples
-#' # Return 2015 deciles for counties and unitary authorities (post 4/19)
-#' deprivation_decile(202, 2015)
+#' \dontrun{
+#' # Return 2019 deprivation scores for Sustainability and Transformation Footprints
+#' deprivation_decile(120, 2019)}
 #' @return A lookup table providing deprivation decile and area code
 #' @import dplyr
 #' @importFrom rlang  .data

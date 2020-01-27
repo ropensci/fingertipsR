@@ -17,9 +17,10 @@ A data frame of category type ids and their descriptions
 Outputs a data frame of category type ids, their name (along with a short name)
 }
 \examples{
+\dontrun{
 # Returns the deprivation category types
 cats <- category_types()
-cats[cats$CategoryTypeId == 1,]
+cats[cats$CategoryTypeId == 1,]}
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
