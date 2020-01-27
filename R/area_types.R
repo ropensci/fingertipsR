@@ -13,7 +13,7 @@
 #' @examples
 #' \dontrun{
 #' # Returns a data frame with all levels of area and how they map to one another
-#' area_types()}
+#' area_types()
 #'
 #' # Returns a data frame of county and unitary authority mappings
 #'  area_types("counties")
@@ -24,7 +24,7 @@
 #' area_types(areas)
 #'
 #' # Uses AreaTypeID to filter area types
-#' area_types(AreaTypeID = 152)
+#' area_types(AreaTypeID = 152)}
 #' @import dplyr
 #' @importFrom stats complete.cases
 #' @export

@@ -32,8 +32,8 @@ This function uses the fingertips_data function to filter for the
   which is calculated using the ntile function from dplyr
 }
 \examples{
-# Return 2015 deciles for counties and unitary authorities (post 4/19)
-deprivation_decile(202, 2015)
+# Return 2019 deprivation scores for Sustainability and Transformation Footprints
+deprivation_decile(120, 2019)
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
