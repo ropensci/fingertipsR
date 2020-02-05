@@ -54,13 +54,13 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
         if (!(AreaTypeID %in% accepted_areatypes)) {
                 stop("AreaTypeID not available")
         }
-        ara_type_filter <- AreaTypeID
+        area_type_filter <- AreaTypeID
         if (Year == 2015) {
                 if (!(AreaTypeID %in% accepted_areatypes_2015$AreaTypeID)) {
                         stop("AreaTypeID unavailable for 2015")
                 }
                 IndicatorID <- accepted_areatypes_2015 %>%
-                        filter(AreaTypeID == ara_type_filter) %>%
+                        filter(AreaTypeID == area_type_filter) %>%
                         slice(1) %>%
                         pull(IndicatorID)
         } else if (Year == 2019) {
@@ -68,7 +68,7 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
                         stop("AreaTypeID unavailable for 2019")
                 }
                 IndicatorID <- accepted_areatypes_2019 %>%
-                        filter(AreaTypeID == ara_type_filter) %>%
+                        filter(AreaTypeID == area_type_filter) %>%
                         slice(1) %>%
                         pull(IndicatorID)
         }
@@ -89,10 +89,6 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
                 select(AreaCode, Value) %>%
                 rename(IMDscore = Value) %>%
                 mutate(decile = as.integer(11 - ntile(IMDscore, 10)))
-
-        if (sum(is.na(deprivation_decile$IMDscore)) == nrow(deprivation_decile)) {
-                warning("All the values are NA in this data; this can happen when the data are automatically calculated")
-        }
 
         return(deprivation_decile)
 }

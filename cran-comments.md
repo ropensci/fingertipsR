@@ -1,10 +1,10 @@
 This package provides data from the Fingertips API owned by Public Health England.
-I have overhauled a number of the tests which increases the speed of testing and allows flexibility in the data provided by the API
+I have changed the tests to accommodate minor fundamental data changes in the API.
 
 ## Test 
 
 * local Windows 10 install, R 3.6.2
-* used Travis to check on Linux (2020-01-66)
+* used Travis to check on Linux (2020-02-05)
 
 ## R CMD check results
 

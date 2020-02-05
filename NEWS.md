@@ -1,3 +1,7 @@
+# fingertipsR 1.0.1.9000
+
+* Improved tests - no changes for user
+
 # fingertipsR 1.0.1
 
 * Improved flexibility of `deprivation_decile()` so new deprivation data can be drawn from website without being added to the package
