@@ -38,9 +38,4 @@ test_that("error messages work correctly", {
                      "AreaTypeID must be specified")
 })
 
-test_that("warnings work correctly", {
 
-        expect_warning(deprivation_decile(AreaTypeID = 120, Year = 2015),
-                     "All the values are NA in this data; this can happen when the data are automatically calculated")
-
-})
