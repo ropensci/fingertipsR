@@ -1,4 +1,4 @@
-# fingertipsR 1.0.1.9000
+# fingertipsR 1.0.2
 
 * Improved tests - no changes for user
 
