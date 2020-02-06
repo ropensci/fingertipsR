@@ -2,7 +2,7 @@
 
 * Improved tests - no changes for user
 
-# fingertipsR 1.0.1
+# fingertipsR 1.0.1 (2020-01-28)
 
 * Improved flexibility of `deprivation_decile()` so new deprivation data can be drawn from website without being added to the package
 * url_only argument added to `fingertips_data()` function, allowing user to retrieve the API url(s) used to download their data
