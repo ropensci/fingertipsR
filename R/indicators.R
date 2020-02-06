@@ -77,7 +77,8 @@ indicators <- function(ProfileID = NULL,
 #' @return A data frame of indicator ids and names
 #' @inheritParams indicators
 #' @examples
-#' indicators_unique(ProfileID = 21)
+#' \dontrun{
+#' indicators_unique(ProfileID = 21)}
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicators and their parent domains and
 #'   profiles, \code{\link{area_types}} for area type  and their parent

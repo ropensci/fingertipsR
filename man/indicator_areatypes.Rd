@@ -23,7 +23,8 @@ Outputs a data frame of indicator ids and the area type ids that exist for
 that indicator
 }
 \examples{
-indicator_areatypes(IndicatorID = 10101)
+\dontrun{
+indicator_areatypes(IndicatorID = 10101)}
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,

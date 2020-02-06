@@ -23,7 +23,8 @@ function can take up to a few minutes to run (depending on internet
 connection speeds)
 }
 \examples{
-indicators_unique(ProfileID = 21)
+\dontrun{
+indicators_unique(ProfileID = 21)}
 }
 \seealso{
 \code{\link{indicators}} for indicators and their parent domains and

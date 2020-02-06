@@ -9,10 +9,10 @@
 #' @examples
 #' \dontrun{
 #' # Returns a complete data frame of domains and their profiles
-#' profiles()}
+#' profiles()
 #'
 #' # Returns a data frame of all of the domains in the Public Health Outcomes Framework
-#' profiles(ProfileName = "Public Health Outcomes Framework")
+#' profiles(ProfileName = "Public Health Outcomes Framework")}
 #' @import dplyr
 #' @family lookup functions
 #' @seealso \code{\link{area_types}} for area type  and their parent mappings,

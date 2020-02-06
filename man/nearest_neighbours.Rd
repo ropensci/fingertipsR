@@ -39,7 +39,8 @@ Use AreaTypeID = 102 for the AreaTypeID related to Children's
   services statistical neighbours
 }
 \examples{
-nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)
+\dontrun{
+nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)}
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,

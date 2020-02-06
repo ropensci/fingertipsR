@@ -138,7 +138,8 @@ category_types <- function(path) {
 #' @inheritParams indicators
 #' @import dplyr
 #' @examples
-#' indicator_areatypes(IndicatorID = 10101)
+#' \dontrun{
+#' indicator_areatypes(IndicatorID = 10101)}
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -201,7 +202,8 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #' @import dplyr
 #' @importFrom utils head
 #' @examples
-#' nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)
+#' \dontrun{
+#' nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)}
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
