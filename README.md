@@ -40,10 +40,10 @@ Get the latest released, stable version from CRAN:
 install.packages("fingertipsR")
 ```
 
-### With devtools
+### With remotes
 
 You can install the latest development version from github using
-[devtools](https://github.com/hadley/devtools):
+[remotes](https://github.com/r-lib/remotes):
 
 ``` r
 # install.packages("remotes")
@@ -51,29 +51,6 @@ remotes::install_github("rOpenSci/fingertipsR",
                         build_vignettes = TRUE,
                         dependencies = "suggests")
 ```
-
-### From zip
-
-Download this repository from GitHub and either build from source or do
-the following, that also requires
-[devtools](https://github.com/hadley/devtools):
-
-``` r
-source <- devtools:::source_pkg("C:/path/to/fingertipsR-master")
-install(source)
-```
-
-### Base R instructions
-
-To install the package without the use of CRAN or
-[devtools](https://github.com/hadley/devtools), download the `.tar.gz`
-file and then run:
-
-``` r
-install.packages(path_to_file, repos = NULL, type="source")
-```
-
-Where `path_to_file` would represent the full path and file name.
 
 ## Example
 
