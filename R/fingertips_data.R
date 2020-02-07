@@ -168,10 +168,9 @@ fingertips_data <- function(IndicatorID = NULL,
                                                        ParentAreaTypeID %in% c(15, unique(ind_ats$AreaTypeID))) %>%
                                                 filter(!(AreaTypeID %in% remove_ats),
                                                        !(ParentAreaTypeID %in% remove_ats)) %>%
-                                                group_by(AreaTypeID) %>%
-                                                arrange(-ParentAreaTypeID) %>%
-                                                top_n(1, ParentAreaTypeID) %>%
-                                                select(AreaTypeID, ParentAreaTypeID) %>%
+                                                select(AreaTypeID) %>%
+                                                unique() %>%
+                                                mutate(ParentAreaTypeID = 15) %>%
                                                 bind_rows(parent_only)
                                         ind_ats <- ind_ats %>%
                                                 inner_join(at, by = "AreaTypeID")
@@ -335,7 +334,8 @@ fingertips_data <- function(IndicatorID = NULL,
                 fingertips_data[fingertips_data==""] <- NA
 
                 if (categorytype == FALSE) {
-                        fingertips_data <- filter(fingertips_data, is.na(CategoryType))
+                        fingertips_data <- fingertips_data %>%
+                                filter(is.na(CategoryType))
                 }
         }
         return(unique(fingertips_data))
