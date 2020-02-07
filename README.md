@@ -46,7 +46,7 @@ You can install the latest development version from github using
 [devtools](https://github.com/hadley/devtools):
 
 ``` r
-# install.packages("devtools")
+# install.packages("remotes")
 remotes::install_github("rOpenSci/fingertipsR",
                         build_vignettes = TRUE,
                         dependencies = "suggests")
@@ -107,10 +107,11 @@ function:
 profid <- 19
 inds <- indicators(ProfileID = profid)
 print(inds[grepl("Healthy", inds$IndicatorName), c("IndicatorID", "IndicatorName")])
-#> # A tibble: 1 x 2
+#> # A tibble: 2 x 2
 #>   IndicatorID IndicatorName                          
 #>         <int> <fct>                                  
 #> 1       90362 A01a - Healthy life expectancy at birth
+#> 2       93505 A01a - Healthy life expectancy at 65
 ```
 
 Healthy Life Expectancy at Birth has the `IndicatorID` equal to 90362.
