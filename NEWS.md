@@ -1,4 +1,4 @@
-# fingertipsR 1.0.3
+# fingertipsR 1.0.2
 
 * Bug fix for `fingertips_data()` where `AreaTypeID = "All"
 
