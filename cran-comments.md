@@ -4,7 +4,7 @@ I have changed the tests to accommodate minor fundamental data changes in the AP
 ## Test 
 
 * local Windows 10 install, R 3.6.2
-* used Travis to check on Linux (2020-02-05)
+* used Travis to check on Linux (2020-02-10)
 
 ## R CMD check results
 
