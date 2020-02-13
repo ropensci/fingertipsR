@@ -21,7 +21,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
 
         set_config(config(ssl_verifypeer = 0L))
 
-        get_data <- function(x, progress_bar) {
+        get_data <- function(x) {
                 if (!(x$ProfileIDs == "" | is.na(x$ProfileIDs))) {
                         x$profileID_bit <- sprintf(as.character(x$profileID_bit), x$ProfileIDs)
                 }
@@ -41,6 +41,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                  get_data)
 
         fingertips_data <- do.call("c", list(dd))
+        fingertips_data <- fingertips_data[!is.na(fingertips_data)]
         return(fingertips_data)
 }
 

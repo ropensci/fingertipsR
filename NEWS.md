@@ -1,3 +1,7 @@
+# fingertipsR 1.0.2.9000
+
+* fixed `fingertips_data()` bug introduced in 1.0.2 where multiple IndicatorIDs and ProfileIDs are provided
+
 # fingertipsR 1.0.2
 
 * Bug fix for `fingertips_data()` where `AreaTypeID = "All"
