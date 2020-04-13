@@ -297,6 +297,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         fingertips_data <- Map(new_data_formatting,
                                                dataurl = fingertips_data,
                                                generic_name = FALSE) %>%
+                                unname() %>%
                                 bind_rows()
                 }
 

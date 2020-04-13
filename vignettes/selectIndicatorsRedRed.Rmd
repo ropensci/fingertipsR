@@ -40,7 +40,7 @@ inds
 The second function to be highlighted in this vignette is `fingertips_redred()`. This will return a data frame of the data for all of the areas that are performing significantly worse than the chosen benchmark and are deteriorating.
 
 ```{r fingertips redred}
-df <- fingertips_redred(inds, AreaTypeID = 102, Comparator = "England")
+df <- fingertips_redred(inds, AreaTypeID = 202, Comparator = "England")
 ```
 
 The `geom_tile()` function from `ggplot2` can be used to visualise the poorly performing areas:

@@ -43,9 +43,9 @@ test_that("warning messages work for fingertips_data", {
         expect_warning(fingertips_data(IndicatorID = 90366, DomainID = 1938133301, AreaTypeID = 6),
                        "If IndicatorID is populated DomainID is ignored")
 
-        expect_warning(fingertips_data(IndicatorID = c(93105, 93107),
-                                       ProfileID = c(NA, 143),
-                                       AreaTypeID = 8),
+        expect_warning(fingertips_data(IndicatorID = c(90366, 90362),
+                                       ProfileID = c(NA, 156),
+                                       AreaTypeID = 6),
                        "ProfileID can not contain NAs - all ProfileIDs are ignored")
 })
 

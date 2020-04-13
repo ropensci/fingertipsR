@@ -284,9 +284,20 @@ areas_by_profile <- function(AreaTypeID, ProfileID, path) {
                                    ProfileID,
                                    AreaTypeID) %>%
                 lapply(function(x) get_fingertips_api(x))
-        names(areas_by_profile) <- AreaTypeID
-        areas_by_profile <- bind_rows(areas_by_profile, .id = "AreaTypeID") %>%
-                mutate(AreaTypeID = as.integer(AreaTypeID)) %>%
+        # names(areas_by_profile) <- AreaTypeID
+        nrows_in_each_tibble <- lapply(areas_by_profile, function(x)
+                if (is.null(nrow(x))) {
+                        return(0)
+                        } else {
+                                return(nrow(x))
+                                }) %>%
+                unlist()
+
+        AreaTypeID_field <- mapply(function(x, y) rep(x, times = y), AreaTypeID, nrows_in_each_tibble) %>%
+                unlist()
+        names(areas_by_profile) <- NULL
+        areas_by_profile <- bind_rows(areas_by_profile) %>%
+                mutate(AreaTypeID = AreaTypeID_field) %>%
                 select(IndicatorID = IID, AreaTypeID, DomainID = GroupId)
         profs <- profiles() %>%
                 filter(DomainID %in% areas_by_profile$DomainID) %>%
