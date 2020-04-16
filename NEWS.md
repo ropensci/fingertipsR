@@ -1,4 +1,4 @@
-# fingertipsR 1.0.2.9000
+# fingertipsR 1.0.3
 
 * fixed `fingertips_data()` bug introduced in 1.0.2 where multiple IndicatorIDs and ProfileIDs are provided
 
