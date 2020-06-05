@@ -49,10 +49,10 @@ test_that("warning messages work for fingertips_data", {
                        "ProfileID can not contain NAs - all ProfileIDs are ignored")
 })
 
-test_that(paste("number of fields returned by fingertips_data function are", ncols), {
+test_that("the correct urls are produced", {
         skip_if_offline()
-        expect_equal(fingertips_data(IndicatorID = 90616, AreaTypeID = 120, url_only = TRUE),
-                     "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=120&parent_area_type_id=15&include_sortable_time_periods=yes")
+        expect_equal(fingertips_data(IndicatorID = 90616, AreaTypeID = 219, url_only = TRUE),
+                     "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=219&parent_area_type_id=15&include_sortable_time_periods=yes")
 
         expect_equal(fingertips_data(DomainID = 1938133301, AreaTypeID = 6, url_only = TRUE),
                      "https://fingertips.phe.org.uk/api/all_data/csv/by_group_id?child_area_type_id=6&parent_area_type_id=15&group_id=1938133301&include_sortable_time_periods=yes")
@@ -61,26 +61,18 @@ test_that(paste("number of fields returned by fingertips_data function are", nco
                      "https://fingertips.phe.org.uk/api/all_data/csv/by_profile_id?child_area_type_id=6&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes")
 
         expect_equal(suppressWarnings(fingertips_data(IndicatorID = 90616,
-                                                      AreaTypeID = 120,
+                                                      AreaTypeID = 219,
                                                       ProfileID = NA,
                                                       url_only = TRUE)),
-                     "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=120&parent_area_type_id=15&include_sortable_time_periods=yes")
+                     "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=219&parent_area_type_id=15&include_sortable_time_periods=yes")
 
         expect_equal(fingertips_data(DomainID = 1938133301, AreaCode = "E12000005", AreaTypeID = 6, url_only = TRUE),
                      "https://fingertips.phe.org.uk/api/all_data/csv/by_group_id?child_area_type_id=6&parent_area_type_id=15&group_id=1938133301&include_sortable_time_periods=yes")
-
-        expect_equal(ncol(fingertips_data(DomainID = 1938133301, AreaTypeID = 6, rank = TRUE)), ncols + 3)
 
         inds <- c(93081, 93275)
         expect_equal(fingertips_data(inds, ProfileID = 143, AreaTypeID = 3, url_only = TRUE),
                      sprintf("https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=3&parent_area_type_id=101&profile_id=143&include_sortable_time_periods=yes",
                              inds))
-
-        expect_equal(ncol(fingertips_data(IndicatorID = 10101, AreaTypeID = "All", path = 'https://fingertips.phe.org.uk/api/')),
-                     ncols)
-
-        expect_equal(ncol(fingertips_data(DomainID = 1938133301, AreaTypeID = "All")),
-                     ncols)
 
         expect_equal(fingertips_data(ProfileID = 156, AreaTypeID = "All", url_only = TRUE),
                      c("https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=202&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
@@ -100,6 +92,20 @@ test_that(paste("number of fields returned by fingertips_data function are", nco
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=102&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=15&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=6&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes"))
+
+
+
+})
+test_that(paste("number of fields returned by fingertips_data function are", ncols), {
+        skip_if_offline()
+        expect_equal(ncol(fingertips_data(DomainID = 1938133301, AreaTypeID = 6, rank = TRUE)), ncols + 3)
+
+
+        expect_equal(ncol(fingertips_data(IndicatorID = 10101, AreaTypeID = "All", path = 'https://fingertips.phe.org.uk/api/')),
+                     ncols)
+
+        expect_equal(ncol(fingertips_data(DomainID = 1938133301, AreaTypeID = "All")),
+                     ncols)
 
         expect_equal(ncol(suppressWarnings(fingertips_data(IndicatorID = 90362, AreaTypeID = 6, ProfileID = 156, rank = TRUE))), ncols + 3)
 })
