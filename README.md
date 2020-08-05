@@ -6,6 +6,8 @@ Status](https://travis-ci.org/ropensci/fingertipsR.svg)](https://travis-ci.org/r
 [![Coverage
 Status](https://coveralls.io/repos/github/ropensci/fingertipsR/badge.svg?branch=master)](https://coveralls.io/github/ropensci/fingertipsR?branch=master)
 [![](https://badges.ropensci.org/168_status.svg)](https://github.com/ropensci/onboarding/issues/168)
+[![R build
+status](https://github.com/ropensci/fingertipsR/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/fingertipsR/actions)
 
 [![CRAN Status
 Badge](http://www.r-pkg.org/badges/version/fingertipsR)](https://cran.r-project.org/package=fingertipsR)
