@@ -1,3 +1,8 @@
+# fingertipsR 1.0.4.9000
+
+* no change for users
+* GitHub actions added
+
 # fingertipsR 1.0.4
 
 * no change for users

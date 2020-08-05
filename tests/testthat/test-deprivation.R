@@ -10,12 +10,16 @@ test_that("the number of columns of deprivation decile function are as expected"
 
 })
 
-test_that("the number of rows returned by deprivation decile is greater than 2", {
+test_that("the number of rows returned by deprivation decile is greater than 2 for AreaTypeID 201", {
         skip_on_cran()
         expect_true(nrow(deprivation_decile(AreaTypeID = 201, Year = 2019)) > 2)
+})
 
+test_that("the number of rows returned by deprivation decile is greater than 2 for AreaTypeID 202", {
+        skip_on_cran()
         expect_true(nrow(deprivation_decile(AreaTypeID = 202, Year = 2019)) > 2)
 })
+
 
 exp_classes <- c("character","numeric","integer")
 names(exp_classes) <- c("AreaCode", "IMDscore", "decile")
@@ -28,12 +32,29 @@ test_that("error messages work correctly", {
         skip_if_offline()
         expect_error(deprivation_decile(Year = 2014, AreaTypeID = 102), "Year must be 2015 or 2019")
 
+
+})
+
+test_that("", {
+        skip_on_cran()
         expect_error(deprivation_decile(AreaTypeID = 12, Year = 2019),
                      "AreaTypeID not available")
 
+
+})
+
+
+test_that("", {
+        skip_on_cran()
         expect_error(deprivation_decile(AreaTypeID = 3, Year = 2019),
                      "AreaTypeID unavailable for 2019")
 
+
+})
+
+
+test_that("", {
+        skip_on_cran()
         expect_error(deprivation_decile(Year = 2015),
                      "AreaTypeID must be specified")
 })

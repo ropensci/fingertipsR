@@ -4,31 +4,53 @@ library(fingertipsR)
 context("Test metadata")
 ncols <- 30
 
-skip_if_offline()
-df1 <- indicator_metadata(IndicatorID = 10101)
-skip_if_offline()
-df2 <- indicator_metadata(DomainID = 1938133294)
-skip_if_offline()
-df3 <- indicator_metadata(ProfileID = 156)
-skip_if_offline()
-df4 <- indicator_metadata(IndicatorID = 90362, ProfileID = 156)
-
-test_that("bad inputs give bad outputs", {
+test_that("indicator_metadata errors when bad input to IndicatorID provided", {
         skip_on_cran()
         expect_error(indicator_metadata("blah blah"),
                      "IndicatorID\\(s\\) do not exist, use indicators\\(\\) to identify existing indicators")
+        })
+
+test_that("indicator_metadata errors when incorrect DomainID provided", {
+        skip_on_cran()
         expect_error(indicator_metadata(DomainID = 1),
                      "DomainID\\(s\\) do not exist, use profiles\\(\\) to identify existing domains")
-        expect_error(indicator_metadata(ProfileID = "1234 blah blah"),
-                     "ProfileID\\(s\\) do not exist, use profiles\\(\\) to identify existing profiles")
-        expect_error(indicator_metadata(),
-                     "One of IndicatorID, DomainID or ProfileID must be populated")
+
 })
 
-test_that(paste("the number of fields in the output are", ncols), {
-        skip_if_offline()
-        expect_equal(ncol(df1), ncols)
-        expect_equal(ncol(df2), ncols)
-        expect_equal(ncol(df3), ncols)
-        expect_equal(ncol(df4), ncols)
+test_that("indicator_metadata errors when incorrect ProfileID provided", {
+        skip_on_cran()
+        expect_error(indicator_metadata(ProfileID = "1234 blah blah"),
+                     "ProfileID\\(s\\) do not exist, use profiles\\(\\) to identify existing profiles")
+
 })
+
+test_that("indicator_metadata errors when nothing provided", {
+        skip_on_cran()
+        expect_error(indicator_metadata(),
+                     "One of IndicatorID, DomainID or ProfileID must be populated")
+
+})
+
+test_that("indicator_metadata returns correct number of columns when IndicatorID provided", {
+        skip_on_cran()
+        expect_equal(ncol(indicator_metadata(IndicatorID = 10101)), ncols)
+})
+
+test_that("indicator_metadata returns correct number of columns when DomainID provided", {
+        skip_on_cran()
+        expect_equal(ncol(indicator_metadata(DomainID = 1938133294)), ncols)
+
+})
+
+test_that("indicator_metadata returns correct number of columns when ProfileID provided", {
+        skip_on_cran()
+        expect_equal(ncol(indicator_metadata(ProfileID = 156)), ncols)
+
+})
+
+test_that("indicator_metadata returns correct number of columns when ProfileID and IndicatorID provided", {
+        skip_on_cran()
+        expect_equal(ncol(indicator_metadata(IndicatorID = 90362, ProfileID = 156)), ncols)
+
+})
+
