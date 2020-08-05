@@ -1,13 +1,7 @@
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '01 10 05 08 *'
+    - cron:  '0 10 5 8 *'
 
 name: R-CMD-check
 

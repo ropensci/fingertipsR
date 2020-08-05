@@ -33,7 +33,7 @@ test_that("error messages work for fingertips_data", {
 })
 
 test_that("warning messages work for fingertips_data", {
-        skip_if_offline()
+        skip_on_cran()
         expect_warning(fingertips_data(DomainID = 1938133293, AreaTypeID = 202, AreaCode = "E06000015", ParentAreaTypeID = 153),
                        "AreaTypeID not a child of ParentAreaTypeID\\. There may be duplicate values in data\\. Use function area_types\\(\\) to see mappings of area type to parent area type\\.")
 
@@ -50,7 +50,7 @@ test_that("warning messages work for fingertips_data", {
 })
 
 test_that("the correct urls are produced", {
-        skip_if_offline()
+        skip_on_cran()
         expect_equal(fingertips_data(IndicatorID = 90616, AreaTypeID = 219, url_only = TRUE),
                      "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=219&parent_area_type_id=15&include_sortable_time_periods=yes")
 
@@ -94,7 +94,7 @@ test_that("the correct urls are produced", {
 
 })
 test_that(paste("number of fields returned by fingertips_data function are", ncols), {
-        skip_if_offline()
+        skip_on_cran()
         expect_equal(ncol(fingertips_data(DomainID = 1938133301, AreaTypeID = 6, rank = TRUE)), ncols + 3)
 
 

@@ -11,7 +11,7 @@ test_that("the number of columns of deprivation decile function are as expected"
 })
 
 test_that("the number of rows returned by deprivation decile is greater than 2", {
-        skip_if_offline()
+        skip_on_cran()
         expect_true(nrow(deprivation_decile(AreaTypeID = 201, Year = 2019)) > 2)
 
         expect_true(nrow(deprivation_decile(AreaTypeID = 202, Year = 2019)) > 2)
@@ -20,7 +20,7 @@ test_that("the number of rows returned by deprivation decile is greater than 2",
 exp_classes <- c("character","numeric","integer")
 names(exp_classes) <- c("AreaCode", "IMDscore", "decile")
 test_that("the class of columns returned are character-numeric-integer", {
-        skip_if_offline()
+        skip_on_cran()
         expect_equal(vapply(deprivation_decile(AreaTypeID = 202, Year = 2019), class, character(1)), exp_classes)
 })
 
