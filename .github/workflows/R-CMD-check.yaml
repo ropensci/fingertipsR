@@ -1,7 +1,7 @@
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '5 10 5 8 *'
+    - cron:  '30 2 15 * *'
 
 name: R-CMD-check
 
