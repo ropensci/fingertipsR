@@ -1,17 +1,21 @@
 ---
 title: "Plotting healthy life expectancy and life expectancy by deprivation for English local authorities"
-author: "Seb Fox"
-date: "2017-04-10"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Life expectancy by deprivation}
-  %\VignetteEngine{knitr::knitr}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 This worked example attempts to document a common workflow a user might follow when using the `fingertipsR` package.
 
-Suppose you want to plot healthy life expectancy and life expectancy by deprivation for a given year of data that fingertips contains - you will begin by wondering *where to start*.
+`fingertipsR` provides users the ability to import data from the [Fingertips](http://fingertips.phe.org.uk/) website. Fingertips is a major repository of public health indicators in England. The site is structured in the following way:
+
+* Profiles - these contain indicators related to a broad theme (such as a risk factor or a disease topic etc)
+* Domains - these are subcategories of profiles, and break the profiles down to themes within the broader theme
+* Indicators - this is the lowest level of the structure and sit within the domains. Indicators are presented at different time periods, geographies, sexes, ageband and categories.
+
+This example demonstrates how you can plot healthy life expectancy and life expectancy by geographical regions for a given year of data that fingertips contains. So, *where to start*?
 
 ## Where to start
 
@@ -21,10 +25,10 @@ There is one function in the `fingertipsR` package that extracts data from the F
 * AreaCode
 * DomainID
 * ProfileID
-* AreaTypeID (this defaults to 102; County and Unitary Authority)
-* ParentAreaTypeID (this defaults to 6; Government Office Region)
+* AreaTypeID
+* ParentAreaTypeID1
 
-One of *IndicatorID*, *DomainID* or *ProfileID* must be complete. *AreaCode* needs completion if you are extracting data for a particular area or group of areas only. *AreaTypeID* determines the geography to extract the data for. In this case we want County and Unitary Authority level. *ParentAreaTypeID* requires an area type code that the *AreaTypeID* maps to.
+At least one of *IndicatorID*, *DomainID* or *ProfileID* must be complete. These fields relate to each other as described in the introduction. *AreaTypeID* is also required, and determines the geography for which data is extracted. In this case we want County and Unitary Authority level. *AreaCode* needs completing if you are extracting data for a particular area or group of areas only. *ParentAreaTypeID* requires an area type code that the *AreaTypeID* maps to at a higher level of geography. For example, County and Unitary Authorities map to a higher level of geography called Government Office Regions. These mappings can be identified using the `area_types()` function. If ignored, a *ParentAreaTypeID* will be chosen automatically.
 
 Therefore, the inputs to the `fingertips_data` function that we need to find out are the ID codes for:
 
@@ -34,6 +38,9 @@ Therefore, the inputs to the `fingertips_data` function that we need to find out
 
 We need to begin by calling the `fingertipsR` package: 
 
+```r
+library(fingertipsR)
+```
 
 ## IndicatorID
 
@@ -46,32 +53,30 @@ We can use the `indicators()` function to return a list of all the indicators wi
 
 
 ```r
-inds <- indicators()
+inds <- indicators_unique()
 life_expectancy <- inds[grepl("life expectancy", tolower(inds$IndicatorName)),]
-
-# Because the same indicators are used in multiple profiles, there are many repeated indicators in this table (some with varying IndicatorName but same IndicatorID)
-
-# This returns a record for each IndicatorID
-life_expectancy <- unique(life_expectancy[duplicated(life_expectancy$IndicatorID) == FALSE,
-                                          c("IndicatorID", "IndicatorName")]) 
-knitr::kable(life_expectancy, row.names = FALSE)
 ```
 
 
-
-| IndicatorID|IndicatorName                                                                                                                                                                                                                                                                          |
-|-----------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|       90362|Healthy life expectancy at birth: the average number of years a person would expect to live in good health based on contemporary mortality rates and prevalence of self-reported good health. (in PHOF 0.1i)                                                                           |
-|       90364|Range in years. Slope index of inequality in life expectancy at birth within local authorities, based on local (LSOA) deprivation deciles: the range in years of life expectancy across the social gradient within each local authority, from most to least deprived. (in PHOF 0.2iii) |
-|       90366|Life expectancy at birth: the average number of years a person would expect to live based on contemporary mortality rates. (in PHOF 0.1ii)                                                                                                                                             |
-|       92031|Range in years. Slope index of inequality in healthy life expectancy within local authorities, based on deprivation within Middle Super Output Areas (MSOAs): the range in years of life expectancy across the social gradient within each local authority. (in PHOF 0.2vi)            |
-|       91102|0.1ii - Life expectancy at 65: the average number of years a person would expect to live based on contemporary mortality rates.                                                                                                                                                        |
-|       90365|0.2iv - The gap in years between overall life expectancy at birth in each English local authority and life expectancy at birth for England as a whole.                                                                                                                                 |
-|         650|Life expectancy - MSOA based                                                                                                                                                                                                                                                           |
-|       90363|0.2i - Slope index of inequality in life expectancy at birth based on national deprivation deciles within England: the range in years of life expectancy across the social gradient, from most to least deprived.                                                                      |
-|       90823|0.2ii - Number of upper tier local authorities for which the local slope index of inequality in life expectancy (as defined in indicator 0.2iii) has decreased                                                                                                                         |
-|       90825|0.2v - Slope index of inequality in healthy life expectancy at birth based on national deprivation deciles within England: the range in years of life expectancy across the social gradient, from most to least deprived.                                                              |
-|       91319|0.2vii - Slope index of inequality in life expectancy at birth within English region, based on regional deprivation deciles: the range in years of life expectancy across the social gradient within each local authority, from most to least deprived.                                |
+| IndicatorID|IndicatorName                                                                       |
+|-----------:|:-----------------------------------------------------------------------------------|
+|       90362|Healthy life expectancy at birth                                                    |
+|       90366|Life expectancy at birth                                                            |
+|       90825|Inequality in healthy life expectancy at birth ENGLAND                              |
+|       91102|Life expectancy at 65                                                               |
+|       92031|Inequality in healthy life expectancy at birth LA                                   |
+|       92901|Inequality in life expectancy at birth                                              |
+|       93190|Inequality in life expectancy at 65                                                 |
+|       93505|Healthy life expectancy at 65                                                       |
+|       93523|Disability-free life expectancy at 65                                               |
+|       93562|Disability-free life expectancy at birth                                            |
+|         650|Life expectancy - MSOA based                                                        |
+|       93249|Disability free life expectancy, (Upper age band 85+)                               |
+|       93283|Life expectancy at birth, (upper age band 90+)                                      |
+|       93285|Life expectancy at birth, (upper age band 85+)                                      |
+|       93298|Healthy life expectancy, (upper age band 85+)                                       |
+|       92641|Life expectancy at 75 (SPOT: NHSOD 1b)                                              |
+|       90365|Gap in life expectancy at birth between each local authority and England as a whole |
 
 The two indicators we are interested in from this table are:
 
@@ -80,7 +85,12 @@ The two indicators we are interested in from this table are:
 
 ## AreaTypeID
 
-We can work out what the *AreaTypeID* codes we are interested in using the function `area_types()`. We've decided that we want to produce the graph at County and Unitary Authority level. From the section [Where to start] we need codes for *AreaTypeID* and *ParentAreaTypeID.*
+We can work out what the *AreaTypeID* codes we need using the function `area_types()`. We've decided that we want to produce the graph at County and Unitary Authority level. From the section [Where to start] we need codes for *AreaTypeID* and *ParentAreaTypeID.*
+
+
+```r
+areaTypes <- area_types()
+```
 
 
 

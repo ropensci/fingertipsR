@@ -19,16 +19,16 @@ This example demonstrates how you can plot healthy life expectancy and life expe
 
 ## Where to start
 
-There is one function in the `fingertipsR` package that extracts data from the Fingertips API: `fingertips_data()`. This function has the following inputs:
+There is one function in the `fingertipsR` package that imports data from the Fingertips API; `fingertips_data()`. This function has the following inputs:
 
 * IndicatorID
 * AreaCode
 * DomainID
 * ProfileID
 * AreaTypeID
-* ParentAreaTypeID1
+* ParentAreaTypeID
 
-At least one of *IndicatorID*, *DomainID* or *ProfileID* must be complete. These fields relate to each other as described in the introduction. *AreaTypeID* is also required, and determines the geography for which data is extracted. In this case we want County and Unitary Authority level. *AreaCode* needs completing if you are extracting data for a particular area or group of areas only. *ParentAreaTypeID* requires an area type code that the *AreaTypeID* maps to at a higher level of geography. For example, County and Unitary Authorities map to a higher level of geography called Government Office Regions. These mappings can be identified using the `area_types()` function. If ignored, a *ParentAreaTypeID* will be chosen automatically.
+At least one of *IndicatorID*, *DomainID* or *ProfileID* must be complete. These fields relate to each other as described in the introduction. *AreaTypeID* is also required, and determines the geography for which data is imported. In this case we want County and Unitary Authority level. *AreaCode* needs completing if you are extracting data for a particular area or group of areas only. *ParentAreaTypeID* requires an area type code that the *AreaTypeID* maps to at a higher level of geography. For example, County and Unitary Authorities map to a higher level of geography called Government Office Regions. These mappings can be identified using the `area_types()` function. If ignored, a *ParentAreaTypeID* will be chosen automatically.
 
 Therefore, the inputs to the `fingertips_data` function that we need to find out are the ID codes for:
 
@@ -37,6 +37,7 @@ Therefore, the inputs to the `fingertips_data` function that we need to find out
 * ParentAreaTypeID
 
 We need to begin by calling the `fingertipsR` package: 
+
 ```{r packages}
 library(fingertipsR)
 ```
@@ -150,10 +151,10 @@ ggplot(data, aes(x = reorder(ParentName, Value, median), y = Value, col = factor
 
 ## Other useful functions
 
-The plot above makes use of the fields that are within the dataset by default when using the `fingertips_data()` function. There is also a `deprivation_decile()` function, which provides an indicator of deprivation for each geographical area (see `?deprivation_decile()`). 
+The plot above makes use of the fields that are within the dataset by default when using the `fingertips_data()` function. There is also a `deprivation_decile()` function, which provides an indicator of deprivation for each geographical area (see `?deprivation_decile`). 
 
 Not all indicators are available for every geography. To understand how indicators are mapped to different gegoraphies, there is a function `indicator_areatypes()`.
 
 To understand more about what comprises each indicator, there is the `indicator_metadata()` function, which provides the information on the definitions page of the Fingertips website.
 
-Finally, the `nearest_neighbours()` function provides groups of statistically similar area for some of the geographies that are available. The geographies these are available for, and their sources, are documented within the function documentation (`?nearest_neighbours()`).
+Finally, the `nearest_neighbours()` function provides groups of statistically similar area for some of the geographies that are available. The geographies these are available for, and their sources, are documented within the function documentation (`?nearest_neighbours`).

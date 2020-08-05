@@ -279,6 +279,8 @@ fingertips_data <- function(IndicatorID = NULL,
                 }
         }
 
+        fingertips_data <- unique(fingertips_data)
+
         if (url_only) {
                 return(fingertips_data)
         } else {

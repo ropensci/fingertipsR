@@ -9,7 +9,7 @@ test_that("the area_types function works correctly", {
         skip_if_offline()
         expect_equal(nrow(area_types("County")), 0)
         skip_if_offline()
-        expect_equal(area_types(c("gov","count")), area_types(AreaTypeID = c(102,6)))
+        expect_equal(area_types(c("gov","ward")), area_types(AreaTypeID = c(8, 6)))
         skip_if_offline()
         expect_equal(ncol(area_types(ProfileID = 156)), 4)
         skip_if_offline()
