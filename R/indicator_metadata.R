@@ -84,9 +84,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                                         type = "text/csv",
                                         encoding = "UTF-8",
                                         col_types = types)
-                }
-
-                if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
+                } else if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
                         stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
                 }
                 path <- paste0(path, "indicator_metadata/csv/by_indicator_id?indicator_ids=")
