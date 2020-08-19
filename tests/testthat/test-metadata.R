@@ -56,5 +56,5 @@ test_that("indicator_metadata returns correct number of columns when ProfileID a
 
 test_that("indicator_metadata returns correct number of columns when IndicatorID option 'All' is supplied", {
         skip_on_cran()
-        expect_equal(ncol(indicator_metadata(IndicatorID = "All"), ncols)
+        expect_equal(ncol(indicator_metadata(IndicatorID = "All")), ncols)
 })
