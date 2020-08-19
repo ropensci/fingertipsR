@@ -24,6 +24,7 @@ vignettes/*.pdf
 vignettes/*.html
 vignettes/lifeExpectancy.R
 vignettes/lifeExpectancy_*
+vignettes/selectIndicatorsRedRed.R
 
 paper/
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
