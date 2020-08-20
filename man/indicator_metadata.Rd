@@ -7,7 +7,7 @@
 indicator_metadata(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL, path)
 }
 \arguments{
-\item{IndicatorID}{Numeric vector, id of the indicator of interest}
+\item{IndicatorID}{Numeric vector, id of the indicator of interest. Also accepts "All".}
 
 \item{DomainID}{Numeric vector, id of domains of interest}
 

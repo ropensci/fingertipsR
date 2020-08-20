@@ -1,6 +1,6 @@
 # fingertipsR 1.0.5
 
-* no change for users
+* `indicator_metadata()`
 * GitHub actions added
 
 # fingertipsR 1.0.4

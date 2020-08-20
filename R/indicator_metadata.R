@@ -3,6 +3,7 @@
 #' Outputs a data frame containing the metadata for selected indicators. Note, this
 #' function can take up to a few minutes to run (depending on internet
 #' connection speeds)
+#' @param IndicatorID Numeric vector, id of the indicator of interest. Also accepts "All".
 #' @inheritParams fingertips_data
 #' @examples
 #' \dontrun{
