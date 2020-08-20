@@ -74,7 +74,17 @@ indicator_metadata <- function(IndicatorID = NULL,
         fingertips_ensure_api_available(endpoint = path)
         if (!(is.null(IndicatorID))) {
                 AllIndicators <- indicators(path = path)
-                if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
+
+                # https://fingertips.phe.org.uk/api#!/IndicatorMetadata/IndicatorMetadata_GetIndicatorMetadataFileForAllIndicators
+                if (IndicatorID == "All") {
+                        dataurl <- paste0(path, "indicator_metadata/csv/all")
+                        indicator_metadata <- dataurl %>%
+                                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                                content("parsed",
+                                        type = "text/csv",
+                                        encoding = "UTF-8",
+                                        col_types = types)
+                } else if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
                         stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
                 }
                 path <- paste0(path, "indicator_metadata/csv/by_indicator_id?indicator_ids=")

@@ -12,6 +12,7 @@ Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "
     person("Duncan", "Gormansway", , "nacnudus@gmail.com", c("ctb")),
     person("Carl", "Ganz", , "carlganz@gmail.com", c("ctb")),
     person("David", "Whiting", , "david.whiting@medway.gov.uk", c("ctb")),
+    person("Luke", "Bradley", , "dev.1b7@outlook.com", c("ctb")),
     person("Crown Copyright 2020", , , , c("cph")))
 URL: https://fingertips.phe.org.uk, 
     https://github.com/ropensci/fingertipsR, 
