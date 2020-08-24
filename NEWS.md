@@ -3,7 +3,7 @@
 * `indicator_metadata()`
 * GitHub actions added
 
-# fingertipsR 1.0.4
+# fingertipsR 1.0.4 (2020-06-06)
 
 * no change for users
 
