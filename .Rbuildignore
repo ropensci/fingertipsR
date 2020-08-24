@@ -17,7 +17,7 @@ vignettes/references.bib
 ^CONDUCT\.md$
 ^CODE_OF_CONDUCT\.md$
 ^CRAN-RELEASE$
-^CONTRIBUTIING\.md$
+^CONTRIBUTING\.md$
 
 paper/
 _pkgdown.yml
