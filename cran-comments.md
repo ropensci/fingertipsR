@@ -4,7 +4,7 @@ Some failing tests have been fixed
 ## Test 
 
 * local Windows 10 install, R 4.0.2
-* used Travis to check on Linux (2020-08-05)
+* used Travis to check on Linux (2020-08-25)
 
 ## R CMD check results
 
