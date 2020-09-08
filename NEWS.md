@@ -1,6 +1,6 @@
 # fingertipsR 1.0.5
 
-* `indicator_metadata()`
+* `indicator_metadata()` accepts `IndicatorID = "All"` 
 * GitHub actions added
 
 # fingertipsR 1.0.4 (2020-06-06)
