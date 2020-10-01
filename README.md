@@ -9,13 +9,6 @@ Status](https://coveralls.io/repos/github/ropensci/fingertipsR/badge.svg?branch=
 [![R build
 status](https://github.com/ropensci/fingertipsR/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/fingertipsR/actions)
 
-[![CRAN Status
-Badge](http://www.r-pkg.org/badges/version/fingertipsR)](https://cran.r-project.org/package=fingertipsR)
-[![CRAN Total
-Downloads](http://cranlogs.r-pkg.org/badges/grand-total/fingertipsR)](https://cran.r-project.org/package=fingertipsR)
-[![CRAN Monthly
-Downloads](http://cranlogs.r-pkg.org/badges/fingertipsR)](https://cran.r-project.org/package=fingertipsR)
-
 # fingertipsR
 
 This is an R package to interact with Public Health England’s
@@ -34,12 +27,12 @@ further use.
 
 ## Installation
 
-### CRAN
+### rOpenSci
 
-Get the latest released, stable version from CRAN:
+Get the latest released, stable version from rOpenSci:
 
 ``` r
-install.packages("fingertipsR")
+install.packages("fingertipsR", repos = "https://dev.ropensci.org")
 ```
 
 ### With remotes
