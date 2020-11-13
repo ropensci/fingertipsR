@@ -2,7 +2,7 @@
 title: "Plotting healthy life expectancy and life expectancy by deprivation for English local authorities"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Life expectancy by deprivation}
+  %\VignetteIndexEntry{Plotting healthy life expectancy and life expectancy by deprivation for English local authorities}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -36,11 +36,11 @@ At least one of *IndicatorID*, *DomainID* or *ProfileID* must be complete. These
 
 Therefore, the inputs to the `fingertips_data` function that we need to find out are the ID codes for:
 
-* IndicatorID 
+* IndicatorID
 * AreaTypeID
 * ParentAreaTypeID
 
-We need to begin by calling the `fingertipsR` package: 
+We need to begin by calling the `fingertipsR` package:
 
 ```{r packages}
 library(fingertipsR)
@@ -84,8 +84,8 @@ DT::datatable(areaTypes, filter = "top", rownames = FALSE)
 The table shows that the *AreaTypeID* for County and Unitary Authority level is 202. The third column, *ParentAreaTypeID*, shows the IDs of the area types that these map to. In the case of County and Unitary Authorities, these are:
 
 ```{r dist, echo=FALSE}
-knitr::kable(areaTypes[areaTypes$AreaTypeID == 202, ], 
-             row.names = FALSE) 
+knitr::kable(areaTypes[areaTypes$AreaTypeID == 202, ],
+             row.names = FALSE)
 ```
 
 *ParentAreaTypeID* is 6 by default for the `fingertips_data()` function for `AreaTypeID` of 202 (this value changes if different `AreaTypeID`s are entered), so we can stick with that in this example. Use the `area_types()` function to understand more about how areas map to each other.
@@ -101,9 +101,9 @@ data <- fingertips_data(IndicatorID = indicators,
 ```
 
 ```{r display_fingertips_data_outputs, echo=FALSE}
-pander::pandoc.table(tail(data), 
+pander::pandoc.table(tail(data),
                      style="rmarkdown",
-                     split.tables = 90, 
+                     split.tables = 90,
                      keep.line.breaks = TRUE)
 ```
 
@@ -126,7 +126,7 @@ area_type_name <- table(data$AreaType) # tally each group in the AreaType field
 area_type_name <- area_type_name[area_type_name == max(area_type_name)] # pick the group with the highest frequency
 area_type_name <- names(area_type_name) # retrieve the name
 
-data <- data[data$AreaType == area_type_name & 
+data <- data[data$AreaType == area_type_name &
                data$Timeperiod == "2012 - 14", cols]
 
 ```
@@ -137,7 +137,7 @@ Using `ggplot2` it is possible to plot the outputs.
 
 ```{r life-expectancy, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
 library(ggplot2)
-ggplot(data, aes(x = reorder(ParentName, Value, median), y = Value, col = factor(IndicatorID))) + 
+ggplot(data, aes(x = reorder(ParentName, Value, median), y = Value, col = factor(IndicatorID))) +
         geom_boxplot(data = data[data$IndicatorID == 90366, ]) +
         geom_boxplot(data = data[data$IndicatorID == 90362, ]) +
         facet_wrap(~ Sex) +
@@ -155,7 +155,7 @@ ggplot(data, aes(x = reorder(ParentName, Value, median), y = Value, col = factor
 
 ## Other useful functions
 
-The plot above makes use of the fields that are within the dataset by default when using the `fingertips_data()` function. There is also a `deprivation_decile()` function, which provides an indicator of deprivation for each geographical area (see `?deprivation_decile`). 
+The plot above makes use of the fields that are within the dataset by default when using the `fingertips_data()` function. There is also a `deprivation_decile()` function, which provides an indicator of deprivation for each geographical area (see `?deprivation_decile`).
 
 Not all indicators are available for every geography. To understand how indicators are mapped to different gegoraphies, there is a function `indicator_areatypes()`.
 

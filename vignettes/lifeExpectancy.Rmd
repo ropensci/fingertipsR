@@ -2,7 +2,7 @@
 title: "Plotting healthy life expectancy and life expectancy by deprivation for English local authorities"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Life expectancy by deprivation}
+  %\VignetteIndexEntry{Plotting healthy life expectancy and life expectancy by deprivation for English local authorities}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -37,11 +37,11 @@ At least one of *IndicatorID*, *DomainID* or *ProfileID* must be complete. These
 
 Therefore, the inputs to the `fingertips_data` function that we need to find out are the ID codes for:
 
-* IndicatorID 
+* IndicatorID
 * AreaTypeID
 * ParentAreaTypeID
 
-We need to begin by calling the `fingertipsR` package: 
+We need to begin by calling the `fingertipsR` package:
 
 
 ```r
@@ -249,7 +249,7 @@ area_type_name <- table(data$AreaType) # tally each group in the AreaType field
 area_type_name <- area_type_name[area_type_name == max(area_type_name)] # pick the group with the highest frequency
 area_type_name <- names(area_type_name) # retrieve the name
 
-data <- data[data$AreaType == area_type_name & 
+data <- data[data$AreaType == area_type_name &
                data$Timeperiod == "2012 - 14", cols]
 ```
 
@@ -260,7 +260,7 @@ Using `ggplot2` it is possible to plot the outputs.
 
 ```r
 library(ggplot2)
-ggplot(data, aes(x = reorder(ParentName, Value, median), y = Value, col = factor(IndicatorID))) + 
+ggplot(data, aes(x = reorder(ParentName, Value, median), y = Value, col = factor(IndicatorID))) +
         geom_boxplot(data = data[data$IndicatorID == 90366, ]) +
         geom_boxplot(data = data[data$IndicatorID == 90362, ]) +
         facet_wrap(~ Sex) +
@@ -280,7 +280,7 @@ ggplot(data, aes(x = reorder(ParentName, Value, median), y = Value, col = factor
 
 ## Other useful functions
 
-The plot above makes use of the fields that are within the dataset by default when using the `fingertips_data()` function. There is also a `deprivation_decile()` function, which provides an indicator of deprivation for each geographical area (see `?deprivation_decile`). 
+The plot above makes use of the fields that are within the dataset by default when using the `fingertips_data()` function. There is also a `deprivation_decile()` function, which provides an indicator of deprivation for each geographical area (see `?deprivation_decile`).
 
 Not all indicators are available for every geography. To understand how indicators are mapped to different gegoraphies, there is a function `indicator_areatypes()`.
 
