@@ -35,43 +35,43 @@ test_that("area_type warning working correctly", {
 
 context("Area types by indicator")
 test_that("the indicator_areatypes function returns two column table", {
-        skip_if_offline()
+        skip_on_cran()
         expect_equal(ncol(indicator_areatypes()), 2)
 
 })
 
 test_that("indicator_areatypes works for filter on IndicatorID = 108", {
-        skip_if_offline()
+        skip_on_cran()
         expect_equal(ncol(indicator_areatypes(108)), 2)
 
 })
 
 test_that("indicator_areatypes works for filter on AreaTypeID = 201", {
-        skip_if_offline()
+        skip_on_cran()
         expect_equal(ncol(indicator_areatypes(AreaTypeID = 201)), 2)
 
 })
 
 test_that("indicator_areatypes throws error when multiple IndicatorIDs provided", {
-        skip_if_offline()
+        skip_on_cran()
         expect_error(indicator_areatypes(c(108, 20)), "Length of IndicatorID must be 0 or 1")
 
 })
 
 test_that("indicator_areatypes throws error when multiple AreaTypeIDs provided", {
-        skip_if_offline()
+        skip_on_cran()
         expect_error(indicator_areatypes(AreaTypeID = c(108, 20)), "Length of AreaTypeID must be 0 or 1")
 })
 
 context("category_types works correctly")
 test_that("category_types returns data frame", {
-        skip_if_offline()
+        skip_on_cran()
         expect_is(category_types(), "data.frame")
 
 })
 
 test_that("category_types returns 5 column table", {
-        skip_if_offline()
+        skip_on_cran()
         expect_equal(ncol(category_types()), 5)
 })
 
@@ -118,26 +118,26 @@ test_that("nearest_neighbours works for AreaTypeID = 154", {
 })
 
 test_that("nearest_neighbours error for incorrect AreaTypeID", {
-        skip_if_offline()
+        skip_on_cran()
         expect_error(nearest_neighbours(AreaCode = "E12000001", AreaTypeID = 6), "AreaTypeID must be one of 101, 102, 201, 202, 152 or 154")
 })
 
 test_that("nearest_neighbours error for incorrect AreaCode to AreaTypeID", {
-        skip_if_offline()
+        skip_on_cran()
         expect_error(nearest_neighbours(AreaCode = "E07000033", AreaTypeID = 152), "E07000033 not in AreaTypeID = 152")
 
 })
 
 
 test_that("nearest_neighbours error for non-specified measure for AreaTypeID 102", {
-        skip_if_offline()
+        skip_on_cran()
         expect_error(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102), "If using AreaTypeID = 102, you must specify measure \\(CIPFA or CSSN\\)")
 
 })
 
 
 test_that("nearest_neighbours error for incorrectly spelt measure for AreaTypeID", {
-        skip_if_offline()
+        skip_on_cran()
         expect_error(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CIPPA"), "Measure must be either CIPFA or CSSN")
 
 })
