@@ -1,6 +1,7 @@
 # fingertipsR 1.0.5.9000
 
 * fixed warning message for multiple IndicatorIDs passed to indicator_metadata()
+* fixed bug in indicator_metadata(IndicatorID = "All") - thanks Luke Bradley for pointing it out
 
 # fingertipsR 1.0.5 (2020-09-16)
 

@@ -76,8 +76,7 @@ indicator_metadata <- function(IndicatorID = NULL,
         if (!(is.null(IndicatorID))) {
                 AllIndicators <- indicators(path = path)
 
-                if (length(IndicatorID) == 1) {
-                        if (IndicatorID == "All") {
+                if (identical(IndicatorID, "All")) {
                                 dataurl <- paste0(path, "indicator_metadata/csv/all")
                                 indicator_metadata <- dataurl %>%
                                         GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
@@ -85,23 +84,23 @@ indicator_metadata <- function(IndicatorID = NULL,
                                                 type = "text/csv",
                                                 encoding = "UTF-8",
                                                 col_types = types)
-                        } else if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
-                                stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
-                        }
-                } else if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
+
+                } else if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0) {
                         stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
+                } else {
+                        path <- paste0(path, "indicator_metadata/csv/by_indicator_id?indicator_ids=")
+                        dataurl <- paste0(path,
+                                          paste(IndicatorID, collapse = "%2C"))
+                        if (!(is.null(ProfileID)) & length(ProfileID == 1))
+                                dataurl <- paste0(dataurl, "&profile_id=", ProfileID)
+                        indicator_metadata <- dataurl %>%
+                                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                                content("parsed",
+                                        type = "text/csv",
+                                        encoding = "UTF-8",
+                                        col_types = types)
                 }
-                path <- paste0(path, "indicator_metadata/csv/by_indicator_id?indicator_ids=")
-                dataurl <- paste0(path,
-                                  paste(IndicatorID, collapse = "%2C"))
-                if (!(is.null(ProfileID)) & length(ProfileID == 1))
-                        dataurl <- paste0(dataurl, "&profile_id=", ProfileID)
-                indicator_metadata <- dataurl %>%
-                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
-                        content("parsed",
-                                type = "text/csv",
-                                encoding = "UTF-8",
-                                col_types = types)
+
         } else if (!(is.null(DomainID))) {
                 AllProfiles <- profiles(path = path)
                 if (sum(AllProfiles$DomainID %in% DomainID) == 0){
