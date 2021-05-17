@@ -44,7 +44,6 @@ indicator_metadata <- function(IndicatorID = NULL,
                       `Definition` = "c",
                       `Rationale` = "c",
                       `Data source` = "c",
-                      `Indicator production` = "c",
                       `Indicator source` = "c",
                       `Methodology` = "c",
                       `Standard population/values` = "c",
@@ -68,7 +67,8 @@ indicator_metadata <- function(IndicatorID = NULL,
                       `Unit` = "c",
                       `Value type` = "c",
                       `Year type` = "c",
-                      `Polarity` = "c")
+                      `Polarity` = "c",
+                      `Impact of COVID-19` = "c")
 
         if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))

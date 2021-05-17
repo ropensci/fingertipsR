@@ -12,7 +12,7 @@ test_that("fingertips_redred should return an error", {
 numcols <- 26
 test_that(paste("fingertips_redred returns correct column number table for AreaTypeID 202"), {
         skip_on_cran()
-        expect_equal(ncol(fingertips_redred(90616, AreaTypeID = 202, Comparator = "England")), numcols)
+        expect_equal(ncol(fingertips_redred(30309, AreaTypeID = 402, Comparator = "England")), numcols)
         })
 
 test_that("fingertips_redred returns correct column number table for AreaTypeID 154", {
