@@ -1,3 +1,6 @@
+# fingertipsR 1.0.6.9000
+
+
 # fingertipsR 1.0.6 (2021-05-17)
 
 * fixed warning message for multiple IndicatorIDs passed to indicator_metadata()

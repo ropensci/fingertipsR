@@ -132,7 +132,7 @@ test_that("the correct url produced when multiple IndicatorIDs provided", {
         skip_on_cran()
         inds <- c(93081, 93275)
         expect_equal(fingertips_data(inds, ProfileID = 143, AreaTypeID = 3, url_only = TRUE),
-                     sprintf("https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=3&parent_area_type_id=101&profile_id=143&include_sortable_time_periods=yes",
+                     sprintf("https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=3&parent_area_type_id=402&profile_id=143&include_sortable_time_periods=yes",
                              inds))
 
 })
