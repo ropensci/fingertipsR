@@ -1,5 +1,6 @@
-# fingertipsR 1.0.6.9000
+# fingertipsR 1.0.7
 
+* No change to previous version
 
 # fingertipsR 1.0.6 (2021-05-17)
 
