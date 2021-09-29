@@ -2,7 +2,7 @@ library(testthat)
 library(fingertipsR)
 
 context("Test metadata")
-ncols <- 30
+ncols <- 29
 
 test_that("indicator_metadata errors when bad input to IndicatorID provided", {
         skip_on_cran()
