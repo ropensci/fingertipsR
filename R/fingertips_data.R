@@ -147,7 +147,8 @@ fingertips_data <- function(IndicatorID = NULL,
                                                 mutate(ParentAreaTypeID = 15) %>%
                                                 inner_join(indicator_profile_inputs, by = c("IndicatorID", "ProfileID"))
                                 } else {
-                                        at <- area_types()
+                                        at <- area_types() %>%
+                                                filter(!grepl("^Depr", ParentAreaTypeName))
                                         ind_ats <- indicator_areatypes() %>%
                                                 filter(IndicatorID %in% IndicatorIDs)
 
