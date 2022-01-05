@@ -75,59 +75,10 @@ test_that("category_types returns 5 column table", {
         expect_equal(ncol(category_types()), 5)
 })
 
-context("nearest_neighbours works for AreaTypeID = 102")
+context("nearest_neighbours")
 test_that("nearest_neighbours returns character vector", {
           skip_on_cran()
           expect_equal(nearest_neighbours("E09000001", 302), character())
-})
-
-test_that("nearest_neighbours works for AreaTypeID = 101", {
-        skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 101), "character")
-
-})
-
-test_that("nearest_neighbours works for AreaTypeID = 102", {
-        skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 102), "character")
-
-})
-
-test_that("nearest_neighbours works for AreaTypeID = 201", {
-        skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 201), "character")
-
-})
-
-test_that("nearest_neighbours works for AreaTypeID = 202", {
-        skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 202), "character")
-
-})
-
-test_that("nearest_neighbours works for AreaTypeID = 301", {
-        skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 301), "character")
-
-})
-
-test_that("nearest_neighbours works for AreaTypeID = 302", {
-        skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 302), "character")
-
-})
-
-
-test_that("nearest_neighbours works for AreaTypeID = 152", {
-        skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 152), "character")
-
-})
-
-test_that("nearest_neighbours works for AreaTypeID = 154", {
-        skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154), "character")
-
 })
 
 test_that("nearest_neighbours works for AreaTypeID = 166", {
