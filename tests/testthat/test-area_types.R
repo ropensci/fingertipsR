@@ -78,12 +78,18 @@ test_that("category_types returns 5 column table", {
 context("nearest_neighbours works for AreaTypeID = 102")
 test_that("nearest_neighbours returns character vector", {
           skip_on_cran()
-          expect_equal(nearest_neighbours("E09000001", 102, "CIPFA"), character())
+          expect_equal(nearest_neighbours("E09000001", 302), character())
 })
 
 test_that("nearest_neighbours works for AreaTypeID = 101", {
         skip_on_cran()
         expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 101), "character")
+
+})
+
+test_that("nearest_neighbours works for AreaTypeID = 102", {
+        skip_on_cran()
+        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 102), "character")
 
 })
 
@@ -99,15 +105,22 @@ test_that("nearest_neighbours works for AreaTypeID = 202", {
 
 })
 
-test_that("nearest_neighbours works for AreaTypeID = 102 (CIPFA)", {
+test_that("nearest_neighbours works for AreaTypeID = 301", {
         skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CIPFA"), "character")
+        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 301), "character")
 
 })
 
-test_that("nearest_neighbours works for AreaTypeID = 102 (CSSN)", {
+test_that("nearest_neighbours works for AreaTypeID = 302", {
         skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CSSN"), "character")
+        expect_is(nearest_neighbours(AreaCode = "E06000007", AreaTypeID = 302), "character")
+
+})
+
+
+test_that("nearest_neighbours works for AreaTypeID = 152", {
+        skip_on_cran()
+        expect_is(nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 152), "character")
 
 })
 
@@ -117,9 +130,15 @@ test_that("nearest_neighbours works for AreaTypeID = 154", {
 
 })
 
+test_that("nearest_neighbours works for AreaTypeID = 166", {
+        skip_on_cran()
+        expect_is(nearest_neighbours(AreaCode = "E38000004", AreaTypeID = 166), "character")
+
+})
+
 test_that("nearest_neighbours error for incorrect AreaTypeID", {
         skip_on_cran()
-        expect_error(nearest_neighbours(AreaCode = "E12000001", AreaTypeID = 6), "AreaTypeID must be one of 101, 102, 201, 202, 152 or 154")
+        expect_error(expect_is(nearest_neighbours(AreaCode = "E12000001", AreaTypeID = 6), "AreaTypeID not found. Use function `list_areatypeids()` to see available AreaTypeIDs."))
 })
 
 test_that("nearest_neighbours error for incorrect AreaCode to AreaTypeID", {
@@ -129,17 +148,17 @@ test_that("nearest_neighbours error for incorrect AreaCode to AreaTypeID", {
 })
 
 
-test_that("nearest_neighbours error for non-specified measure for AreaTypeID 102", {
-        skip_on_cran()
-        expect_error(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102), "If using AreaTypeID = 102, you must specify measure \\(CIPFA or CSSN\\)")
+#test_that("nearest_neighbours error for non-specified measure for AreaTypeID 102", {
+#        skip_on_cran()
+#        expect_error(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102), "If using AreaTypeID = 102, you must specify measure \\(CIPFA or CSSN\\)")
+#
+#})
 
-})
 
-
-test_that("nearest_neighbours error for incorrectly spelt measure for AreaTypeID", {
-        skip_on_cran()
-        expect_error(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CIPPA"), "Measure must be either CIPFA or CSSN")
-
-})
+#test_that("nearest_neighbours error for incorrectly spelt measure for AreaTypeID", {
+#        skip_on_cran()
+#        expect_error(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CIPPA"), "Measure must be either CIPFA or CSSN")
+#
+#})
 
 
