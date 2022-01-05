@@ -4,18 +4,17 @@
 \alias{nearest_neighbours}
 \title{Nearest neighbours}
 \usage{
-nearest_neighbours(AreaCode, AreaTypeID = 101, measure, path)
+nearest_neighbours(AreaCode, AreaTypeID, measure, path)
 }
 \arguments{
 \item{AreaCode}{Character vector, ONS area code of area of interest}
 
 \item{AreaTypeID}{AreaTypeID of the nearest neighbours (see
-\code{\link{area_types}}) for IDs. Only returns information on AreaTypeIDs
-101, 102, 201, 202, 152, 153 and 154}
+\code{\link{nearest_neighbour_areatypeids}}) for available IDs}
 
-\item{measure}{string; when AreaTypeID = 102 measure must be either "CIPFA"
-for CIPFA local authority nearest neighbours or "CSSN" for Children's
-services statistical neighbours}
+\item{measure}{deprecated. Previously a string; when AreaTypeID = 102 measure
+must be either "CIPFA" for CIPFA local authority nearest neighbours or
+"CSSN" for Children's services statistical neighbours}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}
@@ -34,24 +33,13 @@ Nearest Neighbours Model} or upper tier local authorities based on
 \href{https://www.gov.uk/government/publications/local-authority-interactive-tool-lait}{Children's
 services statistical neighbour benchmarking tool}
 }
-\details{
-Use AreaTypeID = 102 for the AreaTypeID related to Children's
-  services statistical neighbours
-}
 \examples{
 \dontrun{
 nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)}
 }
 \seealso{
-\code{\link{indicators}} for indicator lookups,
-  \code{\link{profiles}} for profile lookups,
-  \code{\link{deprivation_decile}} for deprivation decile lookups,
-  \code{\link{area_types}} for area type lookups,
-  \code{\link{category_types}} for category type lookups,
-  \code{\link{indicators_unique}} for unique indicatorids and their names,
-  \code{\link{indicator_areatypes}} for indicators by area types lookups and
-  \code{\link{indicator_order}} for the order indicators are presented on the
-  Fingertips website within a Domain
+\code{\link{nearest_neighbour_areatypeids}} for the AreaTypeIDs
+  available for this function
 
 Other lookup functions: 
 \code{\link{area_types}()},

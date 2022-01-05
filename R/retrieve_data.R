@@ -1,5 +1,6 @@
 #' @importFrom httr set_config config
 #' @importFrom utils setTxtProgressBar
+#' @import dplyr
 retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path) {
         if (missing(ProfileIDs)) {
                 ProfileIDs <- ""

@@ -189,15 +189,12 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #' \href{https://www.gov.uk/government/publications/local-authority-interactive-tool-lait}{Children's
 #' services statistical neighbour benchmarking tool}
 #'
-#' @details Use AreaTypeID = 102 for the AreaTypeID related to Children's
-#'   services statistical neighbours
 #' @return A character vector of area codes
 #' @param AreaTypeID AreaTypeID of the nearest neighbours (see
-#'   \code{\link{area_types}}) for IDs. Only returns information on AreaTypeIDs
-#'   101, 102, 201, 202, 152, 153 and 154
-#' @param measure string; when AreaTypeID = 102 measure must be either "CIPFA"
-#'   for CIPFA local authority nearest neighbours or "CSSN" for Children's
-#'   services statistical neighbours
+#'   \code{\link{nearest_neighbour_areatypeids}}) for available IDs
+#' @param measure deprecated. Previously a string; when AreaTypeID = 102 measure
+#'   must be either "CIPFA" for CIPFA local authority nearest neighbours or
+#'   "CSSN" for Children's services statistical neighbours
 #' @inheritParams fingertips_data
 #' @import dplyr
 #' @importFrom utils head
@@ -207,15 +204,8 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #' nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)}
 #' @export
 #' @family lookup functions
-#' @seealso \code{\link{indicators}} for indicator lookups,
-#'   \code{\link{profiles}} for profile lookups,
-#'   \code{\link{deprivation_decile}} for deprivation decile lookups,
-#'   \code{\link{area_types}} for area type lookups,
-#'   \code{\link{category_types}} for category type lookups,
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names,
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
-#'   \code{\link{indicator_order}} for the order indicators are presented on the
-#'   Fingertips website within a Domain
+#' @seealso \code{\link{nearest_neighbour_areatypeids}} for the AreaTypeIDs
+#'   available for this function
 nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
 
         if (missing(path)) path <- fingertips_endpoint()
@@ -228,7 +218,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
 
         df <- nn_table %>%
                 select(.data$NeighbourTypeId, .data$ApplicableAreaTypes) %>%
-                tibble::deframe() %>%
+                fingertips_deframe() %>%
                 bind_rows(.id = "NeighbourTypeId") %>%
                 mutate(NeighbourTypeId = as.integer(.data$NeighbourTypeId)) %>%
                 left_join(nn_table, by = "NeighbourTypeId") %>%
@@ -239,7 +229,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
         val <- if(AreaTypeID %in% df$AreaTypeID) {
                 df$NeighbourTypeId[df$AreaTypeID == AreaTypeID]
         } else {
-                NA
+                stop("AreaTypeID not found. Use function `nearest_neighbour_areatypeids()` to see available AreaTypeIDs.")
         }
 
         if (!(missing(measure))) {
@@ -256,15 +246,19 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
                                     ParentAreaTypeID)) %>%
                 get_fingertips_api() %>%
                 unlist(use.names = FALSE)
+
         areacheck <- areacheck[grepl("^E", areacheck)]
-         if (!(AreaCode %in% areacheck)) stop(paste0(AreaCode, " not in AreaTypeID = ", AreaTypeID))
-         if (is.na(val)) stop("AreaTypeID not found. Use function `areatypeid_table()` to see available AreaTypeIDs.")
+
+        # Check if AreaCode in the AreaTypeID
+        if (!(AreaCode %in% areacheck)) stop(paste0(AreaCode, " not in AreaTypeID = ", AreaTypeID))
+
         path <- paste0(path,
                        sprintf("areas/by_parent_area_code?area_type_id=%s&parent_area_code=nn-%s-%s",
                                AreaTypeID, val, AreaCode))
         set_config(config(ssl_verifypeer = 0L))
         nearest_neighbours <- path %>%
                 get_fingertips_api()
+
         if (length(nearest_neighbours) != 0) {
                 nearest_neighbours <- nearest_neighbours %>%
                         pull(Code)
@@ -273,10 +267,6 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
         }
         return(nearest_neighbours)
 }
-
-
-
-
 
 areas_by_profile <- function(AreaTypeID, ProfileID, path) {
         set_config(config(ssl_verifypeer = 0L))
@@ -315,9 +305,18 @@ areas_by_profile <- function(AreaTypeID, ProfileID, path) {
         return(areas_by_profile)
 }
 
-
+#' Nearest neighbours area type ids
+#'
+#' Outputs a table of AreaTypeIDs available for the nearest_neighbour function
+#' @return table of AreaTypeIDs
 #' @importFrom rlang .data
-list_areatypeids <- function() {
+#' @export
+#' @seealso \code{\link{nearest_neighbours}} to access the geogaphy codes of the
+#'   nearest neighbours for a locality
+#' @examples
+#' \dontrun{
+#' nearest_neighbour_areatypeids()}
+nearest_neighbour_areatypeids <- function() {
 
         url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
 
@@ -326,13 +325,13 @@ list_areatypeids <- function() {
 
         df <- areatypeid_table %>%
                 select(.data$NeighbourTypeId, .data$ApplicableAreaTypes) %>%
-                tibble::deframe() %>%
+                fingertips_deframe() %>%
                 bind_rows(.id = "NeighbourTypeId") %>%
                 mutate(NeighbourTypeId = as.integer(.data$NeighbourTypeId)) %>%
                 left_join(areatypeid_table, by = "NeighbourTypeId") %>%
                 dplyr::select(AreaTypeID = Id)
                               #NeighbourTypeId,
                               #measure)
-        print(df)
+        return(df)
 }
 
