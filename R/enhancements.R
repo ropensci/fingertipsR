@@ -9,6 +9,7 @@
 #' @param Comparator String, either "England" or "Parent" to determine which
 #'   field to compare the spot value significance to
 #' @param ... Parameters provided to fingertips_data()
+#' @importFrom rlang .data
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
@@ -29,9 +30,13 @@ fingertips_redred <- function(Comparator = "England", ...) {
                 stop("Comparator must be either England, Parent or Goal")
         }
         fingertips_redred <- fingertips_redred %>%
-                group_by(IndicatorID, Sex, Age, CategoryType, Category) %>%
-                filter(TimeperiodSortable == max(TimeperiodSortable) &
-                               grepl("[Ww]orse", RecentTrend) &
+                group_by(.data$IndicatorID,
+                         .data$Sex,
+                         .data$Age,
+                         .data$CategoryType,
+                         .data$Category) %>%
+                filter(.data$TimeperiodSortable == max(.data$TimeperiodSortable) &
+                               grepl("[Ww]orse", .data$RecentTrend) &
                                grepl("[Ww]orse", !!as.name(filter_field)))
         return(fingertips_redred)
 }

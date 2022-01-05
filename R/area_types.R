@@ -27,6 +27,7 @@
 #' area_types(AreaTypeID = 152)}
 #' @import dplyr
 #' @importFrom stats complete.cases
+#' @importFrom rlang .data
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -55,14 +56,14 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
         parentAreas <- parentAreasNoNames
 
         parentAreas <- bind_rows(parentAreas, .id = "t") %>%
-                select(t, Id, Name) %>%
-                rename(AreaTypeID = t,
-                       ParentAreaTypeID = Id,
-                       ParentAreaTypeName = Name) %>%
-                mutate(AreaTypeID = as.numeric(AreaTypeID),
-                       ParentAreaTypeID = as.numeric(ParentAreaTypeID))
+                select(.data$t, .data$Id, .data$Name) %>%
+                rename(AreaTypeID = .data$t,
+                       ParentAreaTypeID = .data$Id,
+                       ParentAreaTypeName = .data$Name) %>%
+                mutate(AreaTypeID = as.numeric(.data$AreaTypeID),
+                       ParentAreaTypeID = as.numeric(.data$ParentAreaTypeID))
         area_types <- left_join(area_types, parentAreas, by = c("AreaTypeID" = "AreaTypeID")) %>%
-                arrange(AreaTypeID)
+                arrange(.data$AreaTypeID)
         if (!is.null(AreaTypeName)) {
                 AreaTypeName <- paste(AreaTypeName, collapse = "|")
                 area_types <- area_types[grep(tolower(AreaTypeName),
@@ -79,9 +80,9 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
         if (!is.null(ProfileID)) {
                 areas_in_profile <- paste0(path, "area_types?profile_ids=", ProfileID) %>%
                         get_fingertips_api() %>%
-                        pull(Id)
+                        pull(.data$Id)
                 area_types <- area_types %>%
-                        filter(AreaTypeID %in% areas_in_profile)
+                        filter(.data$AreaTypeID %in% areas_in_profile)
         }
         return(area_types[complete.cases(area_types),])
 }
@@ -93,6 +94,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
 #' @inheritParams indicators
 #' @return A data frame of category type ids and their descriptions
 #' @import dplyr
+#' @importFrom rlang .data
 #' @examples
 #' \dontrun{
 #' # Returns the deprivation category types
@@ -117,11 +119,12 @@ category_types <- function(path) {
         category_types <- paste0(path,"category_types") %>%
                 get_fingertips_api()
         category_names <- category_types %>%
-                select(Id, CategoryType = Name)
+                select(.data$Id,
+                       CategoryType = .data$Name)
         category_types <- category_types %>%
-                pull(Categories) %>%
-                bind_rows %>%
-                as_tibble %>%
+                pull(.data$Categories) %>%
+                bind_rows() %>%
+                as_tibble() %>%
                 left_join(category_names, by = c("CategoryTypeId" = "Id"))
         return(category_types)
 }
@@ -172,7 +175,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
         set_config(config(ssl_verifypeer = 0L))
         areatypes_by_indicators <- path %>%
                 get_fingertips_api() %>%
-                as_tibble
+                as_tibble()
         names(areatypes_by_indicators) <- c("IndicatorID", "AreaTypeID")
         return(areatypes_by_indicators)
 }
@@ -244,7 +247,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
                 val <- NA
         }
         ParentAreaTypeID <- area_types(AreaTypeID = AreaTypeID) %>%
-                pull(ParentAreaTypeID) %>%
+                pull(.data$ParentAreaTypeID) %>%
                 head(1)
 
         areacheck <- paste0(path,
@@ -264,7 +267,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
                 get_fingertips_api()
         if (length(nearest_neighbours) != 0) {
                 nearest_neighbours <- nearest_neighbours %>%
-                        pull(Code)
+                        pull(.data$Code)
         } else {
                 nearest_neighbours <- character()
         }
@@ -298,10 +301,13 @@ areas_by_profile <- function(AreaTypeID, ProfileID, path) {
         names(areas_by_profile) <- NULL
         areas_by_profile <- bind_rows(areas_by_profile) %>%
                 mutate(AreaTypeID = AreaTypeID_field) %>%
-                select(IndicatorID = IID, AreaTypeID, DomainID = GroupId)
+                select(IndicatorID = .data$IID,
+                       .data$AreaTypeID,
+                       DomainID = .data$GroupId)
         profs <- profiles() %>%
-                filter(DomainID %in% areas_by_profile$DomainID) %>%
-                select(DomainID, ProfileID)
+                filter(.data$DomainID %in% areas_by_profile$DomainID) %>%
+                select(.data$DomainID,
+                       .data$ProfileID)
         areas_by_profile <- areas_by_profile %>%
                 left_join(profs, by = "DomainID") %>%
                 unique() %>%

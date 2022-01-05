@@ -19,7 +19,7 @@
 #' deprivation_decile(120, 2019)}
 #' @return A lookup table providing deprivation decile and area code
 #' @import dplyr
-#' @importFrom rlang  .data
+#' @importFrom rlang .data
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -60,17 +60,17 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
                         stop("AreaTypeID unavailable for 2015")
                 }
                 IndicatorID <- accepted_areatypes_2015 %>%
-                        filter(AreaTypeID == area_type_filter) %>%
+                        filter(.data$AreaTypeID == area_type_filter) %>%
                         slice(1) %>%
-                        pull(IndicatorID)
+                        pull(.data$IndicatorID)
         } else if (Year == 2019) {
                 if (!(AreaTypeID %in% accepted_areatypes_2019$AreaTypeID)) {
                         stop("AreaTypeID unavailable for 2019")
                 }
                 IndicatorID <- accepted_areatypes_2019 %>%
-                        filter(AreaTypeID == area_type_filter) %>%
+                        filter(.data$AreaTypeID == area_type_filter) %>%
                         slice(1) %>%
-                        pull(IndicatorID)
+                        pull(.data$IndicatorID)
         }
 
 
@@ -81,14 +81,14 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
         deprivation_decile <- fingertips_data(IndicatorID = IndicatorID,
                                               AreaTypeID = AreaTypeID,
                                               path = path) %>%
-                group_by(AreaType) %>%
+                group_by(.data$AreaType) %>%
                 mutate(records = n()) %>%
                 ungroup() %>%
                 filter(.data$records == max(.data$records),
-                       Timeperiod == Year) %>%
-                select(AreaCode, Value) %>%
-                rename(IMDscore = Value) %>%
-                mutate(decile = as.integer(11 - ntile(IMDscore, 10)))
+                       .data$Timeperiod == Year) %>%
+                select(.data$AreaCode, .data$Value) %>%
+                rename(IMDscore = .data$Value) %>%
+                mutate(decile = as.integer(11 - ntile(.data$IMDscore, 10)))
 
         return(deprivation_decile)
 }
