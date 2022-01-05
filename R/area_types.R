@@ -330,8 +330,7 @@ nearest_neighbour_areatypeids <- function() {
                 mutate(NeighbourTypeId = as.integer(.data$NeighbourTypeId)) %>%
                 left_join(areatypeid_table, by = "NeighbourTypeId") %>%
                 dplyr::select(AreaTypeID = Id)
-                              #NeighbourTypeId,
-                              #measure)
-        return(df)
+
+                return(df)
 }
 
