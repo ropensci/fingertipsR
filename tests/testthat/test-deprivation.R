@@ -1,7 +1,6 @@
 library(testthat)
 library(fingertipsR)
 
-context("Deprivation extract")
 
 dep_cols <- 3
 test_that("the number of columns of deprivation decile function are as expected", {

@@ -1,8 +1,6 @@
 library(testthat)
 library(fingertipsR)
 
-context("fingertips data extract")
-
 ncols <- 26
 
 test_that("error message for fingertips_data when no inputs provided", {

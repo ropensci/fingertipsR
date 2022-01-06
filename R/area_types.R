@@ -217,7 +217,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
         url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
 
         nn_table <- get_fingertips_api(url) %>%
-                rename(measure = Name)
+                rename(measure = .data$Name)
 
         df <- nn_table %>%
                 select(.data$NeighbourTypeId, .data$ApplicableAreaTypes) %>%
@@ -225,9 +225,9 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
                 bind_rows(.id = "NeighbourTypeId") %>%
                 mutate(NeighbourTypeId = as.integer(.data$NeighbourTypeId)) %>%
                 left_join(nn_table, by = "NeighbourTypeId") %>%
-                dplyr::select(AreaTypeID = Id,
+                dplyr::select(AreaTypeID = .data$Id,
                               .data$NeighbourTypeId,
-                              measure)
+                              .data$measure)
 
         val <- if(AreaTypeID %in% df$AreaTypeID) {
                 df$NeighbourTypeId[df$AreaTypeID == AreaTypeID]
@@ -327,7 +327,7 @@ nearest_neighbour_areatypeids <- function() {
         url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
 
         areatypeid_table <- get_fingertips_api(url) %>%
-                rename(measure = Name)
+                rename(measure = .data$Name)
 
         df <- areatypeid_table %>%
                 select(.data$NeighbourTypeId, .data$ApplicableAreaTypes) %>%
@@ -335,7 +335,7 @@ nearest_neighbour_areatypeids <- function() {
                 bind_rows(.id = "NeighbourTypeId") %>%
                 mutate(NeighbourTypeId = as.integer(.data$NeighbourTypeId)) %>%
                 left_join(areatypeid_table, by = "NeighbourTypeId") %>%
-                dplyr::select(AreaTypeID = Id)
+                dplyr::select(AreaTypeID = .data$Id)
 
                 return(df)
 }

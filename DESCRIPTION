@@ -5,7 +5,7 @@ Title: Fingertips Data for Public Health
 Description: Fingertips (<http://fingertips.phe.org.uk/>) contains data for many indicators of public health in England. The underlying data is now more easily accessible by making use of the API.
 Maintainer: Sebastian Fox <sebastian.fox@phe.gov.uk>
 Depends: R (>= 3.4.0)
-Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")),
+Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@dhsc.gov.uk", c("aut", "cre")),
     person("Julian", "Flowers", , "julian.flowers@phe.gov.uk", c("aut","ctb")),
     person("Simon", "Thelwall", , "simon.thelwall@phe.gov.uk", c("ctb"), 
       comment = c(ORCID = "0000-0002-0434-2724")),
