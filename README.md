@@ -1,10 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Build
-Status](https://travis-ci.org/ropensci/fingertipsR.svg)](https://travis-ci.org/ropensci/fingertipsR)
-[![Coverage
-Status](https://coveralls.io/repos/github/ropensci/fingertipsR/badge.svg?branch=master)](https://coveralls.io/github/ropensci/fingertipsR?branch=master)
+[![codecov](https://codecov.io/gh/ropensci/fingertipsR/branch/master/graph/badge.svg?token=MpVheRqaRo)](https://codecov.io/gh/ropensci/fingertipsR)
 [![](https://badges.ropensci.org/168_status.svg)](https://github.com/ropensci/software-review/issues/168)
 [![R build
 status](https://github.com/ropensci/fingertipsR/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/fingertipsR/actions)
@@ -61,14 +58,14 @@ profs <- profiles()
 profs <- profs[grepl("Public Health Outcomes Framework", profs$ProfileName),]
 head(profs)
 #> # A tibble: 6 x 4
-#>   ProfileID ProfileName                   DomainID DomainName                   
-#>       <int> <chr>                            <int> <chr>                        
-#> 1        19 Public Health Outcomes Fra~    1000049 A. Overarching indicators    
-#> 2        19 Public Health Outcomes Fra~    1000041 B. Wider determinants of hea~
-#> 3        19 Public Health Outcomes Fra~    1000042 C. Health improvement        
-#> 4        19 Public Health Outcomes Fra~    1000043 D. Health protection         
-#> 5        19 Public Health Outcomes Fra~    1000044 E. Healthcare and premature ~
-#> 6        19 Public Health Outcomes Fra~ 1938132983 Supporting information
+#>   ProfileID ProfileName                        DomainID DomainName              
+#>       <int> <chr>                                 <int> <chr>                   
+#> 1        19 Public Health Outcomes Framework    1000049 A. Overarching indicato~
+#> 2        19 Public Health Outcomes Framework    1000041 B. Wider determinants o~
+#> 3        19 Public Health Outcomes Framework    1000042 C. Health improvement   
+#> 4        19 Public Health Outcomes Framework    1000043 D. Health protection    
+#> 5        19 Public Health Outcomes Framework    1000044 E. Healthcare and prema~
+#> 6        19 Public Health Outcomes Framework 1938132983 Supporting information
 ```
 
 This table shows that the `ProfileID` for the Public Health Outcomes
@@ -149,10 +146,10 @@ browseVignettes("fingertipsR")
 
 ## More information
 
-  - Please note that the ‘fingertipsR’ project is released with a
+-   Please note that the ‘fingertipsR’ project is released with a
     [Contributor Code of
     Conduct](https://github.com/ropensci/fingertipsR/blob/master/CODE_OF_CONDUCT.md).
     By contributing to this project, you agree to abide by its terms.
-  - License: [GPL-3](https://opensource.org/licenses/GPL-3.0)
+-   License: [GPL-3](https://opensource.org/licenses/GPL-3.0)
 
-[![ropensci\_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)
+[![ropensci_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)

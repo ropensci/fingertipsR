@@ -6,7 +6,6 @@ monitoring/
 changelog/
 cran-comments.md
 ^\.travis\.yml$
-^README\.Rmd$
 ^README-.*\.png$
 \.ssh/*
 ^revdep$
@@ -18,6 +17,7 @@ vignettes/references.bib
 ^CODE_OF_CONDUCT\.md$
 ^CRAN-RELEASE$
 ^CONTRIBUTING\.md$
+README.Rmd
 
 paper/
 _pkgdown.yml
