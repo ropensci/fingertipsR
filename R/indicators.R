@@ -6,6 +6,7 @@
 #' @param DomainID Numeric vector, id of domains of interest
 #' @param path String; Fingertips API address. Function will default to the
 #'   correct address
+#' @importFrom rlang .data
 #' @examples
 #' \dontrun{
 #' # Returns a complete data frame of indicators and their domains and profiles
@@ -54,16 +55,22 @@ indicators <- function(ProfileID = NULL,
         df <- url %>%
                 lapply(function(dom) {
                         dom %>%
-                                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                                GET(use_proxy(ie_get_proxy_for_url(),
+                                              username = "",
+                                              password = "",
+                                              auth = "ntlm")) %>%
                                 content("text") %>%
                                 fromJSON(flatten = TRUE)
                 }) %>%
-                bind_rows %>%
+                bind_rows() %>%
                 left_join(tempdf, by = c("GroupId" = "DomainID")) %>%
-                select(IndicatorID = IndicatorId, IndicatorName,
-                       DomainID = GroupId, DomainName,
-                       ProfileID, ProfileName) %>%
-                mutate(IndicatorName = factor(IndicatorName)) %>%
+                select(IndicatorID = .data$IndicatorId,
+                       .data$IndicatorName,
+                       DomainID = .data$GroupId,
+                       .data$DomainName,
+                       .data$ProfileID,
+                       .data$ProfileName) %>%
+                mutate(IndicatorName = factor(.data$IndicatorName)) %>%
                 as_tibble()
 
         return(df)
@@ -108,6 +115,7 @@ indicators_unique <- function(ProfileID = NULL,
 #' are ordered on the Fingertips website.
 #' @return A data frame of indicator ids and sequence number
 #' @inheritParams fingertips_data
+#' @importFrom rlang .data
 #' @examples
 #' \dontrun{
 #' indicator_order(DomainID = 1938133161, AreaTypeID = 102, ParentAreaTypeID = 6)}
@@ -134,10 +142,13 @@ indicator_order <- function(DomainID,
                                  sprintf("parent_to_child_areas?child_area_type_id=%s&parent_area_type_id=%s",
                                          AreaTypeID,
                                          ParentAreaTypeID)) %>%
-                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                GET(use_proxy(ie_get_proxy_for_url(),
+                              username = "",
+                              password = "",
+                              auth = "ntlm")) %>%
                 content("text") %>%
-                fromJSON %>%
-                names
+                fromJSON() %>%
+                names()
         ParentAreaCode <- ParentAreaCode[grepl("^E", ParentAreaCode)][1]
         domid <- DomainID
         ProfileID <- profiles(path = path) %>%
@@ -153,14 +164,17 @@ indicator_order <- function(DomainID,
                                ProfileID, DomainID, AreaTypeID, ParentAreaCode))
         set_config(config(ssl_verifypeer = 0L))
         indicator_order <- path %>%
-                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                GET(use_proxy(ie_get_proxy_for_url(),
+                              username = "",
+                              password = "",
+                              auth = "ntlm")) %>%
                 content("text") %>%
-                fromJSON %>%
-                select(IID, Sequence, Sex, Age)
+                fromJSON() %>%
+                select(.data$IID, .data$Sequence, .data$Sex, .data$Age)
         indicator_order$Sex <- indicator_order$Sex$Name
         indicator_order$Age <- indicator_order$Age$Name
         indicator_order <- indicator_order %>%
-                rename(IndicatorID = IID) %>%
-                as_tibble
+                rename(IndicatorID = .data$IID) %>%
+                as_tibble()
         return(indicator_order)
 }

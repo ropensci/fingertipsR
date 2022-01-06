@@ -32,6 +32,7 @@
 #' @param url_only TRUE or FALSE, return only the url of the api call as a
 #'   character vector
 #' @importFrom utils txtProgressBar
+#' @importFrom rlang .data
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
@@ -117,59 +118,62 @@ fingertips_data <- function(IndicatorID = NULL,
                         if (is.null(IndicatorID)) {
                                 if (!is.null(ProfileID)) {
                                         ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
-                                                select(IndicatorID, ProfileID)
+                                                select(.data$IndicatorID, .data$ProfileID)
 
                                 } else if (!is.null(DomainID)) {
                                         ind_to_prof <- indicators(DomainID = DomainIDs, path = path) %>%
-                                                select(IndicatorID, ProfileID)
+                                                select(.data$IndicatorID, .data$ProfileID)
                                         ProfileIDs <- unique(ind_to_prof$ProfileID)
 
                                 }
                                 ats <- indicator_areatypes() %>%
-                                        filter(IndicatorID %in% unique(ind_to_prof$IndicatorID))
+                                        filter(.data$IndicatorID %in% unique(ind_to_prof$IndicatorID))
                                 ind_to_prof <- ind_to_prof %>%
                                         left_join(ats, by = "IndicatorID")
                                 ind_ats <- areas_by_profile(ind_to_prof$AreaTypeID,
                                                             ind_to_prof$ProfileID,
                                                             path)
                                 if (!is.null(DomainID)) ind_ats <- ind_ats %>%
-                                        filter(DomainID %in% DomainIDs)
+                                        filter(.data$DomainID %in% DomainIDs)
                         } else {
                                 if (!is.null(ProfileID)) {
                                         ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
-                                                select(IndicatorID, ProfileID) %>%
-                                                filter(IndicatorID %in% IndicatorIDs)
+                                                select(.data$IndicatorID, .data$ProfileID) %>%
+                                                filter(.data$IndicatorID %in% IndicatorIDs)
                                         ats <- indicator_areatypes()
                                         indicator_profile_inputs <- data.frame(IndicatorID = IndicatorIDs,
                                                                                ProfileID = ProfileIDs)
                                         ind_ats <- ind_to_prof %>%
                                                 left_join(ats, by = "IndicatorID") %>%
                                                 mutate(ParentAreaTypeID = 15) %>%
-                                                inner_join(indicator_profile_inputs, by = c("IndicatorID", "ProfileID"))
+                                                inner_join(indicator_profile_inputs,
+                                                           by = c("IndicatorID", "ProfileID"))
                                 } else {
                                         at <- area_types() %>%
-                                                filter(!grepl("^Depr", ParentAreaTypeName))
+                                                filter(!grepl("^Depr", .data$ParentAreaTypeName))
                                         ind_ats <- indicator_areatypes() %>%
-                                                filter(IndicatorID %in% IndicatorIDs)
+                                                filter(.data$IndicatorID %in% IndicatorIDs)
 
                                         # some area types only exist in ParentAreaTypeID - this identifies those
                                         parent_only <- at %>%
                                                 mutate(parent_only = !(ParentAreaTypeID %in% unique(at$AreaTypeID))) %>%
                                                 filter(parent_only == TRUE,
                                                        AreaTypeID %in% unique(ind_ats$AreaTypeID)) %>%
-                                                select(-parent_only) %>%
-                                                group_by(ParentAreaTypeID) %>%
+                                                select(!c(.data$parent_only)) %>%
+                                                group_by(.data$ParentAreaTypeID) %>%
                                                 slice(1) %>%
                                                 ungroup() %>%
-                                                select(AreaTypeID, ParentAreaTypeID)
+                                                select(.data$AreaTypeID, .data$ParentAreaTypeID)
                                         remove_ats <- unique(c(parent_only$AreaTypeID,
                                                                parent_only$ParentAreaTypeID))
                                         at <- at %>%
-                                                filter(AreaTypeID %in% unique(ind_ats$AreaTypeID),
-                                                       ParentAreaTypeID %in% c(15, unique(ind_ats$AreaTypeID))) %>%
-                                                filter(!(AreaTypeID %in% remove_ats),
-                                                       !(ParentAreaTypeID %in% remove_ats)) %>%
-                                                select(AreaTypeID) %>%
+                                                filter(.data$AreaTypeID %in%
+                                                           unique(ind_ats$AreaTypeID),
+                                                       .data$ParentAreaTypeID %in%
+                                                           c(15, unique(ind_ats$AreaTypeID))) %>%
+                                                filter(!(.data$AreaTypeID %in% remove_ats),
+                                                       !(.data$ParentAreaTypeID %in% remove_ats)) %>%
+                                                select(.data$AreaTypeID) %>%
                                                 unique() %>%
                                                 mutate(ParentAreaTypeID = 15) %>%
                                                 bind_rows(parent_only)
@@ -189,7 +193,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                                         paste0(path, "areas/by_area_type?area_type_id=", i) %>%
                                                                 get_fingertips_api()
                                                 }) %>%
-                                                bind_rows
+                                                bind_rows()
                                         if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
                                                 stop("Area code not contained in AreaTypeID.")
                                         }
@@ -198,7 +202,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         }
                         if (is.null(ParentAreaTypeID)) {
                                 areaTypes <- area_types(AreaTypeID = AreaTypeID, path = path) %>%
-                                        group_by(AreaTypeID) %>%
+                                        group_by(.data$AreaTypeID) %>%
                                         filter(row_number() == 1)
                                 ParentAreaTypeIDs <- unique(areaTypes$ParentAreaTypeID)
                         } else {
@@ -313,18 +317,24 @@ fingertips_data <- function(IndicatorID = NULL,
                         polarities <- indicator_metadata(inds,
                                                          ProfileID = ProfileIDs,
                                                          path = path) %>%
-                                select(IndicatorID, Polarity)
+                                select(.data$IndicatorID, .data$Polarity)
 
                 } else {
                         polarities <- indicator_metadata(inds,
                                                          path = path) %>%
-                                select(IndicatorID, Polarity)
+                                select(.data$IndicatorID, .data$Polarity)
 
                 }
                 fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%
-                        group_by(IndicatorID, Timeperiod, Sex, Age, CategoryType, Category, AreaType) %>%
-                        mutate(Rank = rank(Value, na.last = "keep"),
-                               AreaValuesCount = sum(!is.na(Value))) %>%
+                        group_by(.data$IndicatorID,
+                                 .data$Timeperiod,
+                                 .data$Sex,
+                                 .data$Age,
+                                 .data$CategoryType,
+                                 .data$Category,
+                                 .data$AreaType) %>%
+                        mutate(Rank = rank(.data$Value, na.last = "keep"),
+                               AreaValuesCount = sum(!is.na(.data$Value))) %>%
                         ungroup()
 
         }
@@ -335,11 +345,11 @@ fingertips_data <- function(IndicatorID = NULL,
 
         if (nrow(fingertips_data) > 0){
                 fingertips_data <- fingertips_data[fingertips_data$AreaType != fingertips_data$ParentName,]
-                fingertips_data[fingertips_data==""] <- NA
+                fingertips_data[fingertips_data == ""] <- NA
 
                 if (categorytype == FALSE) {
                         fingertips_data <- fingertips_data %>%
-                                filter(is.na(CategoryType))
+                                filter(is.na(.data$CategoryType))
                 }
         }
         return(unique(fingertips_data))
