@@ -6,7 +6,9 @@ on:
     branches:
       - main
       - master
-
+  pull_request:
+    branches:
+      - master
 
 name: R-CMD-check
 

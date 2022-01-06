@@ -21,6 +21,7 @@
 #' @importFrom httr GET content set_config config use_proxy
 #' @importFrom curl ie_get_proxy_for_url
 #' @importFrom readr read_csv cols
+#' @importFrom rlang .data
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups,
@@ -78,7 +79,10 @@ indicator_metadata <- function(IndicatorID = NULL,
                 if (identical(IndicatorID, "All")) {
                                 dataurl <- paste0(path, "indicator_metadata/csv/all")
                                 indicator_metadata <- dataurl %>%
-                                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                                        GET(use_proxy(ie_get_proxy_for_url(),
+                                                      username = "",
+                                                      password = "",
+                                                      auth = "ntlm")) %>%
                                         content("parsed",
                                                 type = "text/csv",
                                                 encoding = "UTF-8",
@@ -93,7 +97,10 @@ indicator_metadata <- function(IndicatorID = NULL,
                         if (!(is.null(ProfileID)) & length(ProfileID == 1))
                                 dataurl <- paste0(dataurl, "&profile_id=", ProfileID)
                         indicator_metadata <- dataurl %>%
-                                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                                GET(use_proxy(ie_get_proxy_for_url(),
+                                              username = "",
+                                              password = "",
+                                              auth = "ntlm")) %>%
                                 content("parsed",
                                         type = "text/csv",
                                         encoding = "UTF-8",
@@ -109,13 +116,16 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- paste0(path, DomainID) %>%
                         lapply(function(dataurl) {
                                 dataurl %>%
-                                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                                        GET(use_proxy(ie_get_proxy_for_url(),
+                                                      username = "",
+                                                      password = "",
+                                                      auth = "ntlm")) %>%
                                         content("parsed",
                                                 type = "text/csv",
                                                 encoding = "UTF-8",
                                                 col_types = types)
                         }) %>%
-                        bind_rows
+                        bind_rows()
         } else if (!(is.null(ProfileID))) {
                 AllProfiles <- profiles(path = path)
                 if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
@@ -125,13 +135,16 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- paste0(path, ProfileID) %>%
                         lapply(function(dataurl) {
                                 dataurl %>%
-                                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
+                                        GET(use_proxy(ie_get_proxy_for_url(),
+                                                      username = "",
+                                                      password = "",
+                                                      auth = "ntlm")) %>%
                                         content("parsed",
                                                 type = "text/csv",
                                                 encoding = "UTF-8",
                                                 col_types = types)
                         }) %>%
-                        bind_rows
+                        bind_rows()
         } else {
                 stop("One of IndicatorID, DomainID or ProfileID must be populated")
         }
