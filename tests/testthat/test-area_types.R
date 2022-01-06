@@ -83,33 +83,36 @@ test_that("nearest_neighbours returns character vector", {
 
 test_that("nearest_neighbours works for AreaTypeID = 166", {
         skip_on_cran()
-        expect_is(nearest_neighbours(AreaCode = "E38000004", AreaTypeID = 166), "character")
+        expect_is(nearest_neighbours(AreaCode = "E38000004", AreaTypeID = 166),
+                  "character")
 
+})
+
+test_that("nearest_neighbour_areatypeids provides a one column table", {
+        skip_on_cran()
+        expect_equal(ncol(nearest_neighbour_areatypeids(), 1))
+})
+
+test_that("nearest_neighbours warning when measure provided", {
+        skip_on_cran()
+        expect_warning(nearest_neighbours(AreaCode = "E06000015", AreaTypeID = 102, measure = "CIPFA"),
+                       "Measure argument is now deprecated.")
 })
 
 test_that("nearest_neighbours error for incorrect AreaTypeID", {
         skip_on_cran()
-        expect_error(expect_is(nearest_neighbours(AreaCode = "E12000001", AreaTypeID = 6), "AreaTypeID not found. Use function `list_areatypeids()` to see available AreaTypeIDs."))
+        expect_error(nearest_neighbours(AreaCode = "E12000001", AreaTypeID = 6),
+                     "AreaTypeID not found. Use function `list_areatypeids()` to see available AreaTypeIDs.")
 })
 
 test_that("nearest_neighbours error for incorrect AreaCode to AreaTypeID", {
         skip_on_cran()
-        expect_error(nearest_neighbours(AreaCode = "E07000033", AreaTypeID = 152), "E07000033 not in AreaTypeID = 152")
+        expect_error(nearest_neighbours(AreaCode = "E07000033", AreaTypeID = 152),
+                     "E07000033 not in AreaTypeID = 152")
 
 })
 
 
-#test_that("nearest_neighbours error for non-specified measure for AreaTypeID 102", {
-#        skip_on_cran()
-#        expect_error(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102), "If using AreaTypeID = 102, you must specify measure \\(CIPFA or CSSN\\)")
-#
-#})
 
-
-#test_that("nearest_neighbours error for incorrectly spelt measure for AreaTypeID", {
-#        skip_on_cran()
-#        expect_error(nearest_neighbours(AreaCode = "E10000007", AreaTypeID = 102, measure = "CIPPA"), "Measure must be either CIPFA or CSSN")
-#
-#})
 
 
