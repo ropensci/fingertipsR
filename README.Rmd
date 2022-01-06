@@ -1,0 +1,93 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+[![codecov](https://codecov.io/gh/ropensci/fingertipsR/branch/master/graph/badge.svg?token=MpVheRqaRo)](https://codecov.io/gh/ropensci/fingertipsR)
+[![](https://badges.ropensci.org/168_status.svg)](https://github.com/ropensci/software-review/issues/168)
+[![R build status](https://github.com/ropensci/fingertipsR/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/fingertipsR/actions)
+
+# fingertipsR
+
+This is an R package to interact with Public Health England's [Fingertips](http://fingertips.phe.org.uk/) data tool. Fingertips is a major public repository of population and public health indicators for England. The site presents the information in many ways to improve accessibility for a wide range of audiences ranging from public health professionals and researchers to the general public. The information presented is a mixture of data available from other public sources, and those that are available through user access agreements with other organisations. The source of each indicator presented is available using the `indicator_metadata()` function.
+
+This package can be used to load data from the Fingertips API into R for further use. 
+
+## Installation
+
+### rOpenSci
+
+Get the latest released, stable version from rOpenSci:
+
+```{r CRAN-install, eval=FALSE}
+install.packages("fingertipsR", repos = "https://dev.ropensci.org")
+```
+
+### With remotes
+
+You can install the latest development version from github using [remotes](https://github.com/r-lib/remotes):
+
+```{r gh-installation, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("rOpenSci/fingertipsR",
+                        build_vignettes = TRUE,
+                        dependencies = "suggests")
+```
+
+
+## Example
+
+This is an example of a workflow for downloading data for the indicator on *Healthy Life Expectancy at Birth* from the *Public Health Outcomes Framework* profile.
+
+The `profiles()` function presents all of the available profiles:
+
+```{r profiles example}
+library(fingertipsR)
+profs <- profiles()
+profs <- profs[grepl("Public Health Outcomes Framework", profs$ProfileName),]
+head(profs)
+```
+
+This table shows that the `ProfileID` for the Public Health Outcomes Framework is 19. This can be used as an input for the `indicators()` function:
+
+```{r indicators example}
+profid <- 19
+inds <- indicators(ProfileID = profid)
+print(inds[grepl("Healthy", inds$IndicatorName), c("IndicatorID", "IndicatorName")])
+```
+
+Healthy Life Expectancy at Birth has the `IndicatorID` equal to 90362.
+
+Finally, the data can be extracted using the `fingertips_data()` function using that `IndicatorID`:
+
+```{r fingertips_data example}
+indid <- 90362
+df <- fingertips_data(IndicatorID = indid, AreaTypeID = 202)
+head(df)
+```
+
+## Use
+
+Please see the vignettes for information on use.
+
+```{r use, eval=FALSE}
+browseVignettes("fingertipsR")
+```
+
+## More information
+
+* Please note that the 'fingertipsR' project is released with a
+[Contributor Code of Conduct](https://github.com/ropensci/fingertipsR/blob/master/CODE_OF_CONDUCT.md).
+By contributing to this project, you agree to abide by its terms.
+* License: [GPL-3](https://opensource.org/licenses/GPL-3.0)
+
+[![ropensci\_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)

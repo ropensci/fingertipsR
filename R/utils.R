@@ -58,3 +58,14 @@ fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint()) {
         }
         stop(paste(errtext, collapse='\n  '), call. = FALSE)
 }
+
+#' fingertips_deframe
+#'
+#' @description mimic tibble::deframe() without needing to import the function
+#' @param data list whose first item is a vector of names, and second item is a
+#'   list. Items 1 and 2 must be equal length
+fingertips_deframe <- function(data) {
+        out <- structure(.Data = data[[2]],
+                         .Names = data[[1]])
+        return(out)
+}

@@ -40,7 +40,6 @@ paper/
 *.zip
 *.xls*
 inst/doc
-README\.Rmd
 \.ssh/*
 monitoring/
 changelog/

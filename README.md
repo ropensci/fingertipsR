@@ -1,8 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Build
-Status](https://travis-ci.org/ropensci/fingertipsR.svg)](https://travis-ci.org/ropensci/fingertipsR)
 [![codecov](https://codecov.io/gh/ropensci/fingertipsR/branch/master/graph/badge.svg?token=MpVheRqaRo)](https://codecov.io/gh/ropensci/fingertipsR)
 [![](https://badges.ropensci.org/168_status.svg)](https://github.com/ropensci/software-review/issues/168)
 [![R build

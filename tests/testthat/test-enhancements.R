@@ -1,8 +1,6 @@
 library(testthat)
 library(fingertipsR)
 
-context("Enhancement functions")
-
 test_that("fingertips_redred should return an error", {
         skip_on_cran()
         expect_error(fingertips_redred(IndicatorID = 10101, AreaTypeID = 202, Comparator = "Sub-national"),
@@ -17,7 +15,7 @@ test_that(paste("fingertips_redred returns correct column number table for AreaT
 
 test_that("fingertips_redred returns correct column number table for AreaTypeID 154", {
         skip_on_cran()
-        expect_equal(ncol(fingertips_redred(90616, AreaTypeID = 154, Comparator = "Parent")), numcols)
+        expect_equal(ncol(fingertips_redred(30309, AreaTypeID = 402, Comparator = "Parent")), numcols)
 
 })
 test_that("fingertips_redred returns correct column number table for AreaTypeID 202", {

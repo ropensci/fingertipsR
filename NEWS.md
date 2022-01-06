@@ -1,6 +1,8 @@
-# fingertipsR 1.0.7.9000
+# fingertipsR 1.0.8
 
 * Fixed issue introduced to `fingertips_data()` where `AreaTypeID = "All"`
+* More `AreaTypeID`s available for `nearest_neighbour()`
+* `nearest_neighbour_areatypeids()` added
 
 # fingertipsR 1.0.7
 
