@@ -337,6 +337,6 @@ nearest_neighbour_areatypeids <- function() {
                 left_join(areatypeid_table, by = "NeighbourTypeId") %>%
                 dplyr::select(AreaTypeID = .data$Id)
 
-                return(df)
+        return(df)
 }
 
