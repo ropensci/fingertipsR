@@ -47,10 +47,10 @@ indicators <- function(ProfileID = NULL,
         }
         if (length(DomainID) > 100) {
                 DomainID <- split(DomainID,
-                                  ceiling(seq_along(DomainID) / 100)) |>
+                                  ceiling(seq_along(DomainID) / 100)) %>%
                     lapply(paste,
-                           collapse = ",") |>
-                    unlist() |>
+                           collapse = ",") %>%
+                    unlist() %>%
                     unname()
         }
         url <- paste0(path,
