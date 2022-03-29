@@ -45,9 +45,13 @@ indicators <- function(ProfileID = NULL,
                 tempdf <- profiles(path = path)
                 DomainID <- tempdf$DomainID
         }
-        if (length(DomainID) > 150) {
-                DomainID <- c(paste(DomainID[1:149], collapse = ","),
-                              paste(DomainID[150:length(DomainID)], collapse = ","))
+        if (length(DomainID) > 100) {
+                DomainID <- split(DomainID,
+                                  ceiling(seq_along(DomainID) / 100)) |>
+                    lapply(paste,
+                           collapse = ",") |>
+                    unlist() |>
+                    unname()
         }
         url <- paste0(path,
                       "indicator_names/by_group_id?group_ids=",

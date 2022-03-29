@@ -1,3 +1,7 @@
+# fingertipsR 1.0.8.9000
+
+* Bug fixes for indicators() function where many groups exist
+
 # fingertipsR 1.0.8
 
 * Fixed issue introduced to `fingertips_data()` where `AreaTypeID = "All"`
