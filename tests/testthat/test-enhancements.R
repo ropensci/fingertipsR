@@ -7,7 +7,7 @@ test_that("fingertips_redred should return an error", {
                      "Comparator must be either England, Parent or Goal")
 })
 
-numcols <- 26
+numcols <- 27
 test_that(paste("fingertips_redred returns correct column number table for AreaTypeID 202"), {
         skip_on_cran()
         expect_equal(ncol(fingertips_redred(30309, AreaTypeID = 402, Comparator = "England")), numcols)

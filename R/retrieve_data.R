@@ -128,7 +128,8 @@ new_data_formatting <- function(dataurl, generic_name = FALSE,
                               "Value note", "Recent Trend",
                               "Compared to England value or percentiles",
                               parent_field_name,
-                              "New data", "Compared to goal")
+                              "New data", "Compared to goal",
+                              "Time period range")
         numeric_fields <- c("Value", "Lower CI 95.0 limit",
                             "Upper CI 95.0 limit", "Lower CI 99.8 limit",
                             "Upper CI 99.8 limit", "Count",

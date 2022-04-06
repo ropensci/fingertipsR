@@ -1,7 +1,7 @@
 library(testthat)
 library(fingertipsR)
 
-ncols <- 26
+ncols <- 27
 
 test_that("error message for fingertips_data when no inputs provided", {
         skip_if_offline()
