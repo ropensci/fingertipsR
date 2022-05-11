@@ -1,7 +1,8 @@
-# fingertipsR 1.0.8.9000
+# fingertipsR 1.0.8.9001
 
 * Bug fixes for indicators() function where many groups exist
 * Fixed bug around class of the new `Time period range` field; now ensured to be a character field
+* included indicator_update_information() to provide users with details of when the indicator was last updated (available from 7th June 2022)
 
 # fingertipsR 1.0.8
 

@@ -39,115 +39,178 @@ indicator_metadata <- function(IndicatorID = NULL,
                                DomainID = NULL,
                                ProfileID = NULL,
                                path) {
-        set_config(config(ssl_verifypeer = 0L))
-        types <- cols(`Indicator ID` = "i",
-                      Indicator = "c",
-                      `Definition` = "c",
-                      `Rationale` = "c",
-                      `Data source` = "c",
-                      `Indicator source` = "c",
-                      `Methodology` = "c",
-                      `Standard population/values` = "c",
-                      `Confidence interval details` = "c",
-                      `Source of numerator` = "c",
-                      `Definition of numerator` = "c",
-                      `Source of denominator` = "c",
-                      `Definition of denominator` = "c",
-                      `Disclosure control` = "c",
-                      `Caveats` = "c",
-                      `Copyright` = "c",
-                      `Data re-use` = "c",
-                      `Links` = "c",
-                      `Indicator number` = "c",
-                      `Notes` = "c",
-                      `Frequency` = "c",
-                      `Rounding` = "c",
-                      `Indicator Content` = "c",
-                      `Specific rationale` = "c",
-                      `Unit` = "c",
-                      `Value type` = "c",
-                      `Year type` = "c",
-                      `Polarity` = "c",
-                      `Impact of COVID-19` = "c")
+  set_config(config(ssl_verifypeer = 0L))
+  types <- cols(`Indicator ID` = "i",
+                Indicator = "c",
+                `Definition` = "c",
+                `Rationale` = "c",
+                `Data source` = "c",
+                `Indicator source` = "c",
+                `Methodology` = "c",
+                `Standard population/values` = "c",
+                `Confidence interval details` = "c",
+                `Source of numerator` = "c",
+                `Definition of numerator` = "c",
+                `Source of denominator` = "c",
+                `Definition of denominator` = "c",
+                `Disclosure control` = "c",
+                `Caveats` = "c",
+                `Copyright` = "c",
+                `Data re-use` = "c",
+                `Links` = "c",
+                `Indicator number` = "c",
+                `Notes` = "c",
+                `Frequency` = "c",
+                `Rounding` = "c",
+                `Indicator Content` = "c",
+                `Specific rationale` = "c",
+                `Unit` = "c",
+                `Value type` = "c",
+                `Year type` = "c",
+                `Polarity` = "c",
+                `Impact of COVID-19` = "c")
 
-        if (missing(path)) path <- fingertips_endpoint()
-        set_config(config(ssl_verifypeer = 0L))
-        fingertips_ensure_api_available(endpoint = path)
-        if (!(is.null(IndicatorID))) {
-                AllIndicators <- indicators(path = path)
+  if (missing(path)) path <- fingertips_endpoint()
+  set_config(config(ssl_verifypeer = 0L))
+  fingertips_ensure_api_available(endpoint = path)
+  if (!(is.null(IndicatorID))) {
+    AllIndicators <- indicators(path = path)
 
-                if (identical(IndicatorID, "All")) {
-                                dataurl <- paste0(path, "indicator_metadata/csv/all")
-                                indicator_metadata <- dataurl %>%
-                                        GET(use_proxy(ie_get_proxy_for_url(),
-                                                      username = "",
-                                                      password = "",
-                                                      auth = "ntlm")) %>%
-                                        content("parsed",
-                                                type = "text/csv",
-                                                encoding = "UTF-8",
-                                                col_types = types)
+    if (identical(IndicatorID, "All")) {
+      dataurl <- paste0(path, "indicator_metadata/csv/all")
+      indicator_metadata <- dataurl %>%
+        GET(use_proxy(ie_get_proxy_for_url(),
+                      username = "",
+                      password = "",
+                      auth = "ntlm")) %>%
+        content("parsed",
+                type = "text/csv",
+                encoding = "UTF-8",
+                col_types = types)
 
-                } else if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0) {
-                        stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
-                } else {
-                        path <- paste0(path, "indicator_metadata/csv/by_indicator_id?indicator_ids=")
-                        dataurl <- paste0(path,
-                                          paste(IndicatorID, collapse = "%2C"))
-                        if (!(is.null(ProfileID)) & length(ProfileID == 1))
-                                dataurl <- paste0(dataurl, "&profile_id=", ProfileID)
-                        indicator_metadata <- dataurl %>%
-                                GET(use_proxy(ie_get_proxy_for_url(),
-                                              username = "",
-                                              password = "",
-                                              auth = "ntlm")) %>%
-                                content("parsed",
-                                        type = "text/csv",
-                                        encoding = "UTF-8",
-                                        col_types = types)
-                }
+    } else if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0) {
+      stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
+    } else {
+      path <- paste0(path, "indicator_metadata/csv/by_indicator_id?indicator_ids=")
+      dataurl <- paste0(path,
+                        paste(IndicatorID, collapse = "%2C"))
+      if (!(is.null(ProfileID)) & length(ProfileID == 1))
+        dataurl <- paste0(dataurl, "&profile_id=", ProfileID)
+      indicator_metadata <- dataurl %>%
+        GET(use_proxy(ie_get_proxy_for_url(),
+                      username = "",
+                      password = "",
+                      auth = "ntlm")) %>%
+        content("parsed",
+                type = "text/csv",
+                encoding = "UTF-8",
+                col_types = types)
+    }
 
-        } else if (!(is.null(DomainID))) {
-                AllProfiles <- profiles(path = path)
-                if (sum(AllProfiles$DomainID %in% DomainID) == 0){
-                        stop("DomainID(s) do not exist, use profiles() to identify existing domains")
-                }
-                path <- paste0(path, "indicator_metadata/csv/by_group_id?group_id=")
-                indicator_metadata <- paste0(path, DomainID) %>%
-                        lapply(function(dataurl) {
-                                dataurl %>%
-                                        GET(use_proxy(ie_get_proxy_for_url(),
-                                                      username = "",
-                                                      password = "",
-                                                      auth = "ntlm")) %>%
-                                        content("parsed",
-                                                type = "text/csv",
-                                                encoding = "UTF-8",
-                                                col_types = types)
-                        }) %>%
-                        bind_rows()
-        } else if (!(is.null(ProfileID))) {
-                AllProfiles <- profiles(path = path)
-                if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
-                        stop("ProfileID(s) do not exist, use profiles() to identify existing profiles")
-                }
-                path <- paste0(path, "indicator_metadata/csv/by_profile_id?profile_id=")
-                indicator_metadata <- paste0(path, ProfileID) %>%
-                        lapply(function(dataurl) {
-                                dataurl %>%
-                                        GET(use_proxy(ie_get_proxy_for_url(),
-                                                      username = "",
-                                                      password = "",
-                                                      auth = "ntlm")) %>%
-                                        content("parsed",
-                                                type = "text/csv",
-                                                encoding = "UTF-8",
-                                                col_types = types)
-                        }) %>%
-                        bind_rows()
-        } else {
-                stop("One of IndicatorID, DomainID or ProfileID must be populated")
-        }
-        colnames(indicator_metadata)[colnames(indicator_metadata)=="Indicator ID"] <- "IndicatorID"
-        return(indicator_metadata)
+  } else if (!(is.null(DomainID))) {
+    AllProfiles <- profiles(path = path)
+    if (sum(AllProfiles$DomainID %in% DomainID) == 0){
+      stop("DomainID(s) do not exist, use profiles() to identify existing domains")
+    }
+    path <- paste0(path, "indicator_metadata/csv/by_group_id?group_id=")
+    indicator_metadata <- paste0(path, DomainID) %>%
+      lapply(function(dataurl) {
+        dataurl %>%
+          GET(use_proxy(ie_get_proxy_for_url(),
+                        username = "",
+                        password = "",
+                        auth = "ntlm")) %>%
+          content("parsed",
+                  type = "text/csv",
+                  encoding = "UTF-8",
+                  col_types = types)
+      }) %>%
+      bind_rows()
+  } else if (!(is.null(ProfileID))) {
+    AllProfiles <- profiles(path = path)
+    if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
+      stop("ProfileID(s) do not exist, use profiles() to identify existing profiles")
+    }
+    path <- paste0(path, "indicator_metadata/csv/by_profile_id?profile_id=")
+    indicator_metadata <- paste0(path, ProfileID) %>%
+      lapply(function(dataurl) {
+        dataurl %>%
+          GET(use_proxy(ie_get_proxy_for_url(),
+                        username = "",
+                        password = "",
+                        auth = "ntlm")) %>%
+          content("parsed",
+                  type = "text/csv",
+                  encoding = "UTF-8",
+                  col_types = types)
+      }) %>%
+      bind_rows()
+  } else {
+    stop("One of IndicatorID, DomainID or ProfileID must be populated")
+  }
+  colnames(indicator_metadata)[colnames(indicator_metadata)=="Indicator ID"] <- "IndicatorID"
+  return(indicator_metadata)
+}
+
+
+#' Indicator update information
+#'
+#' Outputs a data frame which provides a date of when an indicator was last update
+#' @param IndicatorID Integer, id of the indicators of interest
+#' @param ProfileID Integer (optional), whether to restrict the indicators to a particular profile
+#' @inheritParams fingertips_data
+#' @examples
+#' \dontrun{
+#' # Returns metadata for indicator ID 90362 and 1107
+#' indicatorIDs <- c(90362, 1107)
+#' indicator_update_information(indicatorIDs)}
+#' @return The date of latst data update for selected indicators
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
+#' @importFrom jsonlite fromJSON
+#' @export
+
+indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
+
+  if (missing(path)) path <- fingertips_endpoint()
+  set_config(config(ssl_verifypeer = 0L))
+  fingertips_ensure_api_available(endpoint = path)
+
+
+  IndicatorID_collapsed <- paste(IndicatorID,
+                                 collapse = "%2C")
+  if (!is.null(ProfileID)) {
+
+    profile_check <- indicators(ProfileID = ProfileID,
+                                path = path)
+    if (!any(IndicatorID %in% profile_check$IndicatorID))
+      stop("Not all IndicatorIDs are avaible within the provided ProfileID(s)")
+
+    ProfileID_collapsed <- paste(ProfileID,
+                         collapse = "%2C")
+    api_path <- sprintf("indicator_metadata/by_indicator_id?indicator_ids=%s&restrict_to_profile_ids=%s",
+                        IndicatorID_collapsed, ProfileID_collapsed)
+  } else {
+    api_path <- sprintf("indicator_metadata/by_indicator_id?indicator_ids=%s",
+                        IndicatorID_collapsed)
+  }
+
+  info <- paste0(path,
+                 api_path) %>%
+    GET(use_proxy(ie_get_proxy_for_url(),
+                  username = "",
+                  password = "",
+                  auth = "ntlm")) %>%
+    content("text") %>%
+    fromJSON(flatten = TRUE) %>%
+    lapply(function(x) x[c("IID", "DataChange")]) %>%
+    lapply(unlist) %>%
+    dplyr::bind_rows() %>%
+    dplyr::select(IndicatorID = IID,
+                  LastDataUploadDate = DataChange.LastUploadedAt) %>%
+    dplyr::mutate(
+      IndicatorID = as.integer(IndicatorID),
+      LastDataUploadDate = as.Date(LastDataUploadDate))
+
+  return(info)
 }
