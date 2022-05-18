@@ -28,8 +28,14 @@ This package can be used to load data from the Fingertips API into R for further
 
 Get the latest released, stable version from rOpenSci:
 
-```{r CRAN-install, eval=FALSE}
-install.packages("fingertipsR", repos = "https://dev.ropensci.org")
+```{r rOpenSci-install, eval=FALSE}
+# Enable repository from ropensci
+options(repos = c(
+  ropensci = 'https://ropensci.r-universe.dev',
+  CRAN = 'https://cloud.r-project.org'))
+
+# Download and install fingertipsR in R
+install.packages('fingertipsR')
 ```
 
 ### With remotes

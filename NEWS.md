@@ -2,6 +2,7 @@
 
 * Bug fixes for indicators() function where many groups exist
 * Fixed bug around class of the new `Time period range` field; now ensured to be a character field
+* updated installation instructions in README
 
 # fingertipsR 1.0.8
 
