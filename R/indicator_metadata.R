@@ -168,6 +168,7 @@ indicator_metadata <- function(IndicatorID = NULL,
 #' @importFrom httr GET content set_config config use_proxy
 #' @importFrom curl ie_get_proxy_for_url
 #' @importFrom jsonlite fromJSON
+#' @importFrom rlang .data
 #' @export
 
 indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
@@ -206,11 +207,11 @@ indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
     lapply(function(x) x[c("IID", "DataChange")]) %>%
     lapply(unlist) %>%
     dplyr::bind_rows() %>%
-    dplyr::select(IndicatorID = IID,
-                  LastDataUploadDate = DataChange.LastUploadedAt) %>%
+    dplyr::select(IndicatorID = .data$IID,
+                  LastDataUploadDate = .data$DataChange.LastUploadedAt) %>%
     dplyr::mutate(
-      IndicatorID = as.integer(IndicatorID),
-      LastDataUploadDate = as.Date(LastDataUploadDate))
+      IndicatorID = as.integer(.data$IndicatorID),
+      LastDataUploadDate = as.Date(.data$LastDataUploadDate))
 
   return(info)
 }

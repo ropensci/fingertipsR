@@ -1,7 +1,7 @@
 library(testthat)
 library(fingertipsR)
 
-ncols <- 29
+ncols <- 30
 
 # Error tests -------------------------------------------------------------
 
@@ -73,16 +73,21 @@ test_that("indicator_metadata returns correct number of columns when IndicatorID
 })
 
 test_that("dimensions of indicator_update_information are correct when ProfileID isn't provided", {
-  dim(
-    indicator_update_information(
-      IndicatorID = c(10301, 10401)),
+  skip_on_cran()
+  expect_equal(
+    dim(
+      indicator_update_information(
+        IndicatorID = c(10301, 10401))),
     c(2, 2))
 })
 
 test_that("dimensions of indicator_update_information are correct when ProfileID is provided", {
-  dim(
-    indicator_update_information(
-      IndicatorID = c(10301, 10401),
-      ProfileID = c(19)),
+  skip_on_cran()
+  expect_equal(
+    dim(
+      indicator_update_information(
+        IndicatorID = c(10301, 10401),
+        ProfileID = c(19))),
     c(2, 2))
+
 })
