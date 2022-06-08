@@ -29,7 +29,13 @@ further use.
 Get the latest released, stable version from rOpenSci:
 
 ``` r
-install.packages("fingertipsR", repos = "https://dev.ropensci.org")
+# Enable repository from ropensci
+options(repos = c(
+  ropensci = 'https://ropensci.r-universe.dev',
+  CRAN = 'https://cloud.r-project.org'))
+
+# Download and install fingertipsR in R
+install.packages('fingertipsR')
 ```
 
 ### With remotes
@@ -127,13 +133,13 @@ head(df)
 #> 4                               Worse                       Not compared
 #> 5                               Worse                       Not compared
 #> 6                             Similar                       Not compared
-#>   TimeperiodSortable Newdata Comparedtogoal
-#> 1           20090000    <NA>           <NA>
-#> 2           20090000    <NA>           <NA>
-#> 3           20090000    <NA>           <NA>
-#> 4           20090000    <NA>           <NA>
-#> 5           20090000    <NA>           <NA>
-#> 6           20090000    <NA>           <NA>
+#>   TimeperiodSortable Newdata Comparedtogoal Timeperiodrange
+#> 1           20090000    <NA>           <NA>              3y
+#> 2           20090000    <NA>           <NA>              3y
+#> 3           20090000    <NA>           <NA>              3y
+#> 4           20090000    <NA>           <NA>              3y
+#> 5           20090000    <NA>           <NA>              3y
+#> 6           20090000    <NA>           <NA>              3y
 ```
 
 ## Use
