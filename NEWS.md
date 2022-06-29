@@ -1,17 +1,17 @@
-# fingertipsR 1.0.9
+# fingertipsR 1.0.9 (2022-06-09)
 
 * Bug fixes for indicators() function where many groups exist
 * Fixed bug around class of the new `Time period range` field; now ensured to be a character field
 * included indicator_update_information() to provide users with details of when the indicator was last updated (available from 7th June 2022)
 * updated installation instructions in README
 
-# fingertipsR 1.0.8
+# fingertipsR 1.0.8 (2022-01-06)
 
 * Fixed issue introduced to `fingertips_data()` where `AreaTypeID = "All"`
 * More `AreaTypeID`s available for `nearest_neighbour()`
 * `nearest_neighbour_areatypeids()` added
 
-# fingertipsR 1.0.7
+# fingertipsR 1.0.7 (2021-07-15)
 
 * No change to previous version
 
