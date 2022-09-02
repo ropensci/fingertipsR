@@ -1,3 +1,7 @@
+# fingertipsR 1.0.9.9000
+
+* Bug fixed where character field has entirely missing values it defaulted to NA instead of ""
+
 # fingertipsR 1.0.9 (2022-06-09)
 
 * Bug fixes for indicators() function where many groups exist

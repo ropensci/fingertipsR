@@ -99,6 +99,7 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
 #' @importFrom httr GET content use_proxy RETRY
 #' @importFrom curl ie_get_proxy_for_url
 #' @importFrom utils read.delim
+#' @importFrom stats setNames
 new_data_formatting <- function(dataurl, generic_name = FALSE,
                                 item_of_total, progress_bar) {
         df_string <- add_timestamp(dataurl)
@@ -109,15 +110,16 @@ new_data_formatting <- function(dataurl, generic_name = FALSE,
                                               auth = "ntlm"),
                            times = 5) %>%
                 content("text")
-        new_data <- read.delim(text = df_string,
+        fieldnames <- read.delim(text = df_string,
                                encoding = "UTF-8",
                                sep = ",",
                                fill = TRUE,
                                header = TRUE,
                                stringsAsFactors = FALSE,
-                               check.names = FALSE)
-        names(new_data)[names(new_data)=="Target data"] <- "Compared to goal"
-        parent_field_name <- names(new_data)[grepl("^Compared", names(new_data))]
+                               check.names = FALSE,
+                               nrows = 1)
+        names(fieldnames)[names(fieldnames)=="Target data"] <- "Compared to goal"
+        parent_field_name <- names(fieldnames)[grepl("^Compared", names(fieldnames))]
         parent_field_name <- parent_field_name[!grepl("Compared to goal|Compared to England", parent_field_name)]
 
         character_fields <- c("Indicator Name", "Parent Code",
@@ -135,12 +137,25 @@ new_data_formatting <- function(dataurl, generic_name = FALSE,
                             "Upper CI 99.8 limit", "Count",
                             "Denominator")
         integer_fields <- c("Indicator ID", "Time period Sortable")
-        new_data <- new_data %>%
-                mutate_at(.vars = character_fields, as.character)
-        new_data <- new_data %>%
-                mutate_at(.vars = numeric_fields, as.numeric)
-        new_data <- new_data %>%
-                mutate_at(.vars = integer_fields, as.integer)
+
+        field_classes <- c(
+          stats::setNames(rep("character", length(character_fields)),
+                   character_fields),
+          stats::setNames(rep("numeric", length(numeric_fields)),
+                   numeric_fields),
+          stats::setNames(rep("integer", length(integer_fields)),
+                   integer_fields)
+        )
+
+        new_data <- read.delim(text = df_string,
+                               encoding = "UTF-8",
+                               sep = ",",
+                               fill = TRUE,
+                               header = TRUE,
+                               stringsAsFactors = FALSE,
+                               check.names = FALSE,
+                               colClasses = field_classes)
+
         if (generic_name) {
                 parent_field_name <- gsub("\\(","\\\\\\(", parent_field_name)
                 parent_field_name <- gsub("\\)","\\\\\\)", parent_field_name)
