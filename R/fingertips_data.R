@@ -118,11 +118,11 @@ fingertips_data <- function(IndicatorID = NULL,
                         if (is.null(IndicatorID)) {
                                 if (!is.null(ProfileID)) {
                                         ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
-                                                select(.data$IndicatorID, .data$ProfileID)
+                                                select("IndicatorID", "ProfileID")
 
                                 } else if (!is.null(DomainID)) {
                                         ind_to_prof <- indicators(DomainID = DomainIDs, path = path) %>%
-                                                select(.data$IndicatorID, .data$ProfileID)
+                                                select("IndicatorID", "ProfileID")
                                         ProfileIDs <- unique(ind_to_prof$ProfileID)
 
                                 }
@@ -138,7 +138,7 @@ fingertips_data <- function(IndicatorID = NULL,
                         } else {
                                 if (!is.null(ProfileID)) {
                                         ind_to_prof <- indicators(ProfileID = ProfileIDs, path = path) %>%
-                                                select(.data$IndicatorID, .data$ProfileID) %>%
+                                                select("IndicatorID", "ProfileID") %>%
                                                 filter(.data$IndicatorID %in% IndicatorIDs)
                                         ats <- indicator_areatypes()
                                         indicator_profile_inputs <- data.frame(IndicatorID = IndicatorIDs,
@@ -159,11 +159,11 @@ fingertips_data <- function(IndicatorID = NULL,
                                                 mutate(parent_only = !(ParentAreaTypeID %in% unique(at$AreaTypeID))) %>%
                                                 filter(parent_only == TRUE,
                                                        AreaTypeID %in% unique(ind_ats$AreaTypeID)) %>%
-                                                select(!c(.data$parent_only)) %>%
+                                                select(!c("parent_only")) %>%
                                                 group_by(.data$ParentAreaTypeID) %>%
                                                 slice(1) %>%
                                                 ungroup() %>%
-                                                select(.data$AreaTypeID, .data$ParentAreaTypeID)
+                                                select("AreaTypeID", "ParentAreaTypeID")
                                         remove_ats <- unique(c(parent_only$AreaTypeID,
                                                                parent_only$ParentAreaTypeID))
                                         at <- at %>%
@@ -173,7 +173,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                                            c(15, unique(ind_ats$AreaTypeID))) %>%
                                                 filter(!(.data$AreaTypeID %in% remove_ats),
                                                        !(.data$ParentAreaTypeID %in% remove_ats)) %>%
-                                                select(.data$AreaTypeID) %>%
+                                                select("AreaTypeID") %>%
                                                 unique() %>%
                                                 mutate(ParentAreaTypeID = 15) %>%
                                                 bind_rows(parent_only)
@@ -322,7 +322,7 @@ fingertips_data <- function(IndicatorID = NULL,
                 } else {
                         polarities <- indicator_metadata(inds,
                                                          path = path) %>%
-                                select(.data$IndicatorID, .data$Polarity)
+                                select("IndicatorID", "Polarity")
 
                 }
                 fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%

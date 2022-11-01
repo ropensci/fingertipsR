@@ -62,7 +62,7 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
                 IndicatorID <- accepted_areatypes_2015 %>%
                         filter(.data$AreaTypeID == area_type_filter) %>%
                         slice(1) %>%
-                        pull(.data$IndicatorID)
+                        pull("IndicatorID")
         } else if (Year == 2019) {
                 if (!(AreaTypeID %in% accepted_areatypes_2019$AreaTypeID)) {
                         stop("AreaTypeID unavailable for 2019")
@@ -70,7 +70,7 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
                 IndicatorID <- accepted_areatypes_2019 %>%
                         filter(.data$AreaTypeID == area_type_filter) %>%
                         slice(1) %>%
-                        pull(.data$IndicatorID)
+                        pull("IndicatorID")
         }
 
 
@@ -86,8 +86,8 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
                 ungroup() %>%
                 filter(.data$records == max(.data$records),
                        .data$Timeperiod == Year) %>%
-                select(.data$AreaCode, .data$Value) %>%
-                rename(IMDscore = .data$Value) %>%
+                select("AreaCode", "Value") %>%
+                rename(IMDscore = "Value") %>%
                 mutate(decile = as.integer(11 - ntile(.data$IMDscore, 10)))
 
         return(deprivation_decile)

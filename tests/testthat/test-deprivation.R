@@ -5,7 +5,7 @@ library(fingertipsR)
 dep_cols <- 3
 test_that("the number of columns of deprivation decile function are as expected", {
         skip_if_offline()
-        expect_equal(ncol(deprivation_decile(AreaTypeID = 202, Year = 2015)), dep_cols)
+        expect_equal(ncol(deprivation_decile(AreaTypeID = 302, Year = 2015)), dep_cols)
 
 })
 

@@ -77,13 +77,13 @@ profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
                 }) %>%
                 bind_rows()
         groupDescriptions <- groupDescriptions %>%
-                select(.data$Id, .data$Name)
+                select("Id", "Name")
         profiles <- rename(profiles,
-                           ProfileID = .data$ID,
-                           ProfileName = .data$Name,
-                           DomainID = .data$groupid) %>%
+                           ProfileID = "ID",
+                           ProfileName = "Name",
+                           DomainID = "groupid") %>%
                 left_join(groupDescriptions, by = c("DomainID" = "Id")) %>%
-                rename(DomainName = .data$Name) %>%
+                rename(DomainName = "Name") %>%
                 as_tibble()
         return(profiles)
 }

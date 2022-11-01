@@ -68,12 +68,12 @@ indicators <- function(ProfileID = NULL,
                 }) %>%
                 bind_rows() %>%
                 left_join(tempdf, by = c("GroupId" = "DomainID")) %>%
-                select(IndicatorID = .data$IndicatorId,
-                       .data$IndicatorName,
-                       DomainID = .data$GroupId,
-                       .data$DomainName,
-                       .data$ProfileID,
-                       .data$ProfileName) %>%
+                select(IndicatorID = "IndicatorId",
+                       "IndicatorName",
+                       DomainID = "GroupId",
+                       "DomainName",
+                       "ProfileID",
+                       "ProfileName") %>%
                 mutate(IndicatorName = factor(.data$IndicatorName)) %>%
                 as_tibble()
 
@@ -174,11 +174,15 @@ indicator_order <- function(DomainID,
                               auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON() %>%
-                select(.data$IID, .data$Sequence, .data$Sex, .data$Age)
+                select(
+                  "IID",
+                  "Sequence",
+                  "Sex",
+                  "Age")
         indicator_order$Sex <- indicator_order$Sex$Name
         indicator_order$Age <- indicator_order$Age$Name
         indicator_order <- indicator_order %>%
-                rename(IndicatorID = .data$IID) %>%
+                rename(IndicatorID = "IID") %>%
                 as_tibble()
         return(indicator_order)
 }

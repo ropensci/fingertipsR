@@ -207,8 +207,8 @@ indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
     lapply(function(x) x[c("IID", "DataChange")]) %>%
     lapply(unlist) %>%
     dplyr::bind_rows() %>%
-    dplyr::select(IndicatorID = .data$IID,
-                  LastDataUploadDate = .data$DataChange.LastUploadedAt) %>%
+    dplyr::select(IndicatorID = "IID",
+                  LastDataUploadDate = "DataChange.LastUploadedAt") %>%
     dplyr::mutate(
       IndicatorID = as.integer(.data$IndicatorID),
       LastDataUploadDate = as.Date(.data$LastDataUploadDate))

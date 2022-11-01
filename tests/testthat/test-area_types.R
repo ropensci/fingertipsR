@@ -15,7 +15,7 @@ test_that("area_type brings 0 row table for specific condition", {
 
 test_that("area_types filter for text beings same number as records as filtering for AreaTypeID", {
     skip_on_cran()
-    expect_equal(area_types(c("gov","ward")), area_types(AreaTypeID = c(8, 6)))
+    expect_equal(area_types(c("gov","ward")), area_types(AreaTypeID = c(8, 9, 6)))
 
 })
 

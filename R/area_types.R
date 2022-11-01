@@ -56,14 +56,14 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
         parentAreas <- parentAreasNoNames
 
         parentAreas <- bind_rows(parentAreas, .id = "t") %>%
-                select(.data$t, .data$Id, .data$Name) %>%
-                rename(AreaTypeID = .data$t,
-                       ParentAreaTypeID = .data$Id,
-                       ParentAreaTypeName = .data$Name) %>%
+                select(
+                  AreaTypeID = "t",
+                  ParentAreaTypeID = "Id",
+                  ParentAreaTypeName = "Name") %>%
                 mutate(AreaTypeID = as.numeric(.data$AreaTypeID),
                        ParentAreaTypeID = as.numeric(.data$ParentAreaTypeID))
         area_types <- left_join(area_types, parentAreas, by = c("AreaTypeID" = "AreaTypeID")) %>%
-                arrange(.data$AreaTypeID)
+                arrange("AreaTypeID")
         if (!is.null(AreaTypeName)) {
                 AreaTypeName <- paste(AreaTypeName, collapse = "|")
                 area_types <- area_types[grep(tolower(AreaTypeName),
@@ -80,7 +80,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
         if (!is.null(ProfileID)) {
                 areas_in_profile <- paste0(path, "area_types?profile_ids=", ProfileID) %>%
                         get_fingertips_api() %>%
-                        pull(.data$Id)
+                        pull("Id")
                 area_types <- area_types %>%
                         filter(.data$AreaTypeID %in% areas_in_profile)
         }
@@ -119,10 +119,10 @@ category_types <- function(path) {
         category_types <- paste0(path,"category_types") %>%
                 get_fingertips_api()
         category_names <- category_types %>%
-                select(.data$Id,
-                       CategoryType = .data$Name)
+                select("Id",
+                       CategoryType = "Name")
         category_types <- category_types %>%
-                pull(.data$Categories) %>%
+                pull("Categories") %>%
                 bind_rows() %>%
                 as_tibble() %>%
                 left_join(category_names, by = c("CategoryTypeId" = "Id"))
@@ -217,17 +217,19 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
         url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
 
         nn_table <- get_fingertips_api(url) %>%
-                rename(measure = .data$Name)
+                rename(measure = "Name")
 
         df <- nn_table %>%
-                select(.data$NeighbourTypeId, .data$ApplicableAreaTypes) %>%
+                select(
+                  "NeighbourTypeId",
+                  "ApplicableAreaTypes") %>%
                 fingertips_deframe() %>%
                 bind_rows(.id = "NeighbourTypeId") %>%
                 mutate(NeighbourTypeId = as.integer(.data$NeighbourTypeId)) %>%
                 left_join(nn_table, by = "NeighbourTypeId") %>%
-                dplyr::select(AreaTypeID = .data$Id,
-                              .data$NeighbourTypeId,
-                              .data$measure)
+                dplyr::select(AreaTypeID = "Id",
+                              "NeighbourTypeId",
+                              "measure")
 
         val <- if(AreaTypeID %in% df$AreaTypeID) {
                 df$NeighbourTypeId[df$AreaTypeID == AreaTypeID]
@@ -240,7 +242,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
         }
 
         ParentAreaTypeID <- area_types(AreaTypeID = AreaTypeID) %>%
-                pull(.data$ParentAreaTypeID) %>%
+                pull("ParentAreaTypeID") %>%
                 head(1)
 
         areacheck <- paste0(path,
@@ -264,7 +266,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
 
         if (length(nearest_neighbours) != 0) {
                 nearest_neighbours <- nearest_neighbours %>%
-                        pull(.data$Code)
+                        pull("Code")
         } else {
                 nearest_neighbours <- character()
         }
@@ -297,13 +299,13 @@ areas_by_profile <- function(AreaTypeID, ProfileID, path) {
         names(areas_by_profile) <- NULL
         areas_by_profile <- bind_rows(areas_by_profile) %>%
                 mutate(AreaTypeID = AreaTypeID_field) %>%
-                select(IndicatorID = .data$IID,
-                       .data$AreaTypeID,
-                       DomainID = .data$GroupId)
+                select(IndicatorID = "IID",
+                       "AreaTypeID",
+                       DomainID = "GroupId")
         profs <- profiles() %>%
                 filter(.data$DomainID %in% areas_by_profile$DomainID) %>%
-                select(.data$DomainID,
-                       .data$ProfileID)
+                select("DomainID",
+                       "ProfileID")
         areas_by_profile <- areas_by_profile %>%
                 left_join(profs, by = "DomainID") %>%
                 unique() %>%
@@ -327,15 +329,15 @@ nearest_neighbour_areatypeids <- function() {
         url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
 
         areatypeid_table <- get_fingertips_api(url) %>%
-                rename(measure = .data$Name)
+                rename(measure = "Name")
 
         df <- areatypeid_table %>%
-                select(.data$NeighbourTypeId, .data$ApplicableAreaTypes) %>%
+                select("NeighbourTypeId", "ApplicableAreaTypes") %>%
                 fingertips_deframe() %>%
                 bind_rows(.id = "NeighbourTypeId") %>%
                 mutate(NeighbourTypeId = as.integer(.data$NeighbourTypeId)) %>%
                 left_join(areatypeid_table, by = "NeighbourTypeId") %>%
-                dplyr::select(AreaTypeID = .data$Id)
+                dplyr::select(AreaTypeID = "Id")
 
         return(df)
 }
