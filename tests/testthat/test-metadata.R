@@ -91,3 +91,18 @@ test_that("dimensions of indicator_update_information are correct when ProfileID
     c(2, 2))
 
 })
+
+test_that("indicator_update_information works when a large number of IndicatorIDs are provided", {
+  skip_on_cran()
+  profiles_filter <- c(18, 19, 26, 29)
+  inds <- indicators(ProfileID = profiles_filter)
+
+  indicatorIDs <- unique(inds$IndicatorID)
+  indicator_date_update <- indicator_update_information(
+    IndicatorID = indicatorIDs
+  )
+  expect_gt(
+    nrow(indicator_date_update),
+    200)
+
+})
