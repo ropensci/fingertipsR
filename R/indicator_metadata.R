@@ -178,9 +178,10 @@ indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
   fingertips_ensure_api_available(endpoint = path)
 
 
-  IndicatorID_collapsed <- paste(IndicatorID,
-                                 collapse = "%2C")
   if (!is.null(ProfileID)) {
+
+    IndicatorID_collapsed <- paste(IndicatorID,
+                                   collapse = "%2C")
 
     profile_check <- indicators(ProfileID = ProfileID,
                                 path = path)
@@ -192,18 +193,35 @@ indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
     api_path <- sprintf("indicator_metadata/by_indicator_id?indicator_ids=%s&restrict_to_profile_ids=%s",
                         IndicatorID_collapsed, ProfileID_collapsed)
   } else {
+
+    if (length(IndicatorID) > 100) {
+      IndicatorID_collapsed <- split(IndicatorID,
+                        ceiling(seq_along(IndicatorID) / 100)) %>%
+        lapply(paste,
+               collapse = "%2C") %>%
+        unlist() %>%
+        unname()
+    } else {
+      IndicatorID_collapsed <- paste(IndicatorID,
+                                     collapse = "%2C")
+
+    }
     api_path <- sprintf("indicator_metadata/by_indicator_id?indicator_ids=%s",
                         IndicatorID_collapsed)
   }
 
   info <- paste0(path,
                  api_path) %>%
-    GET(use_proxy(ie_get_proxy_for_url(),
-                  username = "",
-                  password = "",
-                  auth = "ntlm")) %>%
-    content("text") %>%
-    fromJSON(flatten = TRUE) %>%
+    lapply(function(indicator_ids) {
+      indicator_ids %>%
+        GET(use_proxy(ie_get_proxy_for_url(),
+                      username = "",
+                      password = "",
+                      auth = "ntlm")) %>%
+        content("text") %>%
+        fromJSON(flatten = TRUE)
+    }) %>%
+    unlist(recursive = FALSE) |>
     lapply(function(x) x[c("IID", "DataChange")]) %>%
     lapply(unlist) %>%
     dplyr::bind_rows() %>%

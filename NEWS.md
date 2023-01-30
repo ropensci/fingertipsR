@@ -1,6 +1,7 @@
-# fingertipsR 1.0.9.9000
+# fingertipsR 1.0.10 (2023-01-30)
 
 * Bug fixed where character field has entirely missing values it defaulted to NA instead of ""
+* Bug fix to allow indicator_update_information() to accept a long vector of IndicatorID
 
 # fingertipsR 1.0.9 (2022-06-09)
 
