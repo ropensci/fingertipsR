@@ -5,6 +5,7 @@
 #' connection speeds)
 #' @param IndicatorID Numeric vector, id of the indicator of interest. Also accepts "All".
 #' @inheritParams fingertips_data
+#' @inheritParams area_types
 #' @examples
 #' \dontrun{
 #' # Returns metadata for indicator ID 90362 and 1107
@@ -38,6 +39,7 @@
 indicator_metadata <- function(IndicatorID = NULL,
                                DomainID = NULL,
                                ProfileID = NULL,
+                               proxy_settings = "default",
                                path) {
   set_config(config(ssl_verifypeer = 0L))
   types <- cols(`Indicator ID` = "i",
@@ -72,7 +74,9 @@ indicator_metadata <- function(IndicatorID = NULL,
 
   if (missing(path)) path <- fingertips_endpoint()
   set_config(config(ssl_verifypeer = 0L))
-  fingertips_ensure_api_available(endpoint = path)
+  fingertips_ensure_api_available(
+    endpoint = path,
+    proxy_settings = proxy_settings)
   if (!(is.null(IndicatorID))) {
     AllIndicators <- indicators(path = path)
 
@@ -159,6 +163,7 @@ indicator_metadata <- function(IndicatorID = NULL,
 #' @param IndicatorID Integer, id of the indicators of interest
 #' @param ProfileID Integer (optional), whether to restrict the indicators to a particular profile
 #' @inheritParams fingertips_data
+#' @inheritParams area_types
 #' @examples
 #' \dontrun{
 #' # Returns metadata for indicator ID 90362 and 1107
@@ -171,11 +176,14 @@ indicator_metadata <- function(IndicatorID = NULL,
 #' @importFrom rlang .data
 #' @export
 
-indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
+indicator_update_information <- function(IndicatorID, ProfileID = NULL,
+                                         proxy_settings = "default", path) {
 
   if (missing(path)) path <- fingertips_endpoint()
   set_config(config(ssl_verifypeer = 0L))
-  fingertips_ensure_api_available(endpoint = path)
+  fingertips_ensure_api_available(
+    endpoint = path,
+    proxy_settings = proxy_settings)
 
 
   if (!is.null(ProfileID)) {

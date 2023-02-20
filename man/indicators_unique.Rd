@@ -4,12 +4,20 @@
 \alias{indicators_unique}
 \title{Live indicators}
 \usage{
-indicators_unique(ProfileID = NULL, DomainID = NULL, path)
+indicators_unique(
+  ProfileID = NULL,
+  DomainID = NULL,
+  proxy_settings = "default",
+  path
+)
 }
 \arguments{
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
 \item{DomainID}{Numeric vector, id of domains of interest}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

@@ -4,10 +4,13 @@
 \alias{get_fingertips_api}
 \title{Retrieve data from a given Fingertips API url}
 \usage{
-get_fingertips_api(api_path)
+get_fingertips_api(api_path, proxy_settings = "default")
 }
 \arguments{
 \item{api_path}{string; the API url to retrieve data from}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 }
 \description{
 Retrieve data from a given Fingertips API url

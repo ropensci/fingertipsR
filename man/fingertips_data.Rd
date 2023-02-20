@@ -14,6 +14,7 @@ fingertips_data(
   categorytype = FALSE,
   rank = FALSE,
   url_only = FALSE,
+  proxy_settings = "default",
   path
 )
 }
@@ -49,6 +50,9 @@ are returned also in AreaValuesCount}
 
 \item{url_only}{TRUE or FALSE, return only the url of the api call as a
 character vector}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

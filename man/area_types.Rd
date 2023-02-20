@@ -4,7 +4,13 @@
 \alias{area_types}
 \title{Area types}
 \usage{
-area_types(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL, path)
+area_types(
+  AreaTypeName = NULL,
+  AreaTypeID = NULL,
+  ProfileID = NULL,
+  proxy_settings = "default",
+  path
+)
 }
 \arguments{
 \item{AreaTypeName}{Character vector, description of the area type; default
@@ -14,6 +20,9 @@ is NULL}
 default is NULL}
 
 \item{ProfileID}{Numeric vector, id of profiles of interest}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

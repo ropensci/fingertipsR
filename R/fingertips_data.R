@@ -31,6 +31,7 @@
 #'   are returned also in AreaValuesCount
 #' @param url_only TRUE or FALSE, return only the url of the api call as a
 #'   character vector
+#' @inheritParams area_types
 #' @importFrom utils txtProgressBar
 #' @importFrom rlang .data
 #' @examples
@@ -67,11 +68,14 @@ fingertips_data <- function(IndicatorID = NULL,
                             categorytype = FALSE,
                             rank = FALSE,
                             url_only = FALSE,
+                            proxy_settings = "default",
                             path) {
 
         if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
 
         # ensure there are the correct inputs
         if (!is.null(IndicatorID)) {
@@ -132,6 +136,7 @@ fingertips_data <- function(IndicatorID = NULL,
                                         left_join(ats, by = "IndicatorID")
                                 ind_ats <- areas_by_profile(ind_to_prof$AreaTypeID,
                                                             ind_to_prof$ProfileID,
+                                                            proxy_settings = proxy_settings,
                                                             path)
                                 if (!is.null(DomainID)) ind_ats <- ind_ats %>%
                                         filter(.data$DomainID %in% DomainIDs)
@@ -191,7 +196,9 @@ fingertips_data <- function(IndicatorID = NULL,
                                         areacodes <- AreaTypeID %>%
                                                 lapply(function(i) {
                                                         paste0(path, "areas/by_area_type?area_type_id=", i) %>%
-                                                                get_fingertips_api()
+                                                                get_fingertips_api(
+                                                                  proxy_settings = proxy_settings
+                                                                )
                                                 }) %>%
                                                 bind_rows()
                                         if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {

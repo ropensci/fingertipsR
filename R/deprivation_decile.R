@@ -13,6 +13,7 @@
 #' @param Year Integer value, representing the year of IMD release to be
 #'   applied, limited to 2015 or 2019
 #' @inheritParams indicators
+#' @inheritDotParams area_types
 #' @examples
 #' \dontrun{
 #' # Return 2019 deprivation scores for Sustainability and Transformation Footprints
@@ -33,7 +34,8 @@
 #'   area and \code{\link{indicator_order}} for the order indicators are
 #'   presented on the Fingertips website within a Domain
 
-deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
+deprivation_decile <- function(AreaTypeID, Year = 2019,
+                               proxy_settings = "default", path) {
         if (missing(AreaTypeID)) stop("AreaTypeID must be specified")
 
         if (!(Year %in% c(2015, 2019))) {
@@ -77,7 +79,9 @@ deprivation_decile <- function(AreaTypeID, Year = 2019, path) {
         if (missing(path)) path <- fingertips_endpoint()
 
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
         deprivation_decile <- fingertips_data(IndicatorID = IndicatorID,
                                               AreaTypeID = AreaTypeID,
                                               path = path) %>%

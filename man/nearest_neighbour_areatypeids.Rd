@@ -4,7 +4,7 @@
 \alias{nearest_neighbour_areatypeids}
 \title{Nearest neighbours area type ids}
 \usage{
-nearest_neighbour_areatypeids()
+nearest_neighbour_areatypeids(proxy_settings = "default")
 }
 \value{
 table of AreaTypeIDs

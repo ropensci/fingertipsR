@@ -6,6 +6,7 @@
 #' @param DomainID Numeric vector, id of domains of interest
 #' @param path String; Fingertips API address. Function will default to the
 #'   correct address
+#' @inheritParams area_types
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
@@ -30,10 +31,13 @@
 
 indicators <- function(ProfileID = NULL,
                        DomainID = NULL,
+                       proxy_settings = "default",
                        path) {
         if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
         if (!is.null(ProfileID)){
                 tempdf <- profiles(ProfileID = ProfileID, path = path)
                 if (!is.null(DomainID)) warning("DomainID is ignored as ProfileID has also been entered")
@@ -87,6 +91,7 @@ indicators <- function(ProfileID = NULL,
 #' connection speeds)
 #' @return A data frame of indicator ids and names
 #' @inheritParams indicators
+#' @inheritParams area_types
 #' @examples
 #' \dontrun{
 #' indicators_unique(ProfileID = 21)}
@@ -103,9 +108,12 @@ indicators <- function(ProfileID = NULL,
 #' @export
 indicators_unique <- function(ProfileID = NULL,
                             DomainID = NULL,
+                            proxy_settings = "default",
                             path) {
         if (missing(path)) path <- fingertips_endpoint()
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
         df <- indicators(ProfileID, DomainID, path = path)
         df <- unique(df[,c("IndicatorID", "IndicatorName")])
         return(df)
@@ -119,6 +127,7 @@ indicators_unique <- function(ProfileID = NULL,
 #' are ordered on the Fingertips website.
 #' @return A data frame of indicator ids and sequence number
 #' @inheritParams fingertips_data
+#' @inheritParams area_types
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
@@ -136,11 +145,14 @@ indicators_unique <- function(ProfileID = NULL,
 indicator_order <- function(DomainID,
                             AreaTypeID,
                             ParentAreaTypeID,
+                            proxy_settings = "default",
                             path) {
         if (missing(DomainID)|missing(AreaTypeID)|missing(ParentAreaTypeID))
                 stop("All of DomainID, AreaTypeID and ParentAreaTypeID are required")
         if (missing(path)) path <- fingertips_endpoint()
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
 
         ParentAreaCode <- paste0(path,
                                  sprintf("parent_to_child_areas?child_area_type_id=%s&parent_area_type_id=%s",

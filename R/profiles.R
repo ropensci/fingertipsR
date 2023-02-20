@@ -5,6 +5,7 @@
 #' @return A data frame of live profile ids and names along with their domain
 #'   names and ids.
 #' @inheritParams indicators
+#' @inheritParams area_types
 #' @param ProfileName Character vector, full name of profile(s)
 #' @examples
 #' \dontrun{
@@ -28,13 +29,18 @@
 #'   Fingertips website within a Domain
 #' @export
 
-profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
+profiles <- function(ProfileID = NULL, ProfileName = NULL,
+                     proxy_settings = "default", path) {
         if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
 
         profiles <- paste0(path,"profiles") %>%
-                get_fingertips_api()
+                get_fingertips_api(
+                  proxy_settings = proxy_settings
+                )
         idname <- profiles[,c("Id", "Name")]
 
         profiles <- lapply(profiles$GroupIds, data.frame)

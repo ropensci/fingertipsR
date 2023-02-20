@@ -4,9 +4,12 @@
 \alias{category_types}
 \title{Category types}
 \usage{
-category_types(path)
+category_types(proxy_settings = "default", path)
 }
 \arguments{
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
+
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}
 }
