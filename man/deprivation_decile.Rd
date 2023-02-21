@@ -19,14 +19,6 @@ applied, limited to 2015 or 2019}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}
-
-\item{...}{
-  Arguments passed on to \code{\link[=area_types]{area_types}}
-  \describe{
-    \item{\code{AreaTypeName}}{Character vector, description of the area type; default
-is NULL}
-    \item{\code{ProfileID}}{Numeric vector, id of profiles of interest}
-  }}
 }
 \value{
 A lookup table providing deprivation decile and area code

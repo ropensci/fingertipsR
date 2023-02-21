@@ -13,7 +13,7 @@
 #' @param Year Integer value, representing the year of IMD release to be
 #'   applied, limited to 2015 or 2019
 #' @inheritParams indicators
-#' @inheritDotParams area_types
+#' @inheritParams area_types
 #' @examples
 #' \dontrun{
 #' # Return 2019 deprivation scores for Sustainability and Transformation Footprints

@@ -4,12 +4,20 @@
 \alias{indicator_update_information}
 \title{Indicator update information}
 \usage{
-indicator_update_information(IndicatorID, ProfileID = NULL, path)
+indicator_update_information(
+  IndicatorID,
+  ProfileID = NULL,
+  proxy_settings = "default",
+  path
+)
 }
 \arguments{
 \item{IndicatorID}{Integer, id of the indicators of interest}
 
 \item{ProfileID}{Integer (optional), whether to restrict the indicators to a particular profile}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

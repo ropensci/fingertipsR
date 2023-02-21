@@ -338,6 +338,7 @@ areas_by_profile <- function(AreaTypeID, ProfileID,
 #'
 #' Outputs a table of AreaTypeIDs available for the nearest_neighbour function
 #' @return table of AreaTypeIDs
+#' @inheritParams area_types
 #' @importFrom rlang .data
 #' @export
 #' @seealso \code{\link{nearest_neighbours}} to access the geogaphy codes of the
