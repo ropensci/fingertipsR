@@ -4,7 +4,11 @@
 \alias{fingertips_stats}
 \title{High level statistics on Fingertips data}
 \usage{
-fingertips_stats()
+fingertips_stats(proxy_settings = "default")
+}
+\arguments{
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 }
 \value{
 A string that summarises the high level statistics of indicators and

@@ -78,7 +78,9 @@ indicator_metadata <- function(IndicatorID = NULL,
     endpoint = path,
     proxy_settings = proxy_settings)
   if (!(is.null(IndicatorID))) {
-    AllIndicators <- indicators(path = path)
+    AllIndicators <- indicators(
+      proxy_settings = proxy_settings,
+      path = path)
 
     if (identical(IndicatorID, "All")) {
       dataurl <- paste0(path, "indicator_metadata/csv/all")
@@ -112,7 +114,9 @@ indicator_metadata <- function(IndicatorID = NULL,
     }
 
   } else if (!(is.null(DomainID))) {
-    AllProfiles <- profiles(path = path)
+    AllProfiles <- profiles(
+      proxy_settings = proxy_settings,
+      path = path)
     if (sum(AllProfiles$DomainID %in% DomainID) == 0){
       stop("DomainID(s) do not exist, use profiles() to identify existing domains")
     }
@@ -131,7 +135,9 @@ indicator_metadata <- function(IndicatorID = NULL,
       }) %>%
       bind_rows()
   } else if (!(is.null(ProfileID))) {
-    AllProfiles <- profiles(path = path)
+    AllProfiles <- profiles(
+      proxy_settings = proxy_settings,
+      path = path)
     if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
       stop("ProfileID(s) do not exist, use profiles() to identify existing profiles")
     }
@@ -192,6 +198,7 @@ indicator_update_information <- function(IndicatorID, ProfileID = NULL,
                                    collapse = "%2C")
 
     profile_check <- indicators(ProfileID = ProfileID,
+                                proxy_settings = proxy_settings,
                                 path = path)
     if (!any(IndicatorID %in% profile_check$IndicatorID))
       stop("Not all IndicatorIDs are avaible within the provided ProfileID(s)")
@@ -222,12 +229,9 @@ indicator_update_information <- function(IndicatorID, ProfileID = NULL,
                  api_path) %>%
     lapply(function(indicator_ids) {
       indicator_ids %>%
-        GET(use_proxy(ie_get_proxy_for_url(),
-                      username = "",
-                      password = "",
-                      auth = "ntlm")) %>%
-        content("text") %>%
-        fromJSON(flatten = TRUE)
+        get_fingertips_api(
+          proxy_settings = proxy_settings
+        )
     }) %>%
     unlist(recursive = FALSE) |>
     lapply(function(x) x[c("IID", "DataChange")]) %>%

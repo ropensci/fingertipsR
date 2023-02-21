@@ -51,7 +51,13 @@ test_that("indicator_metadata returns correct number of columns when IndicatorID
 
 test_that("indicator_metadata returns correct number of columns when DomainID provided", {
   skip_on_cran()
-  expect_equal(ncol(indicator_metadata(DomainID = 1938133294)), ncols)
+  expect_equal(
+    ncol(
+      indicator_metadata(
+        DomainID = 1938133294,
+        proxy_settings = "none")),
+    ncols,
+    info = "function works with proxy_settings = 'none'")
 
 })
 
@@ -87,8 +93,10 @@ test_that("dimensions of indicator_update_information are correct when ProfileID
     dim(
       indicator_update_information(
         IndicatorID = c(10301, 10401),
-        ProfileID = c(19))),
-    c(2, 2))
+        ProfileID = c(19),
+        proxy_settings = "none")),
+    c(2, 2),
+    info = "function works when proxy_settings = 'none'")
 
 })
 

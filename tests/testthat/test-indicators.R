@@ -24,8 +24,14 @@ test_that("the profiles function returns data frame", {
 
 test_that("the profiles function returns data frame when ProfileID = 19", {
     skip_on_cran()
-    expect_type(profiles(ProfileID = 19),
-                "list")
+    expect_equal(
+      ncol(
+        profiles(
+          ProfileID = 19,
+          proxy_settings = "none")
+      ),
+      4,
+      info = "function tested with proxy_settings = 'none'")
 
 })
 
@@ -51,34 +57,82 @@ test_that("the indicators function works when ProfileID provided", {
 
 test_that("the indicators function works when DomainID provided", {
     skip_on_cran()
-    expect_type(indicators(DomainID = 1938133294),
-                "list")
+    expect_equal(
+      ncol(
+        indicators(
+          DomainID = 1938133294,
+          proxy_settings = "none")
+      ),
+      6,
+      info = "function works with proxy_settings = 'none'")
 
 })
 
 
 test_that("the indicators_unique function works with ProfileID provided", {
-    skip_on_cran()
-    expect_type(indicators_unique(19),
-                "list")
+  skip_on_cran()
+  expect_equal(
+    ncol(
+      indicators_unique(
+        ProfileID = 19)
+    ),
+    2,
+    info = "function works with default proxy_settings")
+
+  skip_on_cran()
+  expect_equal(
+    ncol(
+      indicators_unique(
+        ProfileID = 19,
+        proxy_settings = "none")
+    ),
+    2,
+    info = "function works with proxy_settings = 'none'")
 })
+
+
 
 test_that("the indicator_order function works", {
     skip_on_cran()
-    expect_type(indicator_order(DomainID = 1938133301, AreaTypeID = 6, ParentAreaTypeID = 15),
-                "list")
+    expect_equal(
+      ncol(
+        indicator_order(
+          DomainID = 1938133301,
+          AreaTypeID = 6,
+          ParentAreaTypeID = 15)
+      ),
+      4,
+      info = "function works with default proxy_settings")
+
+    skip_on_cran()
+    expect_equal(
+      ncol(
+        indicator_order(
+          DomainID = 1938133301,
+          AreaTypeID = 6,
+          ParentAreaTypeID = 15,
+          proxy_settings = "none")
+      ),
+      4,
+      info = "function works with proxy_settings = 'none'")
 })
 
 test_that("the indicator_order function errors when nothing provided", {
     skip_on_cran()
-    expect_error(indicator_order(), "All of DomainID, AreaTypeID and ParentAreaTypeID are required")
+    expect_error(
+      indicator_order(),
+      "All of DomainID, AreaTypeID and ParentAreaTypeID are required")
 
 })
 
 test_that("the indicator_order function errors when incorrect DomainID provided", {
     skip_on_cran()
-    expect_error(indicator_order(DomainID = 100, AreaTypeID = 102, ParentAreaTypeID = 6),
-                 "DomainID does not exist")
+    expect_error(
+      indicator_order(
+        DomainID = 100,
+        AreaTypeID = 102,
+        ParentAreaTypeID = 6),
+      "DomainID does not exist")
 
 })
 

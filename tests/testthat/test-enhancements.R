@@ -15,7 +15,15 @@ test_that(paste("fingertips_redred returns correct column number table for AreaT
 
 test_that("fingertips_redred returns correct column number table for AreaTypeID 154", {
         skip_on_cran()
-        expect_equal(ncol(fingertips_redred(30309, AreaTypeID = 402, Comparator = "Parent")), numcols)
+        expect_equal(
+          ncol(
+            fingertips_redred(
+              IndicatorID = 30309,
+              AreaTypeID = 402,
+              Comparator = "Parent",
+              proxy_settings = "none")),
+          numcols,
+          info = "function works with proxy_settings = 'none'")
 
 })
 test_that("fingertips_redred returns correct column number table for AreaTypeID 202", {
@@ -26,5 +34,20 @@ test_that("fingertips_redred returns correct column number table for AreaTypeID 
 
 test_that("fingertips_stats functionality", {
         skip_if_offline()
-        expect_null(fingertips_stats())
+        expect_output(
+          fingertips_stats(),
+          "Fingertips consisted of",
+          fixed = TRUE,
+          info = "fingertips_stats functionality with default proxy_settings")
+})
+
+test_that("fingertips_stats functionality", {
+  skip_if_offline()
+  expect_output(
+    fingertips_stats(
+      proxy_settings = "none"
+    ),
+    "Fingertips consisted of",
+    fixed = TRUE,
+    info = "fingertips_stats functionality with proxy_settings = 'none'")
 })

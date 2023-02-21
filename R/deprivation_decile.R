@@ -84,6 +84,7 @@ deprivation_decile <- function(AreaTypeID, Year = 2019,
           proxy_settings = proxy_settings)
         deprivation_decile <- fingertips_data(IndicatorID = IndicatorID,
                                               AreaTypeID = AreaTypeID,
+                                              proxy_settings = proxy_settings,
                                               path = path) %>%
                 group_by(.data$AreaType) %>%
                 mutate(records = n()) %>%

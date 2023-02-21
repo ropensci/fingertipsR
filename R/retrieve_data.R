@@ -1,7 +1,8 @@
 #' @importFrom httr set_config config
 #' @importFrom utils setTxtProgressBar
 #' @import dplyr
-retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path) {
+retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs,
+                               ParentAreaTypeIDs, path) {
         if (missing(ProfileIDs)) {
                 ProfileIDs <- ""
                 profileID_bit <- ""
@@ -101,71 +102,85 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
 #' @importFrom utils read.delim
 #' @importFrom stats setNames
 new_data_formatting <- function(dataurl, generic_name = FALSE,
-                                item_of_total, progress_bar) {
-        df_string <- add_timestamp(dataurl)
-        df_string <- RETRY("GET", url = df_string,
-                           config = use_proxy(ie_get_proxy_for_url(df_string),
-                                              username = "",
-                                              password = "",
-                                              auth = "ntlm"),
-                           times = 5) %>%
-                content("text")
-        fieldnames <- read.delim(text = df_string,
-                               encoding = "UTF-8",
-                               sep = ",",
-                               fill = TRUE,
-                               header = TRUE,
-                               stringsAsFactors = FALSE,
-                               check.names = FALSE,
-                               nrows = 1)
-        names(fieldnames)[names(fieldnames)=="Target data"] <- "Compared to goal"
-        parent_field_name <- names(fieldnames)[grepl("^Compared", names(fieldnames))]
-        parent_field_name <- parent_field_name[!grepl("Compared to goal|Compared to England", parent_field_name)]
+                                item_of_total, progress_bar,
+                                proxy_settings = "default") {
 
-        character_fields <- c("Indicator Name", "Parent Code",
-                              "Parent Name", "Area Code",
-                              "Area Name", "Area Type",
-                              "Sex", "Age", "Category Type",
-                              "Category", "Time period",
-                              "Value note", "Recent Trend",
-                              "Compared to England value or percentiles",
-                              parent_field_name,
-                              "New data", "Compared to goal",
-                              "Time period range")
-        numeric_fields <- c("Value", "Lower CI 95.0 limit",
-                            "Upper CI 95.0 limit", "Lower CI 99.8 limit",
-                            "Upper CI 99.8 limit", "Count",
-                            "Denominator")
-        integer_fields <- c("Indicator ID", "Time period Sortable")
+  proxy_settings <- match.arg(
+    proxy_settings,
+    c("default", "none")
+  )
+  df_string <- add_timestamp(dataurl)
 
-        field_classes <- c(
-          stats::setNames(rep("character", length(character_fields)),
-                   character_fields),
-          stats::setNames(rep("numeric", length(numeric_fields)),
-                   numeric_fields),
-          stats::setNames(rep("integer", length(integer_fields)),
-                   integer_fields)
-        )
+  if (proxy_settings == "default") {
+    df_string <- RETRY("GET", url = df_string,
+                       config = use_proxy(ie_get_proxy_for_url(df_string),
+                                          username = "",
+                                          password = "",
+                                          auth = "ntlm"),
+                       times = 5) %>%
+      content("text")
+  } else {
+    df_string <- RETRY("GET", url = df_string,
+                       times = 5) %>%
+      content("text")
+  }
 
-        new_data <- read.delim(text = df_string,
-                               encoding = "UTF-8",
-                               sep = ",",
-                               fill = TRUE,
-                               header = TRUE,
-                               stringsAsFactors = FALSE,
-                               check.names = FALSE,
-                               colClasses = field_classes)
+  fieldnames <- read.delim(text = df_string,
+                           encoding = "UTF-8",
+                           sep = ",",
+                           fill = TRUE,
+                           header = TRUE,
+                           stringsAsFactors = FALSE,
+                           check.names = FALSE,
+                           nrows = 1)
+  names(fieldnames)[names(fieldnames)=="Target data"] <- "Compared to goal"
+  parent_field_name <- names(fieldnames)[grepl("^Compared", names(fieldnames))]
+  parent_field_name <- parent_field_name[!grepl("Compared to goal|Compared to England", parent_field_name)]
 
-        if (generic_name) {
-                parent_field_name <- gsub("\\(","\\\\\\(", parent_field_name)
-                parent_field_name <- gsub("\\)","\\\\\\)", parent_field_name)
-                names(new_data) <- gsub(parent_field_name, "ComparedtoParentvalueorpercentiles", names(new_data))
+  character_fields <- c("Indicator Name", "Parent Code",
+                        "Parent Name", "Area Code",
+                        "Area Name", "Area Type",
+                        "Sex", "Age", "Category Type",
+                        "Category", "Time period",
+                        "Value note", "Recent Trend",
+                        "Compared to England value or percentiles",
+                        parent_field_name,
+                        "New data", "Compared to goal",
+                        "Time period range")
+  numeric_fields <- c("Value", "Lower CI 95.0 limit",
+                      "Upper CI 95.0 limit", "Lower CI 99.8 limit",
+                      "Upper CI 99.8 limit", "Count",
+                      "Denominator")
+  integer_fields <- c("Indicator ID", "Time period Sortable")
 
-        }
+  field_classes <- c(
+    stats::setNames(rep("character", length(character_fields)),
+                    character_fields),
+    stats::setNames(rep("numeric", length(numeric_fields)),
+                    numeric_fields),
+    stats::setNames(rep("integer", length(integer_fields)),
+                    integer_fields)
+  )
 
-        if (!missing(progress_bar)) setTxtProgressBar(progress_bar, as.numeric(item_of_total))
+  new_data <- read.delim(text = df_string,
+                         encoding = "UTF-8",
+                         sep = ",",
+                         fill = TRUE,
+                         header = TRUE,
+                         stringsAsFactors = FALSE,
+                         check.names = FALSE,
+                         colClasses = field_classes)
 
-        return(new_data)
+  if (generic_name) {
+    parent_field_name <- gsub("\\(","\\\\\\(", parent_field_name)
+    parent_field_name <- gsub("\\)","\\\\\\)", parent_field_name)
+    names(new_data) <- gsub(parent_field_name, "ComparedtoParentvalueorpercentiles", names(new_data))
+
+  }
+
+  if (!missing(progress_bar)) setTxtProgressBar(progress_bar, as.numeric(item_of_total))
+
+  return(new_data)
 }
 
 retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, ParentAreaTypeID, path) {

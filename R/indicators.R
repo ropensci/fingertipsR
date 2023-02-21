@@ -39,14 +39,21 @@ indicators <- function(ProfileID = NULL,
           endpoint = path,
           proxy_settings = proxy_settings)
         if (!is.null(ProfileID)){
-                tempdf <- profiles(ProfileID = ProfileID, path = path)
+                tempdf <- profiles(
+                  ProfileID = ProfileID,
+                  proxy_settings = proxy_settings,
+                  path = path)
                 if (!is.null(DomainID)) warning("DomainID is ignored as ProfileID has also been entered")
                 DomainID <- tempdf$DomainID
         } else if (!is.null(DomainID)) {
-                tempdf <- profiles(path = path)
+                tempdf <- profiles(
+                  proxy_settings = proxy_settings,
+                  path = path)
                 DomainID <- DomainID
         } else {
-                tempdf <- profiles(path = path)
+                tempdf <- profiles(
+                  proxy_settings = proxy_settings,
+                  path = path)
                 DomainID <- tempdf$DomainID
         }
         if (length(DomainID) > 100) {
@@ -63,12 +70,9 @@ indicators <- function(ProfileID = NULL,
         df <- url %>%
                 lapply(function(dom) {
                         dom %>%
-                                GET(use_proxy(ie_get_proxy_for_url(),
-                                              username = "",
-                                              password = "",
-                                              auth = "ntlm")) %>%
-                                content("text") %>%
-                                fromJSON(flatten = TRUE)
+                    get_fingertips_api(
+                      proxy_settings = proxy_settings)
+
                 }) %>%
                 bind_rows() %>%
                 left_join(tempdf, by = c("GroupId" = "DomainID")) %>%
@@ -114,7 +118,11 @@ indicators_unique <- function(ProfileID = NULL,
         fingertips_ensure_api_available(
           endpoint = path,
           proxy_settings = proxy_settings)
-        df <- indicators(ProfileID, DomainID, path = path)
+        df <- indicators(
+          ProfileID,
+          DomainID,
+          proxy_settings = proxy_settings,
+          path = path)
         df <- unique(df[,c("IndicatorID", "IndicatorName")])
         return(df)
 
@@ -158,17 +166,16 @@ indicator_order <- function(DomainID,
                                  sprintf("parent_to_child_areas?child_area_type_id=%s&parent_area_type_id=%s",
                                          AreaTypeID,
                                          ParentAreaTypeID)) %>%
-                GET(use_proxy(ie_get_proxy_for_url(),
-                              username = "",
-                              password = "",
-                              auth = "ntlm")) %>%
-                content("text") %>%
-                fromJSON() %>%
+                get_fingertips_api(
+                  proxy_settings = proxy_settings
+                ) %>%
                 names()
         ParentAreaCode <- ParentAreaCode[grepl("^E", ParentAreaCode)][1]
         domid <- DomainID
-        ProfileID <- profiles(path = path) %>%
-                filter(DomainID == domid)
+        ProfileID <- profiles(
+          proxy_settings = proxy_settings,
+          path = path) %>%
+          filter(DomainID == domid)
         if (nrow(ProfileID) == 0) {
                 stop("DomainID does not exist")
         } else {
@@ -180,21 +187,14 @@ indicator_order <- function(DomainID,
                                ProfileID, DomainID, AreaTypeID, ParentAreaCode))
         set_config(config(ssl_verifypeer = 0L))
         indicator_order <- path %>%
-                GET(use_proxy(ie_get_proxy_for_url(),
-                              username = "",
-                              password = "",
-                              auth = "ntlm")) %>%
-                content("text") %>%
-                fromJSON() %>%
-                select(
-                  "IID",
-                  "Sequence",
-                  "Sex",
-                  "Age")
-        indicator_order$Sex <- indicator_order$Sex$Name
-        indicator_order$Age <- indicator_order$Age$Name
-        indicator_order <- indicator_order %>%
-                rename(IndicatorID = "IID") %>%
-                as_tibble()
+          get_fingertips_api(
+            proxy_settings = proxy_settings
+          ) %>%
+          select(
+            IndicatorID = "IID",
+            "Sequence",
+            Sex = "Sex.Name",
+            Age = "Age.Name") %>%
+          as_tibble()
         return(indicator_order)
 }

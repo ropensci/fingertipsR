@@ -9,7 +9,14 @@ test_that("the area_types function returns data frame", {
 
 test_that("area_type brings 0 row table for specific condition", {
     skip_on_cran()
-    expect_equal(nrow(area_types("County")), 0)
+    expect_equal(
+      nrow(
+        area_types(
+          "County",
+          proxy_settings = "none")
+        ),
+      0,
+      info = "testing the filter and also proxy_settings = 'none'")
 
 })
 
@@ -39,7 +46,14 @@ test_that("the indicator_areatypes function returns two column table", {
 
 test_that("indicator_areatypes works for filter on IndicatorID = 108", {
     skip_on_cran()
-    expect_equal(ncol(indicator_areatypes(108)), 2)
+    expect_equal(
+      ncol(
+        indicator_areatypes(
+          108,
+          proxy_settings = "none"))
+      ,
+      2,
+      info = "testing the function with proxy_settings = 'none'")
 
 })
 
@@ -68,12 +82,24 @@ test_that("category_types returns data frame", {
 
 test_that("category_types returns 5 column table", {
     skip_on_cran()
-    expect_equal(ncol(category_types()), 5)
+    expect_equal(
+      ncol(
+        category_types(
+          proxy_settings = "none"
+        )),
+      5,
+      info = "testing the function with proxy_settings = 'none'")
 })
 
 test_that("nearest_neighbours returns character vector", {
     skip_on_cran()
-    expect_equal(nearest_neighbours("E09000001", 302), character())
+    expect_equal(
+      nearest_neighbours(
+        "E09000001",
+        302,
+        proxy_settings = "none"),
+      character(),
+      info = "testing the function with proxy_settings = 'none'")
 })
 
 test_that("nearest_neighbours works for AreaTypeID = 166", {
@@ -84,8 +110,23 @@ test_that("nearest_neighbours works for AreaTypeID = 166", {
 })
 
 test_that("nearest_neighbour_areatypeids provides a one column table", {
-    skip_on_cran()
-    expect_equal(ncol(nearest_neighbour_areatypeids()), 1)
+  skip_on_cran()
+  expect_equal(
+    ncol(
+      nearest_neighbour_areatypeids()
+    ),
+    1,
+    info = "testing the function without setting proxy_settings")
+})
+
+test_that("nearest_neighbour_areatypeids provides a one column table", {
+  skip_on_cran()
+  expect_equal(
+    ncol(
+      nearest_neighbour_areatypeids(proxy_settings = "none")
+    ),
+    1,
+    info = "testing the function setting proxy_settings = 'none'")
 })
 
 test_that("nearest_neighbours warning when measure provided", {

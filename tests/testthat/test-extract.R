@@ -87,14 +87,24 @@ test_that("warnings for fingertips_data when NA provided to ProfileID", {
 
 test_that("the correct url produced when IndicatorID provided", {
         skip_on_cran()
-        expect_equal(fingertips_data(IndicatorID = 90616, AreaTypeID = 219, url_only = TRUE),
-                     "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=219&parent_area_type_id=15&include_sortable_time_periods=yes")
+        expect_equal(
+          fingertips_data(IndicatorID = 90616,
+                          AreaTypeID = 219,
+                          url_only = TRUE),
+          "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=219&parent_area_type_id=15&include_sortable_time_periods=yes",
+          info = "function works correctly with default proxy_settings")
 })
 
 test_that("the correct url produced when DomainID provided", {
         skip_on_cran()
-        expect_equal(fingertips_data(DomainID = 1938133301, AreaTypeID = 6, url_only = TRUE),
-                     "https://fingertips.phe.org.uk/api/all_data/csv/by_group_id?child_area_type_id=6&parent_area_type_id=15&group_id=1938133301&include_sortable_time_periods=yes")
+        expect_equal(
+          fingertips_data(
+            DomainID = 1938133301,
+            AreaTypeID = 6,
+            url_only = TRUE,
+            proxy_settings = "none"),
+          "https://fingertips.phe.org.uk/api/all_data/csv/by_group_id?child_area_type_id=6&parent_area_type_id=15&group_id=1938133301&include_sortable_time_periods=yes",
+          info = "function works correctly with proxy_settings = 'none'")
 
 
 })

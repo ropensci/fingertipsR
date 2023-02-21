@@ -45,6 +45,7 @@ fingertips_redred <- function(Comparator = "England", ...) {
 #'
 #' A sentence that summarises the number of indicators, unique indicators and
 #' profiles
+#' @inheritParams area_types
 #' @return A string that summarises the high level statistics of indicators and
 #'   profiles in Fingertips
 #' @import dplyr
@@ -53,8 +54,8 @@ fingertips_redred <- function(Comparator = "England", ...) {
 #' # Returns a sentence describing number of indicators and profiles in Fingertips
 #' fingertips_stats()}
 #' @export
-fingertips_stats <- function() {
-        fingertips_stats <- indicators()
+fingertips_stats <- function(proxy_settings = "default") {
+        fingertips_stats <- indicators(proxy_settings = proxy_settings)
         summarised_stats <- fingertips_stats %>%
                 summarise_if(is.integer, n_distinct)
         fingertips_stats <- sprintf("On %s Fingertips consisted of %s profiles, made up of %s indicators and %s distinct indicators.",
