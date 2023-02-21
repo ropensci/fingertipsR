@@ -80,9 +80,6 @@ fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint(),
 
   errtext <- paste('The API is currently unavailable')
 
-  if (endpoint == default_api) {
-    errtext <- c(errtext, 'If the issue persists, please notify profilefeedback@dhsc.gov.uk')
-  }
   stop(paste(errtext, collapse='\n  '), call. = FALSE)
 }
 

@@ -175,10 +175,7 @@ indicator_metadata <- function(IndicatorID = NULL,
 #' # Returns metadata for indicator ID 90362 and 1107
 #' indicatorIDs <- c(90362, 1107)
 #' indicator_update_information(indicatorIDs)}
-#' @return The date of latst data update for selected indicators
-#' @importFrom httr GET content set_config config use_proxy
-#' @importFrom curl ie_get_proxy_for_url
-#' @importFrom jsonlite fromJSON
+#' @return The date of latest data update for selected indicators
 #' @importFrom rlang .data
 #' @export
 
