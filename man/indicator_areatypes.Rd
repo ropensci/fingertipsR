@@ -4,13 +4,16 @@
 \alias{indicator_areatypes}
 \title{Area types by indicator}
 \usage{
-indicator_areatypes(IndicatorID, AreaTypeID, path)
+indicator_areatypes(IndicatorID, AreaTypeID, proxy_settings = "default", path)
 }
 \arguments{
 \item{IndicatorID}{integer; the Indicator ID (can be ignored or of length 1).
 Takes priority over AreaTypeID if both are entered}
 
 \item{AreaTypeID}{integer; the Area Type ID (can be ignored or of length 1)}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

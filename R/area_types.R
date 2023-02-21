@@ -9,6 +9,8 @@
 #'   is NULL
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
 #'   default is NULL
+#' @param proxy_settings string; whether to use Internet Explorer proxy settings
+#'   ("default") or "none"
 #' @inheritParams indicators
 #' @examples
 #' \dontrun{
@@ -40,15 +42,18 @@
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
 
-area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL, path){
+area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL,
+                        proxy_settings = "default", path){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
                 warning("AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
         }
         if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
         parentAreas <- paste0(path,"area_types/parent_area_types") %>%
-                get_fingertips_api()
+                get_fingertips_api(proxy_settings = proxy_settings)
         area_types <- parentAreas[,c("Id", "Name")]
         names(area_types) <- c("AreaTypeID","AreaTypeName")
         parentAreasNoNames <- parentAreas$ParentAreaTypes
@@ -79,7 +84,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
 
         if (!is.null(ProfileID)) {
                 areas_in_profile <- paste0(path, "area_types?profile_ids=", ProfileID) %>%
-                        get_fingertips_api() %>%
+                        get_fingertips_api(proxy_settings = proxy_settings) %>%
                         pull("Id")
                 area_types <- area_types %>%
                         filter(.data$AreaTypeID %in% areas_in_profile)
@@ -92,6 +97,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
 #' Outputs a data frame of category type ids, their name (along with a short name)
 #'
 #' @inheritParams indicators
+#' @inheritParams area_types
 #' @return A data frame of category type ids and their descriptions
 #' @import dplyr
 #' @importFrom rlang .data
@@ -112,12 +118,15 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
 
-category_types <- function(path) {
+category_types <- function(proxy_settings = "default",
+                           path) {
         if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
         category_types <- paste0(path,"category_types") %>%
-                get_fingertips_api()
+                get_fingertips_api(proxy_settings = proxy_settings)
         category_names <- category_types %>%
                 select("Id",
                        CategoryType = "Name")
@@ -139,6 +148,7 @@ category_types <- function(path) {
 #' @param IndicatorID integer; the Indicator ID (can be ignored or of length 1).
 #'   Takes priority over AreaTypeID if both are entered
 #' @inheritParams indicators
+#' @inheritParams area_types
 #' @import dplyr
 #' @examples
 #' \dontrun{
@@ -154,9 +164,12 @@ category_types <- function(path) {
 #'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area and
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
-indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
+indicator_areatypes <- function(IndicatorID, AreaTypeID,
+                                proxy_settings = "default", path) {
         if (missing(path)) path <- fingertips_endpoint()
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
         path <- paste0(path, "available_data")
         if (!missing(IndicatorID)) {
                 if (length(IndicatorID) > 1) {
@@ -174,7 +187,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
         }
         set_config(config(ssl_verifypeer = 0L))
         areatypes_by_indicators <- path %>%
-                get_fingertips_api() %>%
+                get_fingertips_api(proxy_settings = proxy_settings) %>%
                 as_tibble()
         names(areatypes_by_indicators) <- c("IndicatorID", "AreaTypeID")
         return(areatypes_by_indicators)
@@ -199,6 +212,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #'   must be either "CIPFA" for CIPFA local authority nearest neighbours or
 #'   "CSSN" for Children's services statistical neighbours
 #' @inheritParams fingertips_data
+#' @inheritParams area_types
 #' @import dplyr
 #' @importFrom utils head
 #' @importFrom rlang .data
@@ -209,14 +223,18 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #' @family lookup functions
 #' @seealso \code{\link{nearest_neighbour_areatypeids}} for the AreaTypeIDs
 #'   available for this function
-nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
+nearest_neighbours <- function(AreaCode, AreaTypeID, measure,
+                               proxy_settings = "default", path) {
 
         if (missing(path)) path <- fingertips_endpoint()
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
 
         url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
 
-        nn_table <- get_fingertips_api(url) %>%
+        nn_table <- get_fingertips_api(url,
+                                       proxy_settings = proxy_settings) %>%
                 rename(measure = "Name")
 
         df <- nn_table %>%
@@ -249,7 +267,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
                             sprintf("parent_to_child_areas?child_area_type_id=%s&parent_area_type_id=%s",
                                     AreaTypeID,
                                     ParentAreaTypeID)) %>%
-                get_fingertips_api() %>%
+                get_fingertips_api(proxy_settings = proxy_settings) %>%
                 unlist(use.names = FALSE)
 
         areacheck <- areacheck[grepl("^E", areacheck)]
@@ -262,7 +280,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
                                AreaTypeID, val, AreaCode))
         set_config(config(ssl_verifypeer = 0L))
         nearest_neighbours <- path %>%
-                get_fingertips_api()
+                get_fingertips_api(proxy_settings = proxy_settings)
 
         if (length(nearest_neighbours) != 0) {
                 nearest_neighbours <- nearest_neighbours %>%
@@ -273,9 +291,12 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure, path) {
         return(nearest_neighbours)
 }
 
-areas_by_profile <- function(AreaTypeID, ProfileID, path) {
+areas_by_profile <- function(AreaTypeID, ProfileID,
+                             proxy_settings = "default", path) {
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_ensure_api_available(endpoint = path)
+        fingertips_ensure_api_available(
+          endpoint = path,
+          proxy_settings = proxy_settings)
 
         repeats <- max(length(AreaTypeID),
                        length(ProfileID))
@@ -284,7 +305,7 @@ areas_by_profile <- function(AreaTypeID, ProfileID, path) {
                                           rep("grouproot_summaries/by_profile_id?profile_id=%s&area_type_id=%s", repeats)),
                                    ProfileID,
                                    AreaTypeID) %>%
-                lapply(function(x) get_fingertips_api(x))
+                lapply(function(x) get_fingertips_api(x, proxy_settings = proxy_settings))
         # names(areas_by_profile) <- AreaTypeID
         nrows_in_each_tibble <- lapply(areas_by_profile, function(x)
                 if (is.null(nrow(x))) {
@@ -317,6 +338,7 @@ areas_by_profile <- function(AreaTypeID, ProfileID, path) {
 #'
 #' Outputs a table of AreaTypeIDs available for the nearest_neighbour function
 #' @return table of AreaTypeIDs
+#' @inheritParams area_types
 #' @importFrom rlang .data
 #' @export
 #' @seealso \code{\link{nearest_neighbours}} to access the geogaphy codes of the
@@ -324,21 +346,23 @@ areas_by_profile <- function(AreaTypeID, ProfileID, path) {
 #' @examples
 #' \dontrun{
 #' nearest_neighbour_areatypeids()}
-nearest_neighbour_areatypeids <- function() {
+nearest_neighbour_areatypeids <- function(proxy_settings = "default") {
 
-        url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
+  url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
 
-        areatypeid_table <- get_fingertips_api(url) %>%
-                rename(measure = "Name")
+  areatypeid_table <- get_fingertips_api(
+    url,
+    proxy_settings = proxy_settings) %>%
+    rename(measure = "Name")
 
-        df <- areatypeid_table %>%
-                select("NeighbourTypeId", "ApplicableAreaTypes") %>%
-                fingertips_deframe() %>%
-                bind_rows(.id = "NeighbourTypeId") %>%
-                mutate(NeighbourTypeId = as.integer(.data$NeighbourTypeId)) %>%
-                left_join(areatypeid_table, by = "NeighbourTypeId") %>%
-                dplyr::select(AreaTypeID = "Id")
+  df <- areatypeid_table %>%
+    select("NeighbourTypeId", "ApplicableAreaTypes") %>%
+    fingertips_deframe() %>%
+    bind_rows(.id = "NeighbourTypeId") %>%
+    mutate(NeighbourTypeId = as.integer(.data$NeighbourTypeId)) %>%
+    left_join(areatypeid_table, by = "NeighbourTypeId") %>%
+    dplyr::select(AreaTypeID = "Id")
 
-        return(df)
+  return(df)
 }
 

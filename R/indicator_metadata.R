@@ -5,6 +5,7 @@
 #' connection speeds)
 #' @param IndicatorID Numeric vector, id of the indicator of interest. Also accepts "All".
 #' @inheritParams fingertips_data
+#' @inheritParams area_types
 #' @examples
 #' \dontrun{
 #' # Returns metadata for indicator ID 90362 and 1107
@@ -38,6 +39,7 @@
 indicator_metadata <- function(IndicatorID = NULL,
                                DomainID = NULL,
                                ProfileID = NULL,
+                               proxy_settings = "default",
                                path) {
   set_config(config(ssl_verifypeer = 0L))
   types <- cols(`Indicator ID` = "i",
@@ -72,9 +74,13 @@ indicator_metadata <- function(IndicatorID = NULL,
 
   if (missing(path)) path <- fingertips_endpoint()
   set_config(config(ssl_verifypeer = 0L))
-  fingertips_ensure_api_available(endpoint = path)
+  fingertips_ensure_api_available(
+    endpoint = path,
+    proxy_settings = proxy_settings)
   if (!(is.null(IndicatorID))) {
-    AllIndicators <- indicators(path = path)
+    AllIndicators <- indicators(
+      proxy_settings = proxy_settings,
+      path = path)
 
     if (identical(IndicatorID, "All")) {
       dataurl <- paste0(path, "indicator_metadata/csv/all")
@@ -108,7 +114,9 @@ indicator_metadata <- function(IndicatorID = NULL,
     }
 
   } else if (!(is.null(DomainID))) {
-    AllProfiles <- profiles(path = path)
+    AllProfiles <- profiles(
+      proxy_settings = proxy_settings,
+      path = path)
     if (sum(AllProfiles$DomainID %in% DomainID) == 0){
       stop("DomainID(s) do not exist, use profiles() to identify existing domains")
     }
@@ -127,7 +135,9 @@ indicator_metadata <- function(IndicatorID = NULL,
       }) %>%
       bind_rows()
   } else if (!(is.null(ProfileID))) {
-    AllProfiles <- profiles(path = path)
+    AllProfiles <- profiles(
+      proxy_settings = proxy_settings,
+      path = path)
     if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
       stop("ProfileID(s) do not exist, use profiles() to identify existing profiles")
     }
@@ -159,23 +169,24 @@ indicator_metadata <- function(IndicatorID = NULL,
 #' @param IndicatorID Integer, id of the indicators of interest
 #' @param ProfileID Integer (optional), whether to restrict the indicators to a particular profile
 #' @inheritParams fingertips_data
+#' @inheritParams area_types
 #' @examples
 #' \dontrun{
 #' # Returns metadata for indicator ID 90362 and 1107
 #' indicatorIDs <- c(90362, 1107)
 #' indicator_update_information(indicatorIDs)}
-#' @return The date of latst data update for selected indicators
-#' @importFrom httr GET content set_config config use_proxy
-#' @importFrom curl ie_get_proxy_for_url
-#' @importFrom jsonlite fromJSON
+#' @return The date of latest data update for selected indicators
 #' @importFrom rlang .data
 #' @export
 
-indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
+indicator_update_information <- function(IndicatorID, ProfileID = NULL,
+                                         proxy_settings = "default", path) {
 
   if (missing(path)) path <- fingertips_endpoint()
   set_config(config(ssl_verifypeer = 0L))
-  fingertips_ensure_api_available(endpoint = path)
+  fingertips_ensure_api_available(
+    endpoint = path,
+    proxy_settings = proxy_settings)
 
 
   if (!is.null(ProfileID)) {
@@ -184,6 +195,7 @@ indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
                                    collapse = "%2C")
 
     profile_check <- indicators(ProfileID = ProfileID,
+                                proxy_settings = proxy_settings,
                                 path = path)
     if (!any(IndicatorID %in% profile_check$IndicatorID))
       stop("Not all IndicatorIDs are avaible within the provided ProfileID(s)")
@@ -214,12 +226,9 @@ indicator_update_information <- function(IndicatorID, ProfileID = NULL, path) {
                  api_path) %>%
     lapply(function(indicator_ids) {
       indicator_ids %>%
-        GET(use_proxy(ie_get_proxy_for_url(),
-                      username = "",
-                      password = "",
-                      auth = "ntlm")) %>%
-        content("text") %>%
-        fromJSON(flatten = TRUE)
+        get_fingertips_api(
+          proxy_settings = proxy_settings
+        )
     }) %>%
     unlist(recursive = FALSE) |>
     lapply(function(x) x[c("IID", "DataChange")]) %>%

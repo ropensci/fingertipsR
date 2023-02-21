@@ -4,7 +4,13 @@
 \alias{indicator_order}
 \title{Indicator order number}
 \usage{
-indicator_order(DomainID, AreaTypeID, ParentAreaTypeID, path)
+indicator_order(
+  DomainID,
+  AreaTypeID,
+  ParentAreaTypeID,
+  proxy_settings = "default",
+  path
+)
 }
 \arguments{
 \item{DomainID}{Numeric vector, id of domains of interest}
@@ -16,6 +22,9 @@ the indicator(s), though this can take a long time to run}
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified
 `AreaTypeID` from the area_types() function}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

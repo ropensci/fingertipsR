@@ -5,6 +5,7 @@
 #' @return A data frame of live profile ids and names along with their domain
 #'   names and ids.
 #' @inheritParams indicators
+#' @inheritParams area_types
 #' @param ProfileName Character vector, full name of profile(s)
 #' @examples
 #' \dontrun{
@@ -28,62 +29,62 @@
 #'   Fingertips website within a Domain
 #' @export
 
-profiles <- function(ProfileID = NULL, ProfileName = NULL, path) {
-        if (missing(path)) path <- fingertips_endpoint()
-        set_config(config(ssl_verifypeer = 0L))
-        fingertips_ensure_api_available(endpoint = path)
+profiles <- function(ProfileID = NULL, ProfileName = NULL,
+                     proxy_settings = "default", path) {
+  if (missing(path)) path <- fingertips_endpoint()
+  set_config(config(ssl_verifypeer = 0L))
+  fingertips_ensure_api_available(
+    endpoint = path,
+    proxy_settings = proxy_settings)
 
-        profiles <- paste0(path,"profiles") %>%
-                get_fingertips_api()
-        idname <- profiles[,c("Id", "Name")]
+  profiles <- paste0(path,"profiles") %>%
+    get_fingertips_api(
+      proxy_settings = proxy_settings
+    )
+  idname <- profiles[,c("Id", "Name")]
 
-        profiles <- lapply(profiles$GroupIds, data.frame)
-        names(profiles) <- idname$Id
-        profiles <- bind_rows(profiles,
-                              .id = "profiles") %>%
-                mutate(profiles = as.integer(.data$profiles)) %>%
-                left_join(idname, by = c("profiles" = "Id"))
-        names(profiles) <- c("ID", "groupid", "Name")
-        profiles <- profiles[, c("ID", "Name", "groupid")]
-        if (!is.null(ProfileID)) {
-                profiles <- filter(profiles,
-                                   .data$ID %in% ProfileID)
-                if (nrow(profiles) == 0){
-                        stop("ProfileID(s) are not in the list of profile IDs. Re-run the function without any inputs to see all possible IDs.")
-                }
-        } else if (!is.null(ProfileName)) {
-                profiles <- filter(profiles,
-                                   .data$Name %in% ProfileName)
-                if (nrow(profiles) == 0){
-                        stop("Profile names are not in the list of profile names. Re-run the function without any inputs to see all possible names.")
-                }
-        }
-        i <- profiles %>%
-                group_by(.data$ID) %>%
-                summarise(combined = paste(.data$groupid, collapse = "%2C"))
-        groupDescriptions <- data.frame(ID = unique(profiles$ID),
-                                        path = paste0(path,"group_metadata?group_ids=")) %>%
-                left_join(i, by = c("ID" = "ID")) %>%
-                mutate(dataurl = paste0(path, .data$combined)) %>%
-                               pull() %>%
-                lapply(function(dataurl) {
-                        dataurl %>%
-                                GET(use_proxy(ie_get_proxy_for_url(),
-                                              username = "",
-                                              password = "",
-                                              auth = "ntlm")) %>%
-                                content("text") %>%
-                                fromJSON()
-                }) %>%
-                bind_rows()
-        groupDescriptions <- groupDescriptions %>%
-                select("Id", "Name")
-        profiles <- rename(profiles,
-                           ProfileID = "ID",
-                           ProfileName = "Name",
-                           DomainID = "groupid") %>%
-                left_join(groupDescriptions, by = c("DomainID" = "Id")) %>%
-                rename(DomainName = "Name") %>%
-                as_tibble()
-        return(profiles)
+  profiles <- lapply(profiles$GroupIds, data.frame)
+  names(profiles) <- idname$Id
+  profiles <- bind_rows(profiles,
+                        .id = "profiles") %>%
+    mutate(profiles = as.integer(.data$profiles)) %>%
+    left_join(idname, by = c("profiles" = "Id"))
+  names(profiles) <- c("ID", "groupid", "Name")
+  profiles <- profiles[, c("ID", "Name", "groupid")]
+  if (!is.null(ProfileID)) {
+    profiles <- filter(profiles,
+                       .data$ID %in% ProfileID)
+    if (nrow(profiles) == 0){
+      stop("ProfileID(s) are not in the list of profile IDs. Re-run the function without any inputs to see all possible IDs.")
+    }
+  } else if (!is.null(ProfileName)) {
+    profiles <- filter(profiles,
+                       .data$Name %in% ProfileName)
+    if (nrow(profiles) == 0){
+      stop("Profile names are not in the list of profile names. Re-run the function without any inputs to see all possible names.")
+    }
+  }
+  i <- profiles %>%
+    group_by(.data$ID) %>%
+    summarise(combined = paste(.data$groupid, collapse = "%2C"))
+  groupDescriptions <- data.frame(ID = unique(profiles$ID),
+                                  path = paste0(path,"group_metadata?group_ids=")) %>%
+    left_join(i, by = c("ID" = "ID")) %>%
+    mutate(dataurl = paste0(path, .data$combined)) %>%
+    pull() %>%
+    lapply(
+      get_fingertips_api,
+      proxy_settings = proxy_settings
+    ) %>%
+    bind_rows()
+  groupDescriptions <- groupDescriptions %>%
+    select("Id", "Name")
+  profiles <- rename(profiles,
+                     ProfileID = "ID",
+                     ProfileName = "Name",
+                     DomainID = "groupid") %>%
+    left_join(groupDescriptions, by = c("DomainID" = "Id")) %>%
+    rename(DomainName = "Name") %>%
+    as_tibble()
+  return(profiles)
 }

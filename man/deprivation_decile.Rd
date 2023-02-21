@@ -4,7 +4,7 @@
 \alias{deprivation_decile}
 \title{Deprivation deciles}
 \usage{
-deprivation_decile(AreaTypeID, Year = 2019, path)
+deprivation_decile(AreaTypeID, Year = 2019, proxy_settings = "default", path)
 }
 \arguments{
 \item{AreaTypeID}{Integer value; this function uses the IndicatorIDs 91872,
@@ -13,6 +13,9 @@ see what AreaTypeIDs are available}
 
 \item{Year}{Integer value, representing the year of IMD release to be
 applied, limited to 2015 or 2019}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

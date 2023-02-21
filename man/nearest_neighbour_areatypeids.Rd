@@ -4,7 +4,11 @@
 \alias{nearest_neighbour_areatypeids}
 \title{Nearest neighbours area type ids}
 \usage{
-nearest_neighbour_areatypeids()
+nearest_neighbour_areatypeids(proxy_settings = "default")
+}
+\arguments{
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 }
 \value{
 table of AreaTypeIDs

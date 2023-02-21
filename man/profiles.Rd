@@ -4,12 +4,20 @@
 \alias{profiles}
 \title{Live profiles}
 \usage{
-profiles(ProfileID = NULL, ProfileName = NULL, path)
+profiles(
+  ProfileID = NULL,
+  ProfileName = NULL,
+  proxy_settings = "default",
+  path
+)
 }
 \arguments{
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
 \item{ProfileName}{Character vector, full name of profile(s)}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

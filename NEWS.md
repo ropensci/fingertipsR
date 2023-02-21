@@ -1,5 +1,9 @@
 # fingertipsR 1.0.10 (2023-01-30)
 
+* Provision of ability to turn off automatic proxy settings using internet explorer's settings using `proxy_settings` argument
+
+# fingertipsR 1.0.10 (2023-01-30)
+
 * Bug fixed where character field has entirely missing values it defaulted to NA instead of ""
 * Bug fix to allow indicator_update_information() to accept a long vector of IndicatorID
 

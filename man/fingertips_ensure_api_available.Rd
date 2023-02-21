@@ -4,10 +4,16 @@
 \alias{fingertips_ensure_api_available}
 \title{Check if the given Fingertips API endpoint is available}
 \usage{
-fingertips_ensure_api_available(endpoint = fingertips_endpoint())
+fingertips_ensure_api_available(
+  endpoint = fingertips_endpoint(),
+  proxy_settings = "default"
+)
 }
 \arguments{
 \item{endpoint}{string, the API base URL to check}
+
+\item{proxy_settings}{string; whether to use Internet Explorer proxy settings
+("default") or "none"}
 }
 \value{
 \code{TRUE} if the API is available, otherwise \code{stop()} is called.

@@ -11,7 +11,14 @@ test_that("the number of columns of deprivation decile function are as expected"
 
 test_that("the number of rows returned by deprivation decile is greater than 2 for AreaTypeID 201", {
         skip_on_cran()
-        expect_true(nrow(deprivation_decile(AreaTypeID = 201, Year = 2019)) > 2)
+        expect_true(
+          nrow(
+            deprivation_decile(
+              AreaTypeID = 201,
+              Year = 2019,
+              proxy_settings = "none")
+            ) > 2,
+          info = "function works with proxy_settings = 'none'")
 })
 
 test_that("the number of rows returned by deprivation decile is greater than 2 for AreaTypeID 202", {
