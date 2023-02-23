@@ -97,12 +97,15 @@ indicator_metadata <- function(IndicatorID = NULL,
                         paste(IndicatorID, collapse = "%2C"))
       if (!(is.null(ProfileID)) & length(ProfileID == 1))
         dataurl <- paste0(dataurl, "&profile_id=", ProfileID)
+
       indicator_metadata <- dataurl %>%
-        get_fingertips_api(
+        lapply(
+          get_fingertips_api,
           content_type = "parsed",
           col_types = types,
           proxy_settings = proxy_settings
-        )
+        ) %>%
+        bind_rows()
     }
 
   } else if (!(is.null(DomainID))) {
@@ -114,14 +117,12 @@ indicator_metadata <- function(IndicatorID = NULL,
     }
     path <- paste0(path, "indicator_metadata/csv/by_group_id?group_id=")
     indicator_metadata <- paste0(path, DomainID) %>%
-      lapply(function(dataurl) {
-        dataurl %>%
-          get_fingertips_api(
-            content_type = "parsed",
-            col_types = types,
-            proxy_settings = proxy_settings
-          )
-      }) %>%
+      lapply(
+        get_fingertips_api,
+        content_type = "parsed",
+        col_types = types,
+        proxy_settings = proxy_settings
+      ) %>%
       bind_rows()
   } else if (!(is.null(ProfileID))) {
     AllProfiles <- profiles(
@@ -132,14 +133,12 @@ indicator_metadata <- function(IndicatorID = NULL,
     }
     path <- paste0(path, "indicator_metadata/csv/by_profile_id?profile_id=")
     indicator_metadata <- paste0(path, ProfileID) %>%
-      lapply(function(dataurl) {
-        dataurl %>%
-          get_fingertips_api(
-            content_type = "parsed",
-            col_types = types,
-            proxy_settings = proxy_settings
-          )
-      }) %>%
+      lapply(
+        get_fingertips_api,
+        content_type = "parsed",
+        col_types = types,
+        proxy_settings = proxy_settings
+      ) %>%
       bind_rows()
   } else {
     stop("One of IndicatorID, DomainID or ProfileID must be populated")
