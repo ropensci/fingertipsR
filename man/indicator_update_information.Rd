@@ -23,7 +23,7 @@ indicator_update_information(
 correct address}
 }
 \value{
-The date of latst data update for selected indicators
+The date of latest data update for selected indicators
 }
 \description{
 Outputs a data frame which provides a date of when an indicator was last update

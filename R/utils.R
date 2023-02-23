@@ -2,31 +2,66 @@
 #' @param api_path string; the API url to retrieve data from
 #' @param proxy_settings string; whether to use Internet Explorer proxy settings
 #'   ("default") or "none"
+#' @param content_type string; "text" or "parsed"
+#' @param col_types character; vector of column classes
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET content set_config config use_proxy
 #' @importFrom curl ie_get_proxy_for_url
-get_fingertips_api <- function(api_path, proxy_settings = "default") {
+get_fingertips_api <- function(api_path, content_type = "text",
+                               col_types,
+                               proxy_settings = "default") {
   match.arg(proxy_settings,
             c("default",
               "none"))
 
+  match.arg(content_type,
+            c("text", "parsed"))
+
+  if (content_type == "parsed") {
+    if (missing(col_types))
+      stop("With content_type == 'text', col_types must be provided")
+  }
+
   if (proxy_settings == "default") {
-    df <-  api_path %>%
-      GET(
-        use_proxy(
-          ie_get_proxy_for_url(),
-          username = "",
-          password = "",
-          auth = "ntlm")
-      ) %>%
-      content("text") %>%
-      fromJSON(flatten = TRUE)
+    if (content_type == "text") {
+      df <-  api_path %>%
+        GET(
+          use_proxy(
+            ie_get_proxy_for_url(),
+            username = "",
+            password = "",
+            auth = "ntlm")
+        ) %>%
+        content("text") %>%
+        fromJSON(flatten = TRUE)
+    } else {
+      df <- api_path %>%
+        GET(use_proxy(ie_get_proxy_for_url(),
+                      username = "",
+                      password = "",
+                      auth = "ntlm")) %>%
+        content("parsed",
+                type = "text/csv",
+                encoding = "UTF-8",
+                col_types = col_types)
+    }
+
   } else {
-    df <-  api_path %>%
-      GET() %>%
-      content("text") %>%
-      fromJSON(flatten = TRUE)
+    if (content_type == "text") {
+      df <-  api_path %>%
+        GET() %>%
+        content("text") %>%
+        fromJSON(flatten = TRUE)
+    } else {
+      df <-  api_path %>%
+        GET() %>%
+        content("parsed",
+                type = "text/csv",
+                encoding = "UTF-8",
+                col_types = col_types)
+    }
+
   }
   return(df)
 }

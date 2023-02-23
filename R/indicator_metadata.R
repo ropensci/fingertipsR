@@ -19,8 +19,6 @@
 #' indicator_metadata(ProfileID = 129)}
 #' @return The metadata associated with each indicator/domain/profile identified
 #' @importFrom utils read.csv
-#' @importFrom httr GET content set_config config use_proxy
-#' @importFrom curl ie_get_proxy_for_url
 #' @importFrom readr read_csv cols
 #' @importFrom rlang .data
 #' @family lookup functions
@@ -85,14 +83,11 @@ indicator_metadata <- function(IndicatorID = NULL,
     if (identical(IndicatorID, "All")) {
       dataurl <- paste0(path, "indicator_metadata/csv/all")
       indicator_metadata <- dataurl %>%
-        GET(use_proxy(ie_get_proxy_for_url(),
-                      username = "",
-                      password = "",
-                      auth = "ntlm")) %>%
-        content("parsed",
-                type = "text/csv",
-                encoding = "UTF-8",
-                col_types = types)
+        get_fingertips_api(
+          content_type = "parsed",
+          col_types = types,
+          proxy_settings = proxy_settings
+        )
 
     } else if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0) {
       stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
@@ -103,14 +98,11 @@ indicator_metadata <- function(IndicatorID = NULL,
       if (!(is.null(ProfileID)) & length(ProfileID == 1))
         dataurl <- paste0(dataurl, "&profile_id=", ProfileID)
       indicator_metadata <- dataurl %>%
-        GET(use_proxy(ie_get_proxy_for_url(),
-                      username = "",
-                      password = "",
-                      auth = "ntlm")) %>%
-        content("parsed",
-                type = "text/csv",
-                encoding = "UTF-8",
-                col_types = types)
+        get_fingertips_api(
+          content_type = "parsed",
+          col_types = types,
+          proxy_settings = proxy_settings
+        )
     }
 
   } else if (!(is.null(DomainID))) {
@@ -124,14 +116,11 @@ indicator_metadata <- function(IndicatorID = NULL,
     indicator_metadata <- paste0(path, DomainID) %>%
       lapply(function(dataurl) {
         dataurl %>%
-          GET(use_proxy(ie_get_proxy_for_url(),
-                        username = "",
-                        password = "",
-                        auth = "ntlm")) %>%
-          content("parsed",
-                  type = "text/csv",
-                  encoding = "UTF-8",
-                  col_types = types)
+          get_fingertips_api(
+            content_type = "parsed",
+            col_types = types,
+            proxy_settings = proxy_settings
+          )
       }) %>%
       bind_rows()
   } else if (!(is.null(ProfileID))) {
@@ -145,14 +134,11 @@ indicator_metadata <- function(IndicatorID = NULL,
     indicator_metadata <- paste0(path, ProfileID) %>%
       lapply(function(dataurl) {
         dataurl %>%
-          GET(use_proxy(ie_get_proxy_for_url(),
-                        username = "",
-                        password = "",
-                        auth = "ntlm")) %>%
-          content("parsed",
-                  type = "text/csv",
-                  encoding = "UTF-8",
-                  col_types = types)
+          get_fingertips_api(
+            content_type = "parsed",
+            col_types = types,
+            proxy_settings = proxy_settings
+          )
       }) %>%
       bind_rows()
   } else {
