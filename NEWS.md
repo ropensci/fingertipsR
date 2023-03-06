@@ -2,6 +2,7 @@
 
 * Provision of ability to turn off automatic proxy settings using internet explorer's settings using `proxy_settings` argument
 * bug fix to allow `rank = TRUE` when multiple ProfileIDs and IndicatorIDs passed to `fingertips_data()`
+* `get_fingertips_api()` exported from package
 
 # fingertipsR 1.0.10 (2023-01-30)
 

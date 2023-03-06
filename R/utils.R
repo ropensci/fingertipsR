@@ -8,6 +8,12 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET content set_config config use_proxy
 #' @importFrom curl ie_get_proxy_for_url
+#' @export
+#' @examples
+#' df <- get_fingertips_api(
+#'   api_path = paste0(
+#'     fingertips_endpoint(),
+#'     "/area/parent_areas?child_area_code=E12000005&parent_area_type_ids=15"))
 get_fingertips_api <- function(api_path, content_type = "text",
                                col_types,
                                proxy_settings = "default") {
@@ -68,6 +74,7 @@ get_fingertips_api <- function(api_path, content_type = "text",
 
 #' Add timestamp onto end of api url to prevent caching issues
 #' @inheritParams get_fingertips_api
+#' @noRd
 add_timestamp <- function(api_path) {
   api_path <- paste0(api_path,
                      "&timestamp=",
@@ -88,6 +95,7 @@ fingertips_endpoint <- function() default_api
 #' @param proxy_settings string; whether to use Internet Explorer proxy settings
 #'   ("default") or "none"
 #' @return \code{TRUE} if the API is available, otherwise \code{stop()} is called.
+#' @noRd
 fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint(),
                                             proxy_settings = "default") {
   code <- FALSE
@@ -123,6 +131,7 @@ fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint(),
 #' @description mimic tibble::deframe() without needing to import the function
 #' @param data list whose first item is a vector of names, and second item is a
 #'   list. Items 1 and 2 must be equal length
+#' @noRd
 fingertips_deframe <- function(data) {
   out <- structure(.Data = data[[2]],
                    .Names = data[[1]])

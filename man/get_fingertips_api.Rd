@@ -24,3 +24,9 @@ get_fingertips_api(
 \description{
 Retrieve data from a given Fingertips API url
 }
+\examples{
+df <- get_fingertips_api(
+  api_path = paste0(
+    fingertips_endpoint(),
+    "/area/parent_areas?child_area_code=E12000005&parent_area_type_ids=15"))
+}
