@@ -217,7 +217,14 @@ indicator_update_information <- function(IndicatorID, ProfileID = NULL,
     }) %>%
     unlist(recursive = FALSE) |>
     lapply(function(x) x[c("IID", "DataChange")]) %>%
-    lapply(unlist) %>%
+    lapply(unlist) |>
+    lapply(
+      function(x)
+        structure(
+          as.character(x),
+          names = names(x)
+        )
+    ) |>
     dplyr::bind_rows() %>%
     dplyr::select(IndicatorID = "IID",
                   LastDataUploadDate = "DataChange.LastUploadedAt") %>%
