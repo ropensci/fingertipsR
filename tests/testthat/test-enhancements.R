@@ -28,7 +28,7 @@ test_that("fingertips_redred returns correct column number table for AreaTypeID 
 })
 test_that("fingertips_redred returns correct column number table for AreaTypeID 202", {
         skip_on_cran()
-        expect_equal(ncol(fingertips_redred(90776, AreaTypeID = 202, Comparator = "Goal")), numcols)
+        expect_equal(ncol(fingertips_redred(90776, AreaTypeID = 402, Comparator = "Goal")), numcols)
 
 })
 

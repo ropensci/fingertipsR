@@ -1,7 +1,7 @@
 library(testthat)
 library(fingertipsR)
 
-ncols <- 30
+ncols <- 32
 
 # Error tests -------------------------------------------------------------
 
