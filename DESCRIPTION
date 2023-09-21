@@ -1,11 +1,13 @@
 Package: fingertipsR
 Type: Package
-Version: 1.0.10.9001
+Version: 1.0.10.9002
 Title: Fingertips Data for Public Health
 Description: Fingertips (<http://fingertips.phe.org.uk/>) contains data for many indicators of public health in England. The underlying data is now more easily accessible by making use of the API.
-Maintainer: Sebastian Fox <sebastian.fox@dhsc.gov.uk>
+Maintainer: Annabel Westermann <annabel.westermann@dhsc.gov.uk>
 Depends: R (>= 3.4.0)
-Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@dhsc.gov.uk", c("aut", "cre")),
+Authors@R: c(
+    person("Annabel", "Westermann", , "annabel.westermann@dhsc.gov.uk", c("aut", "cre")),
+    person("Sebastian", "Fox", , "sebsfox@gmail.com", c("aut", "ctb")),
     person("Julian", "Flowers", , , c("aut","ctb")),
     person("Simon", "Thelwall", , "simon.thelwall@ukhsa.gov.uk", c("ctb"), 
       comment = c(ORCID = "0000-0002-0434-2724")),
