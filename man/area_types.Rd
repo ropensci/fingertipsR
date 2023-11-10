@@ -8,7 +8,7 @@ area_types(
   AreaTypeName = NULL,
   AreaTypeID = NULL,
   ProfileID = NULL,
-  proxy_settings = "default",
+  proxy_settings = fingertips_proxy,
   path
 )
 }

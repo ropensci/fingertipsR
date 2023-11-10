@@ -1,4 +1,8 @@
-# fingertipsR 1.0.10.9001
+# fingertipsR 1.0.11.9001 (2023-10-11)
+
+* Determines if automatic proxy settings using internet explorer's settings should be used on package load. 
+
+# fingertipsR 1.0.11 (2023-09-11)
 
 * Provision of ability to turn off automatic proxy settings using internet explorer's settings using `proxy_settings` argument
 * bug fix to allow `rank = TRUE` when multiple ProfileIDs and IndicatorIDs passed to `fingertips_data()`

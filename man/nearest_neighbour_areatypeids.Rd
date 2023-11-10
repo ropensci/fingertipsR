@@ -4,7 +4,7 @@
 \alias{nearest_neighbour_areatypeids}
 \title{Nearest neighbours area type ids}
 \usage{
-nearest_neighbour_areatypeids(proxy_settings = "default")
+nearest_neighbour_areatypeids(proxy_settings = fingertips_proxy)
 }
 \arguments{
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings

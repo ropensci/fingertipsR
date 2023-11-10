@@ -14,7 +14,7 @@ fingertips_data(
   categorytype = FALSE,
   rank = FALSE,
   url_only = FALSE,
-  proxy_settings = "default",
+  proxy_settings = fingertips_proxy,
   path
 )
 }

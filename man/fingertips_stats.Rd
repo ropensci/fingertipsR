@@ -4,7 +4,7 @@
 \alias{fingertips_stats}
 \title{High level statistics on Fingertips data}
 \usage{
-fingertips_stats(proxy_settings = "default")
+fingertips_stats(proxy_settings = fingertips_proxy)
 }
 \arguments{
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings

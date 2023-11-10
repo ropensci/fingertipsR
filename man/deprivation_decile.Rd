@@ -4,7 +4,12 @@
 \alias{deprivation_decile}
 \title{Deprivation deciles}
 \usage{
-deprivation_decile(AreaTypeID, Year = 2019, proxy_settings = "default", path)
+deprivation_decile(
+  AreaTypeID,
+  Year = 2019,
+  proxy_settings = fingertips_proxy,
+  path
+)
 }
 \arguments{
 \item{AreaTypeID}{Integer value; this function uses the IndicatorIDs 91872,

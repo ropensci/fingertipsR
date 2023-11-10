@@ -8,7 +8,7 @@ indicator_metadata(
   IndicatorID = NULL,
   DomainID = NULL,
   ProfileID = NULL,
-  proxy_settings = "default",
+  proxy_settings = fingertips_proxy,
   path
 )
 }

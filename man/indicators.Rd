@@ -4,7 +4,12 @@
 \alias{indicators}
 \title{Live indicators and the profiles and domains they belong to}
 \usage{
-indicators(ProfileID = NULL, DomainID = NULL, proxy_settings = "default", path)
+indicators(
+  ProfileID = NULL,
+  DomainID = NULL,
+  proxy_settings = fingertips_proxy,
+  path
+)
 }
 \arguments{
 \item{ProfileID}{Numeric vector, id of profiles of interest}

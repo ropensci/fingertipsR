@@ -7,7 +7,7 @@
 profiles(
   ProfileID = NULL,
   ProfileName = NULL,
-  proxy_settings = "default",
+  proxy_settings = fingertips_proxy,
   path
 )
 }

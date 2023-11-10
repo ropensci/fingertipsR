@@ -8,7 +8,7 @@ get_fingertips_api(
   api_path,
   content_type = "text",
   col_types,
-  proxy_settings = "default"
+  proxy_settings = fingertips_proxy
 )
 }
 \arguments{

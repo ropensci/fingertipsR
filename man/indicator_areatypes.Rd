@@ -4,7 +4,12 @@
 \alias{indicator_areatypes}
 \title{Area types by indicator}
 \usage{
-indicator_areatypes(IndicatorID, AreaTypeID, proxy_settings = "default", path)
+indicator_areatypes(
+  IndicatorID,
+  AreaTypeID,
+  proxy_settings = fingertips_proxy,
+  path
+)
 }
 \arguments{
 \item{IndicatorID}{integer; the Indicator ID (can be ignored or of length 1).
