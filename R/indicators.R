@@ -31,7 +31,7 @@
 
 indicators <- function(ProfileID = NULL,
                        DomainID = NULL,
-                       proxy_settings = "default",
+                       proxy_settings = fingertips_proxy,
                        path) {
         if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
@@ -112,7 +112,7 @@ indicators <- function(ProfileID = NULL,
 #' @export
 indicators_unique <- function(ProfileID = NULL,
                             DomainID = NULL,
-                            proxy_settings = "default",
+                            proxy_settings = fingertips_proxy,
                             path) {
         if (missing(path)) path <- fingertips_endpoint()
         fingertips_ensure_api_available(
@@ -153,7 +153,7 @@ indicators_unique <- function(ProfileID = NULL,
 indicator_order <- function(DomainID,
                             AreaTypeID,
                             ParentAreaTypeID,
-                            proxy_settings = "default",
+                            proxy_settings = fingertips_proxy,
                             path) {
         if (missing(DomainID)|missing(AreaTypeID)|missing(ParentAreaTypeID))
                 stop("All of DomainID, AreaTypeID and ParentAreaTypeID are required")

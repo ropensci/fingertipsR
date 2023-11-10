@@ -11,10 +11,9 @@
           fingertips_ensure_api_available(proxy_settings = "none")
         }, error=function(e) {
           assign("fingertips_proxy", "default", envir=as.environment("package:fingertipsR"))
-          packageStartupMessage("The API is currently unavailable, you may need to reload the package when the API becomes available.")
+          packageStartupMessage("The API is currently unavailable, you may need to reload fingertipsR when the API becomes available.")
         }
       )
     }
   )
 }
-

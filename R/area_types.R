@@ -43,7 +43,7 @@
 #'   Fingertips website within a Domain
 
 area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL,
-                        proxy_settings = "default", path){
+                        proxy_settings = fingertips_proxy, path){
         if (!(is.null(AreaTypeName)) & !(is.null(AreaTypeID))) {
                 warning("AreaTypeName used when both AreaTypeName and AreaTypeID are entered")
         }
@@ -118,7 +118,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
 
-category_types <- function(proxy_settings = "default",
+category_types <- function(proxy_settings = fingertips_proxy,
                            path) {
         if (missing(path)) path <- fingertips_endpoint()
         set_config(config(ssl_verifypeer = 0L))
@@ -165,7 +165,7 @@ category_types <- function(proxy_settings = "default",
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
 indicator_areatypes <- function(IndicatorID, AreaTypeID,
-                                proxy_settings = "default", path) {
+                                proxy_settings = fingertips_proxy, path) {
         if (missing(path)) path <- fingertips_endpoint()
         fingertips_ensure_api_available(
           endpoint = path,
@@ -224,7 +224,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID,
 #' @seealso \code{\link{nearest_neighbour_areatypeids}} for the AreaTypeIDs
 #'   available for this function
 nearest_neighbours <- function(AreaCode, AreaTypeID, measure,
-                               proxy_settings = "default", path) {
+                               proxy_settings = fingertips_proxy, path) {
 
         if (missing(path)) path <- fingertips_endpoint()
         fingertips_ensure_api_available(
@@ -292,7 +292,7 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure,
 }
 
 areas_by_profile <- function(AreaTypeID, ProfileID,
-                             proxy_settings = "default", path) {
+                             proxy_settings = fingertips_proxy, path) {
         set_config(config(ssl_verifypeer = 0L))
         fingertips_ensure_api_available(
           endpoint = path,
@@ -346,7 +346,7 @@ areas_by_profile <- function(AreaTypeID, ProfileID,
 #' @examples
 #' \dontrun{
 #' nearest_neighbour_areatypeids()}
-nearest_neighbour_areatypeids <- function(proxy_settings = "default") {
+nearest_neighbour_areatypeids <- function(proxy_settings = fingertips_proxy) {
 
   url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
 

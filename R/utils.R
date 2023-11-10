@@ -16,7 +16,7 @@
 #'     "/area/parent_areas?child_area_code=E12000005&parent_area_type_ids=15"))
 get_fingertips_api <- function(api_path, content_type = "text",
                                col_types,
-                               proxy_settings = "default") {
+                               proxy_settings = fingertips_proxy) {
   match.arg(proxy_settings,
             c("default",
               "none"))
@@ -97,7 +97,7 @@ fingertips_endpoint <- function() default_api
 #' @return \code{TRUE} if the API is available, otherwise \code{stop()} is called.
 #' @noRd
 fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint(),
-                                            proxy_settings = "default") {
+                                            proxy_settings = fingertips_proxy) {
   code <- FALSE
   endpoint <- gsub("/api/", "", endpoint)
 

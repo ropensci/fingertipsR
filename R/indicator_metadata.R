@@ -37,7 +37,7 @@
 indicator_metadata <- function(IndicatorID = NULL,
                                DomainID = NULL,
                                ProfileID = NULL,
-                               proxy_settings = "default",
+                               proxy_settings = fingertips_proxy,
                                path) {
   set_config(config(ssl_verifypeer = 0L))
   types <- cols(`Indicator ID` = "i",
@@ -165,7 +165,7 @@ indicator_metadata <- function(IndicatorID = NULL,
 #' @export
 
 indicator_update_information <- function(IndicatorID, ProfileID = NULL,
-                                         proxy_settings = "default", path) {
+                                         proxy_settings = fingertips_proxy, path) {
 
   if (missing(path)) path <- fingertips_endpoint()
   set_config(config(ssl_verifypeer = 0L))
