@@ -1,3 +1,5 @@
+utils::globalVariables("fingertips_proxy")
+
 .onAttach <- function(libname, pkgname) {
   assign("fingertips_proxy", "default", envir=as.environment("package:fingertipsR"))
 
