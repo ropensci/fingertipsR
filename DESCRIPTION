@@ -8,7 +8,7 @@ Depends: R (>= 3.4.0)
 Authors@R: c(
     person("Annabel", "Westermann", , "annabel.westermann@dhsc.gov.uk", c("aut", "cre")),
     person("Sebastian", "Fox", , "sebsfox@gmail.com", c("aut", "ctb")),
-    person("Hadley", "Nanayakkara", , "hadley.nanayakkara@dhsc.gov.uk", c("aut", "cre")),
+    person("Hadley", "Nanayakkara", , "hadley.nanayakkara@dhsc.gov.uk", c("aut", "ctb")),
     person("Julian", "Flowers", , , c("aut","ctb")),
     person("Simon", "Thelwall", , "simon.thelwall@ukhsa.gov.uk", c("ctb"), 
       comment = c(ORCID = "0000-0002-0434-2724")),
