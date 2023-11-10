@@ -87,7 +87,7 @@ test_that("category_types returns 5 column table", {
         category_types(
           proxy_settings = "none"
         )),
-      5,
+      6,
       info = "testing the function with proxy_settings = 'none'")
 })
 
