@@ -8,7 +8,7 @@ indicator_order(
   DomainID,
   AreaTypeID,
   ParentAreaTypeID,
-  proxy_settings = fingertips_proxy,
+  proxy_settings = fingertips_proxy_settings(),
   path
 )
 }

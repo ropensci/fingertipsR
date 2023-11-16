@@ -7,7 +7,7 @@
 indicators_unique(
   ProfileID = NULL,
   DomainID = NULL,
-  proxy_settings = fingertips_proxy,
+  proxy_settings = fingertips_proxy_settings(),
   path
 )
 }

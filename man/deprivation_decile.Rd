@@ -7,7 +7,7 @@
 deprivation_decile(
   AreaTypeID,
   Year = 2019,
-  proxy_settings = fingertips_proxy,
+  proxy_settings = fingertips_proxy_settings(),
   path
 )
 }

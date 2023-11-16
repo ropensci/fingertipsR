@@ -8,7 +8,7 @@ nearest_neighbours(
   AreaCode,
   AreaTypeID,
   measure,
-  proxy_settings = fingertips_proxy,
+  proxy_settings = fingertips_proxy_settings(),
   path
 )
 }

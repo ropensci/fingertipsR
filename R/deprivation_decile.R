@@ -35,7 +35,7 @@
 #'   presented on the Fingertips website within a Domain
 
 deprivation_decile <- function(AreaTypeID, Year = 2019,
-                               proxy_settings = fingertips_proxy, path) {
+                               proxy_settings = fingertips_proxy_settings(), path) {
         if (missing(AreaTypeID)) stop("AreaTypeID must be specified")
 
         if (!(Year %in% c(2015, 2019))) {

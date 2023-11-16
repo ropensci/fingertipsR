@@ -7,7 +7,7 @@
 indicator_areatypes(
   IndicatorID,
   AreaTypeID,
-  proxy_settings = fingertips_proxy,
+  proxy_settings = fingertips_proxy_settings(),
   path
 )
 }

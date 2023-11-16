@@ -4,7 +4,7 @@
 \alias{category_types}
 \title{Category types}
 \usage{
-category_types(proxy_settings = fingertips_proxy, path)
+category_types(proxy_settings = fingertips_proxy_settings(), path)
 }
 \arguments{
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
