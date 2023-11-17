@@ -153,13 +153,14 @@ fingertips_proxy_settings <- function() {
   )
 
   if (fingertips_proxy == "none") {
-  tryCatch(
+    errtext <- tryCatch(
     {
       fingertips_ensure_api_available(proxy_settings = "none")
-    }, error=function(e) {
-      stop("The API is currently unavailable, you may need to reload fingertipsR when the API becomes available.")
-    }
+    }, error=function(e) {"The API is currently unavailable."}
   )
+    if (errtext != TRUE) {
+      stop(paste(errtext, collapse='\n  '), call. = FALSE)
+    }
 }
   return(fingertips_proxy)
 }

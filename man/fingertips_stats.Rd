@@ -8,7 +8,8 @@ fingertips_stats(proxy_settings = fingertips_proxy_settings())
 }
 \arguments{
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-"default" or "none"; default determined automatically.}
+"default" or "none". Setting this manually will decrease runtime;
+ default determined automatically.}
 }
 \value{
 A string that summarises the high level statistics of indicators and

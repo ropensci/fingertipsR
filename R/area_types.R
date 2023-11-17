@@ -10,7 +10,8 @@
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
 #'   default is NULL
 #' @param proxy_settings string; whether to use Internet Explorer proxy settings
-#'   "default" or "none"; default determined automatically.
+#'   "default" or "none". Setting this manually will decrease runtime;
+#'    default determined automatically.
 #' @inheritParams indicators
 #' @examples
 #' \dontrun{

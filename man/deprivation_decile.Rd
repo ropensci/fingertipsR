@@ -20,7 +20,8 @@ see what AreaTypeIDs are available}
 applied, limited to 2015 or 2019}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-"default" or "none"; default determined automatically.}
+"default" or "none". Setting this manually will decrease runtime;
+ default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}
