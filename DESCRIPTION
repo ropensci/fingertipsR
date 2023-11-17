@@ -1,6 +1,6 @@
 Package: fingertipsR
 Type: Package
-Version: 1.0.11.9001
+Version: 1.0.12
 Title: Fingertips Data for Public Health
 Description: Fingertips (<http://fingertips.phe.org.uk/>) contains data for many indicators of public health in England. The underlying data is now more easily accessible by making use of the API.
 Maintainer: Annabel Westermann <annabel.westermann@dhsc.gov.uk>

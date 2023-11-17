@@ -1,6 +1,6 @@
-# fingertipsR 1.0.11.9001 (2023-10-11)
+# fingertipsR 1.0.12 (2023-17-11)
 
-* Determines if automatic proxy settings using internet explorer's settings should be used on package load. 
+* Automatically detects proxy settings in each function.  
 
 # fingertipsR 1.0.11 (2023-09-11)
 

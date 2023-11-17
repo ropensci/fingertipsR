@@ -23,7 +23,7 @@ must be either "CIPFA" for CIPFA local authority nearest neighbours or
 "CSSN" for Children's services statistical neighbours}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none"; default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

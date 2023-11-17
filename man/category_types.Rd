@@ -8,7 +8,7 @@ category_types(proxy_settings = fingertips_proxy_settings(), path)
 }
 \arguments{
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none"; default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

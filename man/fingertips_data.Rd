@@ -52,7 +52,7 @@ are returned also in AreaValuesCount}
 character vector}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none"; default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

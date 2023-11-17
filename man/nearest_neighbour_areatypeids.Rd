@@ -8,7 +8,7 @@ nearest_neighbour_areatypeids(proxy_settings = fingertips_proxy_settings())
 }
 \arguments{
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none"; default determined automatically.}
 }
 \value{
 table of AreaTypeIDs

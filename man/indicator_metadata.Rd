@@ -24,7 +24,7 @@ IndicatorID is populated, ProfileID can be ignored or must be the same
 length as IndicatorID (but can contain NAs).}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none"; default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

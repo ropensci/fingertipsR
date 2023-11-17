@@ -18,7 +18,7 @@ Takes priority over AreaTypeID if both are entered}
 \item{AreaTypeID}{integer; the Area Type ID (can be ignored or of length 1)}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none"; default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

@@ -142,6 +142,7 @@ fingertips_deframe <- function(data) {
 #' fingertips_proxy_settings
 #' @description determines which proxy settings are used
 #' @return A character string with the proxy settings
+#' @noRd
 fingertips_proxy_settings <- function() {
 
   fingertips_proxy <- "default"
