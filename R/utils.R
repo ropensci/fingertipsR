@@ -145,22 +145,27 @@ fingertips_deframe <- function(data) {
 #' @noRd
 fingertips_proxy_settings <- function() {
 
+  # First try using default as proxy settings
   fingertips_proxy <- "default"
-  fingertips_proxy <- tryCatch(
+  errtext <- tryCatch(
     {
       fingertips_ensure_api_available(proxy_settings = "default")
-    }, error=function(e) {"none"}
-  )
-
-  if (fingertips_proxy == "none") {
-    errtext <- tryCatch(
-    {
-      fingertips_ensure_api_available(proxy_settings = "none")
     }, error=function(e) {"The API is currently unavailable."}
   )
+
+  # Second try using "none" as proxy settings
+  if (errtext != TRUE) {
+    fingertips_proxy <- "none"
+    errtext <- tryCatch(
+      {
+        fingertips_ensure_api_available(proxy_settings = "none")
+      }, error=function(e) {"The API is currently unavailable."}
+    )
+
+    # Stop if neither settings work
     if (errtext != TRUE) {
       stop(paste(errtext, collapse='\n  '), call. = FALSE)
     }
-}
+  }
   return(fingertips_proxy)
 }
