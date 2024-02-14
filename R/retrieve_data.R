@@ -103,7 +103,7 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
 #' @importFrom stats setNames
 new_data_formatting <- function(dataurl, generic_name = FALSE,
                                 item_of_total, progress_bar,
-                                proxy_settings = "default") {
+                                proxy_settings = fingertips_proxy_settings()) {
 
   proxy_settings <- match.arg(
     proxy_settings,

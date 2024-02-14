@@ -8,7 +8,7 @@ nearest_neighbours(
   AreaCode,
   AreaTypeID,
   measure,
-  proxy_settings = "default",
+  proxy_settings = fingertips_proxy_settings(),
   path
 )
 }
@@ -23,7 +23,8 @@ must be either "CIPFA" for CIPFA local authority nearest neighbours or
 "CSSN" for Children's services statistical neighbours}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none". Setting this manually will decrease runtime;
+ default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

@@ -8,7 +8,7 @@ area_types(
   AreaTypeName = NULL,
   AreaTypeID = NULL,
   ProfileID = NULL,
-  proxy_settings = "default",
+  proxy_settings = fingertips_proxy_settings(),
   path
 )
 }
@@ -22,7 +22,8 @@ default is NULL}
 \item{ProfileID}{Numeric vector, id of profiles of interest}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none". Setting this manually will decrease runtime;
+ default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

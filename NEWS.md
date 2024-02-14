@@ -1,4 +1,8 @@
-# fingertipsR 1.0.10.9001
+# fingertipsR 1.0.12 (2023-17-11)
+
+* Automatically detects proxy settings in each function.  
+
+# fingertipsR 1.0.11 (2023-09-11)
 
 * Provision of ability to turn off automatic proxy settings using internet explorer's settings using `proxy_settings` argument
 * bug fix to allow `rank = TRUE` when multiple ProfileIDs and IndicatorIDs passed to `fingertips_data()`

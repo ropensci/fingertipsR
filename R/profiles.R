@@ -30,7 +30,7 @@
 #' @export
 
 profiles <- function(ProfileID = NULL, ProfileName = NULL,
-                     proxy_settings = "default", path) {
+                     proxy_settings = fingertips_proxy_settings(), path) {
   if (missing(path)) path <- fingertips_endpoint()
   set_config(config(ssl_verifypeer = 0L))
   fingertips_ensure_api_available(

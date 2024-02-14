@@ -16,7 +16,7 @@
 #'     "/area/parent_areas?child_area_code=E12000005&parent_area_type_ids=15"))
 get_fingertips_api <- function(api_path, content_type = "text",
                                col_types,
-                               proxy_settings = "default") {
+                               proxy_settings = fingertips_proxy_settings()) {
   match.arg(proxy_settings,
             c("default",
               "none"))
@@ -97,7 +97,7 @@ fingertips_endpoint <- function() default_api
 #' @return \code{TRUE} if the API is available, otherwise \code{stop()} is called.
 #' @noRd
 fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint(),
-                                            proxy_settings = "default") {
+                                            proxy_settings = fingertips_proxy_settings()) {
   code <- FALSE
   endpoint <- gsub("/api/", "", endpoint)
 
@@ -136,4 +136,36 @@ fingertips_deframe <- function(data) {
   out <- structure(.Data = data[[2]],
                    .Names = data[[1]])
   return(out)
+}
+
+
+#' fingertips_proxy_settings
+#' @description determines which proxy settings are used
+#' @return A character string with the proxy settings
+#' @noRd
+fingertips_proxy_settings <- function() {
+
+  # First try using default as proxy settings
+  fingertips_proxy <- "default"
+  errtext <- tryCatch(
+    {
+      fingertips_ensure_api_available(proxy_settings = "default")
+    }, error=function(e) {"The API is currently unavailable."}
+  )
+
+  # Second try using "none" as proxy settings
+  if (errtext != TRUE) {
+    fingertips_proxy <- "none"
+    errtext <- tryCatch(
+      {
+        fingertips_ensure_api_available(proxy_settings = "none")
+      }, error=function(e) {"The API is currently unavailable."}
+    )
+
+    # Stop if neither settings work
+    if (errtext != TRUE) {
+      stop(paste(errtext, collapse='\n  '), call. = FALSE)
+    }
+  }
+  return(fingertips_proxy)
 }

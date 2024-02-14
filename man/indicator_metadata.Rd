@@ -8,7 +8,7 @@ indicator_metadata(
   IndicatorID = NULL,
   DomainID = NULL,
   ProfileID = NULL,
-  proxy_settings = "default",
+  proxy_settings = fingertips_proxy_settings(),
   path
 )
 }
@@ -24,7 +24,8 @@ IndicatorID is populated, ProfileID can be ignored or must be the same
 length as IndicatorID (but can contain NAs).}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none". Setting this manually will decrease runtime;
+ default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}

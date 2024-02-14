@@ -54,7 +54,7 @@ fingertips_redred <- function(Comparator = "England", ...) {
 #' # Returns a sentence describing number of indicators and profiles in Fingertips
 #' fingertips_stats()}
 #' @export
-fingertips_stats <- function(proxy_settings = "default") {
+fingertips_stats <- function(proxy_settings = fingertips_proxy_settings()) {
         fingertips_stats <- indicators(proxy_settings = proxy_settings)
         summarised_stats <- fingertips_stats %>%
                 summarise_if(is.integer, n_distinct)

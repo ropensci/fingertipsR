@@ -68,7 +68,7 @@ fingertips_data <- function(IndicatorID = NULL,
                             categorytype = FALSE,
                             rank = FALSE,
                             url_only = FALSE,
-                            proxy_settings = "default",
+                            proxy_settings = fingertips_proxy_settings(),
                             path) {
 
   if (missing(path)) path <- fingertips_endpoint()

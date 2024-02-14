@@ -4,7 +4,12 @@
 \alias{indicators}
 \title{Live indicators and the profiles and domains they belong to}
 \usage{
-indicators(ProfileID = NULL, DomainID = NULL, proxy_settings = "default", path)
+indicators(
+  ProfileID = NULL,
+  DomainID = NULL,
+  proxy_settings = fingertips_proxy_settings(),
+  path
+)
 }
 \arguments{
 \item{ProfileID}{Numeric vector, id of profiles of interest}
@@ -12,7 +17,8 @@ indicators(ProfileID = NULL, DomainID = NULL, proxy_settings = "default", path)
 \item{DomainID}{Numeric vector, id of domains of interest}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
-("default") or "none"}
+"default" or "none". Setting this manually will decrease runtime;
+ default determined automatically.}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}
