@@ -1,4 +1,4 @@
-# fingertipsR 1.0.13 (2023-07-12)
+# fingertipsR 1.0.13 (2023-07-11)
 
 * Added checks to handle cases where no data is available for the specified combination of parameters in `fingertips_data()`.
 * When no data is available and `rank = TRUE`, the function now returns an empty data frame with `Polarity`, `Rank`, and `AreaValuesCount` columns set to `NA`.
