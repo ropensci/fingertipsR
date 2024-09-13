@@ -59,7 +59,7 @@ test_that("indicator_areatypes works for filter on IndicatorID = 108", {
 
 test_that("indicator_areatypes works for filter on AreaTypeID = 201", {
     skip_on_cran()
-    expect_equal(ncol(indicator_areatypes(AreaTypeID = 201)), 2)
+    expect_equal(ncol(indicator_areatypes(AreaTypeID = 202)), 2)
 
 })
 
