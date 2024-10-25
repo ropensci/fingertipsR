@@ -57,7 +57,7 @@ test_that("error message when incorrect AreaTypeID provided to deprivation_decil
 
 test_that("error message when incorrect AreaTypeID provided to deprivation_decile for 2019", {
         skip_on_cran()
-        expect_error(deprivation_decile(AreaTypeID = 3,
+        expect_error(deprivation_decile(AreaTypeID = 8,
                                         Year = 2019),
                      "AreaTypeID unavailable for 2019")
 })

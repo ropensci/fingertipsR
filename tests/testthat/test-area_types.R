@@ -143,8 +143,8 @@ test_that("nearest_neighbours error for incorrect AreaTypeID", {
 
 test_that("nearest_neighbours error for incorrect AreaCode to AreaTypeID", {
     skip_on_cran()
-    expect_error(nearest_neighbours(AreaCode = "E07000033", AreaTypeID = 152),
-                 "E07000033 not in AreaTypeID = 152")
+    expect_error(nearest_neighbours(AreaCode = "E07000033", AreaTypeID = 502),
+                 "E07000033 not in AreaTypeID = 502")
 
 })
 
