@@ -39,7 +39,7 @@ Suggests:
     pander,
     rmarkdown,
     testthat (>= 3.0.0)
-Config/Needs/website: captioner, Cairo, cowplot
+Config/Needs/website: Cairo, cowplot
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
