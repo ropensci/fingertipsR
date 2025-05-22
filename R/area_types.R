@@ -364,7 +364,6 @@ nearest_neighbour_areatypeids <- function(proxy_settings = fingertips_proxy_sett
     proxy_settings = proxy_settings) %>%
     rename(measure = "Name")
 
-  # Filter out area types (CanBeDisplayedOnMap == FALSE)
   areatypeid_table <- areatypeid_table %>%
     mutate(ApplicableAreaTypes = lapply(ApplicableAreaTypes, function(df) {
       if (is.data.frame(df)) df[df$CanBeDisplayedOnMap == TRUE, ] else df
