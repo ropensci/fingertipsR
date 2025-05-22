@@ -232,6 +232,14 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure,
           endpoint = path,
           proxy_settings = proxy_settings)
 
+        valid_ids <- nearest_neighbour_areatypeids(proxy_settings = proxy_settings)$AreaTypeID
+        if (!(AreaTypeID %in% valid_ids)) {
+          stop(
+            paste0("AreaTypeID = ", AreaTypeID, " is deprecated or unsupported.\n",
+                   "Use `nearest_neighbour_areatypeids()` to view the current supported AreaTypeIDs.")
+          )
+        }
+
         url <- "https://fingertips.phe.org.uk/api/nearest_neighbour_types"
 
         nn_table <- get_fingertips_api(url,
@@ -355,6 +363,13 @@ nearest_neighbour_areatypeids <- function(proxy_settings = fingertips_proxy_sett
     url,
     proxy_settings = proxy_settings) %>%
     rename(measure = "Name")
+
+  # Filter out deprecated area types (CanBeDisplayedOnMap == FALSE)
+  areatypeid_table <- areatypeid_table %>%
+    mutate(ApplicableAreaTypes = lapply(ApplicableAreaTypes, function(df) {
+      if (is.data.frame(df)) df[df$CanBeDisplayedOnMap == TRUE, ] else df
+    })) %>%
+    filter(lengths(ApplicableAreaTypes) > 0)
 
   df <- areatypeid_table %>%
     select("NeighbourTypeId", "ApplicableAreaTypes") %>%
