@@ -1,3 +1,7 @@
+# fingertipsR 1.0.13 (2025-05-29)
+
+* no change for users. Package tests updated.
+
 # fingertipsR 1.0.12 (2023-17-11)
 
 * Automatically detects proxy settings in each function.  

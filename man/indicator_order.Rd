@@ -58,8 +58,8 @@ Other lookup functions:
 \code{\link{deprivation_decile}()},
 \code{\link{indicator_areatypes}()},
 \code{\link{indicator_metadata}()},
-\code{\link{indicators_unique}()},
 \code{\link{indicators}()},
+\code{\link{indicators_unique}()},
 \code{\link{nearest_neighbours}()},
 \code{\link{profiles}()}
 }
