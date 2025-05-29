@@ -59,7 +59,7 @@ test_that("indicator_areatypes works for filter on IndicatorID = 108", {
 
 test_that("indicator_areatypes works for filter on AreaTypeID = 201", {
     skip_on_cran()
-    expect_equal(ncol(indicator_areatypes(AreaTypeID = 201)), 2)
+    expect_equal(ncol(indicator_areatypes(AreaTypeID = 202)), 2)
 
 })
 
@@ -102,12 +102,14 @@ test_that("nearest_neighbours returns character vector", {
       info = "testing the function with proxy_settings = 'none'")
 })
 
-test_that("nearest_neighbours works for AreaTypeID = 166", {
-    skip_on_cran()
-    expect_type(nearest_neighbours(AreaCode = "E38000004", AreaTypeID = 166),
-                "character")
-
+test_that("nearest_neighbours throws error for deprecated AreaTypeID = 166", {
+  skip_on_cran()
+  expect_error(
+    nearest_neighbours(AreaCode = "E38000004", AreaTypeID = 166),
+    "AreaTypeID = 166 is deprecated or unsupported"
+  )
 })
+
 
 test_that("nearest_neighbour_areatypeids provides a one column table", {
   skip_on_cran()
@@ -137,14 +139,16 @@ test_that("nearest_neighbours warning when measure provided", {
 
 test_that("nearest_neighbours error for incorrect AreaTypeID", {
     skip_on_cran()
-    expect_error(nearest_neighbours(AreaCode = "E12000001", AreaTypeID = 6),
-                 "AreaTypeID not found\\. Use function `nearest_neighbour_areatypeids\\(\\)` to see available AreaTypeIDs\\.")
+  expect_error(
+    nearest_neighbours("E12000001", 6),
+    "AreaTypeID = 6 is deprecated or unsupported"
+  )
 })
 
 test_that("nearest_neighbours error for incorrect AreaCode to AreaTypeID", {
     skip_on_cran()
-    expect_error(nearest_neighbours(AreaCode = "E07000033", AreaTypeID = 152),
-                 "E07000033 not in AreaTypeID = 152")
+    expect_error(nearest_neighbours(AreaCode = "E07000033", AreaTypeID = 502),
+                 "E07000033 not in AreaTypeID = 502")
 
 })
 
