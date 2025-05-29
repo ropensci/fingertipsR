@@ -202,3 +202,15 @@ test_that("correct number of fields returned by fingertips_data when rank = TRUE
         expect_equal(ncol(suppressWarnings(fingertips_data(IndicatorID = 90362, AreaTypeID = 6, ProfileID = 156, rank = TRUE))), ncols + 3)
 
 })
+
+test_that("error message for fingertips_data when no data is available for the given ProfileID and AreaTypeID", {
+  skip_on_cran()
+  expect_warning(fingertips_data(ProfileID = 19, AreaTypeID = 202, rank = FALSE),
+               "No data available for the specified combination of parameters. Returning an empty data frame.")
+})
+
+test_that("error message for fingertips_data when no data is available for the given ProfileID and AreaTypeID", {
+  skip_on_cran()
+  expect_warning(fingertips_data(ProfileID = 19, AreaTypeID = 202, rank = TRUE),
+               "No data available for the specified combination of parameters. Returning an empty data frame.")
+})
