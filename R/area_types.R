@@ -196,22 +196,25 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID,
 
 #' Nearest neighbours
 #'
-#' Outputs a character vector of similar areas for given area. Currently returns
-#' similar areas for Clinical Commissioning Groups (old and new) based on
-#' \href{https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/}{NHS
-#' England's similar CCG explorer tool} or lower and upper tier local
-#' authorities based on
+#' Outputs a character vector of similar areas for a given area.\cr\cr**Details**\cr
+#' - For new upper tier local authorities (post 4/23) the
+#' \href{https://github.com/NHSDigital/ASC_LA_Peer_Groups}{NHSE Nearest Neighbours
+#' Model} is used.
+#' - All other local authorities types (lower tier and older upper tier) use the
 #' \href{https://www.cipfastats.net/resources/nearestneighbours/}{CIPFA's
-#' Nearest Neighbours Model} or upper tier local authorities based on
+#' Nearest Neighbours Model}. Older local authority geography types will use
+#' older versions of the model.
+#' - Similar areas for Clinical Commissioning Groups are based on
+#' \href{https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/}{NHS
+#' England's similar CCG explorer tool}.
+#' - Currently the function does not have the ability to use the method from the
 #' \href{https://www.gov.uk/government/publications/local-authority-interactive-tool-lait}{Children's
-#' services statistical neighbour benchmarking tool}
+#' services statistical neighbour benchmarking tool}.
+#' @md
 #'
 #' @return A character vector of area codes
 #' @param AreaTypeID AreaTypeID of the nearest neighbours (see
 #'   \code{\link{nearest_neighbour_areatypeids}}) for available IDs
-#' @param measure deprecated. Previously a string; when AreaTypeID = 102 measure
-#'   must be either "CIPFA" for CIPFA local authority nearest neighbours or
-#'   "CSSN" for Children's services statistical neighbours
 #' @inheritParams fingertips_data
 #' @inheritParams area_types
 #' @import dplyr
@@ -224,7 +227,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID,
 #' @family lookup functions
 #' @seealso \code{\link{nearest_neighbour_areatypeids}} for the AreaTypeIDs
 #'   available for this function
-nearest_neighbours <- function(AreaCode, AreaTypeID, measure,
+nearest_neighbours <- function(AreaCode, AreaTypeID,
                                proxy_settings = fingertips_proxy_settings(), path) {
 
         if (missing(path)) path <- fingertips_endpoint()
@@ -262,10 +265,6 @@ nearest_neighbours <- function(AreaCode, AreaTypeID, measure,
                 df$NeighbourTypeId[df$AreaTypeID == AreaTypeID]
         } else {
                 stop("AreaTypeID not found. Use function `nearest_neighbour_areatypeids()` to see available AreaTypeIDs.")
-        }
-
-        if (!(missing(measure))) {
-                warning("Measure argument is now deprecated.")
         }
 
         ParentAreaTypeID <- area_types(AreaTypeID = AreaTypeID) %>%

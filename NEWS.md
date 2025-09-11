@@ -1,3 +1,7 @@
+# fingertipsR 1.0.14 (2025-09-11)
+
+* Updated the description of the nearest_neighbours function, and removed the measure variable that was previously deprecated. 
+
 # fingertipsR 1.0.13 (2025-05-29)
 
 * no change for users. Package tests updated.
