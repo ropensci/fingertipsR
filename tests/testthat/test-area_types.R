@@ -131,7 +131,6 @@ test_that("nearest_neighbour_areatypeids provides a one column table", {
     info = "testing the function setting proxy_settings = 'none'")
 })
 
-
 test_that("nearest_neighbours error for incorrect AreaTypeID", {
     skip_on_cran()
   expect_error(

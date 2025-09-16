@@ -89,9 +89,10 @@ test_that("the correct url produced when IndicatorID provided", {
         skip_on_cran()
         expect_equal(
           fingertips_data(IndicatorID = 90616,
-                          AreaTypeID = 219,
+                          AreaTypeID = 221,
+                          ParentAreaTypeID = 15,
                           url_only = TRUE),
-          "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=219&parent_area_type_id=15&include_sortable_time_periods=yes",
+          "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=221&parent_area_type_id=15&include_sortable_time_periods=yes",
           info = "function works correctly with default proxy_settings")
 })
 
@@ -120,10 +121,11 @@ test_that("the correct url produced when ProfileID provided", {
 test_that("the correct url produced when bad input for ProfileID", {
         skip_on_cran()
         expect_equal(suppressWarnings(fingertips_data(IndicatorID = 90616,
-                                                      AreaTypeID = 219,
+                                                      AreaTypeID = 221,
+                                                      ParentAreaTypeID = 15,
                                                       ProfileID = NA,
                                                       url_only = TRUE)),
-                     "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=219&parent_area_type_id=15&include_sortable_time_periods=yes")
+                     "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90616&child_area_type_id=221&parent_area_type_id=15&include_sortable_time_periods=yes")
 
 
 })
@@ -161,12 +163,9 @@ test_that("the correct url produced when AreaTypeID = 'All' and IndicatorID prov
         expect_equal(fingertips_data(IndicatorID = 90362, ProfileID = 156, AreaTypeID = "All", url_only = TRUE),
                      c(
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=502&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
-                       "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=501&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=402&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
-                       "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=401&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=302&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=202&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
-                       "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=102&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=15&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=6&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes"
                      ))
