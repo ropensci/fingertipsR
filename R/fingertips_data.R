@@ -349,16 +349,14 @@ fingertips_data <- function(IndicatorID = NULL,
       required_columns <- c(names(fingertips_data), "Polarity", "Rank", "AreaValuesCount")
       fingertips_data <- data.frame(matrix(ncol = length(required_columns), nrow = 0))
       colnames(fingertips_data) <- required_columns
+      fingertips_data <- fingertips_data %>%
+        mutate(Polarity = character(), Rank = integer(), AreaValuesCount = integer())
+      return(fingertips_data)
     }
   }
 
   if (rank == TRUE) {
     inds <- unique(fingertips_data$IndicatorID)
-    if (nrow(fingertips_data) == 0) {
-      fingertips_data <- fingertips_data %>%
-        mutate(Polarity = character(), Rank = integer(), AreaValuesCount = integer())
-      return(fingertips_data)
-    }
     if (!is.null(ProfileID)) {
       polarities <- indicator_metadata(
         inds,
