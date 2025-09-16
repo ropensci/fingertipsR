@@ -58,8 +58,8 @@ Other lookup functions:
 \code{\link{indicator_areatypes}()},
 \code{\link{indicator_metadata}()},
 \code{\link{indicator_order}()},
-\code{\link{indicators_unique}()},
 \code{\link{indicators}()},
+\code{\link{indicators_unique}()},
 \code{\link{profiles}()}
 }
 \concept{lookup functions}

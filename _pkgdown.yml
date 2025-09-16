@@ -1,4 +1,0 @@
-extra_packages:
-  - captioner
-  - Cairo
-  - cowplot
