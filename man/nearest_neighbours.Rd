@@ -7,7 +7,6 @@
 nearest_neighbours(
   AreaCode,
   AreaTypeID,
-  measure,
   proxy_settings = fingertips_proxy_settings(),
   path
 )
@@ -17,10 +16,6 @@ nearest_neighbours(
 
 \item{AreaTypeID}{AreaTypeID of the nearest neighbours (see
 \code{\link{nearest_neighbour_areatypeids}}) for available IDs}
-
-\item{measure}{deprecated. Previously a string; when AreaTypeID = 102 measure
-must be either "CIPFA" for CIPFA local authority nearest neighbours or
-"CSSN" for Children's services statistical neighbours}
 
 \item{proxy_settings}{string; whether to use Internet Explorer proxy settings
 "default" or "none". Setting this manually will decrease runtime;
@@ -33,15 +28,22 @@ correct address}
 A character vector of area codes
 }
 \description{
-Outputs a character vector of similar areas for given area. Currently returns
-similar areas for Clinical Commissioning Groups (old and new) based on
-\href{https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/}{NHS
-England's similar CCG explorer tool} or lower and upper tier local
-authorities based on
+Outputs a character vector of similar areas for a given area.\cr\cr\strong{Details}\cr
+\itemize{
+\item For new upper tier local authorities (post 4/23) the
+\href{https://github.com/NHSDigital/ASC_LA_Peer_Groups}{NHSE Nearest Neighbours
+Model} is used.
+\item All other local authorities types (lower tier and older upper tier) use the
 \href{https://www.cipfastats.net/resources/nearestneighbours/}{CIPFA's
-Nearest Neighbours Model} or upper tier local authorities based on
+Nearest Neighbours Model}. Older local authority geography types will use
+older versions of the model.
+\item Similar areas for Clinical Commissioning Groups are based on
+\href{https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/}{NHS
+England's similar CCG explorer tool}.
+\item Currently the function does not have the ability to use the method from the
 \href{https://www.gov.uk/government/publications/local-authority-interactive-tool-lait}{Children's
-services statistical neighbour benchmarking tool}
+services statistical neighbour benchmarking tool}.
+}
 }
 \examples{
 \dontrun{
@@ -49,7 +51,7 @@ nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)}
 }
 \seealso{
 \code{\link{nearest_neighbour_areatypeids}} for the AreaTypeIDs
-  available for this function
+available for this function
 
 Other lookup functions: 
 \code{\link{area_types}()},
