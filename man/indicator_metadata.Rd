@@ -40,8 +40,8 @@ connection speeds)
 }
 \examples{
 \dontrun{
-# Returns metadata for indicator ID 90362 and 1107
-indicatorIDs <- c(90362, 1107)
+# Returns metadata for indicator ID 90362 and 92901
+indicatorIDs <- c(90362, 92901)
 indicator_metadata(indicatorIDs)
 
 # Returns metadata for the indicators within the domain 1000049
