@@ -139,7 +139,7 @@ indicators_unique <- function(ProfileID = NULL,
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
-#' indicator_order(DomainID = 1938133161, AreaTypeID = 102, ParentAreaTypeID = 6)}
+#' indicator_order(DomainID = 1000049, AreaTypeID = 502, ParentAreaTypeID = 6)}
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicators and their parent domains and profiles,
 #'   \code{\link{area_types}} for area type and their parent mappings,

@@ -12,11 +12,11 @@
 #' indicatorIDs <- c(90362, 1107)
 #' indicator_metadata(indicatorIDs)
 #'
-#' # Returns metadata for the indicators within the domain 1000101
-#' indicator_metadata(DomainID = 1000101)
+#' # Returns metadata for the indicators within the domain 1000049
+#' indicator_metadata(DomainID = 1000049)
 #'
-#' # Returns metadata for the indicators within the profile with the ID 129
-#' indicator_metadata(ProfileID = 129)}
+#' # Returns metadata for the indicators within the profile with the ID 19
+#' indicator_metadata(ProfileID = 19)}
 #' @return The metadata associated with each indicator/domain/profile identified
 #' @importFrom utils read.csv
 #' @importFrom readr read_csv cols
@@ -157,8 +157,8 @@ indicator_metadata <- function(IndicatorID = NULL,
 #' @inheritParams area_types
 #' @examples
 #' \dontrun{
-#' # Returns metadata for indicator ID 90362 and 1107
-#' indicatorIDs <- c(90362, 1107)
+#' # Returns metadata for indicator ID 90362 and 92901
+#' indicatorIDs <- c(90362, 92901)
 #' indicator_update_information(indicatorIDs)}
 #' @return The date of latest data update for selected indicators
 #' @importFrom rlang .data
