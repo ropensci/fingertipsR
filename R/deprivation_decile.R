@@ -16,8 +16,8 @@
 #' @inheritParams area_types
 #' @examples
 #' \dontrun{
-#' # Return 2019 deprivation scores for Sustainability and Transformation Footprints
-#' deprivation_decile(120, 2019)}
+#' # Return 2019 deprivation scores for Upper tier local authorities (post 4/23)
+#' deprivation_decile(502, 2019)}
 #' @return A lookup table providing deprivation decile and area code
 #' @import dplyr
 #' @importFrom rlang .data

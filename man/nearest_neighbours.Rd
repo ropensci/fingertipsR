@@ -47,7 +47,7 @@ services statistical neighbour benchmarking tool}.
 }
 \examples{
 \dontrun{
-nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)}
+nearest_neighbours(AreaCode = "E09000004", AreaTypeID = 502)}
 }
 \seealso{
 \code{\link{nearest_neighbour_areatypeids}} for the AreaTypeIDs

@@ -19,15 +19,15 @@
 #' area_types()
 #'
 #' # Returns a data frame of county and unitary authority mappings
-#'  area_types("counties")
+#'  area_types("upper tier")
 #'
 #' # Returns a data frame of both counties, district
 #' # and unitary authorities and their respective mappings
-#' areas <- c("counties","district")
+#' areas <- c("upper tier", "lower tier")
 #' area_types(areas)
 #'
 #' # Uses AreaTypeID to filter area types
-#' area_types(AreaTypeID = 152)}
+#' area_types(AreaTypeID = 7)}
 #' @import dplyr
 #' @importFrom stats complete.cases
 #' @importFrom rlang .data
@@ -153,7 +153,7 @@ category_types <- function(proxy_settings = fingertips_proxy_settings(),
 #' @import dplyr
 #' @examples
 #' \dontrun{
-#' indicator_areatypes(IndicatorID = 10101)}
+#' indicator_areatypes(IndicatorID = 90362)}
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -222,7 +222,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID,
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
-#' nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)}
+#' nearest_neighbours(AreaCode = "E09000004", AreaTypeID = 502)}
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{nearest_neighbour_areatypeids}} for the AreaTypeIDs

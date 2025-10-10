@@ -13,7 +13,7 @@
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
-#' reddata <- fingertips_redred(ProfileID = 26, AreaTypeID = 102)}
+#' reddata <- fingertips_redred(ProfileID = 26, AreaTypeID = 502)}
 #' @family data extract functions
 #' @export
 

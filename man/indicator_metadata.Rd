@@ -40,15 +40,15 @@ connection speeds)
 }
 \examples{
 \dontrun{
-# Returns metadata for indicator ID 90362 and 1107
-indicatorIDs <- c(90362, 1107)
+# Returns metadata for indicator ID 90362 and 92901
+indicatorIDs <- c(90362, 92901)
 indicator_metadata(indicatorIDs)
 
-# Returns metadata for the indicators within the domain 1000101
-indicator_metadata(DomainID = 1000101)
+# Returns metadata for the indicators within the domain 1000049
+indicator_metadata(DomainID = 1000049)
 
-# Returns metadata for the indicators within the profile with the ID 129
-indicator_metadata(ProfileID = 129)}
+# Returns metadata for the indicators within the profile with the ID 19
+indicator_metadata(ProfileID = 19)}
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,

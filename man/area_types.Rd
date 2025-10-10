@@ -42,15 +42,15 @@ to start section of the Life Expectancy vignette.
 area_types()
 
 # Returns a data frame of county and unitary authority mappings
- area_types("counties")
+ area_types("upper tier")
 
 # Returns a data frame of both counties, district
 # and unitary authorities and their respective mappings
-areas <- c("counties","district")
+areas <- c("upper tier", "lower tier")
 area_types(areas)
 
 # Uses AreaTypeID to filter area types
-area_types(AreaTypeID = 152)}
+area_types(AreaTypeID = 7)}
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,

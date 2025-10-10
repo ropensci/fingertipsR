@@ -42,8 +42,8 @@ This function uses the fingertips_data function to filter for the
 }
 \examples{
 \dontrun{
-# Return 2019 deprivation scores for Sustainability and Transformation Footprints
-deprivation_decile(120, 2019)}
+# Return 2019 deprivation scores for Upper tier local authorities (post 4/23)
+deprivation_decile(502, 2019)}
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
