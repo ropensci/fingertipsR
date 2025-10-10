@@ -19,11 +19,11 @@
 #' area_types()
 #'
 #' # Returns a data frame of county and unitary authority mappings
-#'  area_types("upper tier")
+#' area_types("counties")
 #'
 #' # Returns a data frame of both counties, district
 #' # and unitary authorities and their respective mappings
-#' areas <- c("upper tier", "lower tier")
+#' areas <- c("counties", "district")
 #' area_types(areas)
 #'
 #' # Uses AreaTypeID to filter area types
