@@ -163,7 +163,6 @@ test_that("the correct url produced when AreaTypeID = 'All' and IndicatorID prov
         expect_equal(fingertips_data(IndicatorID = 90362, ProfileID = 156, AreaTypeID = "All", url_only = TRUE),
                      c(
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=502&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
-                       "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=402&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=302&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=202&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
                        "https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id?indicator_ids=90362&child_area_type_id=15&parent_area_type_id=15&profile_id=156&include_sortable_time_periods=yes",
