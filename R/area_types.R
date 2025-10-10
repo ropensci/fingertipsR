@@ -55,7 +55,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
           proxy_settings = proxy_settings)
         parentAreas <- paste0(path,"area_types/parent_area_types") %>%
                 get_fingertips_api(proxy_settings = proxy_settings)
-        area_types <- parentAreas[,c("Id", "Name")]
+        area_types <- parentAreas[,c("Id", "Short")]
         names(area_types) <- c("AreaTypeID","AreaTypeName")
         parentAreasNoNames <- parentAreas$ParentAreaTypes
         names(parentAreasNoNames) <- parentAreas$Id
@@ -65,7 +65,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, ProfileID = NULL
                 select(
                   AreaTypeID = "t",
                   ParentAreaTypeID = "Id",
-                  ParentAreaTypeName = "Name") %>%
+                  ParentAreaTypeName = "Short") %>%
                 mutate(AreaTypeID = as.numeric(.data$AreaTypeID),
                        ParentAreaTypeID = as.numeric(.data$ParentAreaTypeID))
         area_types <- left_join(area_types, parentAreas, by = c("AreaTypeID" = "AreaTypeID")) %>%
