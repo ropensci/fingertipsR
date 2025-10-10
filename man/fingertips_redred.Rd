@@ -25,7 +25,7 @@ latest year of that indicator
 \examples{
 \dontrun{
 # Returns data for the two selected domains at county and unitary authority geography
-reddata <- fingertips_redred(ProfileID = 26, AreaTypeID = 102)}
+reddata <- fingertips_redred(ProfileID = 26, AreaTypeID = 502)}
 }
 \seealso{
 Other data extract functions: 
