@@ -10,5 +10,6 @@
 #' @section Data extract functions: Using ID codes as inputs, the data extract
 #'   functions allow the user to extract data from the Fingertips API.
 #'
-#' @docType _PACKAGE
+#' @docType package
+#' @name fingertipsR
 NULL
