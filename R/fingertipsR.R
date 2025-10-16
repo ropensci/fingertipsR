@@ -11,5 +11,4 @@
 #'   functions allow the user to extract data from the Fingertips API.
 #'
 #' @docType _PACKAGE
-#' @name fingertipsR
 NULL
