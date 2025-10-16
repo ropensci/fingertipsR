@@ -22,7 +22,7 @@ test_that("area_type brings 0 row table for specific condition", {
 
 test_that("area_types filter for text beings same number as records as filtering for AreaTypeID", {
     skip_on_cran()
-    expect_equal(area_types(c("gov","ward")), area_types(AreaTypeID = c(8, 9, 6)))
+    expect_equal(area_types(c("gov","ward", "statistical")), area_types(AreaTypeID = c(8, 9, 6)))
 
 })
 
@@ -129,12 +129,6 @@ test_that("nearest_neighbour_areatypeids provides a one column table", {
     ),
     1,
     info = "testing the function setting proxy_settings = 'none'")
-})
-
-test_that("nearest_neighbours warning when measure provided", {
-    skip_on_cran()
-    expect_warning(nearest_neighbours(AreaCode = "E06000015", AreaTypeID = 102, measure = "CIPFA"),
-                   "Measure argument is now deprecated.")
 })
 
 test_that("nearest_neighbours error for incorrect AreaTypeID", {

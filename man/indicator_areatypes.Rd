@@ -33,7 +33,7 @@ that indicator
 }
 \examples{
 \dontrun{
-indicator_areatypes(IndicatorID = 10101)}
+indicator_areatypes(IndicatorID = 90362)}
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,

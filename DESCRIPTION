@@ -1,6 +1,6 @@
 Package: fingertipsR
 Type: Package
-Version: 1.0.13
+Version: 1.1.0
 Title: Fingertips Data for Public Health
 Description: Fingertips (<http://fingertips.phe.org.uk/>) contains data for many indicators of public health in England. The underlying data is now more easily accessible by making use of the API.
 Maintainer: Sam Dunn <sam.dunn@dhsc.gov.uk>
@@ -17,6 +17,7 @@ Authors@R: c(
     person("David", "Whiting", , "david.whiting@medway.gov.uk", c("ctb")),
     person("Luke", "Bradley", , "dev.1b7@outlook.com", c("ctb")),
     person("Samuel", "Cutler", , "samuel.cutler@ukhsa.gov.uk", c("ctb")),
+    person("Thilaksan", "Vikneswaran", , "thilaksan.vikneswaran@dhsc.gov.uk", c("ctb")),
     person("Crown Copyright 2020", , , , c("cph")))
 URL: https://fingertips.phe.org.uk, 
     https://github.com/ropensci/fingertipsR, 

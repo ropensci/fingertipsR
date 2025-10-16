@@ -31,7 +31,7 @@ Outputs a data frame which provides a date of when an indicator was last update
 }
 \examples{
 \dontrun{
-# Returns metadata for indicator ID 90362 and 1107
-indicatorIDs <- c(90362, 1107)
+# Returns metadata for indicator ID 90362 and 92901
+indicatorIDs <- c(90362, 92901)
 indicator_update_information(indicatorIDs)}
 }

@@ -8,6 +8,9 @@
 #' @details Note, polarity of an indicator is not automatically returned (eg,
 #'   whether a low value is good, bad or neither). Use the rank field for this
 #'   to be returned (though it adds a lot of time to the query)
+#'
+#'   Some indicators may have different comparisons due to indicator polarity differences between profiles on the website.
+#'   It is recommended to check the website to ensure consistency between your data extract here and the polarity required
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
 #' @param ProfileID Numeric vector, id of profiles of interest. Indicator
@@ -38,24 +41,14 @@
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
 #' doms <- c(1000049,1938132983)
-#' fingdata <- fingertips_data(DomainID = doms, AreaTypeID = 202)
+#' fingdata <- fingertips_data(DomainID = doms, AreaTypeID = 502)
 #'
-#' # Returns data at local authority district geography (AreaTypeID = 101)
+#' # Returns data at local authority district geography (AreaTypeID = 501)
 #' # for the indicator with the id 22401
-#' fingdata <- fingertips_data(22401, AreaTypeID = 101)
-#'
-#' # Returns same indicator with different comparisons due to indicator polarity
-#' # differences between profiles on the website
-#' # It is recommended to check the website to ensure consistency between your
-#' # data extract here and the polarity required
-#' fingdata <- fingertips_data(rep(90282,2),
-#'                             ProfileID = c(19,93),
-#'                             AreaTypeID = 202,
-#'                             AreaCode = "E06000008")
-#' fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]
+#' fingdata <- fingertips_data(22401, AreaTypeID = 501)
 #'
 #' # Returns data for all available area types for an indicator
-#' fingdata <- fingertips_data(10101, AreaTypeID = "All")}
+#' fingdata <- fingertips_data(90362, AreaTypeID = "All")}
 #' @family data extract functions
 #' @export
 
@@ -112,7 +105,6 @@ fingertips_data <- function(IndicatorID = NULL,
   if (!(categorytype %in% c(TRUE, FALSE))){
     stop("categorytype input must be TRUE or FALSE")
   }
-
   # check on area details before calling data
   if (is.null(AreaTypeID)) {
     stop("AreaTypeID must have a value. Use function area_types() to see what values can be used.")
@@ -340,7 +332,21 @@ fingertips_data <- function(IndicatorID = NULL,
     }
 
   }
+
+
   names(fingertips_data) <- gsub("\\s","",names(fingertips_data))
+
+  if (nrow(fingertips_data) == 0) {
+    warning("No data available for the specified combination of parameters. Returning an empty data frame.")
+    if (rank == TRUE) {
+      required_columns <- c(names(fingertips_data), "Polarity", "Rank", "AreaValuesCount")
+      fingertips_data <- data.frame(matrix(ncol = length(required_columns), nrow = 0))
+      colnames(fingertips_data) <- required_columns
+      fingertips_data <- fingertips_data %>%
+        mutate(Polarity = character(), Rank = integer(), AreaValuesCount = integer())
+      return(fingertips_data)
+    }
+  }
 
   if (rank == TRUE) {
     inds <- unique(fingertips_data$IndicatorID)
@@ -351,14 +357,12 @@ fingertips_data <- function(IndicatorID = NULL,
         proxy_settings = proxy_settings,
         path = path) %>%
         select(.data$IndicatorID, .data$Polarity)
-
     } else {
       polarities <- indicator_metadata(
         inds,
         proxy_settings = proxy_settings,
         path = path) %>%
         select("IndicatorID", "Polarity")
-
     }
     fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%
       group_by(.data$IndicatorID,
@@ -371,8 +375,10 @@ fingertips_data <- function(IndicatorID = NULL,
       mutate(Rank = rank(.data$Value, na.last = "keep"),
              AreaValuesCount = sum(!is.na(.data$Value))) %>%
       ungroup()
-
   }
+
+
+
   if (!is.null(AreaCode)) {
     fingertips_data <- fingertips_data[fingertips_data$AreaCode %in% AreaCode,] %>%
       droplevels()

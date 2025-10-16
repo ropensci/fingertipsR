@@ -105,11 +105,11 @@ The table shows that the *AreaTypeID* for County and Unitary Authority level is 
 
 | AreaTypeID|AreaTypeName                               | ParentAreaTypeID|ParentAreaTypeName                        |
 |----------:|:------------------------------------------|----------------:|:-----------------------------------------|
-|        202|Upper tier local authorities (4/19 - 3/20) |                6|Government Office Region                  |
-|        202|Upper tier local authorities (4/19 - 3/20) |              104|PHEC 2015 new plus PHEC 2013 unchanged    |
-|        202|Upper tier local authorities (4/19 - 3/20) |            10105|Depriv. decile (IMD2015, 4/19 boundaries) |
-|        202|Upper tier local authorities (4/19 - 3/20) |            10113|Depriv. deciles (IMD2019)                 |
-|        202|Upper tier local authorities (4/19 - 3/20) |              126|Combined authorities                      |
+|        202|Counties & UAs (2019/20)                   |                6|Government Office Region                  |
+|        202|Counties & UAs (2019/20)                   |              104|PHEC 2015 new plus PHEC 2013 unchanged    |
+|        202|Counties & UAs (2019/20)                   |            10105|Depriv. decile (IMD2015, 4/19 boundaries) |
+|        202|Counties & UAs (2019/20)                   |            10113|Depriv. deciles (IMD2019)                 |
+|        202|Counties & UAs (2019/20)                   |              126|Combined authorities                      |
 
 *ParentAreaTypeID* is 6 by default for the `fingertips_data()` function for `AreaTypeID` of 202 (this value changes if different `AreaTypeID`s are entered), so we can stick with that in this example. Use the `area_types()` function to understand more about how areas map to each other.
 
